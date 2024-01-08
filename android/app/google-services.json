@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "665566285485",
+    "project_id": "zimbapos-7cf35",
+    "storage_bucket": "zimbapos-7cf35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:665566285485:android:f7641a8a62c778b01e4024",
+        "android_client_info": {
+          "package_name": "com.codanto.zimbapos"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPxbcrJ4_K6pO2L10wRiHDb0LvKo-vUps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

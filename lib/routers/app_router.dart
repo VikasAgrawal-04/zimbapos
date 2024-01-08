@@ -4,7 +4,13 @@ import 'package:zimbapos/routers/utils/router_list.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: AppScreen.homeScreen.path,
+    initialLocation: AppScreen.loginScreen.path,
     routes: routerList,
   );
+
+  // //login
+  // static final GoRouter loginScreen = GoRouter(
+  //   initialLocation: AppScreen.loginScreen.path,
+  //   routes: routerList,
+  // );
 }

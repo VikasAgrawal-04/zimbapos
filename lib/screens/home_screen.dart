@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    runServer();
     super.initState();
+    // runServer();
   }
 
   void runServer() async {
@@ -64,21 +66,32 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-      ),
-      body: (isLoading)
-          ? const Center(
-              child: Text('Sever is starting'),
-            )
-          : (serverON)
-              ? Center(
-                  child: Text(
-                      'Server running on ${server.address.address}:${server.port}'),
-                )
-              : const Center(
-                  child: Text('dead'),
-                ),
-    );
+        appBar: AppBar(
+          title: const Text('Home Screen'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () => context.push(AppScreen.rateSetScreen.path),
+                child: const Text('Rate Sets'),
+              )
+            ],
+          ),
+        )
+        // (isLoading)
+        //     ? const Center(
+        //         child: Text('Sever is starting'),
+        //       )
+        //     : (serverON)
+        //         ? Center(
+        //             child: Text(
+        //                 'Server running on ${server.address.address}:${server.port}'),
+        //           )
+        //         : const Center(
+        //             child: Text('dead'),
+        //           ),
+        );
   }
 }

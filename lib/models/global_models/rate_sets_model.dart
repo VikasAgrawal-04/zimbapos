@@ -9,4 +9,9 @@ class RateSetsModel {
   String? ratesetName;
   bool? isActive;
   bool? isDeleted;
+
+  RateSetsModel({this.ratesetName}) {
+    isActive = true;
+    isDeleted = false;
+  }
 }

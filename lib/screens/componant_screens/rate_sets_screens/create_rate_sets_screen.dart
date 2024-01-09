@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
+import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/models/global_models/rate_sets_model.dart';
+
 class CreateRateSetsScreen extends StatefulWidget {
   const CreateRateSetsScreen({super.key});
 
@@ -22,8 +27,20 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+  createRateSetFn(BuildContext context) {
+    final db = DatabaseCubit.dbFrom(context);
+    db.rateSetsRepository
+        .createRateSet(model: RateSetsModel(ratesetName: nameController.text));
+    EasyLoading.showToast('Rate Set Created');
+    context.pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Rate Sets'),
@@ -39,6 +56,11 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
+            SizedBox(height: screenSize.height * 0.2),
+            ElevatedButton(
+              onPressed: () => createRateSetFn(context),
+              child: const Text('Creta Rate Set'),
+            )
           ],
         ),
       ),

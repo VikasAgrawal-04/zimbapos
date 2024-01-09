@@ -5,6 +5,8 @@ import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/table_repository.dart';
+import 'package:zimbapos/repository/rate_sets_repository.dart';
+
 
 class IsarService {
   late Isar db;
@@ -16,6 +18,7 @@ class IsarService {
     if (!Isar.instanceNames.contains(dbName)) {
       db = Isar.openSync(
         [RateSetsModelSchema, TableModelSchema],
+
         name: dbName,
         directory: directory.path,
         inspector: true,
@@ -34,5 +37,7 @@ class IsarService {
   //Gettters
 
   RateSetsRepository get rateSetsRepository => RateSetsRepository(db);
+
   TableRepository get tableRepository => TableRepository(db);
+
 }

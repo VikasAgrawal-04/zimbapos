@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
@@ -17,8 +18,20 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
     return datatbaseCubit.rateSetsRepository.streamRateSets();
   }
 
+
+  toggleFn(int id, bool value) {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    datatbaseCubit.rateSetsRepository.changeActive(id, value);
+  }
+
+  deleteFn(int id) {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    datatbaseCubit.rateSetsRepository.deleteRateSetbyID(id);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rate Sets'),
@@ -38,12 +51,30 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
               child: Text('No Rate Set'),
             );
           }
-          print(list.length);
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) => ListTile(
-              title: Text(list[index].ratesetName ?? ''),
-              subtitle: const Text('isActive'),
+              title: Text(list[index].ratesetName ?? 'Test'),
+              subtitle:
+                  Text((list[index].isActive ?? false) ? 'Active' : "InActive"),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    onPressed: () => deleteFn(list[index].id),
+                    icon: const Icon(
+                      Icons.delete,
+                      size: 30,
+                    ),
+                  ),
+                  SizedBox(width: screenSize.width * 0.025),
+                  Switch.adaptive(
+                    value: list[index].isActive ?? false,
+                    onChanged: (value) => toggleFn(list[index].id, value),
+                  ),
+                ],
+              ),
+
             ),
           );
         },

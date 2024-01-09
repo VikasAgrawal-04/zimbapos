@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
-import 'package:zimbapos/screens/home_Screen.dart';
+import 'package:zimbapos/screens/home_screen.dart';
 
 final List<GoRoute> routerList = [
   GoRoute(

@@ -1,5 +1,7 @@
 enum AppScreen {
   homeScreen,
+  rateSetScreen,
+  createRateSetsScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -8,6 +10,10 @@ extension AppScreenExtension on AppScreen {
     switch (this) {
       case AppScreen.homeScreen:
         return 'Home Screen';
+      case AppScreen.rateSetScreen:
+        return 'Rate Set Screen';
+      case AppScreen.createRateSetsScreen:
+        return 'Create Rate Sets Screen';
     }
   }
 
@@ -16,6 +22,10 @@ extension AppScreenExtension on AppScreen {
     switch (this) {
       case AppScreen.homeScreen:
         return '/';
+      case AppScreen.rateSetScreen:
+        return '/rate-set-screen';
+      case AppScreen.createRateSetsScreen:
+        return '/create-rate-sets-screen';
     }
   }
 }

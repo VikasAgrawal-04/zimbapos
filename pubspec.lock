@@ -142,7 +142,7 @@ packages:
       path: "packages/local_server"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "1.0.0"
   logger:
     dependency: transitive
     description:

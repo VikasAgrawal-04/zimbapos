@@ -38,6 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void handleRequest(HttpRequest request) {
+    request.response.headers.add('Access-Control-Allow-Origin', '*');
+    request.response.headers.add('Content-Type', 'text/plain');
     print('Request received: ${request.method} ${request.uri.path}');
 
     if (request.method == 'GET' && request.uri.path == '/') {
@@ -54,8 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<HttpServer> createServer() async {
-    final address = InternetAddress.loopbackIPv4;
-    const port = 4040;
+    final address = InternetAddress.anyIPv4;
+    const port = 8080;
     return await HttpServer.bind(address, port);
   }
 

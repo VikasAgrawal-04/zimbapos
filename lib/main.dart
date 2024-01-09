@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
           create: (context) => DatabaseCubit(directory),
           child: BlocBuilder<DatabaseCubit, IsarService?>(
             builder: (context, state) => MaterialApp.router(
+
               builder: EasyLoading.init(),
               routerConfig: AppRouter.router,
             ),

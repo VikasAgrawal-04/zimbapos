@@ -18,6 +18,7 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
     return datatbaseCubit.rateSetsRepository.streamRateSets();
   }
 
+
   toggleFn(int id, bool value) {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
     datatbaseCubit.rateSetsRepository.changeActive(id, value);
@@ -50,7 +51,6 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
               child: Text('No Rate Set'),
             );
           }
-
           return ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, index) => ListTile(
@@ -74,6 +74,7 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
                   ),
                 ],
               ),
+
             ),
           );
         },

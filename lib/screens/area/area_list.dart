@@ -170,19 +170,18 @@ class _AreaListScreenState extends State<AreaListScreen> {
                 child: DropdownButton<AreaModel>(
                   isExpanded: true,
                   items: sampleAreas
-                          .map((area) => DropdownMenuItem<AreaModel>(
-                                value: area,
-                                child: Text(
-                                  area.areaName,
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black54,
-                                  ),
-                                ),
-                              ))
-                          .toList() ??
-                      [],
+                      .map((area) => DropdownMenuItem<AreaModel>(
+                            value: area,
+                            child: Text(
+                              area.areaName,
+                              textAlign: TextAlign.start,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Colors.black54,
+                              ),
+                            ),
+                          ))
+                      .toList(),
                   onChanged: (selectedArea) {
                     setState(() {
                       // Handle the selected area

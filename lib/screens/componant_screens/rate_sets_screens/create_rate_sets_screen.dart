@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
@@ -27,9 +26,6 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
     super.dispose();
   }
 
-
-  @override
-  Widget build(BuildContext context) {
   createRateSetFn(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
     db.rateSetsRepository

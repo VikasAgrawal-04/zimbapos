@@ -30,7 +30,7 @@ class RateSetsRepository {
     }
   }
 
-  deleteRateSetbyID(int id) async {
+  deleteRateSetbyID(int id)  {
     db.writeTxnSync(() {
       db.rateSetsModels.deleteSync(id);
     });

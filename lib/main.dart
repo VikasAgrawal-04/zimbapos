@@ -33,18 +33,19 @@ class MyApp extends StatelessWidget {
                   child: CircularProgressIndicator.adaptive(),
                 )),
               );
-            }
-            debugPrint('got the path');
-            final directory = snapshot.data!;
-            return BlocProvider(
-              create: (context) => DatabaseCubit(directory),
-              child: BlocBuilder<DatabaseCubit, IsarService?>(
-                builder: (context, state) => MaterialApp.router(
-                  builder: EasyLoading.init(),
-                  routerConfig: AppRouter.router,
+            } else {
+              debugPrint('got the path');
+              final directory = snapshot.data!;
+              return BlocProvider(
+                create: (context) => DatabaseCubit(directory),
+                child: BlocBuilder<DatabaseCubit, IsarService?>(
+                  builder: (context, state) => MaterialApp.router(
+                    routerConfig: AppRouter.router,
+                    builder: EasyLoading.init(),
+                  ),
                 ),
-              ),
-            );
+              );
+            }
           },
         );
       },

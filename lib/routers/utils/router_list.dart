@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/area/area_list.dart';
+import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
@@ -52,5 +54,15 @@ final List<GoRoute> routerList = [
     name: AppScreen.areasScreen.name,
     path: AppScreen.areasScreen.path,
     builder: (context, state) => const AreaListScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.customerCategory.name,
+    path: AppScreen.customerCategory.path,
+    builder: (context, state) => const CustomerCategoryScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.createCustomerCategory.name,
+    path: AppScreen.createCustomerCategory.path,
+    builder: (context, state) => const CreateCusCatScreen(),
   ),
 ];

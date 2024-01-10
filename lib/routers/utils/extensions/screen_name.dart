@@ -6,7 +6,9 @@ enum AppScreen {
   rateSetScreen,
   createRateSetsScreen,
   tableScreen,
-  createTableScreen
+  createTableScreen,
+  workerOverviewScreen,
+  createWorkerScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -29,6 +31,10 @@ extension AppScreenExtension on AppScreen {
         return 'Cart Screen';
       case AppScreen.areasScreen:
         return 'Areas Screen';
+      case AppScreen.workerOverviewScreen:
+        return 'Worker Overview Screen';
+      case AppScreen.createWorkerScreen:
+        return 'Create Worker Screen';
     }
   }
 
@@ -51,6 +57,10 @@ extension AppScreenExtension on AppScreen {
         return '/cart';
       case AppScreen.areasScreen:
         return '/areas';
+      case AppScreen.workerOverviewScreen:
+        return '/worker-overview-screen';
+      case AppScreen.createWorkerScreen:
+        return '/create-worker-screen';
     }
   }
 }

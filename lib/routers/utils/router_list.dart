@@ -5,6 +5,8 @@ import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.dart';
+import 'package:zimbapos/screens/componant_screens/worker_management_screens/create_workers_screen.dart';
+import 'package:zimbapos/screens/componant_screens/worker_management_screens/worker_overview_screen.dart';
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
 
@@ -52,5 +54,15 @@ final List<GoRoute> routerList = [
     name: AppScreen.areasScreen.name,
     path: AppScreen.areasScreen.path,
     builder: (context, state) => const AreaListScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.workerOverviewScreen.name,
+    path: AppScreen.workerOverviewScreen.path,
+    builder: (context, state) => const WorkerOverviewScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.createWorkerScreen.name,
+    path: AppScreen.createWorkerScreen.path,
+    builder: (context, state) => const CreateWorkerScreen(),
   ),
 ];

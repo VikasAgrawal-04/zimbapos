@@ -7,10 +7,4 @@ class AppRouter {
     initialLocation: AppScreen.loginScreen.path,
     routes: routerList,
   );
-
-  // //login
-  // static final GoRouter loginScreen = GoRouter(
-  //   initialLocation: AppScreen.loginScreen.path,
-  //   routes: routerList,
-  // );
 }

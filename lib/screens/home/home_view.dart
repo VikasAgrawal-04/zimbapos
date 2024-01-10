@@ -21,14 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //
           TextButton(
               onPressed: () {
                 navigateToProfileScreen(context);
               },
               child: const Text("go to login")),
-
-          //
           TextButton(
               onPressed: () {
                 navigateToAreasScreen(context);
@@ -39,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  //
   void navigateToProfileScreen(BuildContext context) {
     GoRouter.of(context).go(AppScreen.loginScreen.path);
   }

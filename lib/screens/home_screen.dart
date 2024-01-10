@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -25,13 +26,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // runServer();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await runServer();
+    });
   }
 
-  void runServer() async {
+  Future<void> runServer() async {
     loadingChange();
     server = await createServer();
-    print('Server running on ${server.address}:${server.port}');
+    debugPrint('Server running on ${server.address}:${server.port}');
     serverON = true;
     loadingChange();
     await for (HttpRequest request in server) {
@@ -42,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void handleRequest(HttpRequest request) {
     request.response.headers.add('Access-Control-Allow-Origin', '*');
     request.response.headers.add('Content-Type', 'text/plain');
-    print('Request received: ${request.method} ${request.uri.path}');
+    debugPrint('Request received: ${request.method} ${request.uri.path}');
 
     if (request.method == 'GET' && request.uri.path == '/') {
       // Handle your GET request logic here
@@ -76,22 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ElevatedButton(
                 onPressed: () => context.push(AppScreen.rateSetScreen.path),
                 child: const Text('Rate Sets'),
-              )
+              ),
+              SizedBox(height: 2.h),
+              ElevatedButton(
+                onPressed: () => context.push(AppScreen.tableScreen.path),
+                child: const Text('Tables'),
+              ),
             ],
           ),
-        )
-        // (isLoading)
-        //     ? const Center(
-        //         child: Text('Sever is starting'),
-        //       )
-        //     : (serverON)
-        //         ? Center(
-        //             child: Text(
-        //                 'Server running on ${server.address.address}:${server.port}'),
-        //           )
-        //         : const Center(
-        //             child: Text('dead'),
-        //           ),
-        );
+        ));
   }
 }

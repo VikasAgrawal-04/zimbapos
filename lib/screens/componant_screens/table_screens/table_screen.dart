@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
@@ -15,6 +16,16 @@ class _TableScreenState extends State<TableScreen> {
   Stream<List<TableModel>> tableStream() {
     final dbCubit = DatabaseCubit.dbFrom(context);
     return dbCubit.tableRepository.streamTables();
+  }
+
+  toggleFn(int id, bool value) {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    datatbaseCubit.tableRepository.changeActive(id, value);
+  }
+
+  deleteFn(int id) {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    datatbaseCubit.tableRepository.deleteTable(id);
   }
 
   @override
@@ -44,6 +55,26 @@ class _TableScreenState extends State<TableScreen> {
                   final rawData = data[index];
                   return ListTile(
                     title: Text(rawData.tableName ?? "Table Name"),
+                    subtitle: Text((data[index].isActive ?? false)
+                        ? 'Active'
+                        : "InActive"),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () => deleteFn(data[index].id),
+                          icon: const Icon(
+                            Icons.delete,
+                            size: 30,
+                          ),
+                        ),
+                        SizedBox(width: 2.w),
+                        Switch.adaptive(
+                          value: data[index].isActive ?? false,
+                          onChanged: (value) => toggleFn(data[index].id, value),
+                        ),
+                      ],
+                    ),
                   );
                 });
           }

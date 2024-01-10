@@ -1,4 +1,4 @@
-enum AppScreen { homeScreen, loginScreen, cartScreen }
+enum AppScreen { homeScreen, loginScreen, cartScreen, areasScreen }
 
 extension AppScreenExtension on AppScreen {
   //Add Name of the screen
@@ -10,6 +10,8 @@ extension AppScreenExtension on AppScreen {
         return 'Login Screen';
       case AppScreen.cartScreen:
         return 'Cart Screen';
+      case AppScreen.areasScreen:
+        return 'Areas Screen';
     }
   }
 
@@ -22,6 +24,8 @@ extension AppScreenExtension on AppScreen {
         return '/login';
       case AppScreen.cartScreen:
         return '/cart';
+      case AppScreen.areasScreen:
+        return '/areas';
     }
   }
 }

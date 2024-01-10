@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/screens/area/area_list.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
 
 import '../../screens/home/home_view.dart';
@@ -22,5 +23,11 @@ final List<GoRoute> routerList = [
     name: AppScreen.cartScreen.name,
     path: AppScreen.cartScreen.path,
     builder: (context, state) => LoginScreen(),
+  ),
+  //areas
+  GoRoute(
+    name: AppScreen.areasScreen.name,
+    path: AppScreen.areasScreen.path,
+    builder: (context, state) => const AreaListScreen(),
   ),
 ];

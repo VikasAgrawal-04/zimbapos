@@ -9,7 +9,6 @@ class RateSetsRepository {
     return db.rateSetsModels.where().watch(fireImmediately: true);
   }
 
-
   createRateSet({required RateSetsModel model}) {
     db.writeTxnSync(() {
       db.rateSetsModels.putSync(model);
@@ -18,6 +17,10 @@ class RateSetsRepository {
 
   Future<RateSetsModel?> getRateSetbyID(int id) async {
     return await db.rateSetsModels.get(id);
+  }
+
+  Future<List<RateSetsModel?>> getRateSets() async {
+    return await db.rateSetsModels.where().findAll();
   }
 
   changeActive(int id, bool isActive) async {

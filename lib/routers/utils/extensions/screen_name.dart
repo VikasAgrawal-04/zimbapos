@@ -1,12 +1,13 @@
 enum AppScreen {
   homeScreen,
   loginScreen,
-  cartScreen,
   areasScreen,
+  createAreasScreen,
+  editAreaScreen,
   rateSetScreen,
   createRateSetsScreen,
   tableScreen,
-  createTableScreen
+  createTableScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -25,10 +26,12 @@ extension AppScreenExtension on AppScreen {
         return 'Create Table Sets Screen';
       case AppScreen.loginScreen:
         return 'Login Screen';
-      case AppScreen.cartScreen:
-        return 'Cart Screen';
       case AppScreen.areasScreen:
         return 'Areas Screen';
+      case AppScreen.createAreasScreen:
+        return 'Create Areas Screen';
+      case AppScreen.editAreaScreen:
+        return 'Edit Areas Screen';
     }
   }
 
@@ -46,11 +49,13 @@ extension AppScreenExtension on AppScreen {
       case AppScreen.createTableScreen:
         return '/create-table-screen';
       case AppScreen.loginScreen:
-        return '/login';
-      case AppScreen.cartScreen:
-        return '/cart';
+        return '/login-screen';
       case AppScreen.areasScreen:
-        return '/areas';
+        return '/areas-screen';
+      case AppScreen.createAreasScreen:
+        return '/create-areas-screen';
+      case AppScreen.editAreaScreen:
+        return '/edit-areas-screen';
     }
   }
 }

@@ -85,6 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () => context.push(AppScreen.tableScreen.path),
                 child: const Text('Tables'),
               ),
+              //areas
+              ElevatedButton(
+                onPressed: () => context.push(AppScreen.areasScreen.path),
+                child: const Text('Areas'),
+              ),
             ],
           ),
         ));

@@ -32,48 +32,53 @@ const TableModelSchema = CollectionSchema(
       name: r'customerName',
       type: IsarType.string,
     ),
-    r'isActive': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 3,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'isActive': PropertySchema(
+      id: 4,
       name: r'isActive',
       type: IsarType.bool,
     ),
     r'isDeleted': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'isDeleted',
       type: IsarType.bool,
     ),
     r'isSplit': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'isSplit',
       type: IsarType.bool,
     ),
     r'outletId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'outletId',
       type: IsarType.long,
     ),
     r'persons': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'persons',
       type: IsarType.long,
     ),
     r'tableId': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'tableId',
       type: IsarType.string,
     ),
     r'tableName': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'tableName',
       type: IsarType.string,
     ),
     r'tableStartedAt': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'tableStartedAt',
       type: IsarType.dateTime,
     ),
     r'tableStatus': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'tableStatus',
       type: IsarType.string,
     )
@@ -135,15 +140,16 @@ void _tableModelSerialize(
   writer.writeLong(offsets[0], object.areaId);
   writer.writeString(offsets[1], object.customerId);
   writer.writeString(offsets[2], object.customerName);
-  writer.writeBool(offsets[3], object.isActive);
-  writer.writeBool(offsets[4], object.isDeleted);
-  writer.writeBool(offsets[5], object.isSplit);
-  writer.writeLong(offsets[6], object.outletId);
-  writer.writeLong(offsets[7], object.persons);
-  writer.writeString(offsets[8], object.tableId);
-  writer.writeString(offsets[9], object.tableName);
-  writer.writeDateTime(offsets[10], object.tableStartedAt);
-  writer.writeString(offsets[11], object.tableStatus);
+  writer.writeLong(offsets[3], object.hashCode);
+  writer.writeBool(offsets[4], object.isActive);
+  writer.writeBool(offsets[5], object.isDeleted);
+  writer.writeBool(offsets[6], object.isSplit);
+  writer.writeLong(offsets[7], object.outletId);
+  writer.writeLong(offsets[8], object.persons);
+  writer.writeString(offsets[9], object.tableId);
+  writer.writeString(offsets[10], object.tableName);
+  writer.writeDateTime(offsets[11], object.tableStartedAt);
+  writer.writeString(offsets[12], object.tableStatus);
 }
 
 TableModel _tableModelDeserialize(
@@ -152,20 +158,21 @@ TableModel _tableModelDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = TableModel();
-  object.areaId = reader.readLongOrNull(offsets[0]);
+  final object = TableModel(
+    areaId: reader.readLongOrNull(offsets[0]),
+    customerName: reader.readStringOrNull(offsets[2]),
+    id: id,
+    isActive: reader.readBoolOrNull(offsets[4]),
+    isDeleted: reader.readBoolOrNull(offsets[5]),
+    isSplit: reader.readBoolOrNull(offsets[6]),
+    outletId: reader.readLongOrNull(offsets[7]),
+    persons: reader.readLongOrNull(offsets[8]),
+    tableName: reader.readStringOrNull(offsets[10]),
+    tableStartedAt: reader.readDateTimeOrNull(offsets[11]),
+    tableStatus: reader.readStringOrNull(offsets[12]),
+  );
   object.customerId = reader.readStringOrNull(offsets[1]);
-  object.customerName = reader.readStringOrNull(offsets[2]);
-  object.id = id;
-  object.isActive = reader.readBoolOrNull(offsets[3]);
-  object.isDeleted = reader.readBoolOrNull(offsets[4]);
-  object.isSplit = reader.readBoolOrNull(offsets[5]);
-  object.outletId = reader.readLongOrNull(offsets[6]);
-  object.persons = reader.readLongOrNull(offsets[7]);
-  object.tableId = reader.readString(offsets[8]);
-  object.tableName = reader.readStringOrNull(offsets[9]);
-  object.tableStartedAt = reader.readDateTimeOrNull(offsets[10]);
-  object.tableStatus = reader.readStringOrNull(offsets[11]);
+  object.tableId = reader.readString(offsets[9]);
   return object;
 }
 
@@ -183,22 +190,24 @@ P _tableModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 4:
       return (reader.readBoolOrNull(offset)) as P;
     case 5:
       return (reader.readBoolOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 7:
       return (reader.readLongOrNull(offset)) as P;
     case 8:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 10:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 11:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 12:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -669,6 +678,60 @@ extension TableModelQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'customerName',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -1507,6 +1570,18 @@ extension TableModelQuerySortBy
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QAfterSortBy> sortByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.asc);
@@ -1655,6 +1730,18 @@ extension TableModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1799,6 +1886,12 @@ extension TableModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QDistinct> distinctByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isActive');
@@ -1880,6 +1973,12 @@ extension TableModelQueryProperty
   QueryBuilder<TableModel, String?, QQueryOperations> customerNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'customerName');
+    });
+  }
+
+  QueryBuilder<TableModel, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 

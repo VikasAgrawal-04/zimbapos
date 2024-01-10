@@ -91,13 +91,14 @@ RateSetsModel _rateSetsModelDeserialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = RateSetsModel();
+  final object = RateSetsModel(
+    ratesetName: reader.readStringOrNull(offsets[4]),
+  );
   object.id = id;
   object.isActive = reader.readBoolOrNull(offsets[0]);
   object.isDeleted = reader.readBoolOrNull(offsets[1]);
   object.outletId = reader.readLongOrNull(offsets[2]);
   object.ratesetId = reader.readLongOrNull(offsets[3]);
-  object.ratesetName = reader.readStringOrNull(offsets[4]);
   return object;
 }
 

@@ -31,8 +31,8 @@ class TableModel {
     this.persons,
     this.tableStartedAt,
     this.customerName,
-    this.isActive,
-    this.isDeleted,
+    this.isActive = true,
+    this.isDeleted = false,
   });
 
   TableModel copyWith({

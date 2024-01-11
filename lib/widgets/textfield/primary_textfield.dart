@@ -13,6 +13,7 @@ class PrimaryTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final bool? enable;
   const PrimaryTextField({
     required this.hintText,
     required this.controller,
@@ -25,6 +26,7 @@ class PrimaryTextField extends StatelessWidget {
     this.inputFormatters,
     this.suffixIcon,
     this.prefixIcon,
+    this.enable,
     super.key,
   });
 
@@ -34,6 +36,7 @@ class PrimaryTextField extends StatelessWidget {
       maxLines: maxlines,
       controller: controller,
       keyboardType: keyboard,
+      enabled: enable,
       readOnly: (readOnly != null) ? readOnly! : false,
       onChanged: onChanged,
       validator: validator,

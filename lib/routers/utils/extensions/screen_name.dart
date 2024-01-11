@@ -9,6 +9,7 @@ enum AppScreen {
   createTableScreen,
   workerOverviewScreen,
   createWorkerScreen,
+  editWorkerScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -35,6 +36,8 @@ extension AppScreenExtension on AppScreen {
         return 'Worker Overview Screen';
       case AppScreen.createWorkerScreen:
         return 'Create Worker Screen';
+      case AppScreen.editWorkerScreen:
+        return 'Edit Worker Screen';
     }
   }
 
@@ -61,6 +64,8 @@ extension AppScreenExtension on AppScreen {
         return '/worker-overview-screen';
       case AppScreen.createWorkerScreen:
         return '/create-worker-screen';
+      case AppScreen.editWorkerScreen:
+        return '/edit-worker-screen';
     }
   }
 }

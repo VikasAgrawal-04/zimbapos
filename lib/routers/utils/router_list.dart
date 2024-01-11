@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/area/area_list.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
@@ -6,6 +7,7 @@ import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_s
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/create_workers_screen.dart';
+import 'package:zimbapos/screens/componant_screens/worker_management_screens/edit_worker_screen.dart';
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/worker_overview_screen.dart';
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
@@ -64,5 +66,11 @@ final List<GoRoute> routerList = [
     name: AppScreen.createWorkerScreen.name,
     path: AppScreen.createWorkerScreen.path,
     builder: (context, state) => const CreateWorkerScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.editWorkerScreen.name,
+    path: AppScreen.editWorkerScreen.path,
+    builder: (context, state) =>
+        EditWorkerScreen(initialModel: state.extra as WorkersModel),
   ),
 ];

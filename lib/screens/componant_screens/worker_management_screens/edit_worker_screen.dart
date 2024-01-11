@@ -2,19 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:uuid/uuid.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/models/global_models/workers_model.dart';
-import 'package:zimbapos/widgets/textfield/primary_textfield.dart';
+import '../../../models/global_models/workers_model.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
 
-class CreateWorkerScreen extends StatefulWidget {
-  const CreateWorkerScreen({super.key});
+class EditWorkerScreen extends StatefulWidget {
+  final WorkersModel initialModel;
+  const EditWorkerScreen({
+    required this.initialModel,
+    super.key,
+  });
 
   @override
-  State<CreateWorkerScreen> createState() => _CreateWorkersScrenState();
+  State<EditWorkerScreen> createState() => EditWorkerScreenState();
 }
 
-class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
+class EditWorkerScreenState extends State<EditWorkerScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController nameController;
   late final TextEditingController mobileController;
@@ -22,20 +25,51 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
   late final TextEditingController passwordController;
   String? dropDownValue;
   bool enableLogin = false;
-
   @override
   void initState() {
     super.initState();
+    print(widget.initialModel.toJson());
     nameController = TextEditingController();
+    nameController.text = widget.initialModel.workerName;
     mobileController = TextEditingController();
+    mobileController.text = widget.initialModel.mobile;
     loginIDController = TextEditingController();
+    loginIDController.text = widget.initialModel.loginCode;
     passwordController = TextEditingController();
+    passwordController.text = widget.initialModel.password;
+    enableLogin = widget.initialModel.canLoginIntoApp;
+    dropDownValue = widget.initialModel.workerRole;
   }
 
   changeLoginState() {
     setState(() {
       enableLogin = !enableLogin;
     });
+  }
+
+  editWorker() {
+    final dbCubit = DatabaseCubit.dbFrom(context);
+    dbCubit.workerRepository.editWorker(
+      model: WorkersModel(
+        id: widget.initialModel.id,
+        outletId: 12341234,
+        workerId: widget.initialModel.workerId,
+        workerName: nameController.text,
+        createdByUserID: 'Suyash',
+        workerRole: dropDownValue ?? '',
+        mobile: mobileController.text,
+        canLoginIntoApp: enableLogin,
+        loginCode: loginIDController.text,
+        password: passwordController.text,
+        isActive: widget.initialModel.isActive,
+        isDeleted: widget.initialModel.isDeleted,
+      ),
+    );
+    EasyLoading.showToast(
+      'Worker Edited',
+      toastPosition: EasyLoadingToastPosition.bottom,
+    );
+    context.pop();
   }
 
   @override
@@ -45,47 +79,24 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
     super.dispose();
   }
 
-  createWorker() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.workerRepository.createWorker(
-      model: WorkersModel(
-        outletId: 12341234,
-        workerId: const Uuid().v1(),
-        workerName: nameController.text,
-        createdByUserID: 'Suyash',
-        workerRole: dropDownValue ?? '',
-        mobile: mobileController.text,
-        canLoginIntoApp: enableLogin,
-        loginCode: loginIDController.text,
-        password: passwordController.text,
-        isActive: true,
-        isDeleted: false,
-      ),
-    );
-    EasyLoading.showToast(
-      'Worker Created',
-      toastPosition: EasyLoadingToastPosition.bottom,
-    );
-    context.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Worker'),
+        title: const Text('Edit Worker Screen'),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
-          child: const Text('Create Worker'),
-          onPressed: () => createWorker(),
+          child: const Text('Edit Worker'),
+          onPressed: () => editWorker(),
         ),
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.all(20),
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

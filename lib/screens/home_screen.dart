@@ -69,30 +69,45 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Home Screen'),
+      appBar: AppBar(
+        title: const Text('Home Screen'),
+      ),
+      body: GridView(
+        padding: EdgeInsets.all(5.w),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 5.w,
+          crossAxisSpacing: 5.w,
         ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () => context.push(AppScreen.rateSetScreen.path),
-                child: const Text('Rate Sets'),
-              ),
-              SizedBox(height: 2.h),
-              ElevatedButton(
-                onPressed: () => context.push(AppScreen.tableScreen.path),
-                child: const Text('Tables'),
-              ),
-              SizedBox(height: 2.h),
-              ElevatedButton(
-                onPressed: () =>
-                    context.push(AppScreen.workerOverviewScreen.path),
-                child: const Text('Worker Overview'),
-              ),
-            ],
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25))),
+            ),
+            onPressed: () => context.push(AppScreen.rateSetScreen.path),
+            child: const Text('Rate Sets'),
           ),
-        ));
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+              ),
+            ),
+            onPressed: () => context.push(AppScreen.tableScreen.path),
+            child: const Text('Tables'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+              ),
+            ),
+            onPressed: () => context.push(AppScreen.workerOverviewScreen.path),
+            child: const Text('Worker Overview'),
+          ),
+        ],
+      ),
+    );
   }
 }

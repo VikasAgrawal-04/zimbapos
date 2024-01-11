@@ -5,6 +5,8 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../widgets/my_alert_widget.dart';
+
 class TableScreen extends StatefulWidget {
   const TableScreen({super.key});
 
@@ -61,17 +63,42 @@ class _TableScreenState extends State<TableScreen> {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        Switch.adaptive(
+                          value: data[index].isActive ?? false,
+                          onChanged: (value) => toggleFn(data[index].id, value),
+                        ),
+                        SizedBox(width: 2.w),
+                        //edit
                         IconButton(
-                          onPressed: () => deleteFn(data[index].id),
+                          onPressed: () => context.push(
+                            AppScreen.editTableScreen.path,
+                            //passing data to edit screen
+                            extra: data[index],
+                          ),
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 30,
+                          ),
+                        ),
+
+                        //delete
+                        IconButton(
+                          onPressed: () => UtilDialog.showMyDialog(
+                            context,
+                            "Alert",
+                            "Are you sure to delete '${rawData.tableName}'?",
+                            //this is for ok button
+                            () {
+                              deleteFn(data[index].id);
+                              context.pop();
+                            },
+                            // this is for cancel button sending null will perform default pop() action
+                            null,
+                          ),
                           icon: const Icon(
                             Icons.delete,
                             size: 30,
                           ),
-                        ),
-                        SizedBox(width: 2.w),
-                        Switch.adaptive(
-                          value: data[index].isActive ?? false,
-                          onChanged: (value) => toggleFn(data[index].id, value),
                         ),
                       ],
                     ),

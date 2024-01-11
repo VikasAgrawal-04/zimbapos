@@ -16,11 +16,33 @@ class AreasModel {
   // final rateSet = IsarLinks.toMany<RateSetsModel>();
 
   AreasModel({
+    this.outletId,
+    this.areaId,
     this.areaName,
     this.rateSetId,
     this.exchangePercent,
+    this.isActive,
+    this.isDeleted,
   }) {
     isActive = true;
     isDeleted = false;
+  }
+
+  factory AreasModel.fromJson(Map<String, dynamic> json) {
+    return AreasModel(
+      areaId: int.parse(json['areaId']),
+      areaName: json['areaName'] ?? "",
+      rateSetId: int.parse(json['rateSet']),
+      isActive: json['isActive'] ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'areaId': areaId,
+      'areaName': areaName,
+      'rateSet': rateSetId,
+      'isActive': isActive,
+    };
   }
 }

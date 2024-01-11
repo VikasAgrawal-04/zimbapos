@@ -5,9 +5,11 @@ enum AppScreen {
   createAreasScreen,
   editAreaScreen,
   rateSetScreen,
+  editRateSetScreen,
   createRateSetsScreen,
   tableScreen,
   createTableScreen,
+  editTableScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -18,12 +20,16 @@ extension AppScreenExtension on AppScreen {
         return 'Home Screen';
       case AppScreen.rateSetScreen:
         return 'Rate Set Screen';
+      case AppScreen.editRateSetScreen:
+        return 'Edit Rate Set Screen';
       case AppScreen.createRateSetsScreen:
         return 'Create Rate Sets Screen';
       case AppScreen.tableScreen:
         return 'Table Screen';
       case AppScreen.createTableScreen:
         return 'Create Table Sets Screen';
+      case AppScreen.editTableScreen:
+        return 'Edit Table Screen';
       case AppScreen.loginScreen:
         return 'Login Screen';
       case AppScreen.areasScreen:
@@ -42,12 +48,16 @@ extension AppScreenExtension on AppScreen {
         return '/';
       case AppScreen.rateSetScreen:
         return '/rate-set-screen';
+      case AppScreen.editRateSetScreen:
+        return '/edit-rate-set-screen';
       case AppScreen.createRateSetsScreen:
         return '/create-rate-sets-screen';
       case AppScreen.tableScreen:
         return '/table-screen';
       case AppScreen.createTableScreen:
         return '/create-table-screen';
+      case AppScreen.editTableScreen:
+        return '/edit-table-screen';
       case AppScreen.loginScreen:
         return '/login-screen';
       case AppScreen.areasScreen:

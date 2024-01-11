@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
@@ -13,6 +15,21 @@ class RateSetsRepository {
     db.writeTxnSync(() {
       db.rateSetsModels.putSync(model);
     });
+  }
+
+  updateRateSet({required RateSetsModel model}) async {
+    RateSetsModel? dbItem =
+        await db.rateSetsModels.get(model.ratesetId!.toInt());
+    // log(model.ratesetName.toString());
+    // log(model.ratesetId.toString());
+    // log(dbItem!.ratesetName.toString());
+    if (dbItem != null) {
+      dbItem.ratesetName = model.ratesetName;
+      db.writeTxnSync(() {
+        db.rateSetsModels.putSync(dbItem);
+      });
+      log("updated name: ${dbItem.ratesetName}");
+    }
   }
 
   Future<RateSetsModel?> getRateSetbyID(int id) async {

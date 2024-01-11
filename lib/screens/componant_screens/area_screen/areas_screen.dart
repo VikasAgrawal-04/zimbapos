@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
+import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
@@ -71,21 +72,22 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
             itemCount: list.length,
             shrinkWrap: true,
             itemBuilder: (context, index) => ListTile(
-              title: Row(
+              title: Text(list[index].areaName ?? 'Test'),
+              subtitle: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // title
-                  Text(list[index].areaName ?? 'Test'),
-                  //rateset
+                  //exchange percent
                   Text(
-                    list[index].rateSetId.toString(),
+                    "Rate:  ${list[index].exchangePercent.toString()}%",
                     style: const TextStyle(
                       color: Colors.black54,
                     ),
                   ),
+                  Text(
+                      (list[index].isActive ?? false) ? 'Active' : "In-Active"),
                 ],
               ),
-              subtitle: Text(
-                  (list[index].isActive ?? false) ? 'Active' : "In-Active"),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -97,8 +99,11 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                   SizedBox(width: screenSize.width * 0.025),
                   //edit
                   IconButton(
-                    onPressed: () =>
-                        context.push(AppScreen.editAreaScreen.path),
+                    onPressed: () => context.push(
+                      AppScreen.editAreaScreen.path,
+                      //passing data to edit screen
+                      extra: list[index],
+                    ),
                     icon: const Icon(
                       Icons.edit,
                       size: 30,
@@ -107,7 +112,18 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                   SizedBox(width: screenSize.width * 0.025),
                   //delete
                   IconButton(
-                    onPressed: () => deleteAreaFn(list[index].id),
+                    onPressed: () => UtilDialog.showMyDialog(
+                      context,
+                      "Alert",
+                      "Are you sure to delete '${list[index].areaName}'?",
+                      //this is for ok button
+                      () {
+                        deleteAreaFn(list[index].id);
+                        context.pop();
+                      },
+                      // this is for cancel button sending null will perform default pop() action
+                      null,
+                    ),
                     icon: const Icon(
                       Icons.delete,
                       size: 30,

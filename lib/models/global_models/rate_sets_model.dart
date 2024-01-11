@@ -14,7 +14,7 @@ class RateSetsModel {
   // @Backlink(to: 'rateSet')
   // final areas = IsarLinks.toMany<AreasModel>();
 
-  RateSetsModel({this.ratesetName}) {
+  RateSetsModel({this.ratesetName, this.ratesetId}) {
     isActive = true;
     isDeleted = false;
   }

@@ -4,6 +4,8 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../widgets/my_alert_widget.dart';
+
 class RateSetOverviewScreen extends StatefulWidget {
   const RateSetOverviewScreen({super.key});
 
@@ -58,17 +60,42 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  Switch.adaptive(
+                    value: list[index].isActive ?? false,
+                    onChanged: (value) => toggleFn(list[index].id, value),
+                  ),
+                  SizedBox(width: screenSize.width * 0.025),
+                  //edit
                   IconButton(
-                    onPressed: () => deleteFn(list[index].id),
+                    onPressed: () => context.push(
+                      AppScreen.editRateSetScreen.path,
+                      //passing data to edit screen
+                      extra: list[index],
+                    ),
+                    icon: const Icon(
+                      Icons.edit,
+                      size: 30,
+                    ),
+                  ),
+
+                  //delete
+                  IconButton(
+                    onPressed: () => UtilDialog.showMyDialog(
+                      context,
+                      "Alert",
+                      "Are you sure to delete '${list[index].ratesetName}'?",
+                      //this is for ok button
+                      () {
+                        deleteFn(list[index].id);
+                        context.pop();
+                      },
+                      // this is for cancel button sending null will perform default pop() action
+                      null,
+                    ),
                     icon: const Icon(
                       Icons.delete,
                       size: 30,
                     ),
-                  ),
-                  SizedBox(width: screenSize.width * 0.025),
-                  Switch.adaptive(
-                    value: list[index].isActive ?? false,
-                    onChanged: (value) => toggleFn(list[index].id, value),
                   ),
                 ],
               ),

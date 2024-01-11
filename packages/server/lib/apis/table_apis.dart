@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart' as route;
@@ -15,9 +17,9 @@ class TablesApi {
   }
 
   void initialiseApi() {
-    locRoute.get('/', (Request request) {
-      print(request.headers);
-      return Response.ok('Hello');
+    locRoute.get('/get-tables', (Request request) async {
+      final tables = await dbCubit.tableRepository.getAllTables();
+      return Response.ok(jsonEncode({'data': tables}));
     });
   }
 }

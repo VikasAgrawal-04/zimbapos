@@ -8,8 +8,10 @@ import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/repository/category_repository.dart';
 import 'package:zimbapos/repository/customer_repository.dart';
+import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/table_repository.dart';
+import 'package:zimbapos/repository/workers_repository.dart';
 
 class IsarService {
   late Isar db;
@@ -23,6 +25,7 @@ class IsarService {
         [
           RateSetsModelSchema,
           TableModelSchema,
+          WorkersModelSchema,
           CustomerCategoryModelSchema,
           CategoryModelSchema
         ],
@@ -44,8 +47,8 @@ class IsarService {
   //Gettters
 
   RateSetsRepository get rateSetsRepository => RateSetsRepository(db);
-
   TableRepository get tableRepository => TableRepository(db);
+  WorkerRepository get workerRepository => WorkerRepository(db);
 
   CustomerRepository get customerRepository => CustomerRepository(db);
 

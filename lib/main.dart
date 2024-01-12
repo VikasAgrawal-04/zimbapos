@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                 )),
               );
             } else {
-            debugPrint('got the path');
+              debugPrint('got the path');
               final directory = snapshot.data!;
               return BlocProvider(
                 create: (context) => DatabaseCubit(directory),

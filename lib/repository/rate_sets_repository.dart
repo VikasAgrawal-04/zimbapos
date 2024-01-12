@@ -9,7 +9,6 @@ class RateSetsRepository {
     return db.rateSetsModels.where().watch(fireImmediately: true);
   }
 
-
   createRateSet({required RateSetsModel model}) {
     db.writeTxnSync(() {
       db.rateSetsModels.putSync(model);

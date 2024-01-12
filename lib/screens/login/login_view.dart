@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/screens/login/login_bloc.dart';
 import 'package:zimbapos/screens/login/login_state.dart';
-
 import '../../routers/utils/extensions/screen_name.dart';
 import '../../widgets/auth_widgets/auth_textfield.dart';
 
@@ -102,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: BoxDecoration(color: Colors.purple.shade800),
                   ),
                   SizedBox(height: constraints.maxHeight * .05),
-                  Text('Log In', style: TextStyle()),
+                  const Text('Log In', style: TextStyle()),
                   SizedBox(height: constraints.maxHeight * .03),
                   AuthTextField(
                     hintText: 'Enter User-Id',

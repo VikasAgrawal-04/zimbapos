@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/area/area_list.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/create_workers_screen.dart';
@@ -70,7 +72,18 @@ final List<GoRoute> routerList = [
   GoRoute(
     name: AppScreen.editWorkerScreen.name,
     path: AppScreen.editWorkerScreen.path,
-    builder: (context, state) =>
-        EditWorkerScreen(initialModel: state.extra as WorkersModel),
+    builder: (context, state) {
+      if (state.extra is WorkersModel) {
+        return EditWorkerScreen(initialModel: state.extra as WorkersModel);
+      } else {
+        return EditWorkerScreen(
+            initialModel: WorkersModel.fromJson(state.extra as String));
+      }
+    },
+  ),
+  GoRoute(
+    name: AppScreen.initialSetUpScreen.name,
+    path: AppScreen.initialSetUpScreen.path,
+    builder: (context, state) => const InitialSetUpScreen(),
   ),
 ];

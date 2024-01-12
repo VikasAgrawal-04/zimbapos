@@ -106,6 +106,15 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () => context.push(AppScreen.workerOverviewScreen.path),
             child: const Text('Worker Overview'),
           ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+              ),
+            ),
+            onPressed: () => context.push(AppScreen.initialSetUpScreen.path),
+            child: const Text('Set Up Screen'),
+          ),
         ],
       ),
     );

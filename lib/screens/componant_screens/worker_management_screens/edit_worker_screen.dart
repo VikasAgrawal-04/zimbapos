@@ -28,7 +28,6 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
   @override
   void initState() {
     super.initState();
-    print(widget.initialModel.toJson());
     nameController = TextEditingController();
     nameController.text = widget.initialModel.workerName;
     mobileController = TextEditingController();
@@ -88,7 +87,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
-          child: const Text('Edit Worker'),
+          child: const Text('Save'),
           onPressed: () => editWorker(),
         ),
       ),

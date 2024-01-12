@@ -6,6 +6,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/helpers/dialogs.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/screens/componant_screens/worker_management_screens/create_workers_screen.dart';
 
 class WorkerOverviewScreen extends StatefulWidget {
   const WorkerOverviewScreen({super.key});
@@ -50,13 +51,13 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Manage Workers'),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 8,
-        enableFeedback: true,
-        onPressed: () => context.push(AppScreen.createWorkerScreen.path),
-        label: const Text('Add Workers'),
-        icon: const Icon(Icons.add),
+        actions: [
+          TextButton.icon(
+            onPressed: () => context.push(AppScreen.createWorkerScreen.path),
+            label: const Text('Add Workers'),
+            icon: const Icon(Icons.add),
+          ),
+        ],
       ),
       body: StreamBuilder<List<WorkersModel>>(
         stream: getWorkerList(),

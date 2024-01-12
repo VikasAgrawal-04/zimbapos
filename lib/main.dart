@@ -41,6 +41,9 @@ class MyApp extends StatelessWidget {
               child: BlocBuilder<DatabaseCubit, IsarService?>(
                 builder: (context, state) => MaterialApp.router(
                   builder: EasyLoading.init(),
+                  theme: ThemeData(
+                    primaryColor: Colors.cyan,
+                  ),
                   routerConfig: AppRouter.router,
                 ),
               ),

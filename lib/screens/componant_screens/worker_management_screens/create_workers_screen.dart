@@ -78,7 +78,7 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8),
         child: ElevatedButton(
-          child: const Text('Create Worker'),
+          child: const Text('Save'),
           onPressed: () => createWorker(),
         ),
       ),

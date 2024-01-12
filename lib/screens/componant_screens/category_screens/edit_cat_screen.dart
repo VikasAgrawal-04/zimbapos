@@ -2,21 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 
+import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
-class CreateCategoryScreen extends StatefulWidget {
-  const CreateCategoryScreen({super.key});
+class UpdateCategoryScreen extends StatefulWidget {
+  final CategoryModel item;
+  const UpdateCategoryScreen({
+    super.key,
+    required this.item,
+  });
 
   @override
-  State<CreateCategoryScreen> createState() => _CreateCategoryScreenState();
+  State<UpdateCategoryScreen> createState() => _UpdateCategoryScreenState();
 }
 
-class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
+class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
+  //
   final categoryName = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    categoryName.text = widget.item.categoryName.toString();
+  }
 
   @override
   void dispose() {
@@ -24,11 +36,15 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
     super.dispose();
   }
 
-  void createCategory(BuildContext context) {
+  void updateCategory(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
-    db.categoryRepository
-        .createCategory(data: CategoryModel(categoryName: categoryName.text));
-    EasyLoading.showToast('Category Created');
+    db.categoryRepository.updateCategory(
+      data: CategoryModel(
+        id: widget.item.id,
+        categoryName: categoryName.text,
+      ),
+    );
+    EasyLoading.showToast('Category updated');
     context.pop();
   }
 
@@ -36,14 +52,13 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create category'),
+        title: const Text('Edit category'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //cat name
             PrimaryTextField(
               hintText: 'Category name',
               controller: categoryName,
@@ -56,15 +71,15 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
             // ),
             SizedBox(height: 2.h),
             // ElevatedButton(
-            //   onPressed: () => createCategory(context),
-            //   child: const Text('Create Category'),
+            //   onPressed: () => updateCategory(context),
+            //   child: const Text('Update Category'),
             // )
           ],
         ),
       ),
       bottomNavigationBar: CustomButton(
         text: "Save",
-        onPressed: () => createCategory(context),
+        onPressed: () => updateCategory(context),
       ),
     );
   }

@@ -4,6 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
+
 class CreateRateSetsScreen extends StatefulWidget {
   const CreateRateSetsScreen({super.key});
 
@@ -46,19 +49,24 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            //rate set name
+            PrimaryTextField(
+              hintText: 'Rate set name',
               controller: nameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+              onChanged: (value) {},
             ),
-            SizedBox(height: screenSize.height * 0.2),
-            ElevatedButton(
-              onPressed: () => createRateSetFn(context),
-              child: const Text('Create Rate Set'),
-            )
+            // TextField(
+            //   controller: nameController,
+            //   decoration: const InputDecoration(
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
           ],
         ),
+      ),
+      bottomNavigationBar: CustomButton(
+        text: "Save",
+        onPressed: () => createRateSetFn(context),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/widgets/custom_button.dart';
 import '../../../models/global_models/workers_model.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
@@ -65,7 +66,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
       ),
     );
     EasyLoading.showToast(
-      'Worker Edited',
+      'Worker Updated',
       toastPosition: EasyLoadingToastPosition.bottom,
     );
     context.pop();
@@ -84,12 +85,9 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
       appBar: AppBar(
         title: const Text('Edit Worker Screen'),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ElevatedButton(
-          child: const Text('Save'),
-          onPressed: () => editWorker(),
-        ),
+      bottomNavigationBar: CustomButton(
+        text: "Update worker",
+        onPressed: () => editWorker(),
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

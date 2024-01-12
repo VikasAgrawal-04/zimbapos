@@ -23,6 +23,17 @@ class CategoryRepository {
     db.writeTxnSync(() => db.categoryModels.putSync(data));
   }
 
+  void updateCategory({required CategoryModel data}) async {
+    // log(data!.custCategoryName.toString());
+    CategoryModel? dbItem = await db.categoryModels.get(data.id);
+    // log(dbItem!.custCategoryName.toString());
+    if (dbItem != null) {
+      dbItem.categoryName = data.categoryName;
+
+      db.writeTxnSync(() => db.categoryModels.putSync(dbItem));
+    }
+  }
+
   void deleteCategory(int id) {
     db.writeTxnSync(() => db.categoryModels.deleteSync(id));
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 
 class UtillSnackbar {
   static void showSnackBar(
@@ -14,18 +15,12 @@ class UtillSnackbar {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.black54,
-            ),
+            style: KTextStyles.kSnackTitle,
           ),
           const SizedBox(height: 4.0),
           Text(
             body,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.black54,
-            ),
+            style: KTextStyles.kSnackSubtitle,
           ),
         ],
       ),

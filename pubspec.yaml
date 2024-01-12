@@ -51,7 +51,15 @@ flutter:
   assets:
     - assets/
     - assets/images/zimba_pos_img.png
+    - assets/fonts/
 
+  fonts:
+    - family: PJS
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans_Bold.ttf
+        - asset: assets/fonts/PlusJakartaSans_Medium.ttf
+        - asset: assets/fonts/PlusJakartaSans_SemiBold.ttf
+        - asset: assets/fonts/PlusJakartaSans_Regular.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

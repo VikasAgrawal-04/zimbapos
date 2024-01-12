@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/helpers/dialogs.dart';
@@ -102,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text('Home Screen'),
       ),

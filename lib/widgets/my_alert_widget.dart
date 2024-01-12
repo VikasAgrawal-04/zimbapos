@@ -1,6 +1,8 @@
 // dialog_util.dart
 import 'package:flutter/material.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:go_router/go_router.dart';
+
 
 class UtilDialog {
   static void showMyDialog(
@@ -16,18 +18,12 @@ class UtilDialog {
         return AlertDialog(
           title: Text(
             title,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.black54,
-            ),
+            style: KTextStyles.kHeader,
           ),
           content: SingleChildScrollView(
             child: Text(
               message,
-              style: const TextStyle(
-                fontSize: 18,
-                color: Colors.black54,
-              ),
+              style: KTextStyles.kAlertTitle,
             ),
           ),
           actions: <Widget>[

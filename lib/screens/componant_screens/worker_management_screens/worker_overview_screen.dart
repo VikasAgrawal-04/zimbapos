@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/helpers/dialogs.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+
+import '../../../widgets/my_alert_widget.dart';
 
 class WorkerOverviewScreen extends StatefulWidget {
   const WorkerOverviewScreen({super.key});
@@ -20,16 +22,20 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
     return dbCubit.workerRepository.streamWorkersList();
   }
 
-  deleteWorker(int id) {
-    showMyAlertDialog(
+  deleteWorker(WorkersModel worker) {
+    UtilDialog.showMyDialog(
       context,
-      title: 'Do you want to Delete The user?',
-      content: '',
-      onPress: () {
+      "Alert",
+      "Do you want to delete '${worker.workerName}'?",
+      //this is for ok button
+      () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.workerRepository.deleteWorker(id);
+        dbCubit.workerRepository.deleteWorker(worker.id);
+        EasyLoading.showToast('Worker deleted');
         context.pop();
       },
+      // this is for cancel button sending null will perform default pop() action
+      null,
     );
   }
 
@@ -119,7 +125,7 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
                                 ),
                                 SizedBox(width: 2.w),
                                 IconButton(
-                                  onPressed: () => deleteWorker(e.id),
+                                  onPressed: () => deleteWorker(e),
                                   icon: const Icon(CupertinoIcons.delete),
                                 )
                               ],

@@ -17,6 +17,18 @@ class TableRepository {
     db.writeTxnSync(() => db.tableModels.putSync(data));
   }
 
+  updateTable({required TableModel data}) async {
+    // log(data.id.toString());
+    TableModel? dbItem = await db.tableModels.get(data.id);
+    // log(dbItem!.tableName.toString());
+    if (dbItem != null) {
+      dbItem.tableName = data.tableName;
+      dbItem.areaId = data.areaId;
+
+      db.writeTxnSync(() => db.tableModels.putSync(dbItem));
+    }
+  }
+
   changeActive(int id, bool isActive) async {
     TableModel? model = await db.tableModels.get(id);
     if (model != null) {

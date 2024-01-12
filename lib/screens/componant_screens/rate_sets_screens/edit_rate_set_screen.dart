@@ -1,23 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
-class CreateRateSetsScreen extends StatefulWidget {
-  const CreateRateSetsScreen({super.key});
+import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../models/global_models/rate_sets_model.dart';
+
+class EditRateSetScreen extends StatefulWidget {
+  final RateSetsModel item;
+  const EditRateSetScreen({
+    super.key,
+    required this.item,
+  });
 
   @override
-  State<CreateRateSetsScreen> createState() => _CreateRateSetsScreenState();
+  State<EditRateSetScreen> createState() => _EditRateSetScreenState();
 }
 
-class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
+class _EditRateSetScreenState extends State<EditRateSetScreen> {
+  //
   late final TextEditingController nameController;
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController();
+
+    nameController.text = widget.item.ratesetName.toString();
   }
 
   @override
@@ -26,11 +34,15 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
     super.dispose();
   }
 
-  createRateSetFn(BuildContext context) {
+  updateRateSetFn(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
-    db.rateSetsRepository
-        .createRateSet(model: RateSetsModel(ratesetName: nameController.text));
-    EasyLoading.showToast('Rate Set Created');
+    db.rateSetsRepository.updateRateSet(
+      model: RateSetsModel(
+        ratesetName: nameController.text,
+        ratesetId: widget.item.id,
+      ),
+    );
+    EasyLoading.showToast('Rate Set Updated');
     context.pop();
   }
 
@@ -54,8 +66,8 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
             ),
             SizedBox(height: screenSize.height * 0.2),
             ElevatedButton(
-              onPressed: () => createRateSetFn(context),
-              child: const Text('Create Rate Set'),
+              onPressed: () => updateRateSetFn(context),
+              child: const Text('Update Rate Set'),
             )
           ],
         ),

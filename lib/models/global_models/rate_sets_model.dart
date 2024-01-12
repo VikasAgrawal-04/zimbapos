@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+
 part 'rate_sets_model.g.dart';
 
 @collection
@@ -10,7 +11,10 @@ class RateSetsModel {
   bool? isActive;
   bool? isDeleted;
 
-  RateSetsModel({this.ratesetName}) {
+  // @Backlink(to: 'rateSet')
+  // final areas = IsarLinks.toMany<AreasModel>();
+
+  RateSetsModel({this.ratesetName, this.ratesetId}) {
     isActive = true;
     isDeleted = false;
   }

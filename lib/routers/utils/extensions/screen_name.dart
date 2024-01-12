@@ -1,12 +1,15 @@
 enum AppScreen {
   homeScreen,
   loginScreen,
-  cartScreen,
   areasScreen,
+  createAreasScreen,
+  editAreaScreen,
   rateSetScreen,
+  editRateSetScreen,
   createRateSetsScreen,
   tableScreen,
   createTableScreen,
+  editTableScreen,
   workerOverviewScreen,
   createWorkerScreen,
   editWorkerScreen,
@@ -29,18 +32,24 @@ extension AppScreenExtension on AppScreen {
         return 'Home Screen';
       case AppScreen.rateSetScreen:
         return 'Rate Set Screen';
+      case AppScreen.editRateSetScreen:
+        return 'Edit Rate Set Screen';
       case AppScreen.createRateSetsScreen:
         return 'Create Rate Sets Screen';
       case AppScreen.tableScreen:
         return 'Table Screen';
       case AppScreen.createTableScreen:
         return 'Create Table Sets Screen';
+      case AppScreen.editTableScreen:
+        return 'Edit Table Screen';
       case AppScreen.loginScreen:
         return 'Login Screen';
-      case AppScreen.cartScreen:
-        return 'Cart Screen';
       case AppScreen.areasScreen:
         return 'Areas Screen';
+      case AppScreen.createAreasScreen:
+        return 'Create Areas Screen';
+      case AppScreen.editAreaScreen:
+        return 'Edit Areas Screen';
       case AppScreen.workerOverviewScreen:
         return 'Worker Overview Screen';
       case AppScreen.createWorkerScreen:
@@ -75,18 +84,24 @@ extension AppScreenExtension on AppScreen {
         return '/';
       case AppScreen.rateSetScreen:
         return '/rate-set-screen';
+      case AppScreen.editRateSetScreen:
+        return '/edit-rate-set-screen';
       case AppScreen.createRateSetsScreen:
         return '/create-rate-sets-screen';
       case AppScreen.tableScreen:
         return '/table-screen';
       case AppScreen.createTableScreen:
         return '/create-table-screen';
+      case AppScreen.editTableScreen:
+        return '/edit-table-screen';
       case AppScreen.loginScreen:
-        return '/login';
-      case AppScreen.cartScreen:
-        return '/cart';
+        return '/login-screen';
       case AppScreen.areasScreen:
-        return '/areas';
+        return '/areas-screen';
+      case AppScreen.createAreasScreen:
+        return '/create-areas-screen';
+      case AppScreen.editAreaScreen:
+        return '/edit-areas-screen';
       case AppScreen.workerOverviewScreen:
         return '/worker-overview-screen';
       case AppScreen.createWorkerScreen:

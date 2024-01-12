@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/widgets/custom_button.dart';
 
 class IntroScreen extends StatefulWidget {
   final PageController controller;
@@ -57,13 +58,13 @@ class _IntroScreenState extends State<IntroScreen>
             SlideTransition(
               position: _offsetAnimation,
               child: SizedBox(
-                width: 40.w,
-                height: 22.h,
+                width: 100.w,
+                height: 62.h,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(25),
                   child: Image.asset(
                     'assets/images/zimba_pos_img.png',
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ).animate().fadeIn(duration: const Duration(seconds: 1)),
@@ -84,13 +85,20 @@ class _IntroScreenState extends State<IntroScreen>
               ),
             ),
             SizedBox(height: 10.h),
-            ElevatedButton(
+            CustomButton(
+              text: "Get started",
               onPressed: () => widget.controller.nextPage(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeIn,
               ),
-              child: const Text('Get Started'),
             ).animate(delay: const Duration(seconds: 2)).fadeIn(),
+            // ElevatedButton(
+            //   onPressed: () => widget.controller.nextPage(
+            //     duration: const Duration(milliseconds: 300),
+            //     curve: Curves.easeIn,
+            //   ),
+            //   child: const Text('Get Started'),
+            // )
           ],
         ),
       ),

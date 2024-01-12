@@ -1,9 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
+import 'package:zimbapos/widgets/custom_button.dart';
+
+import '../../../models/global_models/area_model.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
 
 class CreateTableScreen extends StatefulWidget {
   const CreateTableScreen({super.key});
@@ -14,6 +20,7 @@ class CreateTableScreen extends StatefulWidget {
 
 class _CreateTableScreenState extends State<CreateTableScreen> {
   final tableName = TextEditingController();
+  int? selectedAreaId;
 
   @override
   void dispose() {
@@ -23,13 +30,30 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
 
   createTable(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
-    db.tableRepository.createTable(data: TableModel(tableName: tableName.text));
+    db.tableRepository.createTable(
+      data: TableModel(
+        tableName: tableName.text,
+        areaId: selectedAreaId,
+      ),
+    );
     EasyLoading.showToast('Table Created');
     context.pop();
   }
 
+  Future<List<AreasModel?>> getAllAreas() async {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    final areas = await datatbaseCubit.areasRepository.getAreaList();
+    // log(rateSets.toString());
+    for (var area in areas) {
+      log(area!.areaName.toString());
+      log(area.id.toString());
+    }
+    return areas;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Table'),
@@ -39,19 +63,62 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            //table name
+            PrimaryTextField(
+              hintText: 'Table name',
               controller: tableName,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
+              onChanged: (value) {},
+            ),
+            // TextField(
+            //   controller: tableName,
+            //   decoration: const InputDecoration(
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
+            SizedBox(height: 2.h),
+            //dropdown for ratesets
+            SizedBox(
+              height: 50,
+              width: screenSize.width,
+              child: FutureBuilder<List<AreasModel?>>(
+                future: getAllAreas(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator.adaptive();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    final areas = snapshot.data ?? [];
+
+                    return Column(
+                      children: [
+                        DropdownButton<int>(
+                          value: selectedAreaId,
+                          hint: const Text("Choose a area"),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedAreaId = newValue;
+                            });
+                          },
+                          items: areas.map((area) {
+                            return DropdownMenuItem<int>(
+                              value: area!.id,
+                              child: Text(area.areaName ?? 'error'),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
             ),
-            SizedBox(height: 2.h),
-            ElevatedButton(
-              onPressed: () => createTable(context),
-              child: const Text('Create Table'),
-            )
           ],
         ),
+      ),
+      bottomNavigationBar: CustomButton(
+        text: "Save",
+        onPressed: () => createTable(context),
       ),
     );
   }

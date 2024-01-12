@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
+import 'package:zimbapos/widgets/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/primary_textfield.dart';
 
 class CreateWorkerScreen extends StatefulWidget {
@@ -75,12 +76,9 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
       appBar: AppBar(
         title: const Text('Create Worker'),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ElevatedButton(
-          child: const Text('Save'),
-          onPressed: () => createWorker(),
-        ),
+      bottomNavigationBar: CustomButton(
+        text: "Create worker",
+        onPressed: () => createWorker(),
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,

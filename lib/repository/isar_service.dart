@@ -25,12 +25,9 @@ class IsarService {
     if (!Isar.instanceNames.contains(dbName)) {
       db = Isar.openSync(
         [
-          
           RateSetsModelSchema,
-         
           TableModelSchema,
           AreasModelSchema,
-        ,
           WorkersModelSchema,
           CustomerCategoryModelSchema,
           CategoryModelSchema

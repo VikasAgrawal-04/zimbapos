@@ -7,6 +7,8 @@ import 'package:zimbapos/models/global_models/area_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/tables_model.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
 
 class UpdateTableScreen extends StatefulWidget {
   final TableModel item;
@@ -77,14 +79,19 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //table
-            TextField(
+            PrimaryTextField(
+              hintText: 'Table name',
               controller: tableName,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+              onChanged: (value) {},
             ),
+            // TextField(
+            //   controller: tableName,
+            //   decoration: const InputDecoration(
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
             SizedBox(height: screenSize.height * 0.02),
-            //dropdown for ratesets
+            //dropdown for areas
             SizedBox(
               height: 50,
               width: screenSize.width,
@@ -121,12 +128,16 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () => updateTable(context),
-              child: const Text('Update table'),
-            )
+            // ElevatedButton(
+            //   onPressed: () => updateTable(context),
+            //   child: const Text('Update table'),
+            // )
           ],
         ),
+      ),
+      bottomNavigationBar: CustomButton(
+        text: "Save",
+        onPressed: () => updateTable(context),
       ),
     );
   }

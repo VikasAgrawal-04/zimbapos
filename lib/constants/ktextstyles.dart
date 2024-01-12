@@ -11,7 +11,6 @@ class KTextStyles {
     fontFamily: "PJS",
     // Add other properties as needed
   );
-
   static const TextStyle kBlackAppBarHeader = TextStyle(
     fontSize: 24.0,
     fontWeight: FontWeight.bold,
@@ -29,7 +28,7 @@ class KTextStyles {
     // Add other properties as needed
   );
 
-  //for titles or subheaders
+  //for titles
   static const TextStyle kTitle = TextStyle(
     fontSize: 18.0,
     fontWeight: FontWeight.w600,
@@ -37,7 +36,7 @@ class KTextStyles {
     fontFamily: "PJS",
     // Add other properties as needed
   );
-
+  //for subtitles
   static const TextStyle kSubtitle = TextStyle(
     fontSize: 16.0,
     color: KColors.textColor,
@@ -55,42 +54,43 @@ class KTextStyles {
   );
 
   //for custom snackbar
-  static const TextStyle kSnackSub = TextStyle(
+  //sub title or in message
+  static const TextStyle kSnackSubtitle = TextStyle(
     fontSize: 16.0,
     color: Colors.white,
     fontWeight: FontWeight.w500,
     fontFamily: "PJS",
   );
-
-  static const TextStyle kSnackTit = TextStyle(
+  //for snackbar title
+  static const TextStyle kSnackTitle = TextStyle(
     fontSize: 18.0,
     color: Colors.white,
     fontWeight: FontWeight.w700,
     fontFamily: "PJS",
   );
-
   //for custom alert dialog box
-
-  static const TextStyle kAlertTit = TextStyle(
+  //title
+  static const TextStyle kAlertTitle = TextStyle(
     fontSize: 18.0,
     color: Colors.black87,
     fontWeight: FontWeight.w700,
     fontFamily: "PJS",
   );
-  static const TextStyle kAlertSub = TextStyle(
+  //subtitle
+  static const TextStyle kAlertSubtitle = TextStyle(
     fontSize: 16.0,
     color: Colors.black87,
     fontWeight: FontWeight.w500,
     fontFamily: "PJS",
   );
-
+  //ok button in alert
   static const TextStyle kAlertOkButton = TextStyle(
     fontSize: 16.0,
     color: Colors.white,
     fontWeight: FontWeight.w700,
     fontFamily: "PJS",
   );
-
+  //cancel button in alert
   static const TextStyle kAlertCancelButton = TextStyle(
     fontSize: 16.0,
     color: KColors.textColor,
@@ -99,14 +99,15 @@ class KTextStyles {
   );
 
   //for carousel slider
-  static const TextStyle kCarrSub = TextStyle(
+  //title
+  static const TextStyle kCarrSubtitle = TextStyle(
     fontSize: 28.0,
     color: KColors.textColor,
     fontWeight: FontWeight.bold,
     fontFamily: "PJS",
   );
-
-  static const TextStyle kCarrTit = TextStyle(
+  //sub title
+  static const TextStyle kCarrTitle = TextStyle(
     fontSize: 22.0,
     color: KColors.textColor,
     fontWeight: FontWeight.w600,
@@ -114,6 +115,7 @@ class KTextStyles {
   );
 
   //for Nav bar
+  //active nav text
   static const TextStyle kactiveNav = TextStyle(
     fontSize: 14.0,
     fontWeight: FontWeight.bold,
@@ -121,7 +123,7 @@ class KTextStyles {
     fontFamily: "PJS",
     // Add other properties as needed
   );
-
+  //In-active nav text
   static const TextStyle kinActiveNav = TextStyle(
     fontSize: 12.0,
     fontWeight: FontWeight.bold,

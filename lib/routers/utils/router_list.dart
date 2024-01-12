@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
+import 'package:zimbapos/models/global_models/category_model.dart';
+import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
@@ -9,8 +11,10 @@ import 'package:zimbapos/screens/componant_screens/area_screen/create_area_scree
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
@@ -136,51 +140,11 @@ final List<GoRoute> routerList = [
     builder: (context, state) => const CreateCusCatScreen(),
   ),
   GoRoute(
-    name: AppScreen.category.name,
-    path: AppScreen.category.path,
-    builder: (context, state) => const CategoryScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.createCategory.name,
-    path: AppScreen.createCategory.path,
-    builder: (context, state) => const CreateCategoryScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.workerOverviewScreen.name,
-    path: AppScreen.workerOverviewScreen.path,
-    builder: (context, state) => const WorkerOverviewScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.createWorkerScreen.name,
-    path: AppScreen.createWorkerScreen.path,
-    builder: (context, state) => const CreateWorkerScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.editWorkerScreen.name,
-    path: AppScreen.editWorkerScreen.path,
-    builder: (context, state) {
-      if (state.extra is WorkersModel) {
-        return EditWorkerScreen(initialModel: state.extra as WorkersModel);
-      } else {
-        return EditWorkerScreen(
-            initialModel: WorkersModel.fromJson(state.extra as String));
-      }
-    },
-  ),
-  GoRoute(
-    name: AppScreen.initialSetUpScreen.name,
-    path: AppScreen.initialSetUpScreen.path,
-    builder: (context, state) => const InitialSetUpScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.customerCategory.name,
-    path: AppScreen.customerCategory.path,
-    builder: (context, state) => const CustomerCategoryScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.createCustomerCategory.name,
-    path: AppScreen.createCustomerCategory.path,
-    builder: (context, state) => const CreateCusCatScreen(),
+    name: AppScreen.editCustomerCategory.name,
+    path: AppScreen.editCustomerCategory.path,
+    builder: (context, state) => UpdateCustomerCategoryScreen(
+      item: state.extra as CustomerCategoryModel,
+    ),
   ),
   GoRoute(
     name: AppScreen.category.name,
@@ -191,5 +155,12 @@ final List<GoRoute> routerList = [
     name: AppScreen.createCategory.name,
     path: AppScreen.createCategory.path,
     builder: (context, state) => const CreateCategoryScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.editCategory.name,
+    path: AppScreen.editCategory.path,
+    builder: (context, state) => UpdateCategoryScreen(
+      item: state.extra as CategoryModel,
+    ),
   ),
 ];

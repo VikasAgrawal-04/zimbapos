@@ -3,19 +3,17 @@ import 'dart:io' as io;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../error/exception.dart';
-import '../../error/failures.dart';
+import 'package:uuid/uuid.dart';
+import 'package:zimbapos/global/error/exception.dart';
+import 'package:zimbapos/global/error/failures.dart';
 
 enum RequestType { get, post, put, delete }
 
 enum LoggerType { d, e, i, f, t, w }
-
-enum ApptType { today, upcoming, past }
-
-enum Axn { active, deactivate, delete }
 
 class Helpers {
   static SharedPreferences? prefs;
@@ -48,7 +46,7 @@ class Helpers {
   }
 
   static void setToken(String token) {
-    dio?.options.headers = {
+    dio!.options.headers = {
       "Authorization": 'Bearer $token',
       'Accept': 'application/json'
     };
@@ -66,8 +64,7 @@ class Helpers {
 
       switch (type) {
         case RequestType.get:
-          response =
-              (await dio!.get(path, queryParameters: queryParams, data: data));
+          response = (await dio!.get(path, queryParameters: queryParams));
           break;
         case RequestType.post:
           response = (await dio!.post(
@@ -90,16 +87,14 @@ class Helpers {
           return null;
       }
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 202) {
         return jsonDecode(response.data) as Map<String, dynamic>;
-      } else if (response.statusCode == 400 || response.statusCode == 202) {
+      } else if (response.statusCode == 400 ||
+          response.statusCode == 401 ||
+          response.statusCode == 402) {
         throw ServerException(
-            code: response.statusCode, message: response.statusMessage);
+            code: response.statusCode, message: response.data['message']);
       } else {
-        debugPrint("I go here 1");
-        debugPrint("statuscode${response.statusCode.toString()}");
-        debugPrint(response.statusMessage.toString());
-        debugPrint(response.data.toString());
         throw ServerException(
             message:
                 response.data['message'] ?? response.data['errors']['message'],
@@ -109,7 +104,7 @@ class Helpers {
       debugPrint("I go here 2");
       throw ServerException(message: e.message, code: e.code);
     } on DioException catch (e) {
-      debugPrint("Dio Exception${e.response?.data}");
+      debugPrint("Dio Exception ${e.response?.data} ${e.type} ${e.message}");
       if (e.error == "Http status error [401]") {
         debugPrint("I go here 3 ${e.error == "Http status error [401]"}");
       } else {
@@ -141,7 +136,75 @@ class Helpers {
     return prefs?.getString(key);
   }
 
-  static clearShared() async {
+  static void clearShared() async {
     await prefs?.clear();
+  }
+
+  static String dateFormat(String dateTime) {
+    return DateFormat('d MMM yyyy').format(DateTime.parse(dateTime));
+  }
+
+  static String timeFormat(String dateTime) {
+    return DateFormat('hh:mm a').format(DateTime.parse(dateTime));
+  }
+
+  static String displayDate(DateTime date) {
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  static String jsonDate(String date) {
+    final DateTime rawDate = DateFormat("dd/MM/yyyy").parse(date);
+    return DateFormat("yyyy-MM-dd").format(rawDate);
+  }
+
+  static String apiToApiDate(String date) {
+    DateTime originalDate = DateFormat("dd-MM-yyyy").parse(date);
+    String formattedDateStr = DateFormat("yyyy-MM-dd").format(originalDate);
+    return formattedDateStr;
+  }
+
+  static Image imgFromBase64(String base64) {
+    return Image.memory(
+      base64Decode(base64),
+      fit: BoxFit.scaleDown,
+      scale: 12,
+      frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+        if (wasSynchronouslyLoaded) return child;
+        return AnimatedOpacity(
+          opacity: frame == null ? 0 : 1,
+          duration: const Duration(seconds: 2),
+          curve: Curves.easeOut,
+          child: GestureDetector(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        contentPadding: EdgeInsets.zero,
+                        content: Image.memory(base64Decode(base64)),
+                      );
+                    });
+              },
+              child: child),
+        );
+      },
+    );
+  }
+
+  static String generateUuId() {
+    return const Uuid().v1();
+  }
+}
+
+class NumberInputFormat extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.contains('.')) {
+      return oldValue;
+    } else if (newValue.text.contains(RegExp(r'[^\d]'))) {
+      return oldValue;
+    }
+    return newValue;
   }
 }

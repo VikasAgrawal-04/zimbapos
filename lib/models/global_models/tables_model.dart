@@ -9,7 +9,7 @@ part 'tables_model.g.dart';
 class TableModel {
   Id id = Isar.autoIncrement;
   int? outletId;
-  String tableId = const Uuid().v1();
+  String? tableId;
   String? tableName;
   int? areaId;
   String? tableStatus;
@@ -23,6 +23,7 @@ class TableModel {
   TableModel({
     this.id = Isar.autoIncrement,
     this.outletId,
+    this.tableId,
     this.tableName,
     this.areaId,
     this.tableStatus,
@@ -37,6 +38,7 @@ class TableModel {
   TableModel copyWith({
     Id? id,
     int? outletId,
+    String? tableId,
     String? tableName,
     int? areaId,
     String? tableStatus,
@@ -50,6 +52,7 @@ class TableModel {
     return TableModel(
       id: id ?? this.id,
       outletId: outletId ?? this.outletId,
+      tableId: tableId ?? this.tableId,
       tableName: tableName ?? this.tableName,
       areaId: areaId ?? this.areaId,
       tableStatus: tableStatus ?? this.tableStatus,
@@ -66,6 +69,7 @@ class TableModel {
     return <String, dynamic>{
       'id': id,
       'outletId': outletId,
+      'tableId': tableId,
       'tableName': tableName,
       'areaId': areaId,
       'tableStatus': tableStatus,
@@ -80,8 +84,9 @@ class TableModel {
 
   factory TableModel.fromMap(Map<String, dynamic> map) {
     return TableModel(
-      id: map['id'],
+      id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      tableId: map['tableId'] != null ? map['tableId'] as String : null,
       tableName: map['tableName'] != null ? map['tableName'] as String : null,
       areaId: map['areaId'] != null ? map['areaId'] as int : null,
       tableStatus:
@@ -93,8 +98,8 @@ class TableModel {
           : null,
       customerName:
           map['customerName'] != null ? map['customerName'] as String : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
-      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : true,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );
   }
 
@@ -105,7 +110,7 @@ class TableModel {
 
   @override
   String toString() {
-    return 'TableModel(id: $id, outletId: $outletId, tableName: $tableName, areaId: $areaId, tableStatus: $tableStatus, isSplit: $isSplit, persons: $persons, tableStartedAt: $tableStartedAt, customerName: $customerName, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'TableModel(id: $id, outletId: $outletId, tableId: $tableId, tableName: $tableName, areaId: $areaId, tableStatus: $tableStatus, isSplit: $isSplit, persons: $persons, tableStartedAt: $tableStartedAt, customerName: $customerName, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -114,6 +119,7 @@ class TableModel {
 
     return other.id == id &&
         other.outletId == outletId &&
+        other.tableId == tableId &&
         other.tableName == tableName &&
         other.areaId == areaId &&
         other.tableStatus == tableStatus &&
@@ -129,6 +135,7 @@ class TableModel {
   int get hashCode {
     return id.hashCode ^
         outletId.hashCode ^
+        tableId.hashCode ^
         tableName.hashCode ^
         areaId.hashCode ^
         tableStatus.hashCode ^

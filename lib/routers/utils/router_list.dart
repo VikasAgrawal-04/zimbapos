@@ -140,13 +140,6 @@ final List<GoRoute> routerList = [
     builder: (context, state) => const CreateCusCatScreen(),
   ),
   GoRoute(
-    name: AppScreen.editCustomerCategory.name,
-    path: AppScreen.editCustomerCategory.path,
-    builder: (context, state) => UpdateCustomerCategoryScreen(
-      item: state.extra as CustomerCategoryModel,
-    ),
-  ),
-  GoRoute(
     name: AppScreen.category.name,
     path: AppScreen.category.path,
     builder: (context, state) => const CategoryScreen(),
@@ -155,12 +148,5 @@ final List<GoRoute> routerList = [
     name: AppScreen.createCategory.name,
     path: AppScreen.createCategory.path,
     builder: (context, state) => const CreateCategoryScreen(),
-  ),
-  GoRoute(
-    name: AppScreen.editCategory.name,
-    path: AppScreen.editCategory.path,
-    builder: (context, state) => UpdateCategoryScreen(
-      item: state.extra as CategoryModel,
-    ),
   ),
 ];

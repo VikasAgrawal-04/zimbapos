@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:server/apis/table_apis.dart';
+import 'package:server/apis/routes/customer_category_routes.dart';
+import 'package:server/apis/routes/rateset_routes.dart';
+import 'package:server/apis/routes/table_routes.dart';
+import 'package:server/apis/routes/workers_routes.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_cors_headers/shelf_cors_headers.dart';
@@ -13,7 +16,10 @@ class Server {
   Server({required this.context}) {
     router = route.Router();
     runServer();
-    TablesApi(context, router);
+    TablesRoutes(context, router);
+    WorkerRoutes(context, router);
+    RateSetRoutes(context, router);
+    CustomerCategoryRoutes(context, router);
   }
 
   Future<void> runServer() async {

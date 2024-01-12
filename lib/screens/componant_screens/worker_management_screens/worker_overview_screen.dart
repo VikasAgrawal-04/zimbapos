@@ -6,7 +6,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/widgets/my_alert_widget.dart';
+
+import '../../../widgets/my_alert_widget.dart';
 
 class WorkerOverviewScreen extends StatefulWidget {
   const WorkerOverviewScreen({super.key});

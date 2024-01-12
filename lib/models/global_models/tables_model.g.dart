@@ -115,7 +115,12 @@ int _tableModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.tableId.length * 3;
+  {
+    final value = object.tableId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.tableName;
     if (value != null) {
@@ -167,12 +172,12 @@ TableModel _tableModelDeserialize(
     isSplit: reader.readBoolOrNull(offsets[6]),
     outletId: reader.readLongOrNull(offsets[7]),
     persons: reader.readLongOrNull(offsets[8]),
+    tableId: reader.readStringOrNull(offsets[9]),
     tableName: reader.readStringOrNull(offsets[10]),
     tableStartedAt: reader.readDateTimeOrNull(offsets[11]),
     tableStatus: reader.readStringOrNull(offsets[12]),
   );
   object.customerId = reader.readStringOrNull(offsets[1]);
-  object.tableId = reader.readString(offsets[9]);
   return object;
 }
 
@@ -202,7 +207,7 @@ P _tableModelDeserializeProp<P>(
     case 8:
       return (reader.readLongOrNull(offset)) as P;
     case 9:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
@@ -1013,8 +1018,25 @@ extension TableModelQueryFilter
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> tableIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'tableId',
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'tableId',
+      ));
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> tableIdEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1028,7 +1050,7 @@ extension TableModelQueryFilter
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
       tableIdGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1043,7 +1065,7 @@ extension TableModelQueryFilter
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> tableIdLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1058,8 +1080,8 @@ extension TableModelQueryFilter
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> tableIdBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -2012,7 +2034,7 @@ extension TableModelQueryProperty
     });
   }
 
-  QueryBuilder<TableModel, String, QQueryOperations> tableIdProperty() {
+  QueryBuilder<TableModel, String?, QQueryOperations> tableIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'tableId');
     });

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 
+export 'database_cubit.dart';
+
 class DatabaseCubit extends Cubit<IsarService?> {
   Directory directory;
   DatabaseCubit(this.directory) : super(IsarService(directory)) {

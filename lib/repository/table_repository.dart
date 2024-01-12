@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 
@@ -16,9 +14,9 @@ class TableRepository {
   }
 
   updateTable({required TableModel data}) async {
-    log(data.id.toString());
+    // log(data.id.toString());
     TableModel? dbItem = await db.tableModels.get(data.id);
-    log(dbItem!.tableName.toString());
+    // log(dbItem!.tableName.toString());
     if (dbItem != null) {
       dbItem.tableName = data.tableName;
       dbItem.areaId = data.areaId;

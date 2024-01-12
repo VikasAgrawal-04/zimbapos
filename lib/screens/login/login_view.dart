@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:server/server_handler.dart';
 import 'package:zimbapos/screens/login/login_bloc.dart';
 import 'package:zimbapos/screens/login/login_state.dart';
 import '../../routers/utils/extensions/screen_name.dart';
@@ -19,14 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passController = TextEditingController();
   final key = GlobalKey<FormState>();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Server(context: context);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

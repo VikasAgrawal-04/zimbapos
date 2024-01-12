@@ -15,7 +15,6 @@ class CreateWorkerScreen extends StatefulWidget {
 }
 
 class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController nameController;
   late final TextEditingController mobileController;
   late final TextEditingController loginIDController;

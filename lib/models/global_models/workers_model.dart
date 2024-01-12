@@ -1,14 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
+import 'package:uuid/uuid.dart';
 
 part 'workers_model.g.dart';
 
 @collection
 class WorkersModel {
   Id id = Isar.autoIncrement;
-  String workerId;
+  String? workerId;
   String workerName;
   String createdByUserID;
   int outletId;
@@ -22,7 +22,7 @@ class WorkersModel {
 
   WorkersModel({
     this.id = Isar.autoIncrement,
-    required this.workerId,
+    this.workerId,
     required this.workerName,
     required this.createdByUserID,
     required this.outletId,
@@ -31,8 +31,8 @@ class WorkersModel {
     required this.canLoginIntoApp,
     required this.loginCode,
     required this.password,
-    required this.isActive,
-    required this.isDeleted,
+    this.isActive = true,
+    this.isDeleted = true,
   });
 
   WorkersModel copyWith({
@@ -51,7 +51,7 @@ class WorkersModel {
   }) {
     return WorkersModel(
       id: id ?? this.id,
-      workerId: workerId ?? this.workerId,
+      workerId: workerId ?? this.workerId ?? generateUuid(),
       workerName: workerName ?? this.workerName,
       createdByUserID: createdByUserID ?? this.createdByUserID,
       outletId: outletId ?? this.outletId,
@@ -155,5 +155,9 @@ class WorkersModel {
         password.hashCode ^
         isActive.hashCode ^
         isDeleted.hashCode;
+  }
+
+  String generateUuid() {
+    return const Uuid().v1();
   }
 }

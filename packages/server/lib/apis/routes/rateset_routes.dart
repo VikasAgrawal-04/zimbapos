@@ -1,25 +1,21 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:shelf/shelf.dart';
+import 'package:server/apis/controller/rateset_controller.dart';
 import 'package:shelf_router/shelf_router.dart' as route;
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 
-class TablesApi {
+class RateSetRoutes {
   final BuildContext context;
   final route.Router locRoute;
   late final IsarService dbCubit;
-
-  TablesApi(this.context, this.locRoute) {
+  late final RateSetController controller;
+  RateSetRoutes(this.context, this.locRoute) {
     dbCubit = DatabaseCubit.dbFrom(context);
+    controller = RateSetController(dbCubit);
     initialiseApi();
   }
-
   void initialiseApi() {
-    locRoute.get('/get-tables', (Request request) async {
-      final tables = await dbCubit.tableRepository.getAllTables();
-      return Response.ok(jsonEncode({'data': tables}));
-    });
+    locRoute.get('/get-ratesets', controller.fetchAllRateSets);
+     locRoute.post('/create-ratesets', controller.createRateSets);
   }
 }

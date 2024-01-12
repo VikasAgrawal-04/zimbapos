@@ -17,28 +17,33 @@ const RateSetsModelSchema = CollectionSchema(
   name: r'RateSetsModel',
   id: -1370270654661152312,
   properties: {
-    r'isActive': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 0,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'isActive': PropertySchema(
+      id: 1,
       name: r'isActive',
       type: IsarType.bool,
     ),
     r'isDeleted': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'isDeleted',
       type: IsarType.bool,
     ),
     r'outletId': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'outletId',
       type: IsarType.long,
     ),
     r'ratesetId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'ratesetId',
       type: IsarType.long,
     ),
     r'ratesetName': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'ratesetName',
       type: IsarType.string,
     )
@@ -78,11 +83,12 @@ void _rateSetsModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.isActive);
-  writer.writeBool(offsets[1], object.isDeleted);
-  writer.writeLong(offsets[2], object.outletId);
-  writer.writeLong(offsets[3], object.ratesetId);
-  writer.writeString(offsets[4], object.ratesetName);
+  writer.writeLong(offsets[0], object.hashCode);
+  writer.writeBool(offsets[1], object.isActive);
+  writer.writeBool(offsets[2], object.isDeleted);
+  writer.writeLong(offsets[3], object.outletId);
+  writer.writeLong(offsets[4], object.ratesetId);
+  writer.writeString(offsets[5], object.ratesetName);
 }
 
 RateSetsModel _rateSetsModelDeserialize(
@@ -92,13 +98,13 @@ RateSetsModel _rateSetsModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = RateSetsModel(
-    ratesetId: reader.readLongOrNull(offsets[3]),
-    ratesetName: reader.readStringOrNull(offsets[4]),
+    id: id,
+    isActive: reader.readBoolOrNull(offsets[1]),
+    isDeleted: reader.readBoolOrNull(offsets[2]),
+    outletId: reader.readLongOrNull(offsets[3]),
+    ratesetId: reader.readLongOrNull(offsets[4]),
+    ratesetName: reader.readStringOrNull(offsets[5]),
   );
-  object.id = id;
-  object.isActive = reader.readBoolOrNull(offsets[0]);
-  object.isDeleted = reader.readBoolOrNull(offsets[1]);
-  object.outletId = reader.readLongOrNull(offsets[2]);
   return object;
 }
 
@@ -110,14 +116,16 @@ P _rateSetsModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
       return (reader.readBoolOrNull(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 3:
       return (reader.readLongOrNull(offset)) as P;
     case 4:
+      return (reader.readLongOrNull(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -220,6 +228,62 @@ extension RateSetsModelQueryWhere
 
 extension RateSetsModelQueryFilter
     on QueryBuilder<RateSetsModel, RateSetsModel, QFilterCondition> {
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      hashCodeEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -641,6 +705,19 @@ extension RateSetsModelQueryLinks
 
 extension RateSetsModelQuerySortBy
     on QueryBuilder<RateSetsModel, RateSetsModel, QSortBy> {
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterSortBy>
+      sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterSortBy> sortByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.asc);
@@ -709,6 +786,19 @@ extension RateSetsModelQuerySortBy
 
 extension RateSetsModelQuerySortThenBy
     on QueryBuilder<RateSetsModel, RateSetsModel, QSortThenBy> {
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterSortBy>
+      thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -789,6 +879,12 @@ extension RateSetsModelQuerySortThenBy
 
 extension RateSetsModelQueryWhereDistinct
     on QueryBuilder<RateSetsModel, RateSetsModel, QDistinct> {
+  QueryBuilder<RateSetsModel, RateSetsModel, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<RateSetsModel, RateSetsModel, QDistinct> distinctByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isActive');
@@ -826,6 +922,12 @@ extension RateSetsModelQueryProperty
   QueryBuilder<RateSetsModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<RateSetsModel, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 

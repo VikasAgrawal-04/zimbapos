@@ -102,7 +102,12 @@ int _workersModelEstimateSize(
   bytesCount += 3 + object.loginCode.length * 3;
   bytesCount += 3 + object.mobile.length * 3;
   bytesCount += 3 + object.password.length * 3;
-  bytesCount += 3 + object.workerId.length * 3;
+  {
+    final value = object.workerId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.workerName.length * 3;
   bytesCount += 3 + object.workerRole.length * 3;
   return bytesCount;
@@ -138,13 +143,13 @@ WorkersModel _workersModelDeserialize(
     canLoginIntoApp: reader.readBool(offsets[0]),
     createdByUserID: reader.readString(offsets[1]),
     id: id,
-    isActive: reader.readBool(offsets[3]),
-    isDeleted: reader.readBool(offsets[4]),
+    isActive: reader.readBoolOrNull(offsets[3]) ?? true,
+    isDeleted: reader.readBoolOrNull(offsets[4]) ?? true,
     loginCode: reader.readString(offsets[5]),
     mobile: reader.readString(offsets[6]),
     outletId: reader.readLong(offsets[7]),
     password: reader.readString(offsets[8]),
-    workerId: reader.readString(offsets[9]),
+    workerId: reader.readStringOrNull(offsets[9]),
     workerName: reader.readString(offsets[10]),
     workerRole: reader.readString(offsets[11]),
   );
@@ -165,9 +170,9 @@ P _workersModelDeserializeProp<P>(
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? true) as P;
     case 4:
-      return (reader.readBool(offset)) as P;
+      return (reader.readBoolOrNull(offset) ?? true) as P;
     case 5:
       return (reader.readString(offset)) as P;
     case 6:
@@ -177,7 +182,7 @@ P _workersModelDeserializeProp<P>(
     case 8:
       return (reader.readString(offset)) as P;
     case 9:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 10:
       return (reader.readString(offset)) as P;
     case 11:
@@ -1020,8 +1025,26 @@ extension WorkersModelQueryFilter
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      workerIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'workerId',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      workerIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'workerId',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       workerIdEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1035,7 +1058,7 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       workerIdGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1051,7 +1074,7 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       workerIdLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -1067,8 +1090,8 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       workerIdBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1899,7 +1922,7 @@ extension WorkersModelQueryProperty
     });
   }
 
-  QueryBuilder<WorkersModel, String, QQueryOperations> workerIdProperty() {
+  QueryBuilder<WorkersModel, String?, QQueryOperations> workerIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'workerId');
     });

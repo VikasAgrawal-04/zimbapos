@@ -9,6 +9,10 @@ class CustomerRepository {
     return db.customerCategoryModels.where().watch(fireImmediately: true);
   }
 
+  Future<List<CustomerCategoryModel>> getAllCusCat() async {
+    return await db.customerCategoryModels.where().findAll();
+  }
+
   Future<void> changeActive(int id, bool isActive) async {
     CustomerCategoryModel? model = await db.customerCategoryModels.get(id);
     if (model != null) {

@@ -1,5 +1,6 @@
 // dialog_util.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class UtilDialog {
   static void showMyDialog(
@@ -32,7 +33,7 @@ class UtilDialog {
           actions: <Widget>[
             //cancel button
             TextButton(
-              onPressed: onCancelPressed ?? () => Navigator.of(context).pop(),
+              onPressed: onCancelPressed ?? () => context.pop(),
               child: const Text(
                 'Cancel',
                 style: TextStyle(
@@ -46,7 +47,7 @@ class UtilDialog {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.orangeAccent),
-              onPressed: onOkPressed ?? () => Navigator.of(context).pop(),
+              onPressed: onOkPressed ?? () => context.pop(),
               child: const Text(
                 'OK',
                 style: TextStyle(

@@ -9,8 +9,24 @@ class TableRepository {
     return db.tableModels.where().watch(fireImmediately: true);
   }
 
+  Future<List<TableModel>> getAllTables() async {
+    return await db.tableModels.where().findAll();
+  }
+
   createTable({required TableModel data}) {
     db.writeTxnSync(() => db.tableModels.putSync(data));
+  }
+
+  updateTable({required TableModel data}) async {
+    // log(data.id.toString());
+    TableModel? dbItem = await db.tableModels.get(data.id);
+    // log(dbItem!.tableName.toString());
+    if (dbItem != null) {
+      dbItem.tableName = data.tableName;
+      dbItem.areaId = data.areaId;
+
+      db.writeTxnSync(() => db.tableModels.putSync(dbItem));
+    }
   }
 
   changeActive(int id, bool isActive) async {

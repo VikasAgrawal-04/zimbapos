@@ -40,6 +40,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () => context.push(AppScreen.category.path),
                 child: const Text('Category'),
               ),
+              //areas
+              ElevatedButton(
+                onPressed: () => context.push(AppScreen.areasScreen.path),
+                child: const Text('Areas'),
+              ),
             ],
           ),
         ));

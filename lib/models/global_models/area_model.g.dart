@@ -104,15 +104,15 @@ AreasModel _areasModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AreasModel(
+    areaId: reader.readLongOrNull(offsets[0]),
     areaName: reader.readStringOrNull(offsets[1]),
+    exchangePercent: reader.readDoubleOrNull(offsets[2]),
+    isActive: reader.readBoolOrNull(offsets[3]),
+    isDeleted: reader.readBoolOrNull(offsets[4]),
+    outletId: reader.readLongOrNull(offsets[5]),
+    rateSetId: reader.readLongOrNull(offsets[6]),
   );
-  object.areaId = reader.readLongOrNull(offsets[0]);
-  object.exchangePercent = reader.readDoubleOrNull(offsets[2]);
   object.id = id;
-  object.isActive = reader.readBoolOrNull(offsets[3]);
-  object.isDeleted = reader.readBoolOrNull(offsets[4]);
-  object.outletId = reader.readLongOrNull(offsets[5]);
-  object.rateSetId = reader.readLongOrNull(offsets[6]);
   return object;
 }
 

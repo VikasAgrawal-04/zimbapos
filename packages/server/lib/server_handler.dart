@@ -21,6 +21,10 @@ class Server {
         .addMiddleware(logRequests())
         .addMiddleware(corsHeaders())
         .addHandler(router);
-    await shelf_io.serve(handler, InternetAddress.anyIPv4, 8080);
+    await shelf_io.serve(
+      handler,
+      InternetAddress.anyIPv4,
+      8080,
+    );
   }
 }

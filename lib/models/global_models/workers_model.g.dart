@@ -137,6 +137,7 @@ WorkersModel _workersModelDeserialize(
   final object = WorkersModel(
     canLoginIntoApp: reader.readBool(offsets[0]),
     createdByUserID: reader.readString(offsets[1]),
+    id: id,
     isActive: reader.readBool(offsets[3]),
     isDeleted: reader.readBool(offsets[4]),
     loginCode: reader.readString(offsets[5]),
@@ -147,7 +148,6 @@ WorkersModel _workersModelDeserialize(
     workerName: reader.readString(offsets[10]),
     workerRole: reader.readString(offsets[11]),
   );
-  object.id = id;
   return object;
 }
 

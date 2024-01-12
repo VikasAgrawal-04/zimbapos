@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -12,7 +11,7 @@ import 'package:zimbapos/routers/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -33,21 +32,20 @@ class MyApp extends StatelessWidget {
                   child: CircularProgressIndicator.adaptive(),
                 )),
               );
-            }
-            debugPrint('got the path');
-            final directory = snapshot.data!;
-            return BlocProvider(
-              create: (context) => DatabaseCubit(directory),
-              child: BlocBuilder<DatabaseCubit, IsarService?>(
-                builder: (context, state) => MaterialApp.router(
-                  builder: EasyLoading.init(),
-                  theme: ThemeData(
-                    primaryColor: Colors.cyan,
+            } else {
+              debugPrint('got the path');
+              final directory = snapshot.data!;
+              return BlocProvider(
+                create: (context) => DatabaseCubit(directory),
+                child: BlocBuilder<DatabaseCubit, IsarService?>(
+                  builder: (context, state) => MaterialApp.router(
+                    debugShowCheckedModeBanner: false,
+                    routerConfig: AppRouter.router,
+                    builder: EasyLoading.init(),
                   ),
-                  routerConfig: AppRouter.router,
                 ),
-              ),
-            );
+              );
+            }
           },
         );
       },

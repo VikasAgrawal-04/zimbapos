@@ -11,6 +11,14 @@ enum AppScreen {
   createWorkerScreen,
   editWorkerScreen,
   initialSetUpScreen,
+  customerCategory,
+  createCustomerCategory,
+  category,
+  createCategory,
+  mainGroup,
+  createMainGroup,
+  itemGroup,
+  createItemGroup
 }
 
 extension AppScreenExtension on AppScreen {
@@ -41,6 +49,22 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Worker Screen';
       case AppScreen.initialSetUpScreen:
         return 'Initial Setup Screen';
+      case AppScreen.customerCategory:
+        return 'Customer Category';
+      case AppScreen.createCustomerCategory:
+        return 'Create Customer Category';
+      case AppScreen.category:
+        return 'Category';
+      case AppScreen.createCategory:
+        return 'Create Category';
+      case AppScreen.mainGroup:
+        return 'Main Group';
+      case AppScreen.createMainGroup:
+        return 'Create Main Group';
+      case AppScreen.itemGroup:
+        return 'Item Group';
+      case AppScreen.createItemGroup:
+        return 'Create Item Group';
     }
   }
 
@@ -71,6 +95,22 @@ extension AppScreenExtension on AppScreen {
         return '/edit-worker-screen';
       case AppScreen.initialSetUpScreen:
         return '/initial-setup-screen';
+      case AppScreen.customerCategory:
+        return '/customer-category';
+      case AppScreen.createCustomerCategory:
+        return '/create-customer-category';
+      case AppScreen.category:
+        return '/category';
+      case AppScreen.createCategory:
+        return '/create-category';
+      case AppScreen.mainGroup:
+        return '/main-group';
+      case AppScreen.createMainGroup:
+        return '/create-main-group';
+      case AppScreen.itemGroup:
+        return '/item-group';
+      case AppScreen.createItemGroup:
+        return '/create-item-group';
     }
   }
 }

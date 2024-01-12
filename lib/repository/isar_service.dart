@@ -2,8 +2,12 @@ import 'dart:io';
 
 import 'package:isar/isar.dart';
 import 'package:zimbapos/constants/contants.dart';
+import 'package:zimbapos/models/global_models/category_model.dart';
+import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
+import 'package:zimbapos/repository/category_repository.dart';
+import 'package:zimbapos/repository/customer_repository.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/table_repository.dart';
@@ -22,6 +26,8 @@ class IsarService {
           RateSetsModelSchema,
           TableModelSchema,
           WorkersModelSchema,
+          CustomerCategoryModelSchema,
+          CategoryModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -43,4 +49,8 @@ class IsarService {
   RateSetsRepository get rateSetsRepository => RateSetsRepository(db);
   TableRepository get tableRepository => TableRepository(db);
   WorkerRepository get workerRepository => WorkerRepository(db);
+
+  CustomerRepository get customerRepository => CustomerRepository(db);
+
+  CategoryRepository get categoryRepository => CategoryRepository(db);
 }

@@ -3,6 +3,10 @@ import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/area/area_list.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
@@ -85,5 +89,25 @@ final List<GoRoute> routerList = [
     name: AppScreen.initialSetUpScreen.name,
     path: AppScreen.initialSetUpScreen.path,
     builder: (context, state) => const InitialSetUpScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.customerCategory.name,
+    path: AppScreen.customerCategory.path,
+    builder: (context, state) => const CustomerCategoryScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.createCustomerCategory.name,
+    path: AppScreen.createCustomerCategory.path,
+    builder: (context, state) => const CreateCusCatScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.category.name,
+    path: AppScreen.category.path,
+    builder: (context, state) => const CategoryScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.createCategory.name,
+    path: AppScreen.createCategory.path,
+    builder: (context, state) => const CreateCategoryScreen(),
   ),
 ];

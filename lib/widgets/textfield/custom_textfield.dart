@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-class CustomTextFieldNew extends StatefulWidget {
+class CustomTextField extends StatefulWidget {
   final Function()? textFieldTap;
   final Function()? onEditingComplete;
   final TextEditingController? control;
@@ -33,7 +33,7 @@ class CustomTextFieldNew extends StatefulWidget {
   final bool singleInput;
   final List<TextInputFormatter>? inputFormatters;
   final double? borderRadius;
-  const CustomTextFieldNew(
+  const CustomTextField(
       {Key? key,
       this.textFieldTap,
       this.onEditingComplete,
@@ -68,10 +68,10 @@ class CustomTextFieldNew extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<CustomTextFieldNew> createState() => _CustomTextFieldState();
+  State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextFieldNew> {
+class _CustomTextFieldState extends State<CustomTextField> {
   bool _isVisible = false;
   @override
   Widget build(BuildContext context) {

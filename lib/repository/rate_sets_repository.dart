@@ -11,6 +11,10 @@ class RateSetsRepository {
     return db.rateSetsModels.where().watch(fireImmediately: true);
   }
 
+  Future<List<RateSetsModel>> getAllRateSets() async {
+    return await db.rateSetsModels.where().findAll();
+  }
+
   createRateSet({required RateSetsModel model}) {
     db.writeTxnSync(() {
       db.rateSetsModels.putSync(model);
@@ -20,9 +24,6 @@ class RateSetsRepository {
   updateRateSet({required RateSetsModel model}) async {
     RateSetsModel? dbItem =
         await db.rateSetsModels.get(model.ratesetId!.toInt());
-    // log(model.ratesetName.toString());
-    // log(model.ratesetId.toString());
-    // log(dbItem!.ratesetName.toString());
     if (dbItem != null) {
       dbItem.ratesetName = model.ratesetName;
       db.writeTxnSync(() {
@@ -50,7 +51,7 @@ class RateSetsRepository {
     }
   }
 
-  deleteRateSetbyID(int id)  {
+  deleteRateSetbyID(int id) {
     db.writeTxnSync(() {
       db.rateSetsModels.deleteSync(id);
     });

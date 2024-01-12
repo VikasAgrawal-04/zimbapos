@@ -6,7 +6,6 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/helpers/dialogs.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/screens/componant_screens/worker_management_screens/create_workers_screen.dart';
 
 class WorkerOverviewScreen extends StatefulWidget {
   const WorkerOverviewScreen({super.key});

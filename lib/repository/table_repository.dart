@@ -18,9 +18,7 @@ class TableRepository {
   }
 
   updateTable({required TableModel data}) async {
-    // log(data.id.toString());
     TableModel? dbItem = await db.tableModels.get(data.id);
-    // log(dbItem!.tableName.toString());
     if (dbItem != null) {
       dbItem.tableName = data.tableName;
       dbItem.areaId = data.areaId;

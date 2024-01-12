@@ -1,5 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
+import 'package:zimbapos/models/global_models/category_model.dart';
+import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
@@ -9,8 +11,10 @@ import 'package:zimbapos/screens/componant_screens/area_screen/create_area_scree
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';

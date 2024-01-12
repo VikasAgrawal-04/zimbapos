@@ -2,22 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/models/global_models/customer_category_model.dart';
 
+import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../models/global_models/customer_category_model.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
-class CreateCusCatScreen extends StatefulWidget {
-  const CreateCusCatScreen({super.key});
+class UpdateCustomerCategoryScreen extends StatefulWidget {
+  final CustomerCategoryModel item;
+  const UpdateCustomerCategoryScreen({
+    super.key,
+    required this.item,
+  });
 
   @override
-  State<CreateCusCatScreen> createState() => _CreateCusCatScreenState();
+  State<UpdateCustomerCategoryScreen> createState() =>
+      _UpdateCustomerCategoryScreenState();
 }
 
-class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
+class _UpdateCustomerCategoryScreenState
+    extends State<UpdateCustomerCategoryScreen> {
+  //
   final custCatName = TextEditingController();
   final discount = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    custCatName.text = widget.item.custCategoryName.toString();
+    discount.text = widget.item.custCategoryDiscount.toString();
+  }
 
   @override
   void dispose() {
@@ -26,14 +41,20 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
     super.dispose();
   }
 
-  createCustCat(BuildContext context) {
+  //update function
+  updateCustomerCat(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
-    db.customerRepository.createCusCat(
-        data: CustomerCategoryModel(
-            custCategoryName: custCatName.text,
-            custCategoryDiscount:
-                double.parse(discount.text.isEmpty ? '0.0' : discount.text)));
-    EasyLoading.showToast('Customer Category Created');
+    db.customerRepository.updateCusCat(
+      data: CustomerCategoryModel(
+        id: widget.item.id,
+        custCategoryName: custCatName.text,
+        custCategoryDiscount: double.parse(
+          discount.text.isEmpty ? '0.0' : discount.text,
+        ),
+      ),
+    );
+
+    EasyLoading.showToast('Customer category Updated');
     context.pop();
   }
 
@@ -41,14 +62,14 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Customer Category'),
+        title: const Text('Edit Customer Category'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //cust cat name
+            //cus cat name
             PrimaryTextField(
               hintText: 'Customer category name',
               controller: custCatName,
@@ -70,19 +91,18 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
             // TextField(
             //   controller: discount,
             //   decoration: const InputDecoration(
-            //       border: OutlineInputBorder(),
-            //       hintText: 'Enter Discount'),
+            //       border: OutlineInputBorder(), hintText: 'Enter Discount'),
             // ),
             // ElevatedButton(
-            //   onPressed: () => createCustCat(context),
-            //   child: const Text('Create Customer Category'),
+            //   onPressed: () => updateCustomerCat(context),
+            //   child: const Text('Update Customer Category'),
             // )
           ],
         ),
       ),
       bottomNavigationBar: CustomButton(
         text: "Save",
-        onPressed: () => createCustCat(context),
+        onPressed: () => updateCustomerCat(context),
       ),
     );
   }

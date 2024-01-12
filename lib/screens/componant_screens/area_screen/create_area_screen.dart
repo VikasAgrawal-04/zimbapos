@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/rate_sets_model.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
 
 class CreateAreasScreen extends StatefulWidget {
   const CreateAreasScreen({super.key});
@@ -44,7 +46,7 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
         rateSetId: selectedRateSetId,
       ),
     );
-    EasyLoading.showToast('Rate Set Created');
+    EasyLoading.showToast('Area Created');
     context.pop();
   }
 
@@ -75,24 +77,34 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
             children: [
               SizedBox(height: screenSize.height * 0.04),
               //area name
-              TextField(
+              PrimaryTextField(
+                hintText: 'Area name',
                 controller: areaNameController,
-                keyboardType: TextInputType.text,
-                decoration: const InputDecoration(
-                  label: Text('Area name'),
-                  border: OutlineInputBorder(),
-                ),
+                onChanged: (value) {},
               ),
+              // TextField(
+              //   controller: areaNameController,
+              //   keyboardType: TextInputType.text,
+              //   decoration: const InputDecoration(
+              //     label: Text('Area name'),
+              //     border: OutlineInputBorder(),
+              //   ),
+              // ),
               SizedBox(height: screenSize.height * 0.02),
               //exchange percent
-              TextField(
+              PrimaryTextField(
+                hintText: 'Extra charge percent',
                 controller: exchangePercentController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  label: Text('Exchange percent'),
-                  border: OutlineInputBorder(),
-                ),
+                onChanged: (value) {},
               ),
+              // TextField(
+              //   controller: exchangePercentController,
+              //   keyboardType: TextInputType.number,
+              //   decoration: const InputDecoration(
+              //     label: Text('Exchange percent'),
+              //     border: OutlineInputBorder(),
+              //   ),
+              // ),
               SizedBox(height: screenSize.height * 0.02),
               //dropdown for ratesets
               SizedBox(
@@ -132,13 +144,17 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
                 ),
               ),
               SizedBox(height: screenSize.height * 0.2),
-              ElevatedButton(
-                onPressed: () => createAreaFn(context),
-                child: const Text('Create area'),
-              )
+              // ElevatedButton(
+              //   onPressed: () => createAreaFn(context),
+              //   child: const Text('Create area'),
+              // )
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: CustomButton(
+        text: "Save",
+        onPressed: () => createAreaFn(context),
       ),
     );
   }

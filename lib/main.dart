@@ -14,6 +14,8 @@ import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 
+import 'constants/kcolors.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
@@ -38,9 +40,15 @@ class MyApp extends StatelessWidget {
           future: getApplicationCacheDirectory(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const MaterialApp(
+              return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                home: Scaffold(
+                theme: ThemeData(
+                  colorScheme:
+                      ColorScheme.fromSeed(seedColor: KColors.buttonColor),
+                  fontFamily: 'PJS',
+                  useMaterial3: true,
+                ),
+                home: const Scaffold(
                     body: Center(
                   child: CircularProgressIndicator.adaptive(),
                 )),

@@ -16,8 +16,10 @@ enum AppScreen {
   initialSetUpScreen,
   customerCategory,
   createCustomerCategory,
+  editCustomerCategory,
   category,
   createCategory,
+  editCategory,
   mainGroup,
   createMainGroup,
   itemGroup,
@@ -62,10 +64,14 @@ extension AppScreenExtension on AppScreen {
         return 'Customer Category';
       case AppScreen.createCustomerCategory:
         return 'Create Customer Category';
+      case AppScreen.editCustomerCategory:
+        return 'Edit Customer Category';
       case AppScreen.category:
         return 'Category';
       case AppScreen.createCategory:
         return 'Create Category';
+      case AppScreen.editCategory:
+        return 'Edit Category';
       case AppScreen.mainGroup:
         return 'Main Group';
       case AppScreen.createMainGroup:
@@ -114,10 +120,14 @@ extension AppScreenExtension on AppScreen {
         return '/customer-category';
       case AppScreen.createCustomerCategory:
         return '/create-customer-category';
+      case AppScreen.editCustomerCategory:
+        return '/edit-customer-category';
       case AppScreen.category:
         return '/category';
       case AppScreen.createCategory:
         return '/create-category';
+      case AppScreen.editCategory:
+        return '/edit-category';
       case AppScreen.mainGroup:
         return '/main-group';
       case AppScreen.createMainGroup:

@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/rate_sets_model.dart';
+import '../../../widgets/custom_button.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
 
 class EditRateSetScreen extends StatefulWidget {
   final RateSetsModel item;
@@ -58,19 +60,29 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
+            //rfate set name
+            PrimaryTextField(
+              hintText: 'Rate set name',
               controller: nameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
+              onChanged: (value) {},
             ),
+            // TextField(
+            //   controller: nameController,
+            //   decoration: const InputDecoration(
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
             SizedBox(height: screenSize.height * 0.2),
-            ElevatedButton(
-              onPressed: () => updateRateSetFn(context),
-              child: const Text('Update Rate Set'),
-            )
+            // ElevatedButton(
+            //   onPressed: () => updateRateSetFn(context),
+            //   child: const Text('Update Rate Set'),
+            // )
           ],
         ),
+      ),
+      bottomNavigationBar: CustomButton(
+        text: "Save",
+        onPressed: () => updateRateSetFn(context),
       ),
     );
   }

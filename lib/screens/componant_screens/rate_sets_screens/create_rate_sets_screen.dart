@@ -61,11 +61,6 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
             //     border: OutlineInputBorder(),
             //   ),
             // ),
-            SizedBox(height: screenSize.height * 0.2),
-            ElevatedButton(
-              onPressed: () => createRateSetFn(context),
-              child: const Text('Create Rate Set'),
-            )
           ],
         ),
       ),

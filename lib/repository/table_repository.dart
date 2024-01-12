@@ -9,6 +9,10 @@ class TableRepository {
     return db.tableModels.where().watch(fireImmediately: true);
   }
 
+  Future<List<TableModel>> getAllTables() async {
+    return await db.tableModels.where().findAll();
+  }
+
   createTable({required TableModel data}) {
     db.writeTxnSync(() => db.tableModels.putSync(data));
   }

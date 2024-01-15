@@ -17,7 +17,7 @@ class CategoryModel {
     this.id = Isar.autoIncrement,
     this.outletId,
     this.categoryName,
-     this.isActive = true,
+    this.isActive = true,
     this.isDeleted = false,
   });
 

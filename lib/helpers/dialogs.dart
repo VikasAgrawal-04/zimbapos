@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 void showMyAlertDialog(
   BuildContext context, {
@@ -19,12 +20,15 @@ void showMyAlertDialog(
           actionsPadding:
               const EdgeInsets.only(right: 12, left: 12, bottom: 12),
           actions: [
-            OutlinedButton(onPressed: onPress, child: const Text('Yes')),
+            OutlinedButton(
+              onPressed: onPress,
+              child: const Text('Yes'),
+            ),
             OutlinedButton(
               onPressed: () {
                 Future.delayed(
                   Duration.zero,
-                  () => Navigator.of(context).pop(),
+                  () => context.pop(),
                 );
               },
               child: const Text('No'),

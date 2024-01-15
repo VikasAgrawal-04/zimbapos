@@ -19,5 +19,7 @@ class CustomerCategoryRoutes {
   void initialiseApi() {
     locRoute.get('/get-customer-categories', controller.fetchCustCategory);
     locRoute.post('/create-customer-category', controller.createCustCategory);
+    locRoute.post('/update-customer-category', controller.updateCustCategory);
+    locRoute.delete('/delete-customer-category', controller.deleteCustCategory);
   }
 }

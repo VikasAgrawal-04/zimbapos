@@ -51,4 +51,53 @@ class CustCatController {
       return Response.badRequest(body: 'Invalid Arguments');
     }
   }
+
+  Future<Response> deleteCustCategory(Request request) async {
+    try {
+      if (request.url.queryParameters.isEmpty) {
+        return Response.badRequest(
+            body: jsonEncode({
+          "data": 'Please Enter Customer Category Id as a key cusCatId'
+        }));
+      }
+      final cusCatId = request.url.queryParameters['cusCatId'];
+      dbCubit.customerRepository.deleteCusCat(cusCatId.toString());
+      return Response.ok(jsonEncode({'data': 'Customer Category Deleted!'}));
+    } catch (e) {
+      return Response.badRequest(body: 'Invalid Arguments');
+    }
+  }
+
+  Future<Response> updateCustCategory(Request request) async {
+    try {
+      final requiredFields = [
+        'id',
+        'custCategoryId',
+        'custCategoryName',
+        'custCategoryDiscount',
+        'isActive'
+      ];
+      final reqData = await utf8.decodeStream(request.read());
+      if (reqData.isEmpty) {
+        return Response.badRequest(
+            body: jsonEncode(
+                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+      }
+      final Map<String, dynamic> decodedData = jsonDecode(reqData);
+      final missingFields =
+          requiredFields.where((e) => decodedData[e] == null).toList();
+
+      if (missingFields.isNotEmpty) {
+        final missingFieldsMessage =
+            'Missing fields: ${missingFields.join(', ')}';
+        return Response.badRequest(
+            body: jsonEncode({"data": missingFieldsMessage}));
+      }
+      await dbCubit.customerRepository.updateCusCat(
+          data: CustomerCategoryModel.fromJson(jsonEncode(decodedData)));
+      return Response.ok(jsonEncode({'data': 'Customer Category Updated!'}));
+    } catch (e) {
+      return Response.badRequest(body: 'Invalid Arguments');
+    }
+  }
 }

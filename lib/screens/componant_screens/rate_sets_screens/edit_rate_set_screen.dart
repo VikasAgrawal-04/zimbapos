@@ -41,7 +41,7 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
     db.rateSetsRepository.updateRateSet(
       model: RateSetsModel(
         ratesetName: nameController.text,
-        ratesetId: widget.item.id,
+        ratesetId: widget.item.ratesetId,
       ),
     );
     EasyLoading.showToast('Rate Set Updated');

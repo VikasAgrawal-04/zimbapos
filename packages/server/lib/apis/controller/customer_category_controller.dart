@@ -61,7 +61,7 @@ class CustCatController {
         }));
       }
       final cusCatId = request.url.queryParameters['cusCatId'];
-      dbCubit.customerRepository.deleteCusCat(cusCatId.toString());
+      dbCubit.customerRepository.deleteCusCat(cusCatId);
       return Response.ok(jsonEncode({'data': 'Customer Category Deleted!'}));
     } catch (e) {
       return Response.badRequest(body: 'Invalid Arguments');

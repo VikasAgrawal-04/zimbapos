@@ -16,6 +16,8 @@ class RateSetRoutes {
   }
   void initialiseApi() {
     locRoute.get('/get-ratesets', controller.fetchAllRateSets);
-     locRoute.post('/create-ratesets', controller.createRateSets);
+    locRoute.post('/create-ratesets', controller.createRateSets);
+    locRoute.post('/update-ratesets', controller.updateRateSet);
+    locRoute.delete('/delete-ratesets', controller.deleteRateSet);
   }
 }

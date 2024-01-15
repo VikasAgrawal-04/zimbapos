@@ -63,7 +63,6 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rate Sets'),

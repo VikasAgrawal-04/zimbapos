@@ -74,7 +74,12 @@ int _customerCategoryModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.custCategoryId.length * 3;
+  {
+    final value = object.custCategoryId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.custCategoryName;
     if (value != null) {
@@ -107,13 +112,13 @@ CustomerCategoryModel _customerCategoryModelDeserialize(
 ) {
   final object = CustomerCategoryModel(
     custCategoryDiscount: reader.readDoubleOrNull(offsets[0]),
+    custCategoryId: reader.readStringOrNull(offsets[1]),
     custCategoryName: reader.readStringOrNull(offsets[2]),
     id: id,
     isActive: reader.readBoolOrNull(offsets[4]),
     isDeleted: reader.readBoolOrNull(offsets[5]),
     outletId: reader.readLongOrNull(offsets[6]),
   );
-  object.custCategoryId = reader.readString(offsets[1]);
   return object;
 }
 
@@ -127,7 +132,7 @@ P _customerCategoryModelDeserializeProp<P>(
     case 0:
       return (reader.readDoubleOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
@@ -325,8 +330,26 @@ extension CustomerCategoryModelQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+      QAfterFilterCondition> custCategoryIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'custCategoryId',
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+      QAfterFilterCondition> custCategoryIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'custCategoryId',
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> custCategoryIdEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -340,7 +363,7 @@ extension CustomerCategoryModelQueryFilter on QueryBuilder<
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> custCategoryIdGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -356,7 +379,7 @@ extension CustomerCategoryModelQueryFilter on QueryBuilder<
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> custCategoryIdLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -372,8 +395,8 @@ extension CustomerCategoryModelQueryFilter on QueryBuilder<
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> custCategoryIdBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1152,7 +1175,7 @@ extension CustomerCategoryModelQueryProperty on QueryBuilder<
     });
   }
 
-  QueryBuilder<CustomerCategoryModel, String, QQueryOperations>
+  QueryBuilder<CustomerCategoryModel, String?, QQueryOperations>
       custCategoryIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'custCategoryId');

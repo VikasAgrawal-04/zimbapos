@@ -25,7 +25,8 @@ class TableController {
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return Response.badRequest(
-            body: jsonEncode({'data': 'Enter All Details'}));
+            body: jsonEncode(
+                {'data': 'Fields Required ${requiredFields.join(',')}'}));
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =

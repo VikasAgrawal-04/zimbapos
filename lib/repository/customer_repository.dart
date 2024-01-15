@@ -28,10 +28,8 @@ class CustomerRepository {
   }
 
   void updateCusCat({required CustomerCategoryModel data}) async {
-    // log(data!.custCategoryName.toString());
     CustomerCategoryModel? dbItem =
         await db.customerCategoryModels.get(data.id);
-    // log(dbItem!.custCategoryName.toString());
     if (dbItem != null) {
       dbItem.custCategoryName = data.custCategoryName;
       dbItem.custCategoryDiscount = data.custCategoryDiscount;

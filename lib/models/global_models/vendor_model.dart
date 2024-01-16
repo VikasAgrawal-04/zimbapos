@@ -26,6 +26,7 @@ class VendorModel {
   bool? isDeleted;
 
   VendorModel({
+    this.id = Isar.autoIncrement,
     this.vendorId,
     required this.vendorName,
     this.address1,
@@ -77,6 +78,7 @@ class VendorModel {
   // Convert a Vendor instance to a Map
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'vendorId': vendorId,
       'vendorName': vendorName,
       'address1': address1,

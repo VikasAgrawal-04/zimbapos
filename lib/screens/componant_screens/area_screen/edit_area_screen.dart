@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/helpers/validators.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/area_model.dart';
 import '../../../models/global_models/rate_sets_model.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
 class EditAreaScreen extends StatefulWidget {
@@ -23,6 +25,7 @@ class EditAreaScreen extends StatefulWidget {
 
 class _EditAreaScreenState extends State<EditAreaScreen> {
   //
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController areaNameController;
   late final TextEditingController exchangePercentController;
   late int? selectedRateSetId;
@@ -92,92 +95,109 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: screenSize.height * 0.04),
-              //area name
-              PrimaryTextField(
-                hintText: 'Area name',
-                controller: areaNameController,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: areaNameController,
-              //   keyboardType: TextInputType.text,
-              //   decoration: const InputDecoration(
-              //     label: Text('Area name'),
-              //     border: OutlineInputBorder(),
-              //   ),
-              // ),
-
-              SizedBox(height: screenSize.height * 0.02),
-              //extra charge percent
-              PrimaryTextField(
-                hintText: 'Extra charge percent',
-                controller: exchangePercentController,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: exchangePercentController,
-              //   keyboardType: TextInputType.number,
-              //   decoration: const InputDecoration(
-              //     label: Text('Exchange percent'),
-              //     border: OutlineInputBorder(),
-              //   ),
-              // ),
-              SizedBox(height: screenSize.height * 0.02),
-              //dropdown for ratesets
-              SizedBox(
-                height: 50,
-                width: screenSize.width,
-                child: FutureBuilder<List<RateSetsModel?>>(
-                  future: getAllRateSets(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator.adaptive();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      final rateSets = snapshot.data ?? [];
-
-                      return Column(
-                        children: [
-                          DropdownButton<int>(
-                            value: selectedRateSetId,
-                            hint: const Text("Choose a rate"),
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedRateSetId = newValue;
-                              });
-                            },
-                            items: rateSets.map((rateSet) {
-                              return DropdownMenuItem<int>(
-                                value: rateSet!.id,
-                                child: Text(rateSet.ratesetName ?? 'error'),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      );
-                    }
-                  },
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: screenSize.height * 0.04),
+                //area name
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Area name',
+                  controller: areaNameController,
+                  onChanged: (value) {},
                 ),
-              ),
-              SizedBox(height: screenSize.height * 0.2),
-              // ElevatedButton(
-              //   onPressed: () => updateAreaFn(context, widget.item.id),
-              //   child: const Text('Update area'),
-              // )
-            ],
+                // TextField(
+                //   controller: areaNameController,
+                //   keyboardType: TextInputType.text,
+                //   decoration: const InputDecoration(
+                //     label: Text('Area name'),
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+
+                SizedBox(height: screenSize.height * 0.02),
+                //extra charge percent
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Extra charge percent',
+                  controller: exchangePercentController,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: exchangePercentController,
+                //   keyboardType: TextInputType.number,
+                //   decoration: const InputDecoration(
+                //     label: Text('Exchange percent'),
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+                SizedBox(height: screenSize.height * 0.02),
+                //dropdown for ratesets
+                SizedBox(
+                  height: 50,
+                  width: screenSize.width,
+                  child: FutureBuilder<List<RateSetsModel?>>(
+                    future: getAllRateSets(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final rateSets = snapshot.data ?? [];
+
+                        return Column(
+                          children: [
+                            DropdownButton<int>(
+                              value: selectedRateSetId,
+                              hint: const Text("Choose a rate"),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedRateSetId = newValue;
+                                });
+                              },
+                              items: rateSets.map((rateSet) {
+                                return DropdownMenuItem<int>(
+                                  value: rateSet!.id,
+                                  child: Text(rateSet.ratesetName ?? 'error'),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(height: screenSize.height * 0.2),
+                // ElevatedButton(
+                //   onPressed: () => updateAreaFn(context, widget.item.id),
+                //   child: const Text('Update area'),
+                // )
+              ],
+            ),
           ),
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => updateAreaFn(context, widget.item.id),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (selectedRateSetId != null) {
+                updateAreaFn(context, widget.item.id);
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose a area",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
     );
   }
 }

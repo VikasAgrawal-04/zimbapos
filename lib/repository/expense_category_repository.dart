@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 
@@ -16,12 +14,10 @@ class ExpenseCategoryRepository {
     db.writeTxnSync(() => db.expenseCategoryModels.putSync(model));
   }
 
-  editExpensecategory(
-      {required int id, required ExpenseCategoryModel model}) async {
-    ExpenseCategoryModel? dbItem = await db.expenseCategoryModels.get(id);
+  editExpenseCat({required ExpenseCategoryModel model}) async {
+    ExpenseCategoryModel? dbItem = await db.expenseCategoryModels.get(model.id);
     if (dbItem != null) {
       dbItem = model;
-      log('in to fun');
       db.writeTxnSync(() => db.expenseCategoryModels.putSync(dbItem!));
     }
   }

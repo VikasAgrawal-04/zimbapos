@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
 
@@ -34,9 +35,13 @@ class _UpdateExpenseCategoryScreenState
 
   updateExpenseCatFn() {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.expenseCategoryRepository.editExpensecategory(
-        model: ExpenseCategoryModel(expenseCategoryName: expenseCatName.text),
-        id: widget.item.id);
+    dbCubit.expenseCategoryRepository.editExpenseCat(
+      model: ExpenseCategoryModel(
+        id: widget.item.id,
+        expenseCategoryName: expenseCatName.text,
+      ),
+      // id: widget.item.id,
+    );
     EasyLoading.showToast(
       'Expense category updated',
       toastPosition: EasyLoadingToastPosition.bottom,
@@ -63,6 +68,7 @@ class _UpdateExpenseCategoryScreenState
                 SizedBox(height: screenSize.height * 0.04),
                 //area name
                 PrimaryTextField(
+                  validator: nullCheckValidator,
                   hintText: 'Expense category name',
                   controller: expenseCatName,
                   onChanged: (value) {},
@@ -74,9 +80,12 @@ class _UpdateExpenseCategoryScreenState
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => updateExpenseCatFn(),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              updateExpenseCatFn();
+            }
+          }),
     );
   }
 }

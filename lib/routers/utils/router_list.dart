@@ -40,6 +40,8 @@ import 'package:zimbapos/screens/componant_screens/worker_management_screens/wor
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
 
+import '../../screens/componant_screens/category_screens/edit_cat_screen.dart';
+
 final List<GoRoute> routerList = [
   //home
   GoRoute(

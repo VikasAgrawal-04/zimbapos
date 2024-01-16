@@ -30,6 +30,7 @@ class RateSetsRepository {
     final item = await db.rateSetsModels
         .filter()
         .ratesetIdEqualTo(model.ratesetId)
+        .and()
         .isDeletedEqualTo(false)
         .findFirst();
     if (item != null) {

@@ -24,6 +24,7 @@ class TableRepository {
     final dbItem = await db.tableModels
         .filter()
         .tableIdEqualTo(data.tableId)
+        .and()
         .isDeletedEqualTo(false)
         .findFirst();
     if (dbItem != null) {

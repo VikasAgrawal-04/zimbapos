@@ -22,9 +22,12 @@ Future<void> main() async {
   SharedPreferences.getInstance().then((pref) {
     Helpers.prefs = pref;
     final dio = Dio();
-    dio.interceptors
-        .add(PrettyDioLogger(requestBody: true, requestHeader: true));
+    dio.interceptors.add(PrettyDioLogger(
+      requestBody: true,
+      requestHeader: true,
+    ));
     Helpers.dio = dio;
+    
     runApp(const MyApp());
   });
 }

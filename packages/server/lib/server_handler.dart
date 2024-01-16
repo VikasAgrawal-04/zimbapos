@@ -27,6 +27,8 @@ class Server {
         .addMiddleware(logRequests())
         .addMiddleware(corsHeaders())
         .addHandler(router);
+    var internetAddress = InternetAddress.anyIPv4;
+    print('Server Running on : $internetAddress:8080');
     await shelf_io.serve(
       handler,
       InternetAddress.anyIPv4,

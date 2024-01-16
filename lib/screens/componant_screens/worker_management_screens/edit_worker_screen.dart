@@ -5,6 +5,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
+
 import '../../../models/global_models/workers_model.dart';
 import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
@@ -36,9 +37,9 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
     mobileController = TextEditingController();
     mobileController.text = widget.initialModel.mobile;
     loginIDController = TextEditingController();
-    loginIDController.text = widget.initialModel.loginCode;
+    loginIDController.text = widget.initialModel.loginCode ?? "";
     passwordController = TextEditingController();
-    passwordController.text = widget.initialModel.password;
+    passwordController.text = widget.initialModel.password ?? "";
     enableLogin = widget.initialModel.canLoginIntoApp;
     dropDownValue = widget.initialModel.workerRole;
   }
@@ -54,7 +55,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
     dbCubit.workerRepository.editWorker(
       model: WorkersModel(
         id: widget.initialModel.id,
-        outletId: 12341234,
+        outletId: '12341234',
         workerId: widget.initialModel.workerId,
         workerName: nameController.text,
         createdByUserID: 'Suyash',

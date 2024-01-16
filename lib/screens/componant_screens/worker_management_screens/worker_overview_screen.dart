@@ -30,7 +30,7 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.workerRepository.deleteWorker(worker.id);
+        dbCubit.workerRepository.deleteWorker(worker.workerId);
         EasyLoading.showToast('Worker deleted');
         context.pop();
       },

@@ -40,7 +40,7 @@ class _TableScreenState extends State<TableScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.workerRepository.deleteWorker(table.id);
+        dbCubit.workerRepository.deleteWorker(table.tableId);
         EasyLoading.showToast('Table deleted');
         context.pop();
       },

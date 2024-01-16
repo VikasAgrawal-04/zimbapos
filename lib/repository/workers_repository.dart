@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 
@@ -18,22 +19,77 @@ class WorkerRepository {
   }
 
   createWorker({required WorkersModel model}) {
-    db.writeTxnSync(() => db.workersModels.putSync(model));
-  }
+    try {
+      final existingWorkerByMobile =
+          db.workersModels.filter().mobileEqualTo(model.mobile).findFirstSync();
+      final existingWorkerByLoginCode = model.loginCode != null
+          ? db.workersModels
+              .filter()
+              .loginCodeEqualTo(model.loginCode)
+              .findFirstSync()
+          : null;
 
-  editWorker({required WorkersModel model}) async {
-    WorkersModel? dbItem = await db.workersModels.get(model.id);
-    if (dbItem != null) {
-      dbItem = model;
-      db.writeTxnSync(() => db.workersModels.putSync(dbItem!));
+      if (existingWorkerByMobile != null || existingWorkerByLoginCode != null) {
+        throw IsarError("Duplicate Values Found!"); // Duplicate exists
+      }
+      db.writeTxnSync(() => db.workersModels.putSync(model));
+      return true;
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return false;
     }
   }
 
-  deleteWorker(int id) async {
-    
-    db.writeTxnSync(() {
-      db.workersModels.deleteSync(id);
-    });
+  editWorker({required WorkersModel model}) async {
+    try {
+      WorkersModel? dbItem = await db.workersModels
+          .filter()
+          .workerIdEqualTo(model.workerId)
+          .and()
+          .isDeletedEqualTo(false)
+          .findFirst();
+      if (dbItem != null) {
+        if (model.mobile != dbItem.mobile ||
+            model.loginCode != dbItem.loginCode) {
+          final existingWorkerByMobile = db.workersModels
+              .filter()
+              .mobileEqualTo(model.mobile)
+              .and()
+              .isDeletedEqualTo(false)
+              .findFirstSync();
+          final existingWorkerByLoginCode = model.loginCode != null
+              ? db.workersModels
+                  .filter()
+                  .loginCodeEqualTo(model.loginCode)
+                  .and()
+                  .isDeletedEqualTo(false)
+                  .findFirstSync()
+              : null;
+
+          if ((model.mobile != dbItem.mobile &&
+                  existingWorkerByMobile != null) ||
+              (model.loginCode != dbItem.loginCode &&
+                  existingWorkerByLoginCode != null)) {
+            throw IsarError("Duplicate Values Found!"); // Duplicate exists
+          }
+        }
+        dbItem = model;
+        db.writeTxnSync(() => db.workersModels.putSync(dbItem!));
+      }
+      return true;
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return false;
+    }
+  }
+
+  deleteWorker(String? id) async {
+    final model =
+        await db.workersModels.filter().workerIdEqualTo(id).findFirst();
+    if (model != null) {
+      model.isDeleted = true;
+      db.writeTxnSync(() => db.workersModels.putSync(model));
+    }
   }
 
   changeActive(int id, bool isActive) async {

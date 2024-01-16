@@ -16,6 +16,9 @@ class WorkerRoutes {
     initialiseApi();
   }
   void initialiseApi() {
+    locRoute.get('/get-workers', controller.getWorkers);
     locRoute.post('/create-worker', controller.createWorker);
+    locRoute.post('/update-worker', controller.updateWorker);
+    locRoute.delete('/delete-worker', controller.deleteWorker);
   }
 }

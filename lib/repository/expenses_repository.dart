@@ -17,8 +17,8 @@ class ExpensesRepository {
     db.writeTxnSync(() => db.expenseModels.putSync(model));
   }
 
-  editExpense({required int id, required ExpenseModel model}) async {
-    ExpenseModel? dbItem = await db.expenseModels.get(id);
+  editExpense({required ExpenseModel model}) async {
+    ExpenseModel? dbItem = await db.expenseModels.get(model.id);
     if (dbItem != null) {
       dbItem = model;
       log('in to fun');

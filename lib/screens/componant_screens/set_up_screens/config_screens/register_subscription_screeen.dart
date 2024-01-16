@@ -67,7 +67,7 @@ class _RegisterSubscriptionScreenState
                               hintText: 'Mobile No.',
                               controller: subscriberCubit.mobileController,
                               onChanged: (val) {},
-                              validator: validateMobileNumber,
+                              validator: mobileNumberValidator,
                             ),
                             SizedBox(height: 2.h),
                             PrimaryTextField(

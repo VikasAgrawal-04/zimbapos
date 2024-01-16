@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/expense_category_model.dart';
 import '../../../models/global_models/rate_sets_model.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
 class UpdateExpenseScreen extends StatefulWidget {
@@ -44,6 +46,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
     entryByUserId = widget.item.entryByUserId;
     expenseCatId = widget.item.expenseCategoryId;
     payMode = widget.item.payMode;
+    log(widget.item.payMode.toString());
   }
 
   updateExpenseFn() {
@@ -51,6 +54,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
     dbCubit.expensesRepository.editExpense(
       model: ExpenseModel(
         // entryDatetime: _selectedDate,
+        id: widget.item.id,
         entryDatetime: DateTime.now(),
         description: expenseDescr.text,
         amount: int.parse(billAmount.text),
@@ -58,7 +62,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
         expenseCategoryId: expenseCatId,
         payMode: payMode,
       ),
-      id: widget.item.id,
+      // id: widget.item.id,
     );
     EasyLoading.showToast(
       'Expense Updated',
@@ -105,8 +109,6 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
     }
   }
 
-  String? selectedValue;
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
@@ -126,6 +128,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
                 SizedBox(height: screenSize.height * 0.04),
                 //area name
                 PrimaryTextField(
+                  validator: nullCheckValidator,
                   hintText: 'Expense description',
                   controller: expenseDescr,
                   onChanged: (value) {},
@@ -133,6 +136,7 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
                 SizedBox(height: screenSize.height * 0.02),
                 //
                 PrimaryTextField(
+                  validator: nullCheckValidator,
                   hintText: 'Bill amount',
                   controller: billAmount,
                   onChanged: (value) {},
@@ -231,14 +235,13 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
 
                 DropdownButton<String>(
                   hint: const Text("Choose a payment method"),
-                  value: selectedValue,
+                  value: payMode,
                   icon: const Icon(Icons.arrow_drop_down),
                   iconSize: 24,
                   elevation: 16,
-                  style: const TextStyle(color: Colors.blue),
                   onChanged: (newValue) {
                     setState(() {
-                      selectedValue = newValue;
+                      payMode = newValue;
                     });
                   },
                   items: <String>[
@@ -300,9 +303,30 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => updateExpenseFn(),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (expenseCatId != null) {
+                if (payMode != null) {
+                  updateExpenseFn();
+                } else {
+                  UtillSnackbar.showSnackBar(
+                    context,
+                    title: "Alert",
+                    body: "Please choose a payment method",
+                    isSuccess: false,
+                  );
+                }
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose expense category",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
     );
   }
 }

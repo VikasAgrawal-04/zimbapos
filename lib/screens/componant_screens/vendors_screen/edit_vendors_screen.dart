@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/vendor_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
@@ -83,6 +84,7 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
     final dbCubit = DatabaseCubit.dbFrom(context);
     dbCubit.vendorRepository.editVendor(
       model: VendorModel(
+        id: widget.item.id,
         vendorName: vendorNameController.text,
         address1: addr1Controller.text,
         address2: addr2Controller.text,
@@ -109,7 +111,7 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
         bankBranch: bankBranchController.text,
         ifscCode: bankIFSCController.text,
       ),
-      id: widget.item.id,
+      // id: widget.item.id,
     );
     EasyLoading.showToast(
       'Vendor Updated',
@@ -147,9 +149,12 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
         title: const Text('Edit Worker'),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Update vendor",
-        onPressed: () => editVendor(),
-      ),
+          text: "Update vendor",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              editVendor();
+            }
+          }),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.all(20),
@@ -159,6 +164,7 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               PrimaryTextField(
+                validator: nullCheckValidator,
                 hintText: 'Vendor Name',
                 controller: vendorNameController,
                 onChanged: (value) {},

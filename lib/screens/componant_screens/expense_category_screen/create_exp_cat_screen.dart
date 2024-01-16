@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/helpers/validators.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/expense_category_model.dart';
@@ -57,6 +58,7 @@ class _CreateExpenseCategoryScreenState
                 SizedBox(height: screenSize.height * 0.04),
                 //area name
                 PrimaryTextField(
+                  validator: nullCheckValidator,
                   hintText: 'Expense category name',
                   controller: expenseCatName,
                   onChanged: (value) {},
@@ -68,9 +70,12 @@ class _CreateExpenseCategoryScreenState
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => createExpenseCatFn(),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              createExpenseCatFn();
+            }
+          }),
     );
   }
 }

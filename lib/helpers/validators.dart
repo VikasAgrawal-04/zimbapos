@@ -24,6 +24,14 @@ String? nameValidator(String? text) {
   return null;
 }
 
+String? nullCheckValidator(String? text) {
+  if (text == null || text.isEmpty) {
+    return 'This field is required';
+  } else {
+    return null;
+  }
+}
+
 String? addressValidator(String? text) {
   if (text != null && text.isNotEmpty) {
     if (text.length < 2) {
@@ -48,7 +56,7 @@ String? passwordValidator(String? text) {
   return null;
 }
 
-String? validateMobileNumber(String? value) {
+String? mobileNumberValidator(String? value) {
   if (value == null || value.isEmpty) {
     return 'Please enter mobile number';
   }

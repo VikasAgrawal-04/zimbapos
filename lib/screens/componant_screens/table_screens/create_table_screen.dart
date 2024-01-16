@@ -5,8 +5,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
+import 'package:zimbapos/widgets/my_snackbar_widget.dart';
 
 import '../../../models/global_models/area_model.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
@@ -19,6 +21,7 @@ class CreateTableScreen extends StatefulWidget {
 }
 
 class _CreateTableScreenState extends State<CreateTableScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final tableName = TextEditingController();
   int? selectedAreaId;
 
@@ -60,66 +63,82 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //table name
-            PrimaryTextField(
-              hintText: 'Table name',
-              controller: tableName,
-              onChanged: (value) {},
-            ),
-            // TextField(
-            //   controller: tableName,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //   ),
-            // ),
-            SizedBox(height: 2.h),
-            //dropdown for ratesets
-            SizedBox(
-              height: 50,
-              width: screenSize.width,
-              child: FutureBuilder<List<AreasModel?>>(
-                future: getAllAreas(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator.adaptive();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    final areas = snapshot.data ?? [];
-
-                    return Column(
-                      children: [
-                        DropdownButton<int>(
-                          value: selectedAreaId,
-                          hint: const Text("Choose a area"),
-                          onChanged: (newValue) {
-                            setState(() {
-                              selectedAreaId = newValue;
-                            });
-                          },
-                          items: areas.map((area) {
-                            return DropdownMenuItem<int>(
-                              value: area!.id,
-                              child: Text(area.areaName ?? 'error'),
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    );
-                  }
-                },
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //table name
+              PrimaryTextField(
+                validator: nullCheckValidator,
+                hintText: 'Table name',
+                controller: tableName,
+                onChanged: (value) {},
               ),
-            ),
-          ],
+              // TextField(
+              //   controller: tableName,
+              //   decoration: const InputDecoration(
+              //     border: OutlineInputBorder(),
+              //   ),
+              // ),
+              SizedBox(height: 2.h),
+              //dropdown for ratesets
+              SizedBox(
+                height: 50,
+                width: screenSize.width,
+                child: FutureBuilder<List<AreasModel?>>(
+                  future: getAllAreas(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator.adaptive();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      final areas = snapshot.data ?? [];
+
+                      return Column(
+                        children: [
+                          DropdownButton<int>(
+                            value: selectedAreaId,
+                            hint: const Text("Choose a area"),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedAreaId = newValue;
+                              });
+                            },
+                            items: areas.map((area) {
+                              return DropdownMenuItem<int>(
+                                value: area!.id,
+                                child: Text(area.areaName ?? 'error'),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => createTable(context),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (selectedAreaId != null) {
+                createTable(context);
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose a area",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
     );
   }
 }

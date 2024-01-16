@@ -25,7 +25,8 @@ class TableController {
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return Response.badRequest(
-            body: jsonEncode({'data': 'Enter All Details'}));
+            body: jsonEncode(
+                {'data': 'Fields Required ${requiredFields.join(',')}'}));
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =
@@ -41,6 +42,53 @@ class TableController {
       dbCubit.tableRepository
           .createTable(data: TableModel.fromJson(jsonEncode(decodedData)));
       return Response.ok(jsonEncode({"data": "Table Created Successfully"}));
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return Response.badRequest(body: 'Invalid Arguments');
+    }
+  }
+
+  Future<Response> updateTable(Request request) async {
+    try {
+      final requiredFields = ['id', 'tableId', 'tableName', 'isActive'];
+      final reqData = await utf8.decodeStream(request.read());
+      if (reqData.isEmpty) {
+        return Response.badRequest(
+            body: jsonEncode(
+                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+      }
+      final Map<String, dynamic> decodedData = jsonDecode(reqData);
+      final missingFields =
+          requiredFields.where((e) => decodedData[e] == null).toList();
+
+      if (missingFields.isNotEmpty) {
+        final missingFieldsMessage =
+            'Missing fields: ${missingFields.join(', ')}';
+        return Response.badRequest(
+            body: jsonEncode({"data": missingFieldsMessage}));
+      }
+      await dbCubit.tableRepository
+          .updateTable(data: TableModel.fromJson(jsonEncode(decodedData)));
+
+      return Response.ok(jsonEncode({"data": "Table Updated Successfully!"}));
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return Response.badRequest(body: 'Invalid Arguments');
+    }
+  }
+
+  Future<Response> deleteTable(Request request) async {
+    try {
+      if (request.url.queryParameters.isEmpty) {
+        return Response.badRequest(
+            body:
+                jsonEncode({"data": 'Please Enter Table Id as a key tableId'}));
+      }
+      final tableId = request.url.queryParameters['tableId'];
+      dbCubit.tableRepository.deleteTable(tableId);
+      return Response.ok(jsonEncode({'data': 'Table Deleted!'}));
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

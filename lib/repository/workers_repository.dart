@@ -7,7 +7,14 @@ class WorkerRepository {
   WorkerRepository(this.db);
 
   Stream<List<WorkersModel>> streamWorkersList() {
-    return db.workersModels.where().watch(fireImmediately: true);
+    return db.workersModels
+        .filter()
+        .isDeletedEqualTo(false)
+        .watch(fireImmediately: true);
+  }
+
+  Future<List<WorkersModel>> getWokers() async {
+    return db.workersModels.filter().isDeletedEqualTo(false).findAll();
   }
 
   createWorker({required WorkersModel model}) {
@@ -18,12 +25,12 @@ class WorkerRepository {
     WorkersModel? dbItem = await db.workersModels.get(model.id);
     if (dbItem != null) {
       dbItem = model;
-      print('in to fun');
       db.writeTxnSync(() => db.workersModels.putSync(dbItem!));
     }
   }
 
   deleteWorker(int id) async {
+    
     db.writeTxnSync(() {
       db.workersModels.deleteSync(id);
     });

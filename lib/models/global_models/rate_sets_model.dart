@@ -9,30 +9,24 @@ part 'rate_sets_model.g.dart';
 class RateSetsModel {
   Id id = Isar.autoIncrement;
   int? outletId;
-  int? ratesetId;
+  String? ratesetId;
   String? ratesetName;
   bool? isActive;
   bool? isDeleted;
-
-  // @Backlink(to: 'rateSet')
-  // final areas = IsarLinks.toMany<AreasModel>();
 
   RateSetsModel({
     this.id = Isar.autoIncrement,
     this.outletId,
     this.ratesetId,
     this.ratesetName,
-    this.isActive,
-    this.isDeleted,
-  }) {
-    isActive = true;
-    isDeleted = false;
-  }
+    this.isActive = true,
+    this.isDeleted = false,
+  });
 
   RateSetsModel copyWith({
     Id? id,
     int? outletId,
-    int? ratesetId,
+    String? ratesetId,
     String? ratesetName,
     bool? isActive,
     bool? isDeleted,
@@ -62,11 +56,11 @@ class RateSetsModel {
     return RateSetsModel(
       id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
-      ratesetId: map['ratesetId'] != null ? map['ratesetId'] as int : null,
+      ratesetId: map['ratesetId'] != null ? map['ratesetId'] as String : null,
       ratesetName:
           map['ratesetName'] != null ? map['ratesetName'] as String : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : true,
-      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
     );
   }
 

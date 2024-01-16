@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
@@ -8,28 +6,36 @@ class RateSetsRepository {
   RateSetsRepository(this.db);
 
   Stream<List<RateSetsModel>> streamRateSets() {
-    return db.rateSetsModels.where().watch(fireImmediately: true);
+    return db.rateSetsModels
+        .filter()
+        .isDeletedEqualTo(false)
+        .watch(fireImmediately: true);
   }
 
   Future<List<RateSetsModel>> getAllRateSets() async {
-    return await db.rateSetsModels.where().findAll();
+    return await db.rateSetsModels
+        .where()
+        .filter()
+        .isDeletedEqualTo(false)
+        .findAll();
   }
 
-  createRateSet({required RateSetsModel model}) {
+  void createRateSet({required RateSetsModel model}) {
     db.writeTxnSync(() {
       db.rateSetsModels.putSync(model);
     });
   }
 
-  updateRateSet({required RateSetsModel model}) async {
-    RateSetsModel? dbItem =
-        await db.rateSetsModels.get(model.ratesetId!.toInt());
-    if (dbItem != null) {
-      dbItem.ratesetName = model.ratesetName;
-      db.writeTxnSync(() {
-        db.rateSetsModels.putSync(dbItem);
-      });
-      log("updated name: ${dbItem.ratesetName}");
+  Future<void> updateRateSet({required RateSetsModel model}) async {
+    final item = await db.rateSetsModels
+        .filter()
+        .ratesetIdEqualTo(model.ratesetId)
+        .isDeletedEqualTo(false)
+        .findFirst();
+    if (item != null) {
+      item.ratesetName = model.ratesetName;
+      item.isActive = model.isActive;
+      db.writeTxnSync(() => db.rateSetsModels.putSync(item));
     }
   }
 
@@ -38,10 +44,10 @@ class RateSetsRepository {
   }
 
   Future<List<RateSetsModel?>> getRateSets() async {
-    return await db.rateSetsModels.where().findAll();
+    return await db.rateSetsModels.filter().isDeletedEqualTo(false).findAll();
   }
 
-  changeActive(int id, bool isActive) async {
+  Future<void> changeActive(int id, bool isActive) async {
     RateSetsModel? model = await db.rateSetsModels.get(id);
     if (model != null) {
       model.isActive = isActive;
@@ -51,9 +57,14 @@ class RateSetsRepository {
     }
   }
 
-  deleteRateSetbyID(int id) {
-    db.writeTxnSync(() {
-      db.rateSetsModels.deleteSync(id);
-    });
+  Future<void> deleteRateSetbyID(String? id) async {
+    final model =
+        await db.rateSetsModels.filter().ratesetIdEqualTo(id).findFirst();
+    if (model != null) {
+      db.writeTxnSync(() {
+        model.isDeleted = true;
+        db.rateSetsModels.putSync(model);
+      });
+    }
   }
 }

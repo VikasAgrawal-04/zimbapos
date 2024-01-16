@@ -165,6 +165,7 @@ TableModel _tableModelDeserialize(
 ) {
   final object = TableModel(
     areaId: reader.readLongOrNull(offsets[0]),
+    customerId: reader.readStringOrNull(offsets[1]),
     customerName: reader.readStringOrNull(offsets[2]),
     id: id,
     isActive: reader.readBoolOrNull(offsets[4]),
@@ -177,7 +178,6 @@ TableModel _tableModelDeserialize(
     tableStartedAt: reader.readDateTimeOrNull(offsets[11]),
     tableStatus: reader.readStringOrNull(offsets[12]),
   );
-  object.customerId = reader.readStringOrNull(offsets[1]);
   return object;
 }
 

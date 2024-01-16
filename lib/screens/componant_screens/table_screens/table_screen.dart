@@ -27,7 +27,7 @@ class _TableScreenState extends State<TableScreen> {
     datatbaseCubit.tableRepository.changeActive(id, value);
   }
 
-  deleteFn(int id) {
+  deleteFn(String? id) {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
     datatbaseCubit.tableRepository.deleteTable(id);
   }

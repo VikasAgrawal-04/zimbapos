@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/user_models/system_config_model.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/intro_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/register_subscription_screeen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/set_up_type_screen.dart';
 
 class InitialSetUpScreen extends StatefulWidget {
   const InitialSetUpScreen({super.key});
@@ -37,23 +40,9 @@ class _InitialSetUpScreenState extends State<InitialSetUpScreen> {
       body: PageView(
         controller: pageController,
         children: [
+          const RegisterSubscriptionScreen(),
+          const SetUpTypeScreen(),
           IntroScreen(controller: pageController),
-          Scaffold(
-            body: Center(
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Offline'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: const Text('Hybrid'),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
       ),
     );

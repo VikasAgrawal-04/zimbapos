@@ -23,7 +23,16 @@ enum AppScreen {
   mainGroup,
   createMainGroup,
   itemGroup,
-  createItemGroup
+  createItemGroup,
+  vendorScreen,
+  createVendorScreen,
+  editVendorScreen,
+  expenseCategoryScreen,
+  createExpenseCategoryScreen,
+  editExpenseCategoryScreen,
+  expensesScreen,
+  createExpenseScreen,
+  editExpenseScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -80,6 +89,24 @@ extension AppScreenExtension on AppScreen {
         return 'Item Group';
       case AppScreen.createItemGroup:
         return 'Create Item Group';
+      case AppScreen.vendorScreen:
+        return 'Vendors';
+      case AppScreen.createVendorScreen:
+        return 'Create Vendor';
+      case AppScreen.editVendorScreen:
+        return 'Edit Vendor';
+      case AppScreen.expenseCategoryScreen:
+        return 'ExpenseCategory';
+      case AppScreen.createExpenseCategoryScreen:
+        return 'Create ExpenseCategory';
+      case AppScreen.editExpenseCategoryScreen:
+        return 'Edit ExpenseCategory';
+      case AppScreen.expensesScreen:
+        return 'Expenses';
+      case AppScreen.createExpenseScreen:
+        return 'Create Expense';
+      case AppScreen.editExpenseScreen:
+        return 'Edit Expense';
     }
   }
 
@@ -136,6 +163,24 @@ extension AppScreenExtension on AppScreen {
         return '/item-group';
       case AppScreen.createItemGroup:
         return '/create-item-group';
+      case AppScreen.vendorScreen:
+        return '/vendors';
+      case AppScreen.createVendorScreen:
+        return '/create-vendors';
+      case AppScreen.editVendorScreen:
+        return '/edit-vendors';
+      case AppScreen.expenseCategoryScreen:
+        return '/expense-category';
+      case AppScreen.createExpenseCategoryScreen:
+        return '/create-expense-category';
+      case AppScreen.editExpenseCategoryScreen:
+        return '/edit-expense-category';
+      case AppScreen.expensesScreen:
+        return '/expenses';
+      case AppScreen.createExpenseScreen:
+        return '/create-expense';
+      case AppScreen.editExpenseScreen:
+        return '/edit-expense';
     }
   }
 }

@@ -103,6 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                // context.push(AppScreen.vendorScreen.path);
+                context.push(AppScreen.expenseCategoryScreen.path);
+              },
+              icon: const Icon(Icons.radio_button_checked))
+        ],
       ),
       body: OrientationBuilder(
         builder: (context, orientation) =>

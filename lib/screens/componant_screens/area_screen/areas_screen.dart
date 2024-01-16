@@ -48,15 +48,15 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
   //   datatbaseCubit.areasRepository.deleteAreabyID(id);
   // }
 
-  deleteWorker(AreasModel worker) {
+  deleteWorker(AreasModel area) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.areaName}'?",
+      "Do you want to delete '${area.areaName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.areasRepository.deleteAreabyID(worker.id);
+        dbCubit.areasRepository.deleteAreabyID(area.id);
         EasyLoading.showToast('Area deleted');
         context.pop();
       },

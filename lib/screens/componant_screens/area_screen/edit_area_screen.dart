@@ -39,13 +39,6 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
     selectedRateSetId = widget.item.rateSetId;
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // Your code to execute when dependencies change
-  //   getAreaFn(item!.id);
-  // }
-
   @override
   void dispose() {
     areaNameController.dispose();

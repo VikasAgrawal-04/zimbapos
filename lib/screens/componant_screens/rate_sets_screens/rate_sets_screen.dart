@@ -32,11 +32,11 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
   //   datatbaseCubit.rateSetsRepository.deleteRateSetbyID(id);
   // }
 
-  deleteWorker(RateSetsModel worker) {
+  deleteWorker(RateSetsModel rateset) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.ratesetName}'?",
+      "Do you want to delete '${rateset.ratesetName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);

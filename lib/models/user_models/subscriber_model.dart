@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:isar/isar.dart';
 
+part 'subscriber_model.g.dart';
+
 @collection
 class SubscriberModel {
   Id isarId = Isar.autoIncrement;
@@ -11,7 +13,7 @@ class SubscriberModel {
   String? email;
 
   SubscriberModel({
-    required this.isarId,
+    this.isarId = Isar.autoIncrement,
     this.name,
     this.mobile,
     this.email,

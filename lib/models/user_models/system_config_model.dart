@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:isar/isar.dart';
 
+part 'system_config_model.g.dart';
+
 @collection
 class SystemConfigModel {
   Id isarID = Isar.autoIncrement;

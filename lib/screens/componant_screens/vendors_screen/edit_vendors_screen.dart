@@ -109,6 +109,7 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
         bankBranch: bankBranchController.text,
         ifscCode: bankIFSCController.text,
       ),
+      id: widget.item.id,
     );
     EasyLoading.showToast(
       'Vendor Updated',

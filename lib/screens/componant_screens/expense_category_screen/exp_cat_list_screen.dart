@@ -32,7 +32,7 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.vendorRepository.deleteVendor(e.id);
+        dbCubit.expenseCategoryRepository.deleteExpensecategory(e.id);
         EasyLoading.showToast('Expense category deleted');
         context.pop();
       },
@@ -60,7 +60,8 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
         title: const Text('Manage Expense categories'),
         actions: [
           TextButton.icon(
-            onPressed: () => context.push(AppScreen.createExpenseScreen.path),
+            onPressed: () =>
+                context.push(AppScreen.createExpenseCategoryScreen.path),
             label: const Text('Add category'),
             icon: const Icon(Icons.add),
           ),

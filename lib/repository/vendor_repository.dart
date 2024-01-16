@@ -16,9 +16,10 @@ class VendorRepository {
     db.writeTxnSync(() => db.vendorModels.putSync(model));
   }
 
-  editVendor({required VendorModel model}) async {
-    VendorModel? dbItem = await db.vendorModels.get(model.id);
+  editVendor({required int id, required VendorModel model}) async {
+    VendorModel? dbItem = await db.vendorModels.get(id);
     log(dbItem!.id.toString());
+    log(model!.id.toString());
     if (dbItem != null) {
       dbItem = model;
       log('in to fun');

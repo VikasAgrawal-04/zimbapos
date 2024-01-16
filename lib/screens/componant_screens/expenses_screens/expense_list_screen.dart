@@ -82,7 +82,7 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                   label: Text('Bill date'),
                 ),
                 const DataColumn(
-                  label: Text('Bill number'),
+                  label: Text('Paid by'),
                 ),
                 const DataColumn(
                   label: Text('Amount'),
@@ -98,8 +98,11 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                   .map(
                     (e) => DataRow(
                       cells: [
-                        DataCell(Text(e.billDate.toString())),
-                        DataCell(Text(e.billNumber.toString())),
+                        DataCell(
+                          Text(
+                              "${e.entryDatetime!.day}/${e.entryDatetime!.month}/${e.entryDatetime!.year}"),
+                        ),
+                        DataCell(Text(e.payMode.toString())),
                         DataCell(Text(e.amount.toString())),
                         DataCell(
                           Container(

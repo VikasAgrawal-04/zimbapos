@@ -16,8 +16,9 @@ class ExpenseCategoryRepository {
     db.writeTxnSync(() => db.expenseCategoryModels.putSync(model));
   }
 
-  editExpensecategory({required ExpenseCategoryModel model}) async {
-    ExpenseCategoryModel? dbItem = await db.expenseCategoryModels.get(model.id);
+  editExpensecategory(
+      {required int id, required ExpenseCategoryModel model}) async {
+    ExpenseCategoryModel? dbItem = await db.expenseCategoryModels.get(id);
     if (dbItem != null) {
       dbItem = model;
       log('in to fun');
@@ -29,6 +30,10 @@ class ExpenseCategoryRepository {
     db.writeTxnSync(() {
       db.expenseCategoryModels.deleteSync(id);
     });
+  }
+
+  Future<List<ExpenseCategoryModel?>> getExpenseCatList() async {
+    return await db.expenseCategoryModels.where().findAll();
   }
 
   changeActive(int id, bool isActive) async {

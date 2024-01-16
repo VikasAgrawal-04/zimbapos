@@ -49,7 +49,7 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
     final dbCubit = DatabaseCubit.dbFrom(context);
     dbCubit.workerRepository.createWorker(
       model: WorkersModel(
-        outletId: 12341234,
+        outletId: '12341234',
         workerId: const Uuid().v1(),
         workerName: nameController.text,
         createdByUserID: 'Suyash',

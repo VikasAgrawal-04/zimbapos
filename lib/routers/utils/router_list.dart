@@ -14,6 +14,7 @@ import 'package:zimbapos/screens/componant_screens/area_screen/create_area_scree
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';

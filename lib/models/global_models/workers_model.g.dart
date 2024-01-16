@@ -55,7 +55,7 @@ const WorkersModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 7,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'password': PropertySchema(
       id: 8,
@@ -99,9 +99,20 @@ int _workersModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.createdByUserID.length * 3;
-  bytesCount += 3 + object.loginCode.length * 3;
+  {
+    final value = object.loginCode;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.mobile.length * 3;
-  bytesCount += 3 + object.password.length * 3;
+  bytesCount += 3 + object.outletId.length * 3;
+  {
+    final value = object.password;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.workerId;
     if (value != null) {
@@ -126,7 +137,7 @@ void _workersModelSerialize(
   writer.writeBool(offsets[4], object.isDeleted);
   writer.writeString(offsets[5], object.loginCode);
   writer.writeString(offsets[6], object.mobile);
-  writer.writeLong(offsets[7], object.outletId);
+  writer.writeString(offsets[7], object.outletId);
   writer.writeString(offsets[8], object.password);
   writer.writeString(offsets[9], object.workerId);
   writer.writeString(offsets[10], object.workerName);
@@ -144,11 +155,11 @@ WorkersModel _workersModelDeserialize(
     createdByUserID: reader.readString(offsets[1]),
     id: id,
     isActive: reader.readBoolOrNull(offsets[3]) ?? true,
-    isDeleted: reader.readBoolOrNull(offsets[4]) ?? true,
-    loginCode: reader.readString(offsets[5]),
+    isDeleted: reader.readBoolOrNull(offsets[4]) ?? false,
+    loginCode: reader.readStringOrNull(offsets[5]),
     mobile: reader.readString(offsets[6]),
-    outletId: reader.readLong(offsets[7]),
-    password: reader.readString(offsets[8]),
+    outletId: reader.readString(offsets[7]),
+    password: reader.readStringOrNull(offsets[8]),
     workerId: reader.readStringOrNull(offsets[9]),
     workerName: reader.readString(offsets[10]),
     workerRole: reader.readString(offsets[11]),
@@ -172,15 +183,15 @@ P _workersModelDeserializeProp<P>(
     case 3:
       return (reader.readBoolOrNull(offset) ?? true) as P;
     case 4:
-      return (reader.readBoolOrNull(offset) ?? true) as P;
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 5:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
       return (reader.readString(offset)) as P;
     case 7:
-      return (reader.readLong(offset)) as P;
-    case 8:
       return (reader.readString(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
     case 9:
       return (reader.readStringOrNull(offset)) as P;
     case 10:
@@ -562,8 +573,26 @@ extension WorkersModelQueryFilter
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      loginCodeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'loginCode',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      loginCodeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'loginCode',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       loginCodeEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -577,7 +606,7 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       loginCodeGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -593,7 +622,7 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       loginCodeLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -609,8 +638,8 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       loginCodeBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -833,49 +862,58 @@ extension WorkersModelQueryFilter
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
-      outletIdEqualTo(int value) {
+      outletIdEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       outletIdLessThan(
-    int value, {
+    String value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       outletIdBetween(
-    int lower,
-    int upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -884,13 +922,102 @@ extension WorkersModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      passwordIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'password',
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
+      passwordIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'password',
       ));
     });
   }
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       passwordEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -904,7 +1031,7 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       passwordGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -920,7 +1047,7 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       passwordLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -936,8 +1063,8 @@ extension WorkersModelQueryFilter
 
   QueryBuilder<WorkersModel, WorkersModel, QAfterFilterCondition>
       passwordBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1824,9 +1951,10 @@ extension WorkersModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<WorkersModel, WorkersModel, QDistinct> distinctByOutletId() {
+  QueryBuilder<WorkersModel, WorkersModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
@@ -1898,7 +2026,7 @@ extension WorkersModelQueryProperty
     });
   }
 
-  QueryBuilder<WorkersModel, String, QQueryOperations> loginCodeProperty() {
+  QueryBuilder<WorkersModel, String?, QQueryOperations> loginCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'loginCode');
     });
@@ -1910,13 +2038,13 @@ extension WorkersModelQueryProperty
     });
   }
 
-  QueryBuilder<WorkersModel, int, QQueryOperations> outletIdProperty() {
+  QueryBuilder<WorkersModel, String, QQueryOperations> outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });
   }
 
-  QueryBuilder<WorkersModel, String, QQueryOperations> passwordProperty() {
+  QueryBuilder<WorkersModel, String?, QQueryOperations> passwordProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'password');
     });

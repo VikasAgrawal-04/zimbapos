@@ -39,7 +39,6 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Rate Sets'),

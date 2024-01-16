@@ -7,10 +7,10 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
+import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
 class AreasOverviewScreen extends StatefulWidget {
   const AreasOverviewScreen({super.key});
@@ -48,15 +48,15 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
   //   datatbaseCubit.areasRepository.deleteAreabyID(id);
   // }
 
-  deleteWorker(AreasModel worker) {
+  deleteWorker(AreasModel area) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.areaName}'?",
+      "Do you want to delete '${area.areaName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.areasRepository.deleteAreabyID(worker.id);
+        dbCubit.areasRepository.deleteAreabyID(area.id);
         EasyLoading.showToast('Area deleted');
         context.pop();
       },
@@ -77,10 +77,8 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
     );
   }
 
-  //
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Areas'),

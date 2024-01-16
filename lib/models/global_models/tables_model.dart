@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'tables_model.g.dart';
 
@@ -17,7 +16,7 @@ class TableModel {
   int? persons;
   DateTime? tableStartedAt;
   String? customerName;
-  String? customerId = const Uuid().v1();
+  String? customerId;
   bool? isActive;
   bool? isDeleted;
   TableModel({
@@ -31,6 +30,7 @@ class TableModel {
     this.persons,
     this.tableStartedAt,
     this.customerName,
+    this.customerId,
     this.isActive = true,
     this.isDeleted = false,
   });
@@ -46,6 +46,7 @@ class TableModel {
     int? persons,
     DateTime? tableStartedAt,
     String? customerName,
+    String? customerId,
     bool? isActive,
     bool? isDeleted,
   }) {
@@ -60,6 +61,7 @@ class TableModel {
       persons: persons ?? this.persons,
       tableStartedAt: tableStartedAt ?? this.tableStartedAt,
       customerName: customerName ?? this.customerName,
+      customerId: customerId ?? this.customerId,
       isActive: isActive ?? this.isActive,
       isDeleted: isDeleted ?? this.isDeleted,
     );
@@ -77,6 +79,7 @@ class TableModel {
       'persons': persons,
       'tableStartedAt': tableStartedAt?.millisecondsSinceEpoch,
       'customerName': customerName,
+      'customerId': customerId,
       'isActive': isActive,
       'isDeleted': isDeleted,
     };
@@ -98,6 +101,8 @@ class TableModel {
           : null,
       customerName:
           map['customerName'] != null ? map['customerName'] as String : null,
+      customerId:
+          map['customerId'] != null ? map['customerId'] as String : null,
       isActive: map['isActive'] != null ? map['isActive'] as bool : true,
       isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );
@@ -110,7 +115,7 @@ class TableModel {
 
   @override
   String toString() {
-    return 'TableModel(id: $id, outletId: $outletId, tableId: $tableId, tableName: $tableName, areaId: $areaId, tableStatus: $tableStatus, isSplit: $isSplit, persons: $persons, tableStartedAt: $tableStartedAt, customerName: $customerName, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'TableModel(id: $id, outletId: $outletId, tableId: $tableId, tableName: $tableName, areaId: $areaId, tableStatus: $tableStatus, isSplit: $isSplit, persons: $persons, tableStartedAt: $tableStartedAt, customerName: $customerName, customerId: $customerId, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -127,6 +132,7 @@ class TableModel {
         other.persons == persons &&
         other.tableStartedAt == tableStartedAt &&
         other.customerName == customerName &&
+        other.customerId == customerId &&
         other.isActive == isActive &&
         other.isDeleted == isDeleted;
   }
@@ -143,6 +149,7 @@ class TableModel {
         persons.hashCode ^
         tableStartedAt.hashCode ^
         customerName.hashCode ^
+        customerId.hashCode ^
         isActive.hashCode ^
         isDeleted.hashCode;
   }

@@ -32,15 +32,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
   //   datatbaseCubit.categoryRepository.deleteCategory(id);
   // }
 
-  deleteWorker(CategoryModel worker) {
+  deleteWorker(CategoryModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.categoryName}'?",
+      "Do you want to delete '${e.categoryName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.categoryRepository.deleteCategory(worker.id);
+        dbCubit.categoryRepository.deleteCategory(e.id);
         EasyLoading.showToast('Category deleted');
         context.pop();
       },

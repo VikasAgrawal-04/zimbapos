@@ -32,15 +32,15 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
   //   datatbaseCubit.rateSetsRepository.deleteRateSetbyID(id);
   // }
 
-  deleteWorker(RateSetsModel worker) {
+  deleteWorker(RateSetsModel rateset) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.ratesetName}'?",
+      "Do you want to delete '${rateset.ratesetName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.rateSetsRepository.deleteRateSetbyID(worker.id);
+        dbCubit.rateSetsRepository.deleteRateSetbyID(rateset.ratesetId);
         EasyLoading.showToast('Rate set deleted');
         context.pop();
       },
@@ -63,7 +63,6 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Rate Sets'),

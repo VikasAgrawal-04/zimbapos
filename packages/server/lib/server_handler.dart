@@ -23,16 +23,25 @@ class Server {
   }
 
   Future<void> runServer() async {
-    final handler = const Pipeline()
-        .addMiddleware(logRequests())
-        .addMiddleware(corsHeaders())
-        .addHandler(router);
-    var internetAddress = InternetAddress.anyIPv4;
-    print('Server Running on : $internetAddress:8080');
-    await shelf_io.serve(
-      handler,
-      InternetAddress.anyIPv4,
-      8080,
-    );
+    if (!(await isServerRunning('0.0.0.0', 8080))) {
+      final handler = const Pipeline()
+          .addMiddleware(logRequests())
+          .addMiddleware(corsHeaders())
+          .addHandler(router);
+      await shelf_io.serve(
+        handler,
+        InternetAddress.anyIPv4,
+        8080,
+      );
+    }
+  }
+
+  Future<bool> isServerRunning(String address, int port) async {
+    try {
+      await Socket.connect(address, port);
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 }

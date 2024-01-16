@@ -6,23 +6,30 @@ class TableRepository {
   TableRepository(this.db);
 
   Stream<List<TableModel>> streamTables() {
-    return db.tableModels.where().watch(fireImmediately: true);
+    return db.tableModels
+        .filter()
+        .isDeletedEqualTo(false)
+        .watch(fireImmediately: true);
   }
 
   Future<List<TableModel>> getAllTables() async {
-    return await db.tableModels.where().findAll();
+    return await db.tableModels.filter().isDeletedEqualTo(false).findAll();
   }
 
   createTable({required TableModel data}) {
     db.writeTxnSync(() => db.tableModels.putSync(data));
   }
 
-  updateTable({required TableModel data}) async {
-    TableModel? dbItem = await db.tableModels.get(data.id);
+  Future<void> updateTable({required TableModel data}) async {
+    final dbItem = await db.tableModels
+        .filter()
+        .tableIdEqualTo(data.tableId)
+        .isDeletedEqualTo(false)
+        .findFirst();
     if (dbItem != null) {
       dbItem.tableName = data.tableName;
       dbItem.areaId = data.areaId;
-
+      dbItem.isActive = data.isActive;
       db.writeTxnSync(() => db.tableModels.putSync(dbItem));
     }
   }
@@ -37,9 +44,12 @@ class TableRepository {
     }
   }
 
-  deleteTable(int id) async {
-    db.writeTxnSync(() {
-      db.tableModels.deleteSync(id);
-    });
+  deleteTable(String? tableId) async {
+    final model =
+        await db.tableModels.filter().tableIdEqualTo(tableId).findFirst();
+    if (model != null) {
+      model.isDeleted = true;
+      db.writeTxnSync(() => db.tableModels.putSync(model));
+    }
   }
 }

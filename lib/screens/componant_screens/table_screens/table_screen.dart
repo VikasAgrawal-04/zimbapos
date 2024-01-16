@@ -27,20 +27,20 @@ class _TableScreenState extends State<TableScreen> {
     datatbaseCubit.tableRepository.changeActive(id, value);
   }
 
-  deleteFn(int id) {
+  deleteFn(String? id) {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
     datatbaseCubit.tableRepository.deleteTable(id);
   }
 
-  deleteWorker(TableModel worker) {
+  deleteWorker(TableModel table) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.tableName}'?",
+      "Do you want to delete '${table.tableName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.workerRepository.deleteWorker(worker.id);
+        dbCubit.workerRepository.deleteWorker(table.id);
         EasyLoading.showToast('Table deleted');
         context.pop();
       },

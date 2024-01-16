@@ -19,5 +19,7 @@ class TablesRoutes {
   void initialiseApi() {
     locRoute.get('/get-tables', controller.fetchAllTables);
     locRoute.post('/create-table', controller.createTable);
+    locRoute.post('/update-table', controller.updateTable);
+    locRoute.delete('/delete-table', controller.deleteTable);
   }
 }

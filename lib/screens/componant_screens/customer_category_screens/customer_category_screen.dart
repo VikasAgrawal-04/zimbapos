@@ -40,7 +40,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.customerRepository.deleteCusCat(worker.custCategoryId);
+        dbCubit.customerRepository.deleteCusCat(e.custCategoryId);
         EasyLoading.showToast('Customer category deleted');
         context.pop();
       },

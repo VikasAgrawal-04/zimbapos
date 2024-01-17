@@ -123,7 +123,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                     (e) => DataRow(
                       cells: [
                         DataCell(Text(e.areaName.toString())),
-                        DataCell(Text("${e.exchangePercent.toString()}%")),
+                        DataCell(Text("${e.extraChargePercent.toString()}%")),
                         DataCell(
                           Switch.adaptive(
                             value: e.isActive as bool,
@@ -168,7 +168,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
           //       children: [
           //         //exchange percent
           //         Text(
-          //           "Extra charge:  ${list[index].exchangePercent.toString()}%",
+          //           "Extra charge:  ${list[index].extraChargePercent.toString()}%",
           //           style: const TextStyle(
           //             color: Colors.black54,
           //           ),

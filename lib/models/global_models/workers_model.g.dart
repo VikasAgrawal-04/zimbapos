@@ -83,7 +83,34 @@ const WorkersModelSchema = CollectionSchema(
   deserialize: _workersModelDeserialize,
   deserializeProp: _workersModelDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'mobile': IndexSchema(
+      id: -2496727240025828292,
+      name: r'mobile',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'mobile',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    ),
+    r'loginCode': IndexSchema(
+      id: 7497855378709731538,
+      name: r'loginCode',
+      unique: true,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'loginCode',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _workersModelGetId,
@@ -216,6 +243,114 @@ void _workersModelAttach(
   object.id = id;
 }
 
+extension WorkersModelByIndex on IsarCollection<WorkersModel> {
+  Future<WorkersModel?> getByMobile(String mobile) {
+    return getByIndex(r'mobile', [mobile]);
+  }
+
+  WorkersModel? getByMobileSync(String mobile) {
+    return getByIndexSync(r'mobile', [mobile]);
+  }
+
+  Future<bool> deleteByMobile(String mobile) {
+    return deleteByIndex(r'mobile', [mobile]);
+  }
+
+  bool deleteByMobileSync(String mobile) {
+    return deleteByIndexSync(r'mobile', [mobile]);
+  }
+
+  Future<List<WorkersModel?>> getAllByMobile(List<String> mobileValues) {
+    final values = mobileValues.map((e) => [e]).toList();
+    return getAllByIndex(r'mobile', values);
+  }
+
+  List<WorkersModel?> getAllByMobileSync(List<String> mobileValues) {
+    final values = mobileValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'mobile', values);
+  }
+
+  Future<int> deleteAllByMobile(List<String> mobileValues) {
+    final values = mobileValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'mobile', values);
+  }
+
+  int deleteAllByMobileSync(List<String> mobileValues) {
+    final values = mobileValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'mobile', values);
+  }
+
+  Future<Id> putByMobile(WorkersModel object) {
+    return putByIndex(r'mobile', object);
+  }
+
+  Id putByMobileSync(WorkersModel object, {bool saveLinks = true}) {
+    return putByIndexSync(r'mobile', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByMobile(List<WorkersModel> objects) {
+    return putAllByIndex(r'mobile', objects);
+  }
+
+  List<Id> putAllByMobileSync(List<WorkersModel> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'mobile', objects, saveLinks: saveLinks);
+  }
+
+  Future<WorkersModel?> getByLoginCode(String? loginCode) {
+    return getByIndex(r'loginCode', [loginCode]);
+  }
+
+  WorkersModel? getByLoginCodeSync(String? loginCode) {
+    return getByIndexSync(r'loginCode', [loginCode]);
+  }
+
+  Future<bool> deleteByLoginCode(String? loginCode) {
+    return deleteByIndex(r'loginCode', [loginCode]);
+  }
+
+  bool deleteByLoginCodeSync(String? loginCode) {
+    return deleteByIndexSync(r'loginCode', [loginCode]);
+  }
+
+  Future<List<WorkersModel?>> getAllByLoginCode(List<String?> loginCodeValues) {
+    final values = loginCodeValues.map((e) => [e]).toList();
+    return getAllByIndex(r'loginCode', values);
+  }
+
+  List<WorkersModel?> getAllByLoginCodeSync(List<String?> loginCodeValues) {
+    final values = loginCodeValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'loginCode', values);
+  }
+
+  Future<int> deleteAllByLoginCode(List<String?> loginCodeValues) {
+    final values = loginCodeValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'loginCode', values);
+  }
+
+  int deleteAllByLoginCodeSync(List<String?> loginCodeValues) {
+    final values = loginCodeValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'loginCode', values);
+  }
+
+  Future<Id> putByLoginCode(WorkersModel object) {
+    return putByIndex(r'loginCode', object);
+  }
+
+  Id putByLoginCodeSync(WorkersModel object, {bool saveLinks = true}) {
+    return putByIndexSync(r'loginCode', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByLoginCode(List<WorkersModel> objects) {
+    return putAllByIndex(r'loginCode', objects);
+  }
+
+  List<Id> putAllByLoginCodeSync(List<WorkersModel> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'loginCode', objects, saveLinks: saveLinks);
+  }
+}
+
 extension WorkersModelQueryWhereSort
     on QueryBuilder<WorkersModel, WorkersModel, QWhere> {
   QueryBuilder<WorkersModel, WorkersModel, QAfterWhere> anyId() {
@@ -291,6 +426,118 @@ extension WorkersModelQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterWhereClause> mobileEqualTo(
+      String mobile) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'mobile',
+        value: [mobile],
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterWhereClause> mobileNotEqualTo(
+      String mobile) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mobile',
+              lower: [],
+              upper: [mobile],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mobile',
+              lower: [mobile],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mobile',
+              lower: [mobile],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'mobile',
+              lower: [],
+              upper: [mobile],
+              includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterWhereClause>
+      loginCodeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'loginCode',
+        value: [null],
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterWhereClause>
+      loginCodeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'loginCode',
+        lower: [null],
+        includeLower: false,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterWhereClause> loginCodeEqualTo(
+      String? loginCode) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'loginCode',
+        value: [loginCode],
+      ));
+    });
+  }
+
+  QueryBuilder<WorkersModel, WorkersModel, QAfterWhereClause>
+      loginCodeNotEqualTo(String? loginCode) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'loginCode',
+              lower: [],
+              upper: [loginCode],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'loginCode',
+              lower: [loginCode],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'loginCode',
+              lower: [loginCode],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'loginCode',
+              lower: [],
+              upper: [loginCode],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }

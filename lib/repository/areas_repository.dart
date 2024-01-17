@@ -6,7 +6,14 @@ class AreasRepository {
   AreasRepository(this.db);
 
   Stream<List<AreasModel>> streamAreas() {
-    return db.areasModels.where().watch(fireImmediately: true);
+    return db.areasModels
+        .filter()
+        .isDeletedEqualTo(false)
+        .watch(fireImmediately: true);
+  }
+
+  Future<List<AreasModel>> getAreas() {
+    return db.areasModels.filter().isDeletedEqualTo(false).findAll();
   }
 
   createArea({required AreasModel model}) {
@@ -17,10 +24,6 @@ class AreasRepository {
 
   Future<AreasModel?> getAreabyID(int id) async {
     return await db.areasModels.get(id);
-  }
-
-  Future<List<AreasModel?>> getAreaList() async {
-    return await db.areasModels.where().findAll();
   }
 
   changeActiveArea(int id, bool isActive) async {
@@ -42,7 +45,7 @@ class AreasRepository {
   updateArea(int id,
       {String? areaName,
       double? exchangePercent,
-      int? rateSetId,
+      String? rateSetId,
       bool? isActive}) async {
     //fetch the correct model from db
     AreasModel? model = await db.areasModels.get(id);
@@ -52,7 +55,7 @@ class AreasRepository {
         model.areaName = areaName;
       }
       if (exchangePercent != null) {
-        model.exchangePercent = exchangePercent;
+        model.extraChargePercent = exchangePercent;
       }
       if (rateSetId != null) {
         model.rateSetId = rateSetId;

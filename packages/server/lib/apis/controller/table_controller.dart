@@ -86,8 +86,8 @@ class TableController {
             body:
                 jsonEncode({"data": 'Please Enter Table Id as a key tableId'}));
       }
-      final tableId = request.url.queryParameters['tableId'];
-      dbCubit.tableRepository.deleteTable(tableId);
+      final tableId = request.url.queryParameters['id'];
+      dbCubit.tableRepository.deleteTable(int.parse(tableId.toString()));
       return Response.ok(jsonEncode({'data': 'Table Deleted!'}));
     } catch (e, s) {
       debugPrint(e.toString());

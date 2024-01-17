@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -115,7 +116,7 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
                 SizedBox(height: screenSize.height * 0.02),
                 //dropdown for ratesets
                 SizedBox(
-                  height: 50,
+                  // height: 50,
                   width: screenSize.width,
                   child: FutureBuilder<List<RateSetsModel?>>(
                     future: getAllRateSets(),
@@ -129,20 +130,37 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
 
                         return Column(
                           children: [
-                            DropdownButton<int>(
-                              value: selectedRateSetId,
-                              hint: const Text("Choose a rate"),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  selectedRateSetId = newValue;
-                                });
-                              },
-                              items: rateSets.map((rateSet) {
-                                return DropdownMenuItem<int>(
-                                  value: rateSet!.id,
-                                  child: Text(rateSet.ratesetName ?? 'error'),
-                                );
-                              }).toList(),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(
+                                  color: KColors.buttonColor,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int>(
+                                  value: selectedRateSetId,
+                                  isExpanded: true,
+                                  hint: const Text("Choose a rate"),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectedRateSetId = newValue;
+                                    });
+                                  },
+                                  items: rateSets.map((rateSet) {
+                                    return DropdownMenuItem<int>(
+                                      value: rateSet!.id,
+                                      child:
+                                          Text(rateSet.ratesetName ?? 'error'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
                             ),
                           ],
                         );

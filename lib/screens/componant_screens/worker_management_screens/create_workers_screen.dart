@@ -9,6 +9,7 @@ import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/primary_textfield.dart';
 
+import '../../../constants/kcolors.dart';
 import '../../../widgets/my_snackbar_widget.dart';
 
 class CreateWorkerScreen extends StatefulWidget {
@@ -111,34 +112,49 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
                 onChanged: (value) {},
               ),
               SizedBox(height: 5.h),
-              DropdownButton(
-                value: dropDownValue,
-                enableFeedback: true,
-                isExpanded: true,
-                hint: const Text('Select Role'),
-                items: const [
-                  DropdownMenuItem(
-                    value: 'W',
-                    child: Text('Waiter'),
+              Container(
+                padding: const EdgeInsets.all(8),
+                alignment: Alignment.center,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  border: Border.all(
+                    color: KColors.buttonColor,
+                    width: 1.0,
                   ),
-                  DropdownMenuItem(
-                    value: 'C',
-                    child: Text('Caption'),
+                  borderRadius: BorderRadius.circular(14.0),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    value: dropDownValue,
+                    enableFeedback: true,
+                    isExpanded: true,
+                    hint: const Text('Select Role'),
+                    items: const [
+                      DropdownMenuItem(
+                        value: 'W',
+                        child: Text('Waiter'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'C',
+                        child: Text('Caption'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'D',
+                        child: Text('Delivery Boy'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'S',
+                        child: Text('Steward'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        dropDownValue = value;
+                      });
+                    },
                   ),
-                  DropdownMenuItem(
-                    value: 'D',
-                    child: Text('Delivery Boy'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'S',
-                    child: Text('Steward'),
-                  ),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    dropDownValue = value;
-                  });
-                },
+                ),
               ),
               SizedBox(height: 5.h),
               PrimaryTextField(

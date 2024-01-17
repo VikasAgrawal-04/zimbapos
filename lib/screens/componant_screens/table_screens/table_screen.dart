@@ -27,12 +27,12 @@ class _TableScreenState extends State<TableScreen> {
     datatbaseCubit.tableRepository.changeActive(id, value);
   }
 
-  deleteFn(String? id) {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    datatbaseCubit.tableRepository.deleteTable(id);
-  }
+  // deleteFn(String? id) {
+  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
+  //   datatbaseCubit.tableRepository.deleteTable(id);
+  // }
 
-  deleteWorker(TableModel table) {
+  deleteTable(TableModel table) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
@@ -40,7 +40,7 @@ class _TableScreenState extends State<TableScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.workerRepository.deleteWorker(table.tableId);
+        dbCubit.tableRepository.deleteTable(table.id);
         EasyLoading.showToast('Table deleted');
         context.pop();
       },
@@ -90,7 +90,7 @@ class _TableScreenState extends State<TableScreen> {
                     label: Text('Name'),
                   ),
                   // const DataColumn(
-                  //   label: Text('Role'),
+                  //   label: Text('Area'),
                   // ),
                   const DataColumn(
                     label: Text('Active'),
@@ -107,7 +107,7 @@ class _TableScreenState extends State<TableScreen> {
                       (e) => DataRow(
                         cells: [
                           DataCell(Text(e.tableName.toString())),
-                          // DataCell(Text(e.workerRoleDisplay(e.workerRole))),
+                          // DataCell(Text(e.areaId.toString())),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,
@@ -129,7 +129,7 @@ class _TableScreenState extends State<TableScreen> {
                                   ),
                                   SizedBox(width: 2.w),
                                   IconButton(
-                                    onPressed: () => deleteWorker(e),
+                                    onPressed: () => deleteTable(e),
                                     icon: const Icon(CupertinoIcons.delete),
                                   )
                                 ],

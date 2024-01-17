@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 
@@ -45,12 +47,16 @@ class TableRepository {
     }
   }
 
-  deleteTable(String? tableId) async {
-    final model =
-        await db.tableModels.filter().tableIdEqualTo(tableId).findFirst();
-    if (model != null) {
-      model.isDeleted = true;
-      db.writeTxnSync(() => db.tableModels.putSync(model));
-    }
+  deleteTable(int id) async {
+    // final model =
+    //     await db.tableModels.filter().tableIdEqualTo(tableId).findFirst();
+    // if (model != null) {
+    //   model.isDeleted = true;
+    //   db.writeTxnSync(() => db.tableModels.putSync(model));
+    // }
+    log(id.toString());
+    db.writeTxnSync(() {
+      db.tableModels.deleteSync(id);
+    });
   }
 }

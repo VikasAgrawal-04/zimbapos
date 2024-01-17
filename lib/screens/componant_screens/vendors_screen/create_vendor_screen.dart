@@ -119,7 +119,7 @@ class _CreateVendorScreenState extends State<CreateVendorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Vendor'),
+        title: const Text('Save'),
       ),
       bottomNavigationBar: CustomButton(
           text: "Create vendor",

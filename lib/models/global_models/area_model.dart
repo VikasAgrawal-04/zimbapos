@@ -16,17 +16,15 @@ class AreasModel {
   // final rateSet = IsarLinks.toMany<RateSetsModel>();
 
   AreasModel({
+    Id id = Isar.autoIncrement,
     this.outletId,
     this.areaId,
     this.areaName,
     this.rateSetId,
     this.exchangePercent,
-    this.isActive,
+    this.isActive = true,
     this.isDeleted,
-  }) {
-    isActive = true;
-    isDeleted = false;
-  }
+  });
 
   factory AreasModel.fromJson(Map<String, dynamic> json) {
     return AreasModel(
@@ -39,6 +37,7 @@ class AreasModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'areaId': areaId,
       'areaName': areaName,
       'rateSet': rateSetId,

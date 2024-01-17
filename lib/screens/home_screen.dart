@@ -227,16 +227,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               }
 
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                 ),
-                              ),
-                              onPressed: () => openAddScreen(index, context),
-                              child: const Icon(CupertinoIcons.add),
-                            );
-                          },
+                                onPressed: () => openAddScreen(index, context),
+                                child: const Icon(CupertinoIcons.add),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       CustomButtonNew(

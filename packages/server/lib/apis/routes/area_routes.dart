@@ -18,8 +18,8 @@ class AreaRoutes {
 
   void initialiseApi() {
     locRoute.get('/get-area', controller.fetchAllArea);
-    // locRoute.post('/create-area', controller.createArea);
-    // locRoute.post('/update-area', controller.updateArea);
-    // locRoute.delete('/delete-area', controller.deleteArea);
+    locRoute.post('/create-area', controller.createArea);
+    locRoute.post('/update-area', controller.updateArea);
+    locRoute.delete('/delete-area', controller.deleteArea);
   }
 }

@@ -66,18 +66,14 @@ class RateSetsRepository {
     }
   }
 
-  Future<void> deleteRateSetbyID(int id) async {
-    //   final model =
-    //       await db.rateSetsModels.filter().ratesetIdEqualTo(id).findFirst();
-    //   if (model != null) {
-    //     db.writeTxnSync(() {
-    //       model.isDeleted = true;
-    //       db.rateSetsModels.putSync(model);
-    //     });
-    //   }
-    log(id.toString());
-    db.writeTxnSync(() {
-      db.rateSetsModels.deleteSync(id);
-    });
+  Future<void> deleteRateSetbyID(String? id) async {
+    final model =
+        await db.rateSetsModels.filter().ratesetIdEqualTo(id).findFirst();
+    if (model != null) {
+      db.writeTxnSync(() {
+        model.isDeleted = true;
+        db.rateSetsModels.putSync(model);
+      });
+    }
   }
 }

@@ -205,6 +205,7 @@ class Helpers {
   static String generateUuId() {
     return const Uuid().v1();
   }
+
 }
 
 class NumberInputFormat extends TextInputFormatter {

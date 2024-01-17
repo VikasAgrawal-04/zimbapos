@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:server/apis/helper/api_helper.dart';
 import 'package:shelf/shelf.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
@@ -17,7 +18,7 @@ class CustCatController {
       final cusCat = await dbCubit.customerRepository.getAllCusCat();
       return Response.ok(jsonEncode({'data': cusCat}));
     } catch (e) {
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 

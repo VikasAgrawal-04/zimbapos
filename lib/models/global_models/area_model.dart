@@ -63,6 +63,7 @@ class AreasModel {
   }
 
   factory AreasModel.fromMap(Map<String, dynamic> map) {
+    print("map['id']${map['id']}");
     return AreasModel(
       id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
@@ -70,10 +71,10 @@ class AreasModel {
       areaName: map['areaName'] != null ? map['areaName'] as String : null,
       rateSetId: map['rateSetId'] != null ? map['rateSetId'] as String : null,
       extraChargePercent: map['extraChargePercent'] != null
-          ? map['extraChargePercent'] as double
+          ? double.parse(map['extraChargePercent'].toString())
           : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
-      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : true,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );
   }
 

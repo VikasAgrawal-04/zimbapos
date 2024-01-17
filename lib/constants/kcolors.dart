@@ -12,6 +12,11 @@ class KColors {
   static const Color boderColor = Color(0xFFd1d1d1);
   static const Color chipBGColor = Color(0xFFd9f1f0);
   static const Color iconColor = Color(0xFF234F68);
+  static Color greenBlinkColor = hexToColor('#6ba850');
+
+  static Color hexToColor(String code) {
+    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }
 }
 
 

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:network_info_plus/network_info_plus.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_cubit.dart';
@@ -32,15 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   deleteHomeShortcut(int id) {
     final dbCubit = DatabaseCubit.dbFrom(context);
     return dbCubit.homeSc.deleteShortcutbyID(id);
-  }
-
-  Future<void> getWifiIPAddress() async {
-    final wifiIP = await NetworkInfo().getWifiIP();
-    if (wifiIP != null) {
-      print('Device IP Address: $wifiIP');
-    } else {
-      print('Device not connected to Wi-Fi.');
-    }
   }
 
   openAddScreen(int index, BuildContext context) {
@@ -108,7 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      scrollController = ScrollController();
+    });
   }
 
   @override
@@ -122,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (context) => HomeCubit(),
       child: Scaffold(
-        appBar: _buildAppbar(context),
+        appBar: _buildAppbar(),
         body: OrientationBuilder(
           builder: (context, orientation) =>
               StreamBuilder<List<HomeShortcutModel>>(
@@ -251,37 +243,43 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
-AppBar _buildAppbar(BuildContext context) {
-  return AppBar(
-    title: const Text('Home Screen'),
-    actions: [
-      IconButton(
-          onPressed: () {
-            // context.push(AppScreen.vendorScreen.path);
-            context.push(AppScreen.expenseCategoryScreen.path);
-            // context.push(AppScreen.expensesScreen.path);
-          },
-          icon: const Icon(Icons.open_in_new_outlined)),
-      BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-        return AnimatedOpacity(
-          opacity: state.animationValue,
-          duration: const Duration(milliseconds: 400),
-          child: AnimatedContainer(
-            margin: EdgeInsets.only(right: 4.w),
+  AppBar _buildAppbar() {
+    return AppBar(
+      title: const Text('Home Screen'),
+      actions: [
+        IconButton(
+            onPressed: () {
+              // context.push(AppScreen.vendorScreen.path);
+              context.push(AppScreen.expenseCategoryScreen.path);
+              // context.push(AppScreen.expensesScreen.path);
+            },
+            icon: const Icon(Icons.open_in_new_outlined)),
+        BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+          return AnimatedOpacity(
+            opacity: state.animationValue,
             duration: const Duration(milliseconds: 400),
-            width: 10.w,
-            height: 2.5.h,
-            decoration: BoxDecoration(
-              color: KColors.greenBlinkColor,
-              shape: BoxShape.circle,
+            child: AnimatedContainer(
+              margin: EdgeInsets.only(right: 4.w),
+              duration: const Duration(milliseconds: 400),
+              width: 10.w,
+              height: 2.5.h,
+              decoration: BoxDecoration(
+                color: KColors.greenBlinkColor,
+                shape: BoxShape.circle,
+              ),
             ),
-          ),
-        );
-      })
-    ],
-  );
+          );
+        }),
+        BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+          return Padding(
+            padding: EdgeInsets.only(right: 4.w),
+            child: Text('IP Address : ${state.ipAddress}'),
+          );
+        })
+      ],
+    );
+  }
 }
 
 List<HomeShortcutModel> screenList = [

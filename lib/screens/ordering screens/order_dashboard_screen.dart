@@ -10,6 +10,7 @@ class OrderDashboardScreen extends StatefulWidget {
 class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold();
     //   return DefaultTabController(
     //       length: apiControl.areas.length,
     //       child: Scaffold(

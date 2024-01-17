@@ -10,6 +10,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
@@ -27,7 +28,7 @@ Future<void> main() async {
       requestHeader: true,
     ));
     Helpers.dio = dio;
-    
+
     runApp(const MyApp());
   });
 }
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
                 child: BlocBuilder<DatabaseCubit, IsarService?>(
                   builder: (context, state) {
                     Server(context: context);
+                    if (state != null) {}
                     return MaterialApp.router(
                       debugShowCheckedModeBanner: false,
                       routerConfig: AppRouter.router,

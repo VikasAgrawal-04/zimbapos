@@ -9,11 +9,15 @@ class HomeShortcutrepository {
     return db.homeShortcutModels.where().watch(fireImmediately: true);
   }
 
+  List<HomeShortcutModel> getHome() {
+    return db.homeShortcutModels.where().findAllSync();
+  }
+
   void createShortcut({required HomeShortcutModel data}) async {
     var existingItem = await db.homeShortcutModels
-        .where()
         .filter()
         .userIdEqualTo(data.userId)
+        .and()
         .pathEqualTo(data.path)
         .findFirst();
     if (existingItem == null) {

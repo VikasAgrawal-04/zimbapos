@@ -6,6 +6,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -226,57 +227,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               }
 
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                onPressed: () => openAddScreen(index, context),
-                                child: const Icon(CupertinoIcons.add),
-                              );
-                            },
-                          ),
+                              ),
+                              onPressed: () => openAddScreen(index, context),
+                              child: const Icon(CupertinoIcons.add),
+                            );
+                          },
                         ),
                       ),
-                      // Expanded(
-                      //   flex: 2,
-                      //   child: Padding(
-                      //     padding: EdgeInsets.fromLTRB(0, 2.h, 0, 0),
-                      //     child: Column(
-                      //       mainAxisSize: MainAxisSize.min,
-                      //       children: [
-                      //         SizedBox(
-                      //           width: double.infinity,
-                      //           height: 10.h,
-                      //           child: ElevatedButton(
-                      //             style: ElevatedButton.styleFrom(
-                      //               shape: RoundedRectangleBorder(
-                      //                 borderRadius: BorderRadius.circular(12),
-                      //               ),
-                      //             ),
-                      //             onPressed: () {},
-                      //             child: const Text('Something'),
-                      //           ),
-                      //         ),
-                      //         SizedBox(height: 1.h),
-                      //         SizedBox(
-                      //           width: double.infinity,
-                      //           height: 10.h,
-                      //           child: ElevatedButton(
-                      //             style: ElevatedButton.styleFrom(
-                      //               shape: RoundedRectangleBorder(
-                      //                 borderRadius: BorderRadius.circular(12),
-                      //               ),
-                      //             ),
-                      //             onPressed: () {},
-                      //             child: const Text('Something'),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // )
+                      CustomButtonNew(
+                        margin: EdgeInsets.symmetric(vertical: 1.h),
+                        text: 'Ordering Dashboard',
+                        onTap: () {
+                          context
+                              .pushNamed(AppScreen.orderDashboardScreen.name);
+                        },
+                      )
                     ],
                   ),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
 import '../../../widgets/custom_button.dart';
@@ -15,6 +16,7 @@ class CreateRateSetsScreen extends StatefulWidget {
 }
 
 class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController nameController;
 
   @override
@@ -45,28 +47,35 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //rate set name
-            PrimaryTextField(
-              hintText: 'Rate set name',
-              controller: nameController,
-              onChanged: (value) {},
-            ),
-            // TextField(
-            //   controller: nameController,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //   ),
-            // ),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //rate set name
+              PrimaryTextField(
+                validator: nullCheckValidator,
+                hintText: 'Rate set name',
+                controller: nameController,
+                onChanged: (value) {},
+              ),
+              // TextField(
+              //   controller: nameController,
+              //   decoration: const InputDecoration(
+              //     border: OutlineInputBorder(),
+              //   ),
+              // ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => createRateSetFn(context),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              createRateSetFn(context);
+            }
+          }),
     );
   }
 }

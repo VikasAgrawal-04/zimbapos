@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 
 import '../../../widgets/custom_button.dart';
@@ -16,6 +17,8 @@ class CreateCategoryScreen extends StatefulWidget {
 }
 
 class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
+  //
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
 
   @override
@@ -40,32 +43,39 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //cat name
-            PrimaryTextField(
-              hintText: 'Category name',
-              controller: categoryName,
-              onChanged: (value) {},
-            ),
-            // TextField(
-            //   controller: categoryName,
-            //   decoration: const InputDecoration(
-            //       border: OutlineInputBorder(), hintText: 'Enter Category'),
-            // ),
-            SizedBox(height: 2.h),
-            // ElevatedButton(
-            //   onPressed: () => createCategory(context),
-            //   child: const Text('Create Category'),
-            // )
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //cat name
+              PrimaryTextField(
+                validator: nullCheckValidator,
+                hintText: 'Category name',
+                controller: categoryName,
+                onChanged: (value) {},
+              ),
+              // TextField(
+              //   controller: categoryName,
+              //   decoration: const InputDecoration(
+              //       border: OutlineInputBorder(), hintText: 'Enter Category'),
+              // ),
+              SizedBox(height: 2.h),
+              // ElevatedButton(
+              //   onPressed: () => createCategory(context),
+              //   child: const Text('Create Category'),
+              // )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => createCategory(context),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              createCategory(context);
+            }
+          }),
     );
   }
 }

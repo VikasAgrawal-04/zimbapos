@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
@@ -21,6 +22,7 @@ class UpdateCategoryScreen extends StatefulWidget {
 
 class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
   //
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
 
   @override
@@ -56,31 +58,38 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PrimaryTextField(
-              hintText: 'Category name',
-              controller: categoryName,
-              onChanged: (value) {},
-            ),
-            // TextField(
-            //   controller: categoryName,
-            //   decoration: const InputDecoration(
-            //       border: OutlineInputBorder(), hintText: 'Enter Category'),
-            // ),
-            SizedBox(height: 2.h),
-            // ElevatedButton(
-            //   onPressed: () => updateCategory(context),
-            //   child: const Text('Update Category'),
-            // )
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PrimaryTextField(
+                validator: nullCheckValidator,
+                hintText: 'Category name',
+                controller: categoryName,
+                onChanged: (value) {},
+              ),
+              // TextField(
+              //   controller: categoryName,
+              //   decoration: const InputDecoration(
+              //       border: OutlineInputBorder(), hintText: 'Enter Category'),
+              // ),
+              SizedBox(height: 2.h),
+              // ElevatedButton(
+              //   onPressed: () => updateCategory(context),
+              //   child: const Text('Update Category'),
+              // )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => updateCategory(context),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              updateCategory(context);
+            }
+          }),
     );
   }
 }

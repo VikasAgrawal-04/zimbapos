@@ -19,6 +19,7 @@ class ExpenseModel {
   bool? isDeleted;
 
   ExpenseModel({
+    this.id = Isar.autoIncrement,
     this.expenseId,
     this.entryDatetime,
     this.entryByUserId,
@@ -57,6 +58,7 @@ class ExpenseModel {
   // Convert an Expense instance to a Map
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'expenseId': expenseId,
       'entryDatetime': entryDatetime?.toIso8601String(),
       'entryByUserId': entryByUserId,

@@ -10,6 +10,7 @@ class ExpenseCategoryModel {
   bool? isDeleted;
 
   ExpenseCategoryModel({
+    this.id = Isar.autoIncrement,
     this.expenseCategoryId,
     required this.expenseCategoryName,
     this.isActive = true,
@@ -29,6 +30,7 @@ class ExpenseCategoryModel {
   // Convert an ExpenseCategory instance to a Map
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'expenseCategoryId': expenseCategoryId,
       'expenseCategoryName': expenseCategoryName,
       'isActive': isActive,

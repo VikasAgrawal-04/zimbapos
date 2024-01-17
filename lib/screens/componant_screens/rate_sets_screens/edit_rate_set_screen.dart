@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/helpers/validators.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/rate_sets_model.dart';
@@ -20,6 +21,7 @@ class EditRateSetScreen extends StatefulWidget {
 
 class _EditRateSetScreenState extends State<EditRateSetScreen> {
   //
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController nameController;
 
   @override
@@ -57,33 +59,40 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //rfate set name
-            PrimaryTextField(
-              hintText: 'Rate set name',
-              controller: nameController,
-              onChanged: (value) {},
-            ),
-            // TextField(
-            //   controller: nameController,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //   ),
-            // ),
-            SizedBox(height: screenSize.height * 0.2),
-            // ElevatedButton(
-            //   onPressed: () => updateRateSetFn(context),
-            //   child: const Text('Update Rate Set'),
-            // )
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //rfate set name
+              PrimaryTextField(
+                validator: nullCheckValidator,
+                hintText: 'Rate set name',
+                controller: nameController,
+                onChanged: (value) {},
+              ),
+              // TextField(
+              //   controller: nameController,
+              //   decoration: const InputDecoration(
+              //     border: OutlineInputBorder(),
+              //   ),
+              // ),
+              SizedBox(height: screenSize.height * 0.2),
+              // ElevatedButton(
+              //   onPressed: () => updateRateSetFn(context),
+              //   child: const Text('Update Rate Set'),
+              // )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => updateRateSetFn(context),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              updateRateSetFn(context);
+            }
+          }),
     );
   }
 }

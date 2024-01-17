@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/helpers/validators.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/vendor_model.dart';
@@ -121,9 +122,12 @@ class _CreateVendorScreenState extends State<CreateVendorScreen> {
         title: const Text('Create Vendor'),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Create vendor",
-        onPressed: () => createVendor(),
-      ),
+          text: "Create vendor",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              createVendor();
+            }
+          }),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.all(20),
@@ -133,6 +137,7 @@ class _CreateVendorScreenState extends State<CreateVendorScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               PrimaryTextField(
+                validator: nullCheckValidator,
                 hintText: 'Vendor Name',
                 controller: vendorNameController,
                 onChanged: (value) {},
@@ -222,7 +227,7 @@ class _CreateVendorScreenState extends State<CreateVendorScreen> {
                 controller: bankNameController,
                 onChanged: (value) {},
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               PrimaryTextField(
                 hintText: 'Bank branch',
                 controller: bankBranchController,

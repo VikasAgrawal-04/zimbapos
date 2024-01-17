@@ -86,8 +86,9 @@ class RateSetController {
             body: jsonEncode(
                 {"data": 'Please Enter Rate Set Id as a key ratesetId'}));
       }
-      final ratesetId = request.url.queryParameters['ratesetId'];
-      dbCubit.rateSetsRepository.deleteRateSetbyID(ratesetId);
+      final ratesetId = request.url.queryParameters['id'];
+      dbCubit.rateSetsRepository
+          .deleteRateSetbyID(int.parse(ratesetId.toString()));
       return Response.ok(jsonEncode({'data': 'Rate Set Deleted!'}));
     } catch (e, s) {
       debugPrint(e.toString());

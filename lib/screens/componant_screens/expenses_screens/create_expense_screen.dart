@@ -9,6 +9,7 @@ import 'package:zimbapos/models/global_models/expenses_model.dart';
 import 'package:zimbapos/widgets/my_snackbar_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/kcolors.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
@@ -170,7 +171,7 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                 SizedBox(height: screenSize.height * 0.02),
                 //dropdown for expense cat
                 SizedBox(
-                  height: 50,
+                  // height: 50,
                   width: screenSize.width,
                   child: FutureBuilder<List<ExpenseCategoryModel?>>(
                     future: getAllExpCats(),
@@ -184,21 +185,38 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
 
                         return Column(
                           children: [
-                            DropdownButton<int>(
-                              value: expenseCatId,
-                              hint: const Text("Choose a expense category"),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  expenseCatId = newValue;
-                                });
-                              },
-                              items: exCats.map((rateSet) {
-                                return DropdownMenuItem<int>(
-                                  value: rateSet!.id,
-                                  child: Text(
-                                      rateSet.expenseCategoryName ?? 'error'),
-                                );
-                              }).toList(),
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(
+                                  color: KColors.buttonColor,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int>(
+                                  isExpanded: true,
+                                  enableFeedback: true,
+                                  value: expenseCatId,
+                                  hint: const Text("Choose a expense category"),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      expenseCatId = newValue;
+                                    });
+                                  },
+                                  items: exCats.map((rateSet) {
+                                    return DropdownMenuItem<int>(
+                                      value: rateSet!.id,
+                                      child: Text(rateSet.expenseCategoryName ??
+                                          'error'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
                             ),
                           ],
                         );
@@ -207,30 +225,47 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                   ),
                 ),
                 SizedBox(height: screenSize.height * 0.02),
-                DropdownButton<String>(
-                  hint: const Text("Choose a payment method"),
-                  value: payMode,
-                  icon: const Icon(Icons.arrow_drop_down),
-                  iconSize: 24,
-                  elevation: 16,
-                  onChanged: (newValue) {
-                    setState(() {
-                      payMode = newValue;
-                    });
-                  },
-                  items: <String>[
-                    'Cash',
-                    'Card',
-                    'Credit',
-                    'UPI',
-                    'Cheque',
-                    // Add more options as needed
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    border: Border.all(
+                      color: KColors.buttonColor,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(14.0),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      enableFeedback: true,
+                      hint: const Text("Choose a payment method"),
+                      value: payMode,
+                      icon: const Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      onChanged: (newValue) {
+                        setState(() {
+                          payMode = newValue;
+                        });
+                      },
+                      items: <String>[
+                        'Cash',
+                        'Card',
+                        'Credit',
+                        'UPI',
+                        'Cheque',
+                        // Add more options as needed
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
                 ),
 
                 //dropdown for paymode

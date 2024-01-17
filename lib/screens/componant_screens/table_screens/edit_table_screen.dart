@@ -7,6 +7,7 @@ import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/kcolors.dart';
 import '../../../models/global_models/tables_model.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/my_snackbar_widget.dart';
@@ -99,7 +100,7 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
               SizedBox(height: screenSize.height * 0.02),
               //dropdown for areas
               SizedBox(
-                height: 50,
+                // height: 50,
                 width: screenSize.width,
                 child: FutureBuilder<List<AreasModel?>>(
                   future: getAllAreas(),
@@ -113,20 +114,36 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
 
                       return Column(
                         children: [
-                          DropdownButton<int>(
-                            value: selectedAreaId,
-                            hint: const Text("Choose a area"),
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedAreaId = newValue;
-                              });
-                            },
-                            items: areas.map((area) {
-                              return DropdownMenuItem<int>(
-                                value: area!.id,
-                                child: Text(area.areaName ?? 'error'),
-                              );
-                            }).toList(),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              border: Border.all(
+                                color: KColors.buttonColor,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(14.0),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<int>(
+                                isExpanded: true,
+                                value: selectedAreaId,
+                                hint: const Text("Choose a area"),
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedAreaId = newValue;
+                                  });
+                                },
+                                items: areas.map((area) {
+                                  return DropdownMenuItem<int>(
+                                    value: area!.id,
+                                    child: Text(area.areaName ?? 'error'),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
                           ),
                         ],
                       );

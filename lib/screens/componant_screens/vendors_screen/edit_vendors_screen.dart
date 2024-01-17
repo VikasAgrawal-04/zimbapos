@@ -149,7 +149,7 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
         title: const Text('Edit Worker'),
       ),
       bottomNavigationBar: CustomButton(
-          text: "Update vendor",
+          text: "Save",
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               editVendor();

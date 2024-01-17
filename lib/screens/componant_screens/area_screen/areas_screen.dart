@@ -48,7 +48,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
   //   datatbaseCubit.areasRepository.deleteAreabyID(id);
   // }
 
-  deleteWorker(AreasModel area) {
+  deleteArea(AreasModel area) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
@@ -65,12 +65,12 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
     );
   }
 
-  activeDeactivateWorkers(int id, bool value) {
+  activeDeactivateAreas(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
     dbCubit.areasRepository.changeActiveArea(id, value);
   }
 
-  editWorkerFn({required AreasModel model}) {
+  editAreaFn({required AreasModel model}) {
     context.push(
       AppScreen.editAreaScreen.path,
       extra: model,
@@ -127,8 +127,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                         DataCell(
                           Switch.adaptive(
                             value: e.isActive as bool,
-                            onChanged: (va) =>
-                                activeDeactivateWorkers(e.id, va),
+                            onChanged: (va) => activeDeactivateAreas(e.id, va),
                           ),
                         ),
                         DataCell(
@@ -140,12 +139,12 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  onPressed: () => editWorkerFn(model: e),
+                                  onPressed: () => editAreaFn(model: e),
                                   icon: const Icon(Icons.edit),
                                 ),
                                 SizedBox(width: 2.w),
                                 IconButton(
-                                  onPressed: () => deleteWorker(e),
+                                  onPressed: () => deleteArea(e),
                                   icon: const Icon(CupertinoIcons.delete),
                                 )
                               ],

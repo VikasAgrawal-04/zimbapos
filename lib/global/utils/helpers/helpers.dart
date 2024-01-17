@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zimbapos/global/error/exception.dart';
@@ -115,6 +116,16 @@ class Helpers {
       }
     }
     return null;
+  }
+
+  static Future<String> getWifiIPAddress() async {
+    final wifiIP = await NetworkInfo().getWifiIP();
+    if (wifiIP != null) {
+      debugPrint('Device IP Address: $wifiIP');
+    } else {
+      debugPrint('Device not connected to Wi-Fi.');
+    }
+    return wifiIP ?? "...";
   }
 
   static String convertFailureToMessage(Failure failure) {

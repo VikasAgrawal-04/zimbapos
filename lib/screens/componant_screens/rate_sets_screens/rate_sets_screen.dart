@@ -40,7 +40,7 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.rateSetsRepository.deleteRateSetbyID(rateset.ratesetId);
+        dbCubit.rateSetsRepository.deleteRateSetbyID(rateset.id);
         EasyLoading.showToast('Rate set deleted');
         context.pop();
       },

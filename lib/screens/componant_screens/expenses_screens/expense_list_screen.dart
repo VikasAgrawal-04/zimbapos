@@ -79,7 +79,7 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
             child: DataTable(
               columns: [
                 const DataColumn(
-                  label: Text('Bill date'),
+                  label: Text('Bill Name'),
                 ),
                 const DataColumn(
                   label: Text('Paid by'),
@@ -98,10 +98,11 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                   .map(
                     (e) => DataRow(
                       cells: [
-                        DataCell(
-                          Text(
-                              "${e.entryDatetime!.day}/${e.entryDatetime!.month}/${e.entryDatetime!.year}"),
-                        ),
+                        DataCell(Text(e.description.toString())),
+                        // DataCell(
+                        //   Text(
+                        //       "${e.entryDatetime!.day}/${e.entryDatetime!.month}/${e.entryDatetime!.year}"),
+                        // ),
                         DataCell(Text(e.payMode.toString())),
                         DataCell(Text(e.amount.toString())),
                         DataCell(

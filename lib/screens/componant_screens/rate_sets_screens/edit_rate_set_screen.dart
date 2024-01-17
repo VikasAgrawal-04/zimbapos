@@ -42,6 +42,7 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
     final db = DatabaseCubit.dbFrom(context);
     db.rateSetsRepository.updateRateSet(
       model: RateSetsModel(
+        id: widget.item.id,
         ratesetName: nameController.text,
         ratesetId: widget.item.ratesetId,
       ),

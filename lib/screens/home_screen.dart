@@ -51,43 +51,45 @@ class _HomeScreenState extends State<HomeScreen> {
           title: const Text('Screens'),
           content: SizedBox(
             width: 50.w,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: screenList
-                  .map(
-                    (e) => Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              e.gridPosition = index;
-                              HomeShortcutModel model = HomeShortcutModel();
-                              model.gridPosition = index;
-                              model.path = e.path;
-                              model.title = e.title;
-                              model.userId = '123123';
-                              final dbCubit = DatabaseCubit.dbFrom(context);
-                              dbCubit.homeSc.createShortcut(data: model);
-                              context.pop();
-                            },
-                            child: Card(
-                              elevation: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Text(
-                                    e.title ?? '',
-                                    style: KTextStyles.kTitle,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: screenList
+                    .map(
+                      (e) => Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                e.gridPosition = index;
+                                HomeShortcutModel model = HomeShortcutModel();
+                                model.gridPosition = index;
+                                model.path = e.path;
+                                model.title = e.title;
+                                model.userId = '123123';
+                                final dbCubit = DatabaseCubit.dbFrom(context);
+                                dbCubit.homeSc.createShortcut(data: model);
+                                context.pop();
+                              },
+                              child: Card(
+                                elevation: 3,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Center(
+                                    child: Text(
+                                      e.title ?? '',
+                                      style: KTextStyles.kTitle,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
             ),
           ),
           actions: [
@@ -316,6 +318,21 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
     title: 'Areas',
     path: AppScreen.areasScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Vendors',
+    path: AppScreen.vendorScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Expense Categories',
+    path: AppScreen.expenseCategoryScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Expense Screen',
+    path: AppScreen.expensesScreen.path,
     userId: '123123',
   ),
 ];

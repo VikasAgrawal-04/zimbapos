@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class KColors {
   static const Color appBarBG = Color(0xFFFFFFFF);
   static const Color white = Color(0xFFFFFFFF);
-  static const Color buttonColor = Color(0xFFF16721);
+  static const Color buttonColor = Colors.deepPurple;
   static const Color greyButtonColor = Color(0xFFF5F5F5);
   static const Color buttonTextColor = Color(0xFF1d1d1d);
   static const Color textColor = Color(0xFF234F68);

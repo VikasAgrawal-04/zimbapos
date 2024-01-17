@@ -7,4 +7,8 @@ class SystemConfigurationRepository {
   // Stream<SystemConfigModel> getModel() {
 
   // }
+
+  // Future<SystemConfigModel?> getModel() async {
+  //   return await db.systemConfigModels.get(id)
+  // }
 }

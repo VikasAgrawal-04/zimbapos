@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'workers_model.g.dart';
 
@@ -11,12 +10,20 @@ class WorkersModel {
   String? workerId;
   String workerName;
   String createdByUserID;
-  int outletId;
+  String outletId;
+
+  
   String workerRole;
+
+  @Index(unique: true)
   String mobile;
+
   bool canLoginIntoApp;
-  String loginCode;
-  String password;
+
+  @Index(unique: true)
+  String? loginCode;
+
+  String? password;
   bool isActive;
   bool isDeleted;
 
@@ -29,10 +36,10 @@ class WorkersModel {
     required this.workerRole,
     required this.mobile,
     required this.canLoginIntoApp,
-    required this.loginCode,
-    required this.password,
+    this.loginCode,
+    this.password,
     this.isActive = true,
-    this.isDeleted = true,
+    this.isDeleted = false,
   });
 
   WorkersModel copyWith({
@@ -40,7 +47,7 @@ class WorkersModel {
     String? workerId,
     String? workerName,
     String? createdByUserID,
-    int? outletId,
+    String? outletId,
     String? workerRole,
     String? mobile,
     bool? canLoginIntoApp,
@@ -51,7 +58,7 @@ class WorkersModel {
   }) {
     return WorkersModel(
       id: id ?? this.id,
-      workerId: workerId ?? this.workerId ?? generateUuid(),
+      workerId: workerId ?? this.workerId,
       workerName: workerName ?? this.workerName,
       createdByUserID: createdByUserID ?? this.createdByUserID,
       outletId: outletId ?? this.outletId,
@@ -76,7 +83,7 @@ class WorkersModel {
       case 'S':
         return "Steward";
       default:
-        return '';
+        return 'Worker';
     }
   }
 
@@ -99,17 +106,18 @@ class WorkersModel {
 
   factory WorkersModel.fromMap(Map<String, dynamic> map) {
     return WorkersModel(
+      id: map['id'] ?? Isar.autoIncrement,
       workerId: map['workerId'] as String,
       workerName: map['workerName'] as String,
       createdByUserID: map['createdByUserID'] as String,
-      outletId: map['outletId'] as int,
+      outletId: map['outletId'] as String,
       workerRole: map['workerRole'] as String,
       mobile: map['mobile'] as String,
       canLoginIntoApp: map['canLoginIntoApp'] as bool,
-      loginCode: map['loginCode'] as String,
-      password: map['password'] as String,
-      isActive: map['isActive'] as bool,
-      isDeleted: map['isDeleted'] as bool,
+      loginCode: map['loginCode'] as String?,
+      password: map['password'] as String?,
+      isActive: map['isActive'] as bool? ?? true,
+      isDeleted: map['isDeleted'] as bool? ?? false,
     );
   }
 
@@ -155,9 +163,5 @@ class WorkersModel {
         password.hashCode ^
         isActive.hashCode ^
         isDeleted.hashCode;
-  }
-
-  String generateUuid() {
-    return const Uuid().v1();
   }
 }

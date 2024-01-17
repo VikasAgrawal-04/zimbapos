@@ -13,6 +13,7 @@ import 'package:shelf_router/shelf_router.dart' as route;
 class Server {
   final BuildContext context;
   late final route.Router router;
+  int activeConnections = 0;
   Server({required this.context}) {
     router = route.Router();
     runServer();
@@ -27,7 +28,21 @@ class Server {
       final handler = const Pipeline()
           .addMiddleware(logRequests())
           .addMiddleware(corsHeaders())
-          .addHandler(router);
+          .addHandler((Request request) async {
+        // Increment the counter when a new connection is received
+        activeConnections++;
+        debugPrint('Connected devices: $activeConnections');
+
+        // Pass the request through the router for handling routes
+        var response = await router(request);
+
+        // Decrement the counter when the response is sent
+        activeConnections--;
+        debugPrint('Connected devices: $activeConnections');
+
+        return response;
+      });
+
       await shelf_io.serve(
         handler,
         InternetAddress.anyIPv4,

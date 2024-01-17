@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 
 class PrimaryTextField extends StatelessWidget {
   final String hintText;
@@ -48,10 +49,7 @@ class PrimaryTextField extends StatelessWidget {
           labelText: hintText,
           alignLabelWithHint: true,
           hintText: insideHintText,
-          hintStyle: const TextStyle(
-            fontWeight: FontWeight.w200,
-            fontSize: 14,
-          ),
+          hintStyle: KTextStyles.kTitle,
           border: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.black)),
           focusedBorder: const OutlineInputBorder(

@@ -4,9 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/primary_textfield.dart';
+
+import '../../../widgets/my_snackbar_widget.dart';
 
 class CreateWorkerScreen extends StatefulWidget {
   const CreateWorkerScreen({super.key});
@@ -16,6 +19,8 @@ class CreateWorkerScreen extends StatefulWidget {
 }
 
 class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
+  //
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController nameController;
   late final TextEditingController mobileController;
   late final TextEditingController loginIDController;
@@ -49,7 +54,7 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
     final dbCubit = DatabaseCubit.dbFrom(context);
     dbCubit.workerRepository.createWorker(
       model: WorkersModel(
-        outletId: 12341234,
+        outletId: '12341234',
         workerId: const Uuid().v1(),
         workerName: nameController.text,
         createdByUserID: 'Suyash',
@@ -76,17 +81,31 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
         title: const Text('Create Worker'),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Create worker",
-        onPressed: () => createWorker(),
-      ),
+          text: "Create worker",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (dropDownValue != null) {
+                createWorker();
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose a role",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.all(20),
         child: Form(
+          key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               PrimaryTextField(
+                validator: nameValidator,
                 hintText: 'Worker Name',
                 controller: nameController,
                 onChanged: (value) {},
@@ -123,6 +142,7 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
               ),
               SizedBox(height: 5.h),
               PrimaryTextField(
+                validator: mobileNumberValidator,
                 hintText: 'Mobile No.',
                 controller: mobileController,
                 onChanged: (value) {},
@@ -143,12 +163,14 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
               ),
               PrimaryTextField(
                 enable: enableLogin,
+                validator: enableLogin ? nullCheckValidator : null,
                 hintText: 'Login ID',
                 controller: loginIDController,
                 onChanged: (value) {},
               ),
               SizedBox(height: 5.h),
               PrimaryTextField(
+                validator: enableLogin ? passwordValidator : null,
                 enable: enableLogin,
                 hintText: 'Password',
                 controller: passwordController,

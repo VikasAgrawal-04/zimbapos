@@ -37,6 +37,7 @@ class CustomerRepository {
     CustomerCategoryModel? dbItem = await db.customerCategoryModels
         .filter()
         .custCategoryIdEqualTo(data.custCategoryId)
+        .and()
         .isDeletedEqualTo(false)
         .findFirst();
     if (dbItem != null) {

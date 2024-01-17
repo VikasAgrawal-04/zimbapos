@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
+import 'package:zimbapos/widgets/my_snackbar_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../widgets/custom_button.dart';
@@ -83,8 +85,6 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
     }
   }
 
-  String? selectedValue;
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
@@ -104,6 +104,7 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                 SizedBox(height: screenSize.height * 0.04),
                 //area name
                 PrimaryTextField(
+                  validator: nullCheckValidator,
                   hintText: 'Expense description',
                   controller: expenseDescr,
                   onChanged: (value) {},
@@ -111,6 +112,7 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                 SizedBox(height: screenSize.height * 0.02),
                 //
                 PrimaryTextField(
+                  validator: nullCheckValidator,
                   hintText: 'Bill amount',
                   controller: billAmount,
                   onChanged: (value) {},
@@ -207,14 +209,13 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                 SizedBox(height: screenSize.height * 0.02),
                 DropdownButton<String>(
                   hint: const Text("Choose a payment method"),
-                  value: selectedValue,
+                  value: payMode,
                   icon: const Icon(Icons.arrow_drop_down),
                   iconSize: 24,
                   elevation: 16,
-                  style: const TextStyle(color: Colors.blue),
                   onChanged: (newValue) {
                     setState(() {
-                      selectedValue = newValue;
+                      payMode = newValue;
                     });
                   },
                   items: <String>[
@@ -278,9 +279,30 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
         ),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Save",
-        onPressed: () => createExpenseFn(),
-      ),
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (expenseCatId != null) {
+                if (payMode != null) {
+                  createExpenseFn();
+                } else {
+                  UtillSnackbar.showSnackBar(
+                    context,
+                    title: "Alert",
+                    body: "Please choose a payment method",
+                    isSuccess: false,
+                  );
+                }
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose expense category",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
     );
   }
 }

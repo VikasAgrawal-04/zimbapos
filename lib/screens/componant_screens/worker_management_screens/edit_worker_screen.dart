@@ -3,8 +3,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
+
 import '../../../models/global_models/workers_model.dart';
+import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
 class EditWorkerScreen extends StatefulWidget {
@@ -34,9 +37,9 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
     mobileController = TextEditingController();
     mobileController.text = widget.initialModel.mobile;
     loginIDController = TextEditingController();
-    loginIDController.text = widget.initialModel.loginCode;
+    loginIDController.text = widget.initialModel.loginCode ?? "";
     passwordController = TextEditingController();
-    passwordController.text = widget.initialModel.password;
+    passwordController.text = widget.initialModel.password ?? "";
     enableLogin = widget.initialModel.canLoginIntoApp;
     dropDownValue = widget.initialModel.workerRole;
   }
@@ -52,7 +55,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
     dbCubit.workerRepository.editWorker(
       model: WorkersModel(
         id: widget.initialModel.id,
-        outletId: 12341234,
+        outletId: '12341234',
         workerId: widget.initialModel.workerId,
         workerName: nameController.text,
         createdByUserID: 'Suyash',
@@ -86,9 +89,21 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
         title: const Text('Edit Worker Screen'),
       ),
       bottomNavigationBar: CustomButton(
-        text: "Update worker",
-        onPressed: () => editWorker(),
-      ),
+          text: "Update worker",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (dropDownValue != null) {
+                editWorker();
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose a role",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.all(20),
@@ -98,6 +113,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               PrimaryTextField(
+                validator: nameValidator,
                 hintText: 'Worker Name',
                 controller: nameController,
                 onChanged: (value) {},
@@ -134,6 +150,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
               ),
               SizedBox(height: 5.h),
               PrimaryTextField(
+                validator: mobileNumberValidator,
                 hintText: 'Mobile No.',
                 controller: mobileController,
                 onChanged: (value) {},
@@ -153,6 +170,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
                 ),
               ),
               PrimaryTextField(
+                validator: enableLogin ? nullCheckValidator : null,
                 enable: enableLogin,
                 hintText: 'Login ID',
                 controller: loginIDController,
@@ -160,6 +178,7 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
               ),
               SizedBox(height: 5.h),
               PrimaryTextField(
+                validator: enableLogin ? passwordValidator : null,
                 enable: enableLogin,
                 hintText: 'Password',
                 controller: passwordController,

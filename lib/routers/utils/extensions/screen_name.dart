@@ -33,6 +33,7 @@ enum AppScreen {
   expensesScreen,
   createExpenseScreen,
   editExpenseScreen,
+  orderDashboardScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -107,6 +108,8 @@ extension AppScreenExtension on AppScreen {
         return 'Create Expense';
       case AppScreen.editExpenseScreen:
         return 'Edit Expense';
+      case AppScreen.orderDashboardScreen:
+        return 'Order Dashboard';
     }
   }
 
@@ -181,6 +184,8 @@ extension AppScreenExtension on AppScreen {
         return '/create-expense';
       case AppScreen.editExpenseScreen:
         return '/edit-expense';
+      case AppScreen.orderDashboardScreen:
+        return '/order-dashboard';
     }
   }
 }

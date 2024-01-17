@@ -14,6 +14,7 @@ import 'package:zimbapos/screens/componant_screens/area_screen/create_area_scree
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';
@@ -38,8 +39,7 @@ import 'package:zimbapos/screens/componant_screens/worker_management_screens/edi
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/worker_overview_screen.dart';
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
-
-import '../../screens/componant_screens/category_screens/edit_cat_screen.dart';
+import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 
 final List<GoRoute> routerList = [
   //home
@@ -304,4 +304,12 @@ final List<GoRoute> routerList = [
       }
     },
   ),
+  //Ordering Section Pages
+  GoRoute(
+    path: AppScreen.orderDashboardScreen.path,
+    name: AppScreen.orderDashboardScreen.name,
+    builder: (context, state) {
+      return const OrderDashboardScreen();
+    },
+  )
 ];

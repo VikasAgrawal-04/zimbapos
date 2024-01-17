@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/helpers/dialogs.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -55,16 +57,17 @@ class _HomeScreenState extends State<HomeScreen> {
                               context.pop();
                             },
                             child: Card(
-                                child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Center(
+                              elevation: 3,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Center(
                                   child: Text(
-                                e.title ?? '',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.sp),
-                              )),
-                            )),
+                                    e.title ?? '',
+                                    style: KTextStyles.kTitle,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -108,8 +111,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 // context.push(AppScreen.vendorScreen.path);
                 context.push(AppScreen.expenseCategoryScreen.path);
+                // context.push(AppScreen.expensesScreen.path);
               },
-              icon: const Icon(Icons.radio_button_checked))
+              icon: const Icon(Icons.open_in_new_outlined)),
         ],
       ),
       body: OrientationBuilder(
@@ -127,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return OrientationBuilder(
               builder: (context, orientation) => Center(
                 child: Padding(
-                  padding: EdgeInsets.all(5.w),
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,14 +142,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             ? 3
                             : 1,
                         child: GridView.builder(
+                          padding: EdgeInsets.only(bottom: 2.h),
                           controller: scrollController,
                           itemCount: 9,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount:
+                                orientation.name == Orientation.landscape.name
+                                    ? 3
+                                    : 2,
                             childAspectRatio: 1.8,
-                            mainAxisSpacing: 1.w,
-                            crossAxisSpacing: 1.w,
+                            mainAxisSpacing: 4.w,
+                            crossAxisSpacing: 3.w,
                           ),
                           itemBuilder: (context, index) {
                             if (data != null && data.isNotEmpty) {
@@ -160,8 +168,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               return ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(25),
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
+                                  elevation: 6,
+                                  shadowColor: Colors.black.withOpacity(0.6),
                                 ),
                                 onPressed: homeShortcut.gridPosition != -1
                                     ? () => context.push(homeShortcut.path!)
@@ -171,19 +181,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                         children: [
                                           Positioned(
                                             top: 0,
-                                            right: -1.w,
+                                            right: 0,
                                             child: IconButton(
                                               onPressed: () {
-                                                showMyAlertDialog(
+                                                UtilDialog.showMyDialog(
                                                   context,
-                                                  title:
-                                                      'Do you want to Delete the Shortcut?',
-                                                  content: '',
-                                                  onPress: () {
+                                                  "Alert",
+                                                  "Do you want to delete shortcut?",
+                                                  () {
                                                     deleteHomeShortcut(
                                                         homeShortcut.isarId);
                                                     context.pop();
                                                   },
+                                                  null,
                                                 );
                                               },
                                               icon: Icon(
@@ -205,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             return ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
                               onPressed: () => openAddScreen(index, context),
@@ -214,44 +224,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                         ),
                       ),
-                      // Expanded(
-                      //   flex: 2,
-                      //   child: Padding(
-                      //     padding: EdgeInsets.fromLTRB(0, 2.h, 0, 0),
-                      //     child: Column(
-                      //       mainAxisSize: MainAxisSize.min,
-                      //       children: [
-                      //         SizedBox(
-                      //           width: double.infinity,
-                      //           height: 10.h,
-                      //           child: ElevatedButton(
-                      //             style: ElevatedButton.styleFrom(
-                      //               shape: RoundedRectangleBorder(
-                      //                 borderRadius: BorderRadius.circular(12),
-                      //               ),
-                      //             ),
-                      //             onPressed: () {},
-                      //             child: const Text('Something'),
-                      //           ),
-                      //         ),
-                      //         SizedBox(height: 1.h),
-                      //         SizedBox(
-                      //           width: double.infinity,
-                      //           height: 10.h,
-                      //           child: ElevatedButton(
-                      //             style: ElevatedButton.styleFrom(
-                      //               shape: RoundedRectangleBorder(
-                      //                 borderRadius: BorderRadius.circular(12),
-                      //               ),
-                      //             ),
-                      //             onPressed: () {},
-                      //             child: const Text('Something'),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // )
+                      CustomButtonNew(
+                        margin: EdgeInsets.symmetric(vertical: 1.h),
+                        text: 'Ordering Dashboard',
+                        onTap: () {
+                          context
+                              .pushNamed(AppScreen.orderDashboardScreen.name);
+                        },
+                      )
                     ],
                   ),
                 ),

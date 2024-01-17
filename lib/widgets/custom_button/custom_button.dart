@@ -34,8 +34,7 @@ class CustomButtonNew extends StatelessWidget {
       this.padding,
       this.margin,
       this.shadows,
-      Key? key})
-      : super(key: key);
+      super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +64,7 @@ class CustomButtonNew extends StatelessWidget {
                       ? Colors.green
                       : Theme.of(context).primaryColor),
           border: Border.all(color: Colors.transparent, width: 1),
-          borderRadius: BorderRadius.circular(borderRadius ?? 30.0),
+          borderRadius: BorderRadius.circular(borderRadius ?? 10.0),
         ),
         child: child ??
             Center(

@@ -1,5 +1,3 @@
-import 'package:zimbapos/models/user_models/subscriber_model.dart';
-
 abstract class RegisterSubscriberState {}
 
 class InitialRegistration extends RegisterSubscriberState {}

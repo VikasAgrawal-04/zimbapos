@@ -92,7 +92,6 @@ class RateSetController {
         return badArguments('Please Enter Rate Set Id as a key ratesetId');
       }
       final ratesetId = request.url.queryParameters['ratesetId'];
-      dbCubit.rateSetsRepository.deleteRateSetbyID(ratesetId);
 
       if (ratesetId == null) {
         return badArguments('Please Enter Rate Set Id as a key ratesetId');

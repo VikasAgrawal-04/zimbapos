@@ -40,9 +40,15 @@ class RateSetController {
             body: jsonEncode({"data": missingFieldsMessage}));
       }
       decodedData['ratesetId'] = Helpers.generateUuId();
-      dbCubit.rateSetsRepository.createRateSet(
+
+      final success = dbCubit.rateSetsRepository.createRateSet(
           model: RateSetsModel.fromJson(jsonEncode(decodedData)));
-      return Response.ok(jsonEncode({'data': 'Rateset Created Successfully!'}));
+      if (success) {
+        return Response.ok(
+            jsonEncode({'data': 'Rateset Created Successfully!'}));
+      } else {
+        return badArguments('Rate Set Already Exists');
+      }
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

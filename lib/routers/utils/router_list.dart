@@ -28,6 +28,7 @@ import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/outlet_data_setup_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/edit_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.dart';
@@ -311,5 +312,10 @@ final List<GoRoute> routerList = [
     builder: (context, state) {
       return const OrderDashboardScreen();
     },
+  ),
+  GoRoute(
+    path: AppScreen.outletDataRegisterScreen.path,
+    name: AppScreen.outletDataRegisterScreen.name,
+    builder: (context, state) => const OutLetDataSetUpScreen(),
   )
 ];

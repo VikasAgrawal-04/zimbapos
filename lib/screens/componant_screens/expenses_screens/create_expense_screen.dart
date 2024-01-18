@@ -211,8 +211,7 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                                   items: exCats.map((rateSet) {
                                     return DropdownMenuItem<int>(
                                       value: rateSet!.id,
-                                      child: Text(rateSet.expenseCategoryName ??
-                                          'error'),
+                                      child: Text(rateSet.expenseCategoryName),
                                     );
                                   }).toList(),
                                 ),

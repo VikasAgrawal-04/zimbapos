@@ -227,16 +227,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               }
 
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
                                 ),
-                              ),
-                              onPressed: () => openAddScreen(index, context),
-                              child: const Icon(CupertinoIcons.add),
-                            );
-                          },
+                                onPressed: () => openAddScreen(index, context),
+                                child: const Icon(CupertinoIcons.add),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       CustomButtonNew(
@@ -308,6 +309,16 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
     title: 'Expense Screen',
     path: AppScreen.expensesScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Taxes Screen',
+    path: AppScreen.taxesScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Items Screen',
+    path: AppScreen.itemsScreen.path,
     userId: '123123',
   ),
 ];

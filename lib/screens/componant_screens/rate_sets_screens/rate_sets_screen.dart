@@ -67,10 +67,15 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
       appBar: AppBar(
         title: const Text('Rate Sets'),
         actions: [
-          IconButton(
+          // IconButton(
+          //   onPressed: () => context.push(AppScreen.createRateSetsScreen.path),
+          //   icon: const Icon(Icons.add),
+          // ),
+          TextButton.icon(
             onPressed: () => context.push(AppScreen.createRateSetsScreen.path),
+            label: const Text('Add Rateset'),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: StreamBuilder<List<RateSetsModel>>(

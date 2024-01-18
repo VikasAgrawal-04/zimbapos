@@ -83,10 +83,15 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
       appBar: AppBar(
         title: const Text('Areas'),
         actions: [
-          IconButton(
+          // IconButton(
+          //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
+          //   icon: const Icon(Icons.add),
+          // ),
+          TextButton.icon(
             onPressed: () => context.push(AppScreen.createAreasScreen.path),
+            label: const Text('Add Area'),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: StreamBuilder<List<AreasModel>>(

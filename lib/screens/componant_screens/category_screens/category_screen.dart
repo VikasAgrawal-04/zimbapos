@@ -67,10 +67,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
       appBar: AppBar(
         title: const Text('Categories'),
         actions: [
-          IconButton(
+          // IconButton(
+          //   onPressed: () => context.push(AppScreen.createCategory.path),
+          //   icon: const Icon(Icons.add),
+          // ),
+          TextButton.icon(
             onPressed: () => context.push(AppScreen.createCategory.path),
+            label: const Text('Add Category'),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: StreamBuilder<List<CategoryModel>>(

@@ -3,37 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/models/global_models/expense_category_model.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
-class ExpenseCategoryListScreen extends StatefulWidget {
-  const ExpenseCategoryListScreen({super.key});
+class TaxListScreen extends StatefulWidget {
+  const TaxListScreen({super.key});
 
   @override
-  State<ExpenseCategoryListScreen> createState() =>
-      _ExpenseCategoryListScreenState();
+  State<TaxListScreen> createState() => _TaxListScreenState();
 }
 
-class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
+class _TaxListScreenState extends State<TaxListScreen> {
   //
-  Stream<List<ExpenseCategoryModel>> getExpenseCatList() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.expenseCategoryRepository.streamExpenseCategoryList();
+  //
+  Stream<List<TaxModel>> streamForTaxes() {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
+    return datatbaseCubit.taxesRepository.streamTaxList();
   }
 
-  deleteExpenseCat(ExpenseCategoryModel e) {
+  deleteTax(TaxModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${e.expenseCategoryName}'?",
+      "Do you want to delete '${e.taxName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.expenseCategoryRepository.deleteExpensecategory(e.id);
-        EasyLoading.showToast('Expense category deleted');
+        dbCubit.taxesRepository.deleteTax(e.id);
+        EasyLoading.showToast('Tax deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
@@ -41,14 +42,14 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
     );
   }
 
-  activeDeactivateExpenseCat(int id, bool value) {
+  activeDeactivateTax(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.expenseCategoryRepository.changeActive(id, value);
+    dbCubit.taxesRepository.changeActive(id, value);
   }
 
-  editExpenseCatFn({required ExpenseCategoryModel model}) {
+  editTaxFn({required TaxModel model}) {
     context.push(
-      AppScreen.editExpenseCategoryScreen.path,
+      AppScreen.editTaxScreen.path,
       extra: model,
     );
   }
@@ -57,28 +58,26 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manage Expense categories'),
+        title: const Text('Tax list'),
         actions: [
+          // IconButton(
+          //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
+          //   icon: const Icon(Icons.add),
+          // ),
           TextButton.icon(
-            onPressed: () =>
-                context.push(AppScreen.createExpenseCategoryScreen.path),
-            label: const Text('Add expense category'),
+            onPressed: () => context.push(AppScreen.createTaxScreen.path),
+            label: const Text('Add Tax'),
             icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: StreamBuilder<List<ExpenseCategoryModel>>(
-        stream: getExpenseCatList(),
+      body: StreamBuilder<List<TaxModel>>(
+        stream: streamForTaxes(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          final list = snapshot.data;
+          if (list == null || list.isEmpty) {
             return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          final data = snapshot.data;
-          if (data == null || data.isEmpty) {
-            return const Center(
-              child: Text('No Vendors'),
+              child: Text('No taxes available,create one.'),
             );
           }
           return SizedBox(
@@ -87,6 +86,9 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
               columns: [
                 const DataColumn(
                   label: Text('Name'),
+                ),
+                const DataColumn(
+                  label: Text('Percent'),
                 ),
                 const DataColumn(
                   label: Text('Active'),
@@ -98,16 +100,16 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
                   ),
                 ),
               ],
-              rows: data
+              rows: list
                   .map(
                     (e) => DataRow(
                       cells: [
-                        DataCell(Text(e.expenseCategoryName.toString())),
+                        DataCell(Text(e.taxName.toString())),
+                        DataCell(Text("${e.taxPercent.toString()}%")),
                         DataCell(
                           Switch.adaptive(
                             value: e.isActive as bool,
-                            onChanged: (va) =>
-                                activeDeactivateExpenseCat(e.id, va),
+                            onChanged: (va) => activeDeactivateTax(e.id, va),
                           ),
                         ),
                         DataCell(
@@ -119,12 +121,12 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  onPressed: () => editExpenseCatFn(model: e),
+                                  onPressed: () => editTaxFn(model: e),
                                   icon: const Icon(Icons.edit),
                                 ),
                                 SizedBox(width: 2.w),
                                 IconButton(
-                                  onPressed: () => deleteExpenseCat(e),
+                                  onPressed: () => deleteTax(e),
                                   icon: const Icon(CupertinoIcons.delete),
                                 )
                               ],

@@ -146,7 +146,7 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Worker'),
+        title: const Text('Edit Vendor'),
       ),
       bottomNavigationBar: CustomButton(
           text: "Save",

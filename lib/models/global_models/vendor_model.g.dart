@@ -272,6 +272,7 @@ VendorModel _vendorModelDeserialize(
     country: reader.readStringOrNull(offsets[8]),
     email: reader.readStringOrNull(offsets[9]),
     gst: reader.readStringOrNull(offsets[10]),
+    id: id,
     ifscCode: reader.readStringOrNull(offsets[11]),
     isActive: reader.readBoolOrNull(offsets[12]),
     isDeleted: reader.readBoolOrNull(offsets[13]),
@@ -282,7 +283,6 @@ VendorModel _vendorModelDeserialize(
     vendorName: reader.readString(offsets[18]),
     website: reader.readStringOrNull(offsets[19]),
   );
-  object.id = id;
   return object;
 }
 

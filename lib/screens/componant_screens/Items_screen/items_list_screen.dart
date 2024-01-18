@@ -3,37 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/models/global_models/expense_category_model.dart';
+import 'package:zimbapos/models/global_models/items_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
-class ExpenseCategoryListScreen extends StatefulWidget {
-  const ExpenseCategoryListScreen({super.key});
+class ItemsListScreen extends StatefulWidget {
+  const ItemsListScreen({super.key});
 
   @override
-  State<ExpenseCategoryListScreen> createState() =>
-      _ExpenseCategoryListScreenState();
+  State<ItemsListScreen> createState() => _ItemsListScreenState();
 }
 
-class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
+class _ItemsListScreenState extends State<ItemsListScreen> {
   //
-  Stream<List<ExpenseCategoryModel>> getExpenseCatList() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.expenseCategoryRepository.streamExpenseCategoryList();
+  //
+  Stream<List<ItemsModel>> streamForItems() {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
+    return datatbaseCubit.itemsRepository.streamItemsList();
   }
 
-  deleteExpenseCat(ExpenseCategoryModel e) {
+  deleteItem(ItemsModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${e.expenseCategoryName}'?",
+      "Do you want to delete '${e.itemName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.expenseCategoryRepository.deleteExpensecategory(e.id);
-        EasyLoading.showToast('Expense category deleted');
+        dbCubit.itemsRepository.deleteItem(e.id);
+        EasyLoading.showToast('Item deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
@@ -41,14 +42,14 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
     );
   }
 
-  activeDeactivateExpenseCat(int id, bool value) {
+  activeDeactivateItem(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.expenseCategoryRepository.changeActive(id, value);
+    dbCubit.itemsRepository.changeActive(id, value);
   }
 
-  editExpenseCatFn({required ExpenseCategoryModel model}) {
+  editItemFn({required ItemsModel model}) {
     context.push(
-      AppScreen.editExpenseCategoryScreen.path,
+      AppScreen.editItemScreen.path,
       extra: model,
     );
   }
@@ -57,28 +58,26 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manage Expense categories'),
+        title: const Text('Item list'),
         actions: [
+          // IconButton(
+          //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
+          //   icon: const Icon(Icons.add),
+          // ),
           TextButton.icon(
-            onPressed: () =>
-                context.push(AppScreen.createExpenseCategoryScreen.path),
-            label: const Text('Add expense category'),
+            onPressed: () => context.push(AppScreen.createItemScreen.path),
+            label: const Text('Add item'),
             icon: const Icon(Icons.add),
           ),
         ],
       ),
-      body: StreamBuilder<List<ExpenseCategoryModel>>(
-        stream: getExpenseCatList(),
+      body: StreamBuilder<List<ItemsModel>>(
+        stream: streamForItems(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          final list = snapshot.data;
+          if (list == null || list.isEmpty) {
             return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          final data = snapshot.data;
-          if (data == null || data.isEmpty) {
-            return const Center(
-              child: Text('No Vendors'),
+              child: Text('No items available.'),
             );
           }
           return SizedBox(
@@ -87,6 +86,12 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
               columns: [
                 const DataColumn(
                   label: Text('Name'),
+                ),
+                const DataColumn(
+                  label: Text('Type'),
+                ),
+                const DataColumn(
+                  label: Text('Price'),
                 ),
                 const DataColumn(
                   label: Text('Active'),
@@ -98,16 +103,17 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
                   ),
                 ),
               ],
-              rows: data
+              rows: list
                   .map(
                     (e) => DataRow(
                       cells: [
-                        DataCell(Text(e.expenseCategoryName.toString())),
+                        DataCell(Text(e.itemName.toString())),
+                        DataCell(Text(e.foodType.toString())),
+                        DataCell(Text(e.rateWithTax.toString())),
                         DataCell(
                           Switch.adaptive(
                             value: e.isActive as bool,
-                            onChanged: (va) =>
-                                activeDeactivateExpenseCat(e.id, va),
+                            onChanged: (va) => activeDeactivateItem(e.id, va),
                           ),
                         ),
                         DataCell(
@@ -119,12 +125,12 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  onPressed: () => editExpenseCatFn(model: e),
+                                  onPressed: () => editItemFn(model: e),
                                   icon: const Icon(Icons.edit),
                                 ),
                                 SizedBox(width: 2.w),
                                 IconButton(
-                                  onPressed: () => deleteExpenseCat(e),
+                                  onPressed: () => deleteItem(e),
                                   icon: const Icon(CupertinoIcons.delete),
                                 )
                               ],

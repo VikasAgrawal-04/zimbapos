@@ -107,12 +107,12 @@ AreasModel _areasModelDeserialize(
     areaId: reader.readLongOrNull(offsets[0]),
     areaName: reader.readStringOrNull(offsets[1]),
     exchangePercent: reader.readDoubleOrNull(offsets[2]),
+    id: id,
     isActive: reader.readBoolOrNull(offsets[3]),
     isDeleted: reader.readBoolOrNull(offsets[4]),
     outletId: reader.readLongOrNull(offsets[5]),
     rateSetId: reader.readLongOrNull(offsets[6]),
   );
-  object.id = id;
   return object;
 }
 

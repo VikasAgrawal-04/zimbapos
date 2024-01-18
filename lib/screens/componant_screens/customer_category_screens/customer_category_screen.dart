@@ -67,11 +67,17 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
       appBar: AppBar(
         title: const Text('Customer Category'),
         actions: [
-          IconButton(
+          // IconButton(
+          //   onPressed: () =>
+          //       context.push(AppScreen.createCustomerCategory.path),
+          //   icon: const Icon(Icons.add),
+          // ),
+          TextButton.icon(
             onPressed: () =>
                 context.push(AppScreen.createCustomerCategory.path),
+            label: const Text('Add Customer category'),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: StreamBuilder<List<CustomerCategoryModel>>(

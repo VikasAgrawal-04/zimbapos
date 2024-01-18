@@ -67,10 +67,15 @@ class _TableScreenState extends State<TableScreen> {
       appBar: AppBar(
         title: const Text('Tables'),
         actions: [
-          IconButton(
+          // IconButton(
+          //   onPressed: () => context.push(AppScreen.createTableScreen.path),
+          //   icon: const Icon(Icons.add),
+          // ),
+          TextButton.icon(
             onPressed: () => context.push(AppScreen.createTableScreen.path),
+            label: const Text('Add Table'),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: StreamBuilder<List<TableModel>>(

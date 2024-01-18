@@ -225,6 +225,7 @@ class _CreateExpenseScreenState extends State<CreateExpenseScreen> {
                   ),
                 ),
                 SizedBox(height: screenSize.height * 0.02),
+                //dropdown for pay mode
                 Container(
                   padding: const EdgeInsets.all(8),
                   alignment: Alignment.center,

@@ -63,7 +63,6 @@ class AreasModel {
   }
 
   factory AreasModel.fromMap(Map<String, dynamic> map) {
-    print("map['id']${map['id']}");
     return AreasModel(
       id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as int : null,

@@ -22,7 +22,7 @@ Future<void> main() async {
   final ip = await Helpers.getWifiIPAddress();
   SharedPreferences.getInstance().then((pref) {
     Helpers.prefs = pref;
-    final dio = Dio(BaseOptions(baseUrl: 'http://$ip'));
+    final dio = Dio(BaseOptions(baseUrl: 'http://$ip:8080'));
     dio.interceptors.add(PrettyDioLogger(
       requestBody: true,
       requestHeader: true,

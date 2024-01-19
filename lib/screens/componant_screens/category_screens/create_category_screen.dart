@@ -37,45 +37,47 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create category'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //cat name
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Category name',
-                controller: categoryName,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: categoryName,
-              //   decoration: const InputDecoration(
-              //       border: OutlineInputBorder(), hintText: 'Enter Category'),
-              // ),
-              SizedBox(height: 2.h),
-              // ElevatedButton(
-              //   onPressed: () => createCategory(context),
-              //   child: const Text('Create Category'),
-              // )
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create category'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //cat name
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Category name',
+                  controller: categoryName,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: categoryName,
+                //   decoration: const InputDecoration(
+                //       border: OutlineInputBorder(), hintText: 'Enter Category'),
+                // ),
+                SizedBox(height: 2.h),
+                // ElevatedButton(
+                //   onPressed: () => createCategory(context),
+                //   child: const Text('Create Category'),
+                // )
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                createCategory(context);
+              }
+            }),
       ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              createCategory(context);
-            }
-          }),
     );
   }
 }

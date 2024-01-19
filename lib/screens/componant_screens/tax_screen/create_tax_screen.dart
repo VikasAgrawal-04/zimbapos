@@ -54,104 +54,106 @@ class _CreateTaxScreenState extends State<CreateTaxScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit tax'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: screenSize.height * 0.04),
-                //area name
-                PrimaryTextField(
-                  validator: nullCheckValidator,
-                  hintText: 'Tax name',
-                  controller: taxNameController,
-                  onChanged: (value) {},
-                ),
-                SizedBox(height: screenSize.height * 0.02),
-
-                //tax percent
-                PrimaryTextField(
-                  validator: nullCheckValidator,
-                  hintText: 'Tax percent',
-                  controller: taxPercentController,
-                  onChanged: (value) {},
-                ),
-                SizedBox(height: screenSize.height * 0.02),
-
-                //dropdown for tax type
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    border: Border.all(
-                      color: KColors.buttonColor,
-                      width: 1.0,
-                    ),
-                    borderRadius: BorderRadius.circular(14.0),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit tax'),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: screenSize.height * 0.04),
+                  //area name
+                  PrimaryTextField(
+                    validator: nullCheckValidator,
+                    hintText: 'Tax name',
+                    controller: taxNameController,
+                    onChanged: (value) {},
                   ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      enableFeedback: true,
-                      hint: const Text("Choose a tax"),
-                      value: taxType,
-                      icon: const Icon(Icons.arrow_drop_down),
-                      iconSize: 24,
-                      elevation: 16,
-                      onChanged: (newValue) {
-                        setState(() {
-                          taxType = newValue;
-                        });
-                      },
-                      items: <String>[
-                        'V',
-                        'G',
-                        // Add more options as needed
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                  SizedBox(height: screenSize.height * 0.02),
+
+                  //tax percent
+                  PrimaryTextField(
+                    validator: nullCheckValidator,
+                    hintText: 'Tax percent',
+                    controller: taxPercentController,
+                    onChanged: (value) {},
+                  ),
+                  SizedBox(height: screenSize.height * 0.02),
+
+                  //dropdown for tax type
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      border: Border.all(
+                        color: KColors.buttonColor,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(14.0),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        enableFeedback: true,
+                        hint: const Text("Choose a tax"),
+                        value: taxType,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        iconSize: 24,
+                        elevation: 16,
+                        onChanged: (newValue) {
+                          setState(() {
+                            taxType = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'V',
+                          'G',
+                          // Add more options as needed
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: screenSize.height * 0.02),
-                // ElevatedButton(
-                //   onPressed: () => updateAreaFn(context, widget.item.id),
-                //   child: const Text('Update area'),
-                // )
-              ],
+                  SizedBox(height: screenSize.height * 0.02),
+                  // ElevatedButton(
+                  //   onPressed: () => updateAreaFn(context, widget.item.id),
+                  //   child: const Text('Update area'),
+                  // )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              if (taxType != null) {
-                createTaxFn(context);
-              } else {
-                UtillSnackbar.showSnackBar(
-                  context,
-                  title: "Alert",
-                  body: "Please choose a tax type",
-                  isSuccess: false,
-                );
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (taxType != null) {
+                  createTaxFn(context);
+                } else {
+                  UtillSnackbar.showSnackBar(
+                    context,
+                    title: "Alert",
+                    body: "Please choose a tax type",
+                    isSuccess: false,
+                  );
+                }
               }
-            }
-          }),
+            }),
+      ),
     );
   }
 }

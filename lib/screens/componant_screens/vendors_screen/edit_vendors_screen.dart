@@ -144,130 +144,132 @@ class _UpdateVendorScreenState extends State<UpdateVendorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Vendor'),
-      ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              editVendor();
-            }
-          }),
-      body: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Vendor Name',
-                controller: vendorNameController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Address 1',
-                controller: addr1Controller,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Address 2',
-                controller: addr2Controller,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Address 3',
-                controller: addr3Controller,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Postal code',
-                controller: postCodeController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'City',
-                controller: cityController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'State',
-                controller: stateController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Country',
-                controller: countryController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Mobile',
-                controller: mobileController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Email',
-                controller: emailController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Website',
-                controller: siteController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'GST no',
-                controller: gstController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Bank acc no',
-                controller: bankAccNoController,
-                keyboard: TextInputType.number,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Bank acc holder name',
-                controller: bankAccHolderNameController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Bank name',
-                controller: bankNameController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 10.h),
-              PrimaryTextField(
-                hintText: 'Bank branch',
-                controller: bankBranchController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                hintText: 'Bank IFSC code',
-                controller: bankIFSCController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit Vendor'),
+        ),
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                editVendor();
+              }
+            }),
+        body: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Vendor Name',
+                  controller: vendorNameController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Address 1',
+                  controller: addr1Controller,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Address 2',
+                  controller: addr2Controller,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Address 3',
+                  controller: addr3Controller,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Postal code',
+                  controller: postCodeController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'City',
+                  controller: cityController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'State',
+                  controller: stateController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Country',
+                  controller: countryController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Mobile',
+                  controller: mobileController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Email',
+                  controller: emailController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Website',
+                  controller: siteController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'GST no',
+                  controller: gstController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Bank acc no',
+                  controller: bankAccNoController,
+                  keyboard: TextInputType.number,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Bank acc holder name',
+                  controller: bankAccHolderNameController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Bank name',
+                  controller: bankNameController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 10.h),
+                PrimaryTextField(
+                  hintText: 'Bank branch',
+                  controller: bankBranchController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  hintText: 'Bank IFSC code',
+                  controller: bankIFSCController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+              ],
+            ),
           ),
         ),
       ),

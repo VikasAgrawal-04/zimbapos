@@ -12,8 +12,10 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 5,
-      child: Scaffold(
-        appBar: AppBar(),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(),
+        ),
       ),
     );
   }

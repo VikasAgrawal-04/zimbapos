@@ -56,94 +56,96 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Item list'),
-        actions: [
-          // IconButton(
-          //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
-          //   icon: const Icon(Icons.add),
-          // ),
-          TextButton.icon(
-            onPressed: () => context.push(AppScreen.createItemScreen.path),
-            label: const Text('Add item'),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: StreamBuilder<List<ItemsModel>>(
-        stream: streamForItems(),
-        builder: (context, snapshot) {
-          final list = snapshot.data;
-          if (list == null || list.isEmpty) {
-            return const Center(
-              child: Text('No items available.'),
-            );
-          }
-          return SizedBox(
-            width: 100.w,
-            child: DataTable(
-              columns: [
-                const DataColumn(
-                  label: Text('Name'),
-                ),
-                const DataColumn(
-                  label: Text('Type'),
-                ),
-                const DataColumn(
-                  label: Text('Price'),
-                ),
-                const DataColumn(
-                  label: Text('Active'),
-                ),
-                DataColumn(
-                  label: Padding(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                    child: const Text('Actions'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Item list'),
+          actions: [
+            // IconButton(
+            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
+            //   icon: const Icon(Icons.add),
+            // ),
+            TextButton.icon(
+              onPressed: () => context.push(AppScreen.createItemScreen.path),
+              label: const Text('Add item'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: StreamBuilder<List<ItemsModel>>(
+          stream: streamForItems(),
+          builder: (context, snapshot) {
+            final list = snapshot.data;
+            if (list == null || list.isEmpty) {
+              return const Center(
+                child: Text('No items available.'),
+              );
+            }
+            return SizedBox(
+              width: 100.w,
+              child: DataTable(
+                columns: [
+                  const DataColumn(
+                    label: Text('Name'),
                   ),
-                ),
-              ],
-              rows: list
-                  .map(
-                    (e) => DataRow(
-                      cells: [
-                        DataCell(Text(e.itemName.toString())),
-                        DataCell(Text(e.foodType.toString())),
-                        DataCell(Text(e.rateWithTax.toString())),
-                        DataCell(
-                          Switch.adaptive(
-                            value: e.isActive as bool,
-                            onChanged: (va) => activeDeactivateItem(e.id, va),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () => editItemFn(model: e),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                SizedBox(width: 2.w),
-                                IconButton(
-                                  onPressed: () => deleteItem(e),
-                                  icon: const Icon(CupertinoIcons.delete),
-                                )
-                              ],
+                  const DataColumn(
+                    label: Text('Type'),
+                  ),
+                  const DataColumn(
+                    label: Text('Price'),
+                  ),
+                  const DataColumn(
+                    label: Text('Active'),
+                  ),
+                  DataColumn(
+                    label: Padding(
+                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                      child: const Text('Actions'),
+                    ),
+                  ),
+                ],
+                rows: list
+                    .map(
+                      (e) => DataRow(
+                        cells: [
+                          DataCell(Text(e.itemName.toString())),
+                          DataCell(Text(e.foodType.toString())),
+                          DataCell(Text(e.rateWithTax.toString())),
+                          DataCell(
+                            Switch.adaptive(
+                              value: e.isActive as bool,
+                              onChanged: (va) => activeDeactivateItem(e.id, va),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
-        },
+                          DataCell(
+                            Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => editItemFn(model: e),
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  IconButton(
+                                    onPressed: () => deleteItem(e),
+                                    icon: const Icon(CupertinoIcons.delete),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

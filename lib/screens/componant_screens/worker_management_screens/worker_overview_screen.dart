@@ -53,92 +53,94 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Workers'),
-        actions: [
-          TextButton.icon(
-            onPressed: () => context.push(AppScreen.createWorkerScreen.path),
-            label: const Text('Add Workers'),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: StreamBuilder<List<WorkersModel>>(
-        stream: getWorkerList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          final data = snapshot.data;
-          if (data == null || data.isEmpty) {
-            return const Center(
-              child: Text('No Workers'),
-            );
-          }
-          return SizedBox(
-            width: 100.w,
-            child: DataTable(
-              columns: [
-                const DataColumn(
-                  label: Text('Name'),
-                ),
-                const DataColumn(
-                  label: Text('Role'),
-                ),
-                const DataColumn(
-                  label: Text('Active'),
-                ),
-                DataColumn(
-                  label: Padding(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                    child: const Text('Actions'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Manage Workers'),
+          actions: [
+            TextButton.icon(
+              onPressed: () => context.push(AppScreen.createWorkerScreen.path),
+              label: const Text('Add Workers'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: StreamBuilder<List<WorkersModel>>(
+          stream: getWorkerList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+            final data = snapshot.data;
+            if (data == null || data.isEmpty) {
+              return const Center(
+                child: Text('No Workers'),
+              );
+            }
+            return SizedBox(
+              width: 100.w,
+              child: DataTable(
+                columns: [
+                  const DataColumn(
+                    label: Text('Name'),
                   ),
-                ),
-              ],
-              rows: data
-                  .map(
-                    (e) => DataRow(
-                      cells: [
-                        DataCell(Text(e.workerName)),
-                        DataCell(Text(e.workerRoleDisplay(e.workerRole))),
-                        DataCell(
-                          Switch.adaptive(
-                            value: e.isActive,
-                            onChanged: (va) =>
-                                activeDeactivateWorkers(e.id, va),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () => editWorkerFn(model: e),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                SizedBox(width: 2.w),
-                                IconButton(
-                                  onPressed: () => deleteWorker(e),
-                                  icon: const Icon(CupertinoIcons.delete),
-                                )
-                              ],
+                  const DataColumn(
+                    label: Text('Role'),
+                  ),
+                  const DataColumn(
+                    label: Text('Active'),
+                  ),
+                  DataColumn(
+                    label: Padding(
+                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                      child: const Text('Actions'),
+                    ),
+                  ),
+                ],
+                rows: data
+                    .map(
+                      (e) => DataRow(
+                        cells: [
+                          DataCell(Text(e.workerName)),
+                          DataCell(Text(e.workerRoleDisplay(e.workerRole))),
+                          DataCell(
+                            Switch.adaptive(
+                              value: e.isActive,
+                              onChanged: (va) =>
+                                  activeDeactivateWorkers(e.id, va),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
-        },
+                          DataCell(
+                            Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => editWorkerFn(model: e),
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  IconButton(
+                                    onPressed: () => deleteWorker(e),
+                                    icon: const Icon(CupertinoIcons.delete),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

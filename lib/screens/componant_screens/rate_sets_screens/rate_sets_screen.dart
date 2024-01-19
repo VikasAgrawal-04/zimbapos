@@ -63,140 +63,143 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rate Sets'),
-        actions: [
-          // IconButton(
-          //   onPressed: () => context.push(AppScreen.createRateSetsScreen.path),
-          //   icon: const Icon(Icons.add),
-          // ),
-          TextButton.icon(
-            onPressed: () => context.push(AppScreen.createRateSetsScreen.path),
-            label: const Text('Add Rateset'),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: StreamBuilder<List<RateSetsModel>>(
-        stream: streamRateSet(),
-        builder: (context, snapshot) {
-          final list = snapshot.data;
-          if (list == null || list.isEmpty) {
-            return const Center(
-              child: Text('No Rate Set'),
-            );
-          }
-          return SizedBox(
-            width: 100.w,
-            child: DataTable(
-              columns: [
-                const DataColumn(
-                  label: Text('Name'),
-                ),
-                // const DataColumn(
-                //   label: Text('Role'),
-                // ),
-                const DataColumn(
-                  label: Text('Active'),
-                ),
-                DataColumn(
-                  label: Padding(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                    child: const Text('Actions'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Rate Sets'),
+          actions: [
+            // IconButton(
+            //   onPressed: () => context.push(AppScreen.createRateSetsScreen.path),
+            //   icon: const Icon(Icons.add),
+            // ),
+            TextButton.icon(
+              onPressed: () =>
+                  context.push(AppScreen.createRateSetsScreen.path),
+              label: const Text('Add Rateset'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: StreamBuilder<List<RateSetsModel>>(
+          stream: streamRateSet(),
+          builder: (context, snapshot) {
+            final list = snapshot.data;
+            if (list == null || list.isEmpty) {
+              return const Center(
+                child: Text('No Rate Set'),
+              );
+            }
+            return SizedBox(
+              width: 100.w,
+              child: DataTable(
+                columns: [
+                  const DataColumn(
+                    label: Text('Name'),
                   ),
-                ),
-              ],
-              rows: list
-                  .map(
-                    (e) => DataRow(
-                      cells: [
-                        DataCell(Text(e.ratesetName.toString())),
-                        DataCell(
-                          Switch.adaptive(
-                            value: e.isActive as bool,
-                            onChanged: (va) =>
-                                activeDeactivateWorkers(e.id, va),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () => editWorkerFn(model: e),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                SizedBox(width: 2.w),
-                                IconButton(
-                                  onPressed: () => deleteWorker(e),
-                                  icon: const Icon(CupertinoIcons.delete),
-                                )
-                              ],
+                  // const DataColumn(
+                  //   label: Text('Role'),
+                  // ),
+                  const DataColumn(
+                    label: Text('Active'),
+                  ),
+                  DataColumn(
+                    label: Padding(
+                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                      child: const Text('Actions'),
+                    ),
+                  ),
+                ],
+                rows: list
+                    .map(
+                      (e) => DataRow(
+                        cells: [
+                          DataCell(Text(e.ratesetName.toString())),
+                          DataCell(
+                            Switch.adaptive(
+                              value: e.isActive as bool,
+                              onChanged: (va) =>
+                                  activeDeactivateWorkers(e.id, va),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
-          // ListView.builder(
-          //   itemCount: list.length,
-          //   itemBuilder: (context, index) => ListTile(
-          //     title: Text(list[index].ratesetName ?? 'Test'),
-          //     subtitle:
-          //         Text((list[index].isActive ?? false) ? 'Active' : "InActive"),
-          //     trailing: Row(
-          //       mainAxisSize: MainAxisSize.min,
-          //       children: [
-          //         Switch.adaptive(
-          //           value: list[index].isActive ?? false,
-          //           onChanged: (value) => toggleFn(list[index].id, value),
-          //         ),
-          //         SizedBox(width: screenSize.width * 0.025),
-          //         //edit
-          //         IconButton(
-          //           onPressed: () => context.push(
-          //             AppScreen.editRateSetScreen.path,
-          //             //passing data to edit screen
-          //             extra: list[index],
-          //           ),
-          //           icon: const Icon(
-          //             Icons.edit,
-          //             size: 30,
-          //           ),
-          //         ),
+                          DataCell(
+                            Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => editWorkerFn(model: e),
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  IconButton(
+                                    onPressed: () => deleteWorker(e),
+                                    icon: const Icon(CupertinoIcons.delete),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+            // ListView.builder(
+            //   itemCount: list.length,
+            //   itemBuilder: (context, index) => ListTile(
+            //     title: Text(list[index].ratesetName ?? 'Test'),
+            //     subtitle:
+            //         Text((list[index].isActive ?? false) ? 'Active' : "InActive"),
+            //     trailing: Row(
+            //       mainAxisSize: MainAxisSize.min,
+            //       children: [
+            //         Switch.adaptive(
+            //           value: list[index].isActive ?? false,
+            //           onChanged: (value) => toggleFn(list[index].id, value),
+            //         ),
+            //         SizedBox(width: screenSize.width * 0.025),
+            //         //edit
+            //         IconButton(
+            //           onPressed: () => context.push(
+            //             AppScreen.editRateSetScreen.path,
+            //             //passing data to edit screen
+            //             extra: list[index],
+            //           ),
+            //           icon: const Icon(
+            //             Icons.edit,
+            //             size: 30,
+            //           ),
+            //         ),
 
-          //         //delete
-          //         IconButton(
-          //           onPressed: () => UtilDialog.showMyDialog(
-          //             context,
-          //             "Alert",
-          //             "Are you sure to delete '${list[index].ratesetName}'?",
-          //             //this is for ok button
-          //             () {
-          //               deleteFn(list[index].id);
-          //               context.pop();
-          //             },
-          //             // this is for cancel button sending null will perform default pop() action
-          //             null,
-          //           ),
-          //           icon: const Icon(
-          //             Icons.delete,
-          //             size: 30,
-          //           ),
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // );
-        },
+            //         //delete
+            //         IconButton(
+            //           onPressed: () => UtilDialog.showMyDialog(
+            //             context,
+            //             "Alert",
+            //             "Are you sure to delete '${list[index].ratesetName}'?",
+            //             //this is for ok button
+            //             () {
+            //               deleteFn(list[index].id);
+            //               context.pop();
+            //             },
+            //             // this is for cancel button sending null will perform default pop() action
+            //             null,
+            //           ),
+            //           icon: const Icon(
+            //             Icons.delete,
+            //             size: 30,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // );
+          },
+        ),
       ),
     );
   }

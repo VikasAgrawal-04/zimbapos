@@ -42,59 +42,61 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Customer Category'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //cust cat name
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Customer category name',
-                controller: custCatName,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: custCatName,
-              //   decoration: const InputDecoration(
-              //       border: OutlineInputBorder(),
-              //       hintText: 'Enter Customer Category'),
-              // ),
-              SizedBox(height: 2.h),
-              //discount
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Discount',
-                controller: discount,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: discount,
-              //   decoration: const InputDecoration(
-              //       border: OutlineInputBorder(),
-              //       hintText: 'Enter Discount'),
-              // ),
-              // ElevatedButton(
-              //   onPressed: () => createCustCat(context),
-              //   child: const Text('Create Customer Category'),
-              // )
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create Customer Category'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //cust cat name
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Customer category name',
+                  controller: custCatName,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: custCatName,
+                //   decoration: const InputDecoration(
+                //       border: OutlineInputBorder(),
+                //       hintText: 'Enter Customer Category'),
+                // ),
+                SizedBox(height: 2.h),
+                //discount
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Discount',
+                  controller: discount,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: discount,
+                //   decoration: const InputDecoration(
+                //       border: OutlineInputBorder(),
+                //       hintText: 'Enter Discount'),
+                // ),
+                // ElevatedButton(
+                //   onPressed: () => createCustCat(context),
+                //   child: const Text('Create Customer Category'),
+                // )
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                createCustCat(context);
+              }
+            }),
       ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              createCustCat(context);
-            }
-          }),
     );
   }
 }

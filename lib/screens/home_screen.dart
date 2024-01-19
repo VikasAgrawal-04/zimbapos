@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/constants/kcolors.dart';
+import 'package:zimbapos/constants/kdevice_info.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
@@ -34,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Screens'),
+          title: Text(
+            'Screens',
+            style: KTextStyles.kHeader,
+          ),
           content: SizedBox(
             width: 50.w,
             child: SingleChildScrollView(
@@ -83,7 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Close'),
+              child: Text(
+                'Close',
+                style: KTextStyles.kAlertCancelButton,
+              ),
             ),
           ],
         );
@@ -108,7 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Home Screen'),
+          title: Text(
+            'Home Screen',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           // actions: [
           //   IconButton(
           //     onPressed: () {
@@ -145,49 +156,79 @@ class _HomeScreenState extends State<HomeScreen> {
                           flex: (orientation.name == Orientation.landscape.name)
                               ? 3
                               : 1,
-                          child: Padding(
-                            padding: EdgeInsets.all(2.w),
-                            child: GridView.builder(
-                              controller: scrollController,
-                              itemCount: 9,
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: orientation.name ==
-                                        Orientation.landscape.name
-                                    ? 3
-                                    : 2,
-                                childAspectRatio: 1.8,
-                                mainAxisSpacing: 4.w,
-                                crossAxisSpacing: 3.w,
-                              ),
-                              itemBuilder: (context, index) {
-                                if (data != null && data.isNotEmpty) {
-                                  data.sort((a, b) => (a.gridPosition ?? 0)
-                                      .compareTo(b.gridPosition ?? 0));
+                          child: GridView.builder(
+                            controller: scrollController,
+                            itemCount: 9,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount:
+                                  orientation.name == Orientation.landscape.name
+                                      ? 3
+                                      : 2,
+                              childAspectRatio: 1.8,
+                              mainAxisSpacing: 4.w,
+                              crossAxisSpacing: 3.w,
+                            ),
+                            itemBuilder: (context, index) {
+                              if (data != null && data.isNotEmpty) {
+                                data.sort((a, b) => (a.gridPosition ?? 0)
+                                    .compareTo(b.gridPosition ?? 0));
 
-                                  final homeShortcut = data.firstWhere(
-                                    (element) => element.gridPosition == index,
-                                    orElse: () =>
-                                        HomeShortcutModel(gridPosition: -1),
-                                  );
-                                  return ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      elevation: 8,
-                                      shadowColor:
-                                          Colors.black.withOpacity(0.6),
+                                final homeShortcut = data.firstWhere(
+                                  (element) => element.gridPosition == index,
+                                  orElse: () =>
+                                      HomeShortcutModel(gridPosition: -1),
+                                );
+                                return ElevatedButton(
+                                  // onHover: (isHovered) {
+                                  //   if (isHovered) {
+                                  //     ElevatedButton.styleFrom(
+                                  //       side: const BorderSide(
+                                  //         color: Colors.black54,
+                                  //         width: 20,
+                                  //       ),
+                                  //     );
+                                  //   }
+                                  // },
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
                                     ),
-                                    onPressed: homeShortcut.gridPosition != -1
-                                        ? () => context.push(homeShortcut.path!)
-                                        : () => openAddScreen(index, context),
-                                    child: homeShortcut.gridPosition != -1
-                                        ? Stack(
-                                            children: [
-                                              Positioned(
-                                                top: 0,
-                                                right: -1.w,
+                                    // backgroundColor: KColors.white,
+                                    // foregroundColor: KColors.white,
+                                    elevation: 8,
+                                    shadowColor: Colors.black.withOpacity(0.6),
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                  onPressed: homeShortcut.gridPosition != -1
+                                      ? () => context.push(homeShortcut.path!)
+                                      : () => openAddScreen(index, context),
+                                  child: homeShortcut.gridPosition != -1
+                                      ? Stack(
+                                          children: [
+                                            Positioned(
+                                              top: 0,
+                                              // right: -1.w,
+                                              right: 0,
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      getDeviceWidth(context) *
+                                                          0.15,
+                                                  maxHeight:
+                                                      getDeviceWidth(context) *
+                                                          0.1,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(12),
+                                                    topRight:
+                                                        Radius.circular(12),
+                                                  ),
+                                                ),
                                                 child: IconButton(
                                                   onPressed: () {
                                                     UtilDialog.showMyDialog(
@@ -216,33 +257,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   },
                                                   icon: Icon(
                                                     CupertinoIcons.delete,
-                                                    size: 15.sp,
+                                                    size: 17.sp,
+                                                    color: KColors.white,
                                                   ),
                                                 ),
                                               ),
-                                              Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                      homeShortcut.title ??
-                                                          '')),
-                                            ],
-                                          )
-                                        : const Icon(CupertinoIcons.add),
-                                  );
-                                }
-
-                                return ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  onPressed: () =>
-                                      openAddScreen(index, context),
-                                  child: const Icon(CupertinoIcons.add),
+                                            ),
+                                            Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  homeShortcut.title ?? '',
+                                                  style: KTextStyles.kTitle,
+                                                )),
+                                          ],
+                                        )
+                                      : const Icon(CupertinoIcons.add),
                                 );
-                              },
-                            ),
+                              }
+
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  // backgroundColor: KColors.white,
+                                  // foregroundColor: KColors.white,
+                                ),
+                                onPressed: () => openAddScreen(index, context),
+                                child: const Icon(
+                                  CupertinoIcons.add,
+                                  color: Colors.black87,
+                                ),
+                              );
+                            },
                           ),
                         ),
                         CustomButtonNew(

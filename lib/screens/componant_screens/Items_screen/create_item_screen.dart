@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +9,7 @@ import 'package:zimbapos/models/global_models/items_model.dart';
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/kcolors.dart';
 import '../../../helpers/validators.dart';
+import '../../../models/global_models/tax_model.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
@@ -34,6 +37,8 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
   bool isWeightItem = false;
   late final TextEditingController hsnController;
   late final TextEditingController imgLinkController;
+
+  bool enableTF = false;
 
   @override
   void initState() {
@@ -67,7 +72,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
         itemGroupId: itemGroupId,
         foodType: foodType,
         isAlcohol: isAlcoholic,
-        itemRate: int.parse(itemRateController.text),
+        itemRate: enableTF ? int.parse(itemRateController.text) : null,
         taxId: taxId,
         rateWithTax: int.parse(itemRateWithTaxController.text),
         isOpenItem: isOpenItem,
@@ -80,6 +85,18 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
     );
     EasyLoading.showToast('Item Created');
     context.pop();
+  }
+
+  //
+  //get taxes
+  Future<List<TaxModel?>> getAllTaxes() async {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    final taxList = await datatbaseCubit.taxesRepository.getAllTaxes();
+    // log(rateSets.toString());
+    for (var tax in taxList) {
+      log(tax!.taxName.toString());
+    }
+    return taxList;
   }
 
   @override
@@ -228,7 +245,9 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
 
                   //Item rate
                   PrimaryTextField(
-                    validator: nullCheckValidator,
+                    validator: enableTF ? nullCheckValidator : null,
+                    enable: enableTF,
+                    // validator: nullCheckValidator,
                     hintText: 'Item rate',
                     controller: itemRateController,
                     onChanged: (value) {},
@@ -237,6 +256,60 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                   SizedBox(height: screenSize.height * 0.02),
 
                   //dropdown for tax id
+                  SizedBox(
+                    // height: 50,
+                    width: screenSize.width,
+                    child: FutureBuilder<List<TaxModel?>>(
+                      future: getAllTaxes(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator.adaptive();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          final rateSets = snapshot.data ?? [];
+
+                          return Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  border: Border.all(
+                                    color: KColors.buttonColor,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(14.0),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<int>(
+                                    value: taxId,
+                                    isExpanded: true,
+                                    hint: const Text("Choose a tax"),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        taxId = newValue;
+                                      });
+                                    },
+                                    items: rateSets.map((tax) {
+                                      return DropdownMenuItem<int>(
+                                        value: tax!.id,
+                                        child: Text(tax.taxName ?? 'error'),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: screenSize.height * 0.02),
 
                   PrimaryTextField(
                     validator: nullCheckValidator,
@@ -296,26 +369,26 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 if (foodType != null) {
-                  createItemFn(context);
-                  // if (itemGroupId != null) {
-                  //   if (taxId != null) {
-                  //     createItemFn(context);
-                  //   } else {
-                  //     UtillSnackbar.showSnackBar(
-                  //       context,
-                  //       title: "Alert",
-                  //       body: "Please choose a tax type",
-                  //       isSuccess: false,
-                  //     );
-                  //   }
-                  // } else {
-                  //   UtillSnackbar.showSnackBar(
-                  //     context,
-                  //     title: "Alert",
-                  //     body: "Please choose a item group",
-                  //     isSuccess: false,
-                  //   );
-                  // }
+                  if (taxId != null) {
+                    createItemFn(context);
+                    // if (itemGroupId != null) {
+                    // createItemFn(context);
+                    // } else {
+                    //   UtillSnackbar.showSnackBar(
+                    //     context,
+                    //     title: "Alert",
+                    //     body: "Please choose a item group",
+                    //     isSuccess: false,
+                    //   );
+                    // }
+                  } else {
+                    UtillSnackbar.showSnackBar(
+                      context,
+                      title: "Alert",
+                      body: "Please choose a tax type",
+                      isSuccess: false,
+                    );
+                  }
                 } else {
                   UtillSnackbar.showSnackBar(
                     context,

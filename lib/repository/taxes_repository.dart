@@ -16,6 +16,10 @@ class TaxesRepository {
     db.writeTxnSync(() => db.taxModels.putSync(model));
   }
 
+  Future<List<TaxModel?>> getAllTaxes() async {
+    return await db.taxModels.filter().isDeletedEqualTo(false).findAll();
+  }
+
   // editVendor({required int id, required VendorModel model}) async {
   //   VendorModel? dbItem = await db.vendorModels.get(id);
   //   log(dbItem!.id.toString());

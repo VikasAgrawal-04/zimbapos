@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import '../../../bloc/screen_cubits/intro_cubits/cubit/outlet_register_cubit.dart';
-import 'config_screens/register_outlet_screen.dart';
-import 'config_screens/register_subscription_screeen.dart';
+import '../../../../../bloc/screen_cubits/intro_cubits/cubit/outlet_register_cubit.dart';
+import 'register_outlet_screen.dart';
+import 'register_subscription_screeen.dart';
 
 class OutLetDataSetUpScreen extends StatefulWidget {
   const OutLetDataSetUpScreen({super.key});

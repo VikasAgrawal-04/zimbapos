@@ -59,10 +59,7 @@ class StatusHandler extends StatelessWidget {
         break;
       case Status.error:
         child = errorBuilder?.call(context) ??
-            const Center(
-              child: Text('Something went wrong!'),
-            );
-        ;
+            const Center(child: Text('Something went wrong!'));
         break;
     }
     return child;

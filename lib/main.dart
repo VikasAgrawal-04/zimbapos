@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -11,6 +12,7 @@ import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
+import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 
@@ -35,13 +37,19 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  Future<FutureObject> getObject() async {
+    final MySecureStorage storage = MySecureStorage();
+    Directory dir = await getApplicationCacheDirectory();
+    String? outletId = await storage.getOutletID();
+    return FutureObject(directory: dir, outletId: outletId);
+  }
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        return FutureBuilder<Directory>(
-          future: getApplicationCacheDirectory(),
+        return FutureBuilder<FutureObject>(
+          future: getObject(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return MaterialApp(
@@ -59,9 +67,11 @@ class MyApp extends StatelessWidget {
               );
             } else {
               debugPrint('got the path');
-              final directory = snapshot.data!;
               return BlocProvider(
-                create: (context) => DatabaseCubit(directory),
+                create: (context) => DatabaseCubit(
+                  snapshot.data!.directory,
+                  snapshot.data!.outletId,
+                ),
                 child: BlocBuilder<DatabaseCubit, IsarService?>(
                   builder: (context, state) {
                     Server(context: context);
@@ -80,4 +90,13 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+class FutureObject {
+  final Directory directory;
+  final String? outletId;
+  FutureObject({
+    required this.directory,
+    required this.outletId,
+  });
 }

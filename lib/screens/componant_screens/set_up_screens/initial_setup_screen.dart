@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zimbapos/models/user_models/system_config_model.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/intro_screen.dart';
-import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/register_subscription_screeen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/set_up_type_screen.dart';
 
 class InitialSetUpScreen extends StatefulWidget {

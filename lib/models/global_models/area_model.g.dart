@@ -20,37 +20,42 @@ const AreasModelSchema = CollectionSchema(
     r'areaId': PropertySchema(
       id: 0,
       name: r'areaId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'areaName': PropertySchema(
       id: 1,
       name: r'areaName',
       type: IsarType.string,
     ),
-    r'exchangePercent': PropertySchema(
+    r'extraChargePercent': PropertySchema(
       id: 2,
-      name: r'exchangePercent',
+      name: r'extraChargePercent',
       type: IsarType.double,
     ),
-    r'isActive': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 3,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'isActive': PropertySchema(
+      id: 4,
       name: r'isActive',
       type: IsarType.bool,
     ),
     r'isDeleted': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'isDeleted',
       type: IsarType.bool,
     ),
     r'outletId': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'outletId',
       type: IsarType.long,
     ),
     r'rateSetId': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'rateSetId',
-      type: IsarType.long,
+      type: IsarType.string,
     )
   },
   estimateSize: _areasModelEstimateSize,
@@ -74,7 +79,19 @@ int _areasModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.areaId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.areaName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.rateSetId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -88,13 +105,14 @@ void _areasModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.areaId);
+  writer.writeString(offsets[0], object.areaId);
   writer.writeString(offsets[1], object.areaName);
-  writer.writeDouble(offsets[2], object.exchangePercent);
-  writer.writeBool(offsets[3], object.isActive);
-  writer.writeBool(offsets[4], object.isDeleted);
-  writer.writeLong(offsets[5], object.outletId);
-  writer.writeLong(offsets[6], object.rateSetId);
+  writer.writeDouble(offsets[2], object.extraChargePercent);
+  writer.writeLong(offsets[3], object.hashCode);
+  writer.writeBool(offsets[4], object.isActive);
+  writer.writeBool(offsets[5], object.isDeleted);
+  writer.writeLong(offsets[6], object.outletId);
+  writer.writeString(offsets[7], object.rateSetId);
 }
 
 AreasModel _areasModelDeserialize(
@@ -104,14 +122,14 @@ AreasModel _areasModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AreasModel(
-    areaId: reader.readLongOrNull(offsets[0]),
+    areaId: reader.readStringOrNull(offsets[0]),
     areaName: reader.readStringOrNull(offsets[1]),
-    exchangePercent: reader.readDoubleOrNull(offsets[2]),
+    extraChargePercent: reader.readDoubleOrNull(offsets[2]),
     id: id,
-    isActive: reader.readBoolOrNull(offsets[3]),
-    isDeleted: reader.readBoolOrNull(offsets[4]),
-    outletId: reader.readLongOrNull(offsets[5]),
-    rateSetId: reader.readLongOrNull(offsets[6]),
+    isActive: reader.readBoolOrNull(offsets[4]),
+    isDeleted: reader.readBoolOrNull(offsets[5]),
+    outletId: reader.readLongOrNull(offsets[6]),
+    rateSetId: reader.readStringOrNull(offsets[7]),
   );
   return object;
 }
@@ -124,19 +142,21 @@ P _areasModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readDoubleOrNull(offset)) as P;
     case 3:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 4:
       return (reader.readBoolOrNull(offset)) as P;
     case 5:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 6:
       return (reader.readLongOrNull(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -251,46 +271,54 @@ extension AreasModelQueryFilter
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdEqualTo(
-      int? value) {
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'areaId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'areaId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'areaId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -299,6 +327,76 @@ extension AreasModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'areaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'areaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'areaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'areaId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> areaIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'areaId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
+      areaIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'areaId',
+        value: '',
       ));
     });
   }
@@ -455,31 +553,31 @@ extension AreasModelQueryFilter
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
-      exchangePercentIsNull() {
+      extraChargePercentIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'exchangePercent',
+        property: r'extraChargePercent',
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
-      exchangePercentIsNotNull() {
+      extraChargePercentIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'exchangePercent',
+        property: r'extraChargePercent',
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
-      exchangePercentEqualTo(
+      extraChargePercentEqualTo(
     double? value, {
     double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'exchangePercent',
+        property: r'extraChargePercent',
         value: value,
         epsilon: epsilon,
       ));
@@ -487,7 +585,7 @@ extension AreasModelQueryFilter
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
-      exchangePercentGreaterThan(
+      extraChargePercentGreaterThan(
     double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -495,7 +593,7 @@ extension AreasModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'exchangePercent',
+        property: r'extraChargePercent',
         value: value,
         epsilon: epsilon,
       ));
@@ -503,7 +601,7 @@ extension AreasModelQueryFilter
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
-      exchangePercentLessThan(
+      extraChargePercentLessThan(
     double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -511,7 +609,7 @@ extension AreasModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'exchangePercent',
+        property: r'extraChargePercent',
         value: value,
         epsilon: epsilon,
       ));
@@ -519,7 +617,7 @@ extension AreasModelQueryFilter
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
-      exchangePercentBetween(
+      extraChargePercentBetween(
     double? lower,
     double? upper, {
     bool includeLower = true,
@@ -528,12 +626,66 @@ extension AreasModelQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'exchangePercent',
+        property: r'extraChargePercent',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
         epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
+      hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -736,47 +888,55 @@ extension AreasModelQueryFilter
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> rateSetIdEqualTo(
-      int? value) {
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'rateSetId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
       rateSetIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'rateSetId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> rateSetIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'rateSetId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> rateSetIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -785,6 +945,78 @@ extension AreasModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
+      rateSetIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'rateSetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> rateSetIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'rateSetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> rateSetIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'rateSetId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition> rateSetIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'rateSetId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
+      rateSetIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'rateSetId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterFilterCondition>
+      rateSetIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'rateSetId',
+        value: '',
       ));
     });
   }
@@ -822,16 +1054,29 @@ extension AreasModelQuerySortBy
     });
   }
 
-  QueryBuilder<AreasModel, AreasModel, QAfterSortBy> sortByExchangePercent() {
+  QueryBuilder<AreasModel, AreasModel, QAfterSortBy>
+      sortByExtraChargePercent() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'exchangePercent', Sort.asc);
+      return query.addSortBy(r'extraChargePercent', Sort.asc);
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterSortBy>
-      sortByExchangePercentDesc() {
+      sortByExtraChargePercentDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'exchangePercent', Sort.desc);
+      return query.addSortBy(r'extraChargePercent', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -910,16 +1155,29 @@ extension AreasModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<AreasModel, AreasModel, QAfterSortBy> thenByExchangePercent() {
+  QueryBuilder<AreasModel, AreasModel, QAfterSortBy>
+      thenByExtraChargePercent() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'exchangePercent', Sort.asc);
+      return query.addSortBy(r'extraChargePercent', Sort.asc);
     });
   }
 
   QueryBuilder<AreasModel, AreasModel, QAfterSortBy>
-      thenByExchangePercentDesc() {
+      thenByExtraChargePercentDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'exchangePercent', Sort.desc);
+      return query.addSortBy(r'extraChargePercent', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -986,9 +1244,10 @@ extension AreasModelQuerySortThenBy
 
 extension AreasModelQueryWhereDistinct
     on QueryBuilder<AreasModel, AreasModel, QDistinct> {
-  QueryBuilder<AreasModel, AreasModel, QDistinct> distinctByAreaId() {
+  QueryBuilder<AreasModel, AreasModel, QDistinct> distinctByAreaId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'areaId');
+      return query.addDistinctBy(r'areaId', caseSensitive: caseSensitive);
     });
   }
 
@@ -999,9 +1258,16 @@ extension AreasModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<AreasModel, AreasModel, QDistinct> distinctByExchangePercent() {
+  QueryBuilder<AreasModel, AreasModel, QDistinct>
+      distinctByExtraChargePercent() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'exchangePercent');
+      return query.addDistinctBy(r'extraChargePercent');
+    });
+  }
+
+  QueryBuilder<AreasModel, AreasModel, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
     });
   }
 
@@ -1023,9 +1289,10 @@ extension AreasModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<AreasModel, AreasModel, QDistinct> distinctByRateSetId() {
+  QueryBuilder<AreasModel, AreasModel, QDistinct> distinctByRateSetId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'rateSetId');
+      return query.addDistinctBy(r'rateSetId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1038,7 +1305,7 @@ extension AreasModelQueryProperty
     });
   }
 
-  QueryBuilder<AreasModel, int?, QQueryOperations> areaIdProperty() {
+  QueryBuilder<AreasModel, String?, QQueryOperations> areaIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'areaId');
     });
@@ -1051,9 +1318,15 @@ extension AreasModelQueryProperty
   }
 
   QueryBuilder<AreasModel, double?, QQueryOperations>
-      exchangePercentProperty() {
+      extraChargePercentProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'exchangePercent');
+      return query.addPropertyName(r'extraChargePercent');
+    });
+  }
+
+  QueryBuilder<AreasModel, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 
@@ -1075,7 +1348,7 @@ extension AreasModelQueryProperty
     });
   }
 
-  QueryBuilder<AreasModel, int?, QQueryOperations> rateSetIdProperty() {
+  QueryBuilder<AreasModel, String?, QQueryOperations> rateSetIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'rateSetId');
     });

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:server/apis/helper/api_helper.dart';
 import 'package:shelf/shelf.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
@@ -39,9 +40,15 @@ class RateSetController {
             body: jsonEncode({"data": missingFieldsMessage}));
       }
       decodedData['ratesetId'] = Helpers.generateUuId();
-      dbCubit.rateSetsRepository.createRateSet(
+
+      final success = dbCubit.rateSetsRepository.createRateSet(
           model: RateSetsModel.fromJson(jsonEncode(decodedData)));
-      return Response.ok(jsonEncode({'data': 'Rateset Created Successfully!'}));
+      if (success) {
+        return Response.ok(
+            jsonEncode({'data': 'Rateset Created Successfully!'}));
+      } else {
+        return badArguments('Rate Set Already Exists');
+      }
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
@@ -82,18 +89,21 @@ class RateSetController {
   Future<Response> deleteRateSet(Request request) async {
     try {
       if (request.url.queryParameters.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode(
-                {"data": 'Please Enter Rate Set Id as a key ratesetId'}));
+        return badArguments('Please Enter Rate Set Id as a key ratesetId');
       }
-      final ratesetId = request.url.queryParameters['id'];
-      dbCubit.rateSetsRepository
-          .deleteRateSetbyID(int.parse(ratesetId.toString()));
+      final ratesetId = request.url.queryParameters['ratesetId'];
+      dbCubit.rateSetsRepository.deleteRateSetbyID(ratesetId);
+
+      if (ratesetId == null) {
+        return badArguments('Please Enter Rate Set Id as a key ratesetId');
+      } else {
+        dbCubit.rateSetsRepository.deleteRateSetbyID(ratesetId);
+      }
       return Response.ok(jsonEncode({'data': 'Rate Set Deleted!'}));
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 }

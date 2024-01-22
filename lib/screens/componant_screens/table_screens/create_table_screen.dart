@@ -24,7 +24,7 @@ class CreateTableScreen extends StatefulWidget {
 class _CreateTableScreenState extends State<CreateTableScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final tableName = TextEditingController();
-  int? selectedAreaId;
+  String? selectedAreaId;
 
   @override
   void dispose() {
@@ -46,10 +46,10 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
 
   Future<List<AreasModel?>> getAllAreas() async {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    final areas = await datatbaseCubit.areasRepository.getAreaList();
+    final areas = await datatbaseCubit.areasRepository.getAreas();
     // log(rateSets.toString());
     for (var area in areas) {
-      log(area!.areaName.toString());
+      log(area.areaName.toString());
       log(area.id.toString());
     }
     return areas;
@@ -113,7 +113,7 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
                                 borderRadius: BorderRadius.circular(14.0),
                               ),
                               child: DropdownButtonHideUnderline(
-                                child: DropdownButton<int>(
+                                child: DropdownButton<String>(
                                   isExpanded: true,
                                   value: selectedAreaId,
                                   hint: const Text("Choose a area"),
@@ -123,9 +123,9 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
                                     });
                                   },
                                   items: areas.map((area) {
-                                    return DropdownMenuItem<int>(
-                                      value: area!.id,
-                                      child: Text(area.areaName ?? 'error'),
+                                    return DropdownMenuItem<String>(
+                                      value: area?.areaId,
+                                      child: Text(area?.areaName ?? 'error'),
                                     );
                                   }).toList(),
                                 ),

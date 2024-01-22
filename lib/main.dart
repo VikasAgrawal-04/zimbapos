@@ -10,7 +10,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
@@ -20,9 +19,10 @@ import 'constants/kcolors.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
+  final ip = await Helpers.getWifiIPAddress();
   SharedPreferences.getInstance().then((pref) {
     Helpers.prefs = pref;
-    final dio = Dio();
+    final dio = Dio(BaseOptions(baseUrl: 'http://$ip:8080'));
     dio.interceptors.add(PrettyDioLogger(
       requestBody: true,
       requestHeader: true,

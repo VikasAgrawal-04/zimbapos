@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:server/apis/routes/area_routes.dart';
 import 'package:server/apis/routes/customer_category_routes.dart';
 import 'package:server/apis/routes/rateset_routes.dart';
 import 'package:server/apis/routes/table_routes.dart';
@@ -21,6 +22,7 @@ class Server {
     WorkerRoutes(context, router);
     RateSetRoutes(context, router);
     CustomerCategoryRoutes(context, router);
+    AreaRoutes(context, router);
   }
 
   Future<void> runServer() async {

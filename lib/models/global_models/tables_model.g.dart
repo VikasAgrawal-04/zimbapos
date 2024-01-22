@@ -20,7 +20,7 @@ const TableModelSchema = CollectionSchema(
     r'areaId': PropertySchema(
       id: 0,
       name: r'areaId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'customerId': PropertySchema(
       id: 1,
@@ -104,6 +104,12 @@ int _tableModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.areaId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.customerId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -142,7 +148,7 @@ void _tableModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.areaId);
+  writer.writeString(offsets[0], object.areaId);
   writer.writeString(offsets[1], object.customerId);
   writer.writeString(offsets[2], object.customerName);
   writer.writeLong(offsets[3], object.hashCode);
@@ -164,7 +170,7 @@ TableModel _tableModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = TableModel(
-    areaId: reader.readLongOrNull(offsets[0]),
+    areaId: reader.readStringOrNull(offsets[0]),
     customerId: reader.readStringOrNull(offsets[1]),
     customerName: reader.readStringOrNull(offsets[2]),
     id: id,
@@ -189,7 +195,7 @@ P _tableModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -328,46 +334,54 @@ extension TableModelQueryFilter
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdEqualTo(
-      int? value) {
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'areaId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'areaId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'areaId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -376,6 +390,76 @@ extension TableModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'areaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'areaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'areaId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'areaId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> areaIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'areaId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      areaIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'areaId',
+        value: '',
       ));
     });
   }
@@ -1888,9 +1972,10 @@ extension TableModelQuerySortThenBy
 
 extension TableModelQueryWhereDistinct
     on QueryBuilder<TableModel, TableModel, QDistinct> {
-  QueryBuilder<TableModel, TableModel, QDistinct> distinctByAreaId() {
+  QueryBuilder<TableModel, TableModel, QDistinct> distinctByAreaId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'areaId');
+      return query.addDistinctBy(r'areaId', caseSensitive: caseSensitive);
     });
   }
 
@@ -1980,7 +2065,7 @@ extension TableModelQueryProperty
     });
   }
 
-  QueryBuilder<TableModel, int?, QQueryOperations> areaIdProperty() {
+  QueryBuilder<TableModel, String?, QQueryOperations> areaIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'areaId');
     });

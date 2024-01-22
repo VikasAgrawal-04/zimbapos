@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../models/global_models/rate_sets_model.dart';
@@ -25,7 +25,7 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController areaNameController;
   late final TextEditingController exchangePercentController;
-  int? selectedRateSetId;
+  String? selectedRateSetId;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
     db.areasRepository.createArea(
       model: AreasModel(
         areaName: areaNameController.text,
-        exchangePercent: double.parse(exchangePercentController.text),
+        extraChargePercent: double.parse(exchangePercentController.text),
         rateSetId: selectedRateSetId,
       ),
     );
@@ -130,73 +130,72 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
                         } else {
                           final rateSets = snapshot.data ?? [];
 
-                          return Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(
-                                    color: KColors.buttonColor,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(14.0),
+                        return Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(
+                                  color: KColors.buttonColor,
+                                  width: 1.0,
                                 ),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<int>(
-                                    value: selectedRateSetId,
-                                    isExpanded: true,
-                                    hint: const Text("Choose a rate"),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedRateSetId = newValue;
-                                      });
-                                    },
-                                    items: rateSets.map((rateSet) {
-                                      return DropdownMenuItem<int>(
-                                        value: rateSet!.id,
-                                        child: Text(
-                                            rateSet.ratesetName ?? 'error'),
-                                      );
-                                    }).toList(),
-                                  ),
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  value: selectedRateSetId,
+                                  isExpanded: true,
+                                  hint: const Text("Choose a rate"),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectedRateSetId = newValue;
+                                    });
+                                  },
+                                  items: rateSets.map((rateSet) {
+                                    return DropdownMenuItem<String>(
+                                      value: rateSet!.ratesetId,
+                                      child:
+                                          Text(rateSet.ratesetName ?? 'error'),
+                                    );
+                                  }).toList(),
                                 ),
                               ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
-                  SizedBox(height: screenSize.height * 0.2),
-                  // ElevatedButton(
-                  //   onPressed: () => createAreaFn(context),
-                  //   child: const Text('Create area'),
-                  // )
-                ],
-              ),
+                ),
+                SizedBox(height: screenSize.height * 0.2),
+                // ElevatedButton(
+                //   onPressed: () => createAreaFn(context),
+                //   child: const Text('Create area'),
+                // )
+              ],
             ),
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (selectedRateSetId != null) {
-                  createAreaFn(context);
-                } else {
-                  UtillSnackbar.showSnackBar(
-                    context,
-                    title: "Alert",
-                    body: "Please choose a area",
-                    isSuccess: false,
-                  );
-                }
-              }
-            }),
       ),
+      bottomNavigationBar: CustomButton(
+          text: "Save",
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              if (selectedRateSetId != null) {
+                createAreaFn(context);
+              } else {
+                UtillSnackbar.showSnackBar(
+                  context,
+                  title: "Alert",
+                  body: "Please choose a area",
+                  isSuccess: false,
+                );
+              }
+            }
+          }),
     );
   }
 }

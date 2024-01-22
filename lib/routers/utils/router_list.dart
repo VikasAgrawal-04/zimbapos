@@ -139,7 +139,7 @@ final List<GoRoute> routerList = [
         return EditAreaScreen(item: state.extra as AreasModel);
       } else {
         return EditAreaScreen(
-          item: AreasModel.fromJson(state.extra as Map<String, dynamic>),
+          item: AreasModel.fromMap(state.extra as Map<String, dynamic>),
         );
       }
     },

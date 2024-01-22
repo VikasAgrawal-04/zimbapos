@@ -10,7 +10,7 @@ class TableModel {
   int? outletId;
   String? tableId;
   String? tableName;
-  int? areaId;
+  String? areaId;
   String? tableStatus;
   bool? isSplit;
   int? persons;
@@ -40,7 +40,7 @@ class TableModel {
     int? outletId,
     String? tableId,
     String? tableName,
-    int? areaId,
+    String? areaId,
     String? tableStatus,
     bool? isSplit,
     int? persons,
@@ -91,7 +91,7 @@ class TableModel {
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
       tableId: map['tableId'] != null ? map['tableId'] as String : null,
       tableName: map['tableName'] != null ? map['tableName'] as String : null,
-      areaId: map['areaId'] != null ? map['areaId'] as int : null,
+      areaId: map['areaId'] != null ? map['areaId'] as String? : null,
       tableStatus:
           map['tableStatus'] != null ? map['tableStatus'] as String : null,
       isSplit: map['isSplit'] != null ? map['isSplit'] as bool : null,

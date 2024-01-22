@@ -83,12 +83,17 @@ class WorkerRepository {
     }
   }
 
-  deleteWorker(String? id) async {
-    final model =
-        await db.workersModels.filter().workerIdEqualTo(id).findFirst();
-    if (model != null) {
-      model.isDeleted = true;
-      db.writeTxnSync(() => db.workersModels.putSync(model));
+  Future deleteWorker(String? id) async {
+    try {
+      final model =
+          await db.workersModels.filter().workerIdEqualTo(id).findFirst();
+      if (model != null) {
+        model.isDeleted = true;
+        db.writeTxnSync(() => db.workersModels.putSync(model));
+      }
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return false;
     }
   }
 

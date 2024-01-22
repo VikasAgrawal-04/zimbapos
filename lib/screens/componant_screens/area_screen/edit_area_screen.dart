@@ -29,17 +29,16 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController areaNameController;
   late final TextEditingController exchangePercentController;
-  late int? selectedRateSetId;
+  late String? selectedRateSetId;
 
   @override
   void initState() {
     super.initState();
     areaNameController = TextEditingController();
     exchangePercentController = TextEditingController();
-    selectedRateSetId = widget.item.rateSetId ?? 0;
-
+    selectedRateSetId = widget.item.rateSetId ?? '0';
     areaNameController.text = widget.item.areaName.toString();
-    exchangePercentController.text = widget.item.exchangePercent.toString();
+    exchangePercentController.text = widget.item.extraChargePercent.toString();
     selectedRateSetId = widget.item.rateSetId;
   }
 
@@ -71,8 +70,8 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
     item = await datatbaseCubit.areasRepository.getAreabyID(widget.item.id);
     areaNameController.text = item!.areaName.toString();
-    exchangePercentController.text = item.exchangePercent.toString();
-    selectedRateSetId = item.id;
+    exchangePercentController.text = item.extraChargePercent.toString();
+    selectedRateSetId = item.rateSetId;
   }
 
   Future<List<RateSetsModel?>> getAllRateSets() async {
@@ -165,7 +164,7 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
                                 borderRadius: BorderRadius.circular(14.0),
                               ),
                               child: DropdownButtonHideUnderline(
-                                child: DropdownButton<int>(
+                                child: DropdownButton<String>(
                                   isExpanded: true,
                                   value: selectedRateSetId,
                                   hint: const Text("Choose a rate"),
@@ -175,8 +174,8 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
                                     });
                                   },
                                   items: rateSets.map((rateSet) {
-                                    return DropdownMenuItem<int>(
-                                      value: rateSet!.id,
+                                    return DropdownMenuItem<String>(
+                                      value: rateSet!.ratesetId,
                                       child:
                                           Text(rateSet.ratesetName ?? 'error'),
                                     );

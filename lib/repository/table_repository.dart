@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 
@@ -18,8 +19,24 @@ class TableRepository {
     return await db.tableModels.filter().isDeletedEqualTo(false).findAll();
   }
 
-  createTable({required TableModel data}) {
-    db.writeTxnSync(() => db.tableModels.putSync(data));
+  Future createTable({required TableModel data}) async {
+    try {
+      final dbItem = await db.tableModels
+          .filter()
+          .tableNameEqualTo(data.tableName)
+          .and()
+          .areaIdEqualTo(data.areaId)
+          .findFirst();
+      if (dbItem == null) {
+        db.writeTxnSync(() => db.tableModels.putSync(data));
+        return true;
+      } else {
+        return false;
+      }
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return false;
+    }
   }
 
   Future<void> updateTable({required TableModel data}) async {
@@ -58,5 +75,19 @@ class TableRepository {
     db.writeTxnSync(() {
       db.tableModels.deleteSync(id);
     });
+  }
+
+  Future<List<TableModel>> fetchTableById(String? id) async {
+    try {
+      final tables = db.tableModels
+          .filter()
+          .areaIdEqualTo(id)
+          .and()
+          .isDeletedEqualTo(false)
+          .findAllSync();
+      return tables;
+    } catch (e) {
+      return [];
+    }
   }
 }

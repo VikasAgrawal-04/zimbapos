@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
@@ -22,29 +21,39 @@ class RateSetsRepository {
         .findAll();
   }
 
-  void createRateSet({required RateSetsModel model}) {
-    db.writeTxnSync(() {
-      db.rateSetsModels.putSync(model);
-    });
+  bool createRateSet({required RateSetsModel model}) {
+    try {
+      final dbItem = db.rateSetsModels
+          .filter()
+          .ratesetNameEqualTo(model.ratesetName)
+          .and()
+          .isDeletedEqualTo(false)
+          .findFirstSync();
+      if (dbItem == null) {
+        db.writeTxnSync(() {
+          db.rateSetsModels.putSync(model);
+        });
+        return true;
+      } else {
+        return false;
+      }
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return false;
+    }
   }
 
   Future<void> updateRateSet({required RateSetsModel model}) async {
-    // final item = await db.rateSetsModels
-    //     .filter()
-    //     .ratesetIdEqualTo(model.ratesetId)
-    //     .and()
-    //     .isDeletedEqualTo(false)
-    //     .findFirst();
-    // if (item != null) {
-    //   item.ratesetName = model.ratesetName;
-    //   item.isActive = model.isActive;
-    //   db.writeTxnSync(() => db.rateSetsModels.putSync(item));
-    // }
-    RateSetsModel? dbItem = await db.rateSetsModels.get(model.id);
-    if (dbItem != null) {
-      dbItem = model;
-      log('in to fun');
-      db.writeTxnSync(() => db.rateSetsModels.putSync(dbItem!));
+    final item = await db.rateSetsModels
+        .filter()
+        .ratesetIdEqualTo(model.ratesetId)
+        .and()
+        .isDeletedEqualTo(false)
+        .findFirst();
+    if (item != null) {
+      item.ratesetName = model.ratesetName;
+      item.isActive = model.isActive;
+      db.writeTxnSync(() => db.rateSetsModels.putSync(item));
     }
   }
 
@@ -66,18 +75,14 @@ class RateSetsRepository {
     }
   }
 
-  Future<void> deleteRateSetbyID(int id) async {
-    //   final model =
-    //       await db.rateSetsModels.filter().ratesetIdEqualTo(id).findFirst();
-    //   if (model != null) {
-    //     db.writeTxnSync(() {
-    //       model.isDeleted = true;
-    //       db.rateSetsModels.putSync(model);
-    //     });
-    //   }
-    log(id.toString());
-    db.writeTxnSync(() {
-      db.rateSetsModels.deleteSync(id);
-    });
+  Future<void> deleteRateSetbyID(String? id) async {
+    final model =
+        await db.rateSetsModels.filter().ratesetIdEqualTo(id).findFirst();
+    if (model != null) {
+      db.writeTxnSync(() {
+        model.isDeleted = true;
+        db.rateSetsModels.putSync(model);
+      });
+    }
   }
 }

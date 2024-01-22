@@ -82,8 +82,7 @@ class _TableScreenState extends State<TableScreen> {
               child: Text('No Tables'),
             );
           } else {
-            return SizedBox(
-              width: 100.w,
+            return SingleChildScrollView(
               child: DataTable(
                 columns: [
                   const DataColumn(

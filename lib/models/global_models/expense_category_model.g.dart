@@ -84,10 +84,10 @@ ExpenseCategoryModel _expenseCategoryModelDeserialize(
   final object = ExpenseCategoryModel(
     expenseCategoryId: reader.readLongOrNull(offsets[0]),
     expenseCategoryName: reader.readString(offsets[1]),
+    id: id,
     isActive: reader.readBoolOrNull(offsets[2]),
     isDeleted: reader.readBoolOrNull(offsets[3]),
   );
-  object.id = id;
   return object;
 }
 

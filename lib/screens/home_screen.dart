@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_state.dart';
+import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
@@ -94,7 +98,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    scrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      scrollController = ScrollController();
+    });
   }
 
   @override
@@ -105,48 +111,38 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Screen'),
-        // actions: [
-        //   IconButton(
-        //     onPressed: () {
-        //       // context.push(AppScreen.vendorScreen.path);
-        //       context.push(AppScreen.expenseCategoryScreen.path);
-        //       // context.push(AppScreen.expensesScreen.path);
-        //     },
-        //     icon: const Icon(Icons.open_in_new_outlined),
-        //   ),
-        // ],
-      ),
-      body: OrientationBuilder(
-        builder: (context, orientation) =>
-            StreamBuilder<List<HomeShortcutModel>>(
-          stream: getList(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            var data = snapshot.data;
-            data ?? [];
-            return OrientationBuilder(
-              builder: (context, orientation) => Center(
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        flex: (orientation.name == Orientation.landscape.name)
-                            ? 3
-                            : 1,
-                        child: Padding(
-                          padding: EdgeInsets.all(2.w),
+    return BlocProvider(
+      create: (context) => HomeCubit(),
+      child: Scaffold(
+        appBar: _buildAppbar(),
+        body: OrientationBuilder(
+          builder: (context, orientation) =>
+              StreamBuilder<List<HomeShortcutModel>>(
+            stream: getList(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+              var data = snapshot.data;
+              data ?? [];
+              return OrientationBuilder(
+                builder: (context, orientation) => Center(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          flex: (orientation.name == Orientation.landscape.name)
+                              ? 3
+                              : 1,
                           child: GridView.builder(
+                            padding: EdgeInsets.only(bottom: 2.h),
                             controller: scrollController,
                             itemCount: 9,
                             gridDelegate:
@@ -174,7 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
-                                    elevation: 8,
+                                    elevation: 6,
                                     shadowColor: Colors.black.withOpacity(0.6),
                                   ),
                                   onPressed: homeShortcut.gridPosition != -1
@@ -185,13 +181,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           children: [
                                             Positioned(
                                               top: 0,
-                                              right: -1.w,
+                                              right: 0,
                                               child: IconButton(
                                                 onPressed: () {
                                                   UtilDialog.showMyDialog(
                                                     context,
                                                     "Alert",
-                                                    "Do you want to delete '${homeShortcut.title}' shortcut?",
+                                                    "Do you want to delete shortcut?",
                                                     () {
                                                       deleteHomeShortcut(
                                                           homeShortcut.isarId);
@@ -199,17 +195,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     },
                                                     null,
                                                   );
-                                                  // showMyAlertDialog(
-                                                  //   context,
-                                                  //   title:
-                                                  //       'Do you want to Delete the Shortcut?',
-                                                  //   content: '',
-                                                  //   onPress: () {
-                                                  //     deleteHomeShortcut(
-                                                  //         homeShortcut.isarId);
-                                                  //     context.pop();
-                                                  //   },
-                                                  // );
                                                 },
                                                 icon: Icon(
                                                   CupertinoIcons.delete,
@@ -239,23 +224,60 @@ class _HomeScreenState extends State<HomeScreen> {
                             },
                           ),
                         ),
-                      ),
-                      CustomButtonNew(
-                        margin: EdgeInsets.symmetric(vertical: 1.h),
-                        text: 'Ordering Dashboard',
-                        onTap: () {
-                          context
-                              .pushNamed(AppScreen.orderDashboardScreen.name);
-                        },
-                      )
-                    ],
+                        CustomButtonNew(
+                          margin: EdgeInsets.symmetric(vertical: 1.h),
+                          text: 'Ordering Dashboard',
+                          onTap: () {
+                            context
+                                .pushNamed(AppScreen.orderDashboardScreen.name);
+                          },
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
+    );
+  }
+
+  AppBar _buildAppbar() {
+    return AppBar(
+      title: const Text('Home Screen'),
+      actions: [
+        IconButton(
+            onPressed: () {
+              // context.push(AppScreen.vendorScreen.path);
+              context.push(AppScreen.expenseCategoryScreen.path);
+              // context.push(AppScreen.expensesScreen.path);
+            },
+            icon: const Icon(Icons.open_in_new_outlined)),
+        BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+          return AnimatedOpacity(
+            opacity: state.animationValue,
+            duration: const Duration(milliseconds: 400),
+            child: AnimatedContainer(
+              margin: EdgeInsets.only(right: 4.w),
+              duration: const Duration(milliseconds: 400),
+              width: 10.w,
+              height: 2.5.h,
+              decoration: BoxDecoration(
+                color: KColors.greenBlinkColor,
+                shape: BoxShape.circle,
+              ),
+            ),
+          );
+        }),
+        BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
+          return Padding(
+            padding: EdgeInsets.only(right: 4.w),
+            child: Text('IP Address : ${state.ipAddress}'),
+          );
+        })
+      ],
     );
   }
 }

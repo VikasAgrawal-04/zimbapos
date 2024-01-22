@@ -20,6 +20,7 @@ class TablesRoutes {
     locRoute.get('/get-tables', controller.fetchAllTables);
     locRoute.post('/create-table', controller.createTable);
     locRoute.post('/update-table', controller.updateTable);
+    locRoute.get('/fetch-tables-id', controller.fetchTableById);
     locRoute.delete('/delete-table', controller.deleteTable);
   }
 }

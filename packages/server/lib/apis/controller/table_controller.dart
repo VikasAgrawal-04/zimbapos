@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:server/apis/helper/api_helper.dart';
 import 'package:shelf/shelf.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
@@ -21,7 +22,7 @@ class TableController {
 
   Future<Response> createTable(Request request) async {
     try {
-      final requiredFields = ['tableName', 'outletId'];
+      final requiredFields = ['tableName', 'outletId', 'areaId'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return Response.badRequest(
@@ -39,9 +40,13 @@ class TableController {
             body: jsonEncode({"data": missingFieldsMessage}));
       }
       decodedData['tableId'] = Helpers.generateUuId();
-      dbCubit.tableRepository
+      final success = await dbCubit.tableRepository
           .createTable(data: TableModel.fromJson(jsonEncode(decodedData)));
-      return Response.ok(jsonEncode({"data": "Table Created Successfully"}));
+      if (success) {
+        return okResponse("Table Created Successfully");
+      } else {
+        return badArguments('Table Already Exists');
+      }
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
@@ -82,9 +87,7 @@ class TableController {
   Future<Response> deleteTable(Request request) async {
     try {
       if (request.url.queryParameters.isEmpty) {
-        return Response.badRequest(
-            body:
-                jsonEncode({"data": 'Please Enter Table Id as a key tableId'}));
+        return badArguments('Please Enter Table Id as a key tableId');
       }
       final tableId = request.url.queryParameters['id'];
       dbCubit.tableRepository.deleteTable(int.parse(tableId.toString()));
@@ -92,7 +95,25 @@ class TableController {
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
+    }
+  }
+
+  Future<Response> fetchTableById(Request request) async {
+    try {
+      if (request.url.queryParameters.isEmpty) {
+        return badArguments('Please Enter Area Id as a key id');
+      }
+      final id = request.url.queryParameters['id'];
+      if (id == null) {
+        return badArguments('Please Enter Table Id as a key id');
+      }
+      final tables = await dbCubit.tableRepository.fetchTableById(id);
+      return okResponse(tables);
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
     }
   }
 }

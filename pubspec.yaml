@@ -37,6 +37,7 @@ dependencies:
   validators: ^3.0.0
   flutter_secure_storage: ^9.0.0
   crypto: ^3.0.3
+  network_info_plus: ^4.1.0
   
 
 dev_dependencies:

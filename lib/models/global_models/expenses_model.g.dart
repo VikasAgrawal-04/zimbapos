@@ -154,12 +154,12 @@ ExpenseModel _expenseModelDeserialize(
     entryDatetime: reader.readDateTimeOrNull(offsets[5]),
     expenseCategoryId: reader.readLongOrNull(offsets[6]),
     expenseId: reader.readLongOrNull(offsets[7]),
+    id: id,
     isActive: reader.readBoolOrNull(offsets[8]),
     isDeleted: reader.readBoolOrNull(offsets[9]),
     payMode: reader.readStringOrNull(offsets[10]),
     vendorId: reader.readLongOrNull(offsets[11]),
   );
-  object.id = id;
   return object;
 }
 

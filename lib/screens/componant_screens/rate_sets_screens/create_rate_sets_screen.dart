@@ -41,41 +41,43 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Rate Sets'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //rate set name
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Rate set name',
-                controller: nameController,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: nameController,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //   ),
-              // ),
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create Rate Sets'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //rate set name
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Rate set name',
+                  controller: nameController,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: nameController,
+                //   decoration: const InputDecoration(
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                createRateSetFn(context);
+              }
+            }),
       ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              createRateSetFn(context);
-            }
-          }),
     );
   }
 }

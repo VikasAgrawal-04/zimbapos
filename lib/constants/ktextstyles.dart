@@ -13,7 +13,7 @@ class KTextStyles {
     // Add other properties as needed
   );
   static TextStyle kBlackAppBarHeader = TextStyle(
-    fontSize: 24.sp,
+    fontSize: 18.sp,
     fontWeight: FontWeight.bold,
     color: KColors.textColor,
     fontFamily: "PJS",

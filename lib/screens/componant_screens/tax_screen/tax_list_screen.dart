@@ -3,35 +3,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/models/global_models/workers_model.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 
+import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
-class WorkerOverviewScreen extends StatefulWidget {
-  const WorkerOverviewScreen({super.key});
+class TaxListScreen extends StatefulWidget {
+  const TaxListScreen({super.key});
 
   @override
-  State<WorkerOverviewScreen> createState() => _WorkerOverviewScreenState();
+  State<TaxListScreen> createState() => _TaxListScreenState();
 }
 
-class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
-  Stream<List<WorkersModel>> getWorkerList() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.workerRepository.streamWorkersList();
+class _TaxListScreenState extends State<TaxListScreen> {
+  //
+  //
+  Stream<List<TaxModel>> streamForTaxes() {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
+    return datatbaseCubit.taxesRepository.streamTaxList();
   }
 
-  deleteWorker(WorkersModel worker) {
+  deleteTax(TaxModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${worker.workerName}'?",
+      "Do you want to delete '${e.taxName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.workerRepository.deleteWorker(worker.workerId);
-        EasyLoading.showToast('Worker deleted');
+        dbCubit.taxesRepository.deleteTax(e.id);
+        EasyLoading.showToast('Tax deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
@@ -39,14 +42,14 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
     );
   }
 
-  activeDeactivateWorkers(int id, bool value) {
+  activeDeactivateTax(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.workerRepository.changeActive(id, value);
+    dbCubit.taxesRepository.changeActive(id, value);
   }
 
-  editWorkerFn({required WorkersModel model}) {
+  editTaxFn({required TaxModel model}) {
     context.push(
-      AppScreen.editWorkerScreen.path,
+      AppScreen.editTaxScreen.path,
       extra: model,
     );
   }
@@ -56,27 +59,26 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Manage Workers'),
+          title: const Text('Tax list'),
           actions: [
+            // IconButton(
+            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
+            //   icon: const Icon(Icons.add),
+            // ),
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createWorkerScreen.path),
-              label: const Text('Add Workers'),
+              onPressed: () => context.push(AppScreen.createTaxScreen.path),
+              label: const Text('Add Tax'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: StreamBuilder<List<WorkersModel>>(
-          stream: getWorkerList(),
+        body: StreamBuilder<List<TaxModel>>(
+          stream: streamForTaxes(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+            final list = snapshot.data;
+            if (list == null || list.isEmpty) {
               return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            final data = snapshot.data;
-            if (data == null || data.isEmpty) {
-              return const Center(
-                child: Text('No Workers'),
+                child: Text('No taxes available,create one.'),
               );
             }
             return SizedBox(
@@ -87,7 +89,7 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
                     label: Text('Name'),
                   ),
                   const DataColumn(
-                    label: Text('Role'),
+                    label: Text('Percent'),
                   ),
                   const DataColumn(
                     label: Text('Active'),
@@ -99,17 +101,16 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
                     ),
                   ),
                 ],
-                rows: data
+                rows: list
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.workerName)),
-                          DataCell(Text(e.workerRoleDisplay(e.workerRole))),
+                          DataCell(Text(e.taxName.toString())),
+                          DataCell(Text("${e.taxPercent.toString()}%")),
                           DataCell(
                             Switch.adaptive(
-                              value: e.isActive,
-                              onChanged: (va) =>
-                                  activeDeactivateWorkers(e.id, va),
+                              value: e.isActive as bool,
+                              onChanged: (va) => activeDeactivateTax(e.id, va),
                             ),
                           ),
                           DataCell(
@@ -121,12 +122,12 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    onPressed: () => editWorkerFn(model: e),
+                                    onPressed: () => editTaxFn(model: e),
                                     icon: const Icon(Icons.edit),
                                   ),
                                   SizedBox(width: 2.w),
                                   IconButton(
-                                    onPressed: () => deleteWorker(e),
+                                    onPressed: () => deleteTax(e),
                                     icon: const Icon(CupertinoIcons.delete),
                                   )
                                 ],

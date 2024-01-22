@@ -9,6 +9,10 @@ class CategoryRepository {
     return db.categoryModels.where().watch(fireImmediately: true);
   }
 
+  Future<List<CategoryModel>> getAllCategory() {
+    return db.categoryModels.filter().isDeletedEqualTo(false).findAll();
+  }
+
   Future<void> changeActive(int id, bool isActive) async {
     CategoryModel? model = await db.categoryModels.get(id);
     if (model != null) {
@@ -24,9 +28,7 @@ class CategoryRepository {
   }
 
   void updateCategory({required CategoryModel data}) async {
-    // log(data!.custCategoryName.toString());
     CategoryModel? dbItem = await db.categoryModels.get(data.id);
-    // log(dbItem!.custCategoryName.toString());
     if (dbItem != null) {
       dbItem.categoryName = data.categoryName;
 

@@ -16,7 +16,7 @@ class AreaController {
       final areas = await dbCubit.areasRepository.getAreas();
       return okResponse(areas);
     } catch (e) {
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 

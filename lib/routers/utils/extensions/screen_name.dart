@@ -41,6 +41,9 @@ enum AppScreen {
   createItemScreen,
   editItemScreen,
   outletDataRegisterScreen,
+  paymentsScreen,
+  createPaymentsScreen,
+  editPaymentsScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -131,6 +134,12 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Item Screen';
       case AppScreen.outletDataRegisterScreen:
         return 'Outlet-Data-Registration-Screen';
+      case AppScreen.paymentsScreen:
+        return 'Payments Screen';
+      case AppScreen.createPaymentsScreen:
+        return 'Create Payment Screen';
+      case AppScreen.editPaymentsScreen:
+        return 'Edit Payment Screen';
     }
   }
 
@@ -221,6 +230,12 @@ extension AppScreenExtension on AppScreen {
         return '/edit-item-screen';
       case AppScreen.outletDataRegisterScreen:
         return '/outlet-data-registration-screen';
+      case AppScreen.paymentsScreen:
+        return '/payments-screen';
+      case AppScreen.createPaymentsScreen:
+        return '/create-payment-screen';
+      case AppScreen.editPaymentsScreen:
+        return '/edit-payment-screen';
     }
   }
 }

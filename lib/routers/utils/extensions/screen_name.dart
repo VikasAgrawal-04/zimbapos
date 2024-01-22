@@ -34,6 +34,12 @@ enum AppScreen {
   createExpenseScreen,
   editExpenseScreen,
   orderDashboardScreen,
+  taxesScreen,
+  createTaxScreen,
+  editTaxScreen,
+  itemsScreen,
+  createItemScreen,
+  editItemScreen,
   outletDataRegisterScreen,
 }
 
@@ -111,8 +117,6 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Expense';
       case AppScreen.orderDashboardScreen:
         return 'Order Dashboard';
-      case AppScreen.outletDataRegisterScreen:
-        return 'Outlet Data Register Screen';
     }
   }
 
@@ -189,8 +193,6 @@ extension AppScreenExtension on AppScreen {
         return '/edit-expense';
       case AppScreen.orderDashboardScreen:
         return '/order-dashboard';
-      case AppScreen.outletDataRegisterScreen:
-        return '/outlet-data-register-screen';
     }
   }
 }

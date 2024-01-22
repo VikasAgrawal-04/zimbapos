@@ -1,8 +1,8 @@
 // dialog_util.dart
 import 'package:flutter/material.dart';
+import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:go_router/go_router.dart';
-
 
 class UtilDialog {
   static void showMyDialog(
@@ -18,12 +18,12 @@ class UtilDialog {
         return AlertDialog(
           title: Text(
             title,
-            style: KTextStyles.kHeader,
+            style: KTextStyles.kAlertTitle,
           ),
           content: SingleChildScrollView(
             child: Text(
               message,
-              style: KTextStyles.kAlertTitle,
+              style: KTextStyles.kAlertSubtitle,
             ),
           ),
           actions: <Widget>[
@@ -42,13 +42,14 @@ class UtilDialog {
             //ok button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orangeAccent),
+                backgroundColor: Colors.deepPurple,
+              ),
               onPressed: onOkPressed ?? () => context.pop(),
               child: const Text(
                 'OK',
                 style: TextStyle(
                   fontSize: 18,
-                  color: Colors.black54,
+                  color: KColors.white,
                 ),
               ),
             ),

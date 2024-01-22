@@ -77,122 +77,124 @@ class _CreateWorkersScrenState extends State<CreateWorkerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Worker'),
-      ),
-      bottomNavigationBar: CustomButton(
-          text: "Create worker",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              if (dropDownValue != null) {
-                createWorker();
-              } else {
-                UtillSnackbar.showSnackBar(
-                  context,
-                  title: "Alert",
-                  body: "Please choose a role",
-                  isSuccess: false,
-                );
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create Worker'),
+        ),
+        bottomNavigationBar: CustomButton(
+            text: "Create worker",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (dropDownValue != null) {
+                  createWorker();
+                } else {
+                  UtillSnackbar.showSnackBar(
+                    context,
+                    title: "Alert",
+                    body: "Please choose a role",
+                    isSuccess: false,
+                  );
+                }
               }
-            }
-          }),
-      body: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              PrimaryTextField(
-                validator: nameValidator,
-                hintText: 'Worker Name',
-                controller: nameController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              Container(
-                padding: const EdgeInsets.all(8),
-                alignment: Alignment.center,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  border: Border.all(
-                    color: KColors.buttonColor,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(14.0),
+            }),
+        body: SingleChildScrollView(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: const EdgeInsets.all(20),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PrimaryTextField(
+                  validator: nameValidator,
+                  hintText: 'Worker Name',
+                  controller: nameController,
+                  onChanged: (value) {},
                 ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    value: dropDownValue,
-                    enableFeedback: true,
-                    isExpanded: true,
-                    hint: const Text('Select Role'),
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'W',
-                        child: Text('Waiter'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'C',
-                        child: Text('Caption'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'D',
-                        child: Text('Delivery Boy'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'S',
-                        child: Text('Steward'),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        dropDownValue = value;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                validator: mobileNumberValidator,
-                hintText: 'Mobile No.',
-                controller: mobileController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 10.h),
-              const Divider(),
-              GestureDetector(
-                onTap: () => changeLoginState(),
-                child: Row(
-                  children: [
-                    Checkbox.adaptive(
-                      value: enableLogin,
-                      onChanged: (value) => changeLoginState(),
+                SizedBox(height: 5.h),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    border: Border.all(
+                      color: KColors.buttonColor,
+                      width: 1.0,
                     ),
-                    const Text('Enable Login')
-                  ],
+                    borderRadius: BorderRadius.circular(14.0),
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      value: dropDownValue,
+                      enableFeedback: true,
+                      isExpanded: true,
+                      hint: const Text('Select Role'),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'W',
+                          child: Text('Waiter'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'C',
+                          child: Text('Caption'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'D',
+                          child: Text('Delivery Boy'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'S',
+                          child: Text('Steward'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          dropDownValue = value;
+                        });
+                      },
+                    ),
+                  ),
                 ),
-              ),
-              PrimaryTextField(
-                enable: enableLogin,
-                validator: enableLogin ? nullCheckValidator : null,
-                hintText: 'Login ID',
-                controller: loginIDController,
-                onChanged: (value) {},
-              ),
-              SizedBox(height: 5.h),
-              PrimaryTextField(
-                validator: enableLogin ? passwordValidator : null,
-                enable: enableLogin,
-                hintText: 'Password',
-                controller: passwordController,
-                onChanged: (p0) {},
-              ),
-            ],
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  validator: mobileNumberValidator,
+                  hintText: 'Mobile No.',
+                  controller: mobileController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 10.h),
+                const Divider(),
+                GestureDetector(
+                  onTap: () => changeLoginState(),
+                  child: Row(
+                    children: [
+                      Checkbox.adaptive(
+                        value: enableLogin,
+                        onChanged: (value) => changeLoginState(),
+                      ),
+                      const Text('Enable Login')
+                    ],
+                  ),
+                ),
+                PrimaryTextField(
+                  enable: enableLogin,
+                  validator: enableLogin ? nullCheckValidator : null,
+                  hintText: 'Login ID',
+                  controller: loginIDController,
+                  onChanged: (value) {},
+                ),
+                SizedBox(height: 5.h),
+                PrimaryTextField(
+                  validator: enableLogin ? passwordValidator : null,
+                  enable: enableLogin,
+                  hintText: 'Password',
+                  controller: passwordController,
+                  onChanged: (p0) {},
+                ),
+              ],
+            ),
           ),
         ),
       ),

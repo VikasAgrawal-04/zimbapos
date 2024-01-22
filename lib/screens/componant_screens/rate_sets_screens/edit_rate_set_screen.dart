@@ -54,46 +54,48 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Rate Sets'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //rfate set name
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Rate set name',
-                controller: nameController,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: nameController,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //   ),
-              // ),
-              SizedBox(height: screenSize.height * 0.2),
-              // ElevatedButton(
-              //   onPressed: () => updateRateSetFn(context),
-              //   child: const Text('Update Rate Set'),
-              // )
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Create Rate Sets'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //rfate set name
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Rate set name',
+                  controller: nameController,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: nameController,
+                //   decoration: const InputDecoration(
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+                SizedBox(height: screenSize.height * 0.2),
+                // ElevatedButton(
+                //   onPressed: () => updateRateSetFn(context),
+                //   child: const Text('Update Rate Set'),
+                // )
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                updateRateSetFn(context);
+              }
+            }),
       ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              updateRateSetFn(context);
-            }
-          }),
     );
   }
 }

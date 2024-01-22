@@ -8,4 +8,8 @@ class SubscriptionRepository {
   createSubScription({required SubscriberModel model}) {
     db.writeTxnSync(() => db.subscriberModels.putSync(model));
   }
+
+  Future<SubscriberModel?> getSubsModel() async {
+    return await db.writeTxn(() => db.subscriberModels.where().findFirst());
+  }
 }

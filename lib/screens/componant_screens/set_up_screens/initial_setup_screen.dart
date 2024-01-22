@@ -34,13 +34,16 @@ class _InitialSetUpScreenState extends State<InitialSetUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: pageController,
-        children: [
-          const SetUpTypeScreen(),
-          IntroScreen(controller: pageController),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: PageView(
+          controller: pageController,
+          children: [
+            const RegisterSubscriptionScreen(),
+            const SetUpTypeScreen(),
+            IntroScreen(controller: pageController),
+          ],
+        ),
       ),
     );
   }

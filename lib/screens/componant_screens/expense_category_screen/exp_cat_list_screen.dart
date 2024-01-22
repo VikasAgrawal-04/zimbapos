@@ -55,89 +55,91 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Expense categories'),
-        actions: [
-          TextButton.icon(
-            onPressed: () =>
-                context.push(AppScreen.createExpenseCategoryScreen.path),
-            label: const Text('Add category'),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: StreamBuilder<List<ExpenseCategoryModel>>(
-        stream: getExpenseCatList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          final data = snapshot.data;
-          if (data == null || data.isEmpty) {
-            return const Center(
-              child: Text('No Vendors'),
-            );
-          }
-          return SizedBox(
-            width: 100.w,
-            child: DataTable(
-              columns: [
-                const DataColumn(
-                  label: Text('Name'),
-                ),
-                const DataColumn(
-                  label: Text('Active'),
-                ),
-                DataColumn(
-                  label: Padding(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                    child: const Text('Actions'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Manage Expense categories'),
+          actions: [
+            TextButton.icon(
+              onPressed: () =>
+                  context.push(AppScreen.createExpenseCategoryScreen.path),
+              label: const Text('Add expense category'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: StreamBuilder<List<ExpenseCategoryModel>>(
+          stream: getExpenseCatList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+            final data = snapshot.data;
+            if (data == null || data.isEmpty) {
+              return const Center(
+                child: Text('No Vendors'),
+              );
+            }
+            return SizedBox(
+              width: 100.w,
+              child: DataTable(
+                columns: [
+                  const DataColumn(
+                    label: Text('Name'),
                   ),
-                ),
-              ],
-              rows: data
-                  .map(
-                    (e) => DataRow(
-                      cells: [
-                        DataCell(Text(e.expenseCategoryName.toString())),
-                        DataCell(
-                          Switch.adaptive(
-                            value: e.isActive as bool,
-                            onChanged: (va) =>
-                                activeDeactivateExpenseCat(e.id, va),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () => editExpenseCatFn(model: e),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                SizedBox(width: 2.w),
-                                IconButton(
-                                  onPressed: () => deleteExpenseCat(e),
-                                  icon: const Icon(CupertinoIcons.delete),
-                                )
-                              ],
+                  const DataColumn(
+                    label: Text('Active'),
+                  ),
+                  DataColumn(
+                    label: Padding(
+                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                      child: const Text('Actions'),
+                    ),
+                  ),
+                ],
+                rows: data
+                    .map(
+                      (e) => DataRow(
+                        cells: [
+                          DataCell(Text(e.expenseCategoryName.toString())),
+                          DataCell(
+                            Switch.adaptive(
+                              value: e.isActive as bool,
+                              onChanged: (va) =>
+                                  activeDeactivateExpenseCat(e.id, va),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
-        },
+                          DataCell(
+                            Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => editExpenseCatFn(model: e),
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  IconButton(
+                                    onPressed: () => deleteExpenseCat(e),
+                                    icon: const Icon(CupertinoIcons.delete),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

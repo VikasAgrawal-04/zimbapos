@@ -37,40 +37,74 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : TabBarView(children: [
-                        SingleChildScrollView(
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            runSpacing: 2.h,
-                            children:
-                                List.generate(state.tables.length, (index) {
-                              final table = state.tables[index];
-                              return SizedBox(
-                                width: 14.9.w,
-                                height: 20.h,
-                                child: GestureDetector(
-                                  onTap: () {},
-                                  child: Card(
-                                    elevation: 5,
-                                    child: Center(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          const Icon(
-                                            Icons.table_bar,
-                                            size: 40,
-                                          ),
-                                          Text(table.tableName ?? ""),
-                                        ],
+                    : TabBarView(
+                        children: [
+                          SingleChildScrollView(
+                            child: Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              runSpacing: 2.h,
+                              children:
+                                  List.generate(state.tables.length, (index) {
+                                final table = state.tables[index];
+                                return SizedBox(
+                                  width: 14.9.w,
+                                  height: 20.h,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Card(
+                                      elevation: 5,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(
+                                              Icons.table_bar,
+                                              size: 40,
+                                            ),
+                                            Text(table.tableName ?? ""),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }),
+                                );
+                              }),
+                            ),
                           ),
-                        ),
-                      ]),
+                          SingleChildScrollView(
+                            child: Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              runSpacing: 2.h,
+                              children:
+                                  List.generate(state.tables.length, (index) {
+                                final table = state.tables[index];
+                                return SizedBox(
+                                  width: 14.9.w,
+                                  height: 20.h,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Card(
+                                      elevation: 5,
+                                      child: Center(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Icon(
+                                              Icons.table_bar,
+                                              size: 40,
+                                            ),
+                                            Text(table.tableName ?? ""),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                          ),
+                        ],
+                      ),
               ),
             );
           } else if (state is OrderDashboardError) {

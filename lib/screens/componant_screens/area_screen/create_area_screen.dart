@@ -69,66 +69,65 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create area'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: screenSize.height * 0.04),
-                  //area name
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Area name',
-                    controller: areaNameController,
-                    onChanged: (value) {},
-                  ),
-                  // TextField(
-                  //   controller: areaNameController,
-                  //   keyboardType: TextInputType.text,
-                  //   decoration: const InputDecoration(
-                  //     label: Text('Area name'),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  //exchange percent
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Extra charge percent',
-                    controller: exchangePercentController,
-                    onChanged: (value) {},
-                  ),
-                  // TextField(
-                  //   controller: exchangePercentController,
-                  //   keyboardType: TextInputType.number,
-                  //   decoration: const InputDecoration(
-                  //     label: Text('Exchange percent'),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  //dropdown for ratesets
-                  SizedBox(
-                    // height: 50,
-                    width: screenSize.width,
-                    child: FutureBuilder<List<RateSetsModel?>>(
-                      future: getAllRateSets(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator.adaptive();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          final rateSets = snapshot.data ?? [];
+        child: Scaffold(
+      appBar: AppBar(
+        title: const Text('Create area'),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: screenSize.height * 0.04),
+                //area name
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Area name',
+                  controller: areaNameController,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: areaNameController,
+                //   keyboardType: TextInputType.text,
+                //   decoration: const InputDecoration(
+                //     label: Text('Area name'),
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+                SizedBox(height: screenSize.height * 0.02),
+                //exchange percent
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Extra charge percent',
+                  controller: exchangePercentController,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: exchangePercentController,
+                //   keyboardType: TextInputType.number,
+                //   decoration: const InputDecoration(
+                //     label: Text('Exchange percent'),
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+                SizedBox(height: screenSize.height * 0.02),
+                //dropdown for ratesets
+                SizedBox(
+                  // height: 50,
+                  width: screenSize.width,
+                  child: FutureBuilder<List<RateSetsModel?>>(
+                    future: getAllRateSets(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final rateSets = snapshot.data ?? [];
 
                         return Column(
                           children: [
@@ -196,6 +195,6 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
               }
             }
           }),
-    );
+    ));
   }
 }

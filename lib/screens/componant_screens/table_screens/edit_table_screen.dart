@@ -90,7 +90,9 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
                   validator: nullCheckValidator,
                   hintText: 'Table name',
                   controller: tableName,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    tableName.text = value.toUpperCase();
+                  },
                 ),
                 // TextField(
                 //   controller: tableName,

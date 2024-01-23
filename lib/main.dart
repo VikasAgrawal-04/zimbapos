@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -11,6 +12,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/repository/isar_service.dart';
@@ -21,6 +23,7 @@ import 'constants/kcolors.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
+  await dotenv.load(fileName: Environment.fileName);
   final ip = await Helpers.getWifiIPAddress();
   SharedPreferences.getInstance().then((pref) {
     Helpers.prefs = pref;

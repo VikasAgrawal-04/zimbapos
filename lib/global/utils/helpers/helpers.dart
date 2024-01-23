@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io' as io;
 
+import 'package:crypto/crypto.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zimbapos/global/error/exception.dart';
 import 'package:zimbapos/global/error/failures.dart';
+import 'package:zimbapos/global/utils/environment.dart';
 
 enum RequestType { get, post, put, delete }
 
@@ -206,6 +209,43 @@ class Helpers {
     return const Uuid().v1();
   }
 
+  static String signJwt(Map<String, dynamic> user) {
+    final jwt = JWT(user);
+    final token =
+        jwt.sign(SecretKey(Environment.jwtKey), algorithm: JWTAlgorithm.HS256);
+    final isValid = verifyJwt(token);
+    if (isValid) {
+      return token;
+    } else {
+      return "Invalid Token";
+    }
+  }
+
+  static bool verifyJwt(String token) {
+    try {
+      JWT.verify(token, SecretKey(Environment.jwtKey));
+      return true;
+    } on JWTExpiredException {
+      debugPrint('jwt expired');
+      return false;
+    } on JWTException catch (ex) {
+      debugPrint(ex.message);
+      return false;
+    }
+  }
+
+  static String hashPassword(String password) {
+    final bytes = utf8.encode(password);
+    final hashPass = sha256.convert(bytes);
+    return hashPass.toString();
+  }
+
+  static bool checkPassword(String inputPassword, String storedHashedPassword) {
+    print(inputPassword);
+    print(storedHashedPassword);
+    String hashedInputPassword = hashPassword(inputPassword);
+    return hashedInputPassword == storedHashedPassword;
+  }
 }
 
 class NumberInputFormat extends TextInputFormatter {

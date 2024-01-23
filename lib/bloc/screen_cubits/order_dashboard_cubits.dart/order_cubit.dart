@@ -30,7 +30,9 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
       }, (success) {
         _fetchedAreas = success;
         emit(OrderDashboardLoaded(_fetchedAreas, const []));
-        fetchTableByArea(success.first.areaId ?? "");
+        if (success.isNotEmpty) {
+          fetchTableByArea(success.first.areaId ?? "");
+        }
       });
     } catch (e) {
       emit(OrderDashboardError(e.toString()));

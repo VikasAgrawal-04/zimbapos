@@ -21,24 +21,39 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
           if (state is OrderDashboardLoading || state is TableLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is OrderDashboardLoaded) {
+            if (state.areas.isEmpty) {
+              return Scaffold(
+                appBar: AppBar(),
+                body: const Center(
+                  child: Text('No Data Found!'),
+                ),
+              );
+            }
             return DefaultTabController(
               length: state.areas.length,
               child: Scaffold(
+                
                 appBar: AppBar(
+                  elevation: 1,
                   title: TabBar(
+                    dividerColor: Colors.transparent,
+                      isScrollable: true,
                       onTap: context.read<OrderDashboardCubit>().onTabChanged,
                       enableFeedback: true,
                       tabs: List.generate(state.areas.length, (index) {
                         final area = state.areas[index];
-                        return Tab(child: Text(area.areaName ?? "--"));
+                        return ConstrainedBox(
+                            constraints: BoxConstraints(minWidth: 30.w),
+                            child: Tab(child: Text(area.areaName ?? "--")));
                       })),
                 ),
                 body: (state is TableLoading)
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : TabBarView(children: [
-                        SingleChildScrollView(
+                    : TabBarView(
+                        children: List.generate(state.areas.length, (index) {
+                        return SingleChildScrollView(
                           child: Wrap(
                             alignment: WrapAlignment.spaceBetween,
                             runSpacing: 2.h,
@@ -69,8 +84,8 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                               );
                             }),
                           ),
-                        ),
-                      ]),
+                        );
+                      })),
               ),
             );
           } else if (state is OrderDashboardError) {

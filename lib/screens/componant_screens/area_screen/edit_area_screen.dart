@@ -151,72 +151,73 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
                         } else {
                           final rateSets = snapshot.data ?? [];
 
-                        return Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8),
-                              alignment: Alignment.center,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                border: Border.all(
-                                  color: KColors.buttonColor,
-                                  width: 1.0,
+                          return Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  border: Border.all(
+                                    color: KColors.buttonColor,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(14.0),
                                 ),
-                                borderRadius: BorderRadius.circular(14.0),
-                              ),
-                              child: DropdownButtonHideUnderline(
-                                child: DropdownButton<String>(
-                                  isExpanded: true,
-                                  value: selectedRateSetId,
-                                  hint: const Text("Choose a rate"),
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      selectedRateSetId = newValue;
-                                    });
-                                  },
-                                  items: rateSets.map((rateSet) {
-                                    return DropdownMenuItem<String>(
-                                      value: rateSet!.ratesetId,
-                                      child:
-                                          Text(rateSet.ratesetName ?? 'error'),
-                                    );
-                                  }).toList(),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    isExpanded: true,
+                                    value: selectedRateSetId,
+                                    hint: const Text("Choose a rate"),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        selectedRateSetId = newValue;
+                                      });
+                                    },
+                                    items: rateSets.map((rateSet) {
+                                      return DropdownMenuItem<String>(
+                                        value: rateSet!.ratesetId,
+                                        child: Text(
+                                            rateSet.ratesetName ?? 'error'),
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      }
-                    },
+                            ],
+                          );
+                        }
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(height: screenSize.height * 0.2),
-                // ElevatedButton(
-                //   onPressed: () => updateAreaFn(context, widget.item.id),
-                //   child: const Text('Update area'),
-                // )
-              ],
+                  SizedBox(height: screenSize.height * 0.2),
+                  // ElevatedButton(
+                  //   onPressed: () => updateAreaFn(context, widget.item.id),
+                  //   child: const Text('Update area'),
+                  // )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              if (selectedRateSetId != null) {
-                updateAreaFn(context, widget.item.id);
-              } else {
-                UtillSnackbar.showSnackBar(
-                  context,
-                  title: "Alert",
-                  body: "Please choose a area",
-                  isSuccess: false,
-                );
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (selectedRateSetId != null) {
+                  updateAreaFn(context, widget.item.id);
+                } else {
+                  UtillSnackbar.showSnackBar(
+                    context,
+                    title: "Alert",
+                    body: "Please choose a area",
+                    isSuccess: false,
+                  );
+                }
               }
-            }
-          }),
+            }),
+      ),
     );
   }
 }

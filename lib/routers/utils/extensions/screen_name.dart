@@ -41,6 +41,9 @@ enum AppScreen {
   createItemScreen,
   editItemScreen,
   outletDataRegisterScreen,
+  paymentsScreen,
+  createPaymentsScreen,
+  editPaymentsScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -117,6 +120,26 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Expense';
       case AppScreen.orderDashboardScreen:
         return 'Order Dashboard';
+      case AppScreen.taxesScreen:
+        return 'Taxes';
+      case AppScreen.createTaxScreen:
+        return 'Create Tax';
+      case AppScreen.editTaxScreen:
+        return 'Edit Tax';
+      case AppScreen.itemsScreen:
+        return 'Items Screen';
+      case AppScreen.createItemScreen:
+        return 'Create Item Screen';
+      case AppScreen.editItemScreen:
+        return 'Edit Item Screen';
+      case AppScreen.outletDataRegisterScreen:
+        return 'Outlet-Data-Registration-Screen';
+      case AppScreen.paymentsScreen:
+        return 'Payments Screen';
+      case AppScreen.createPaymentsScreen:
+        return 'Create Payment Screen';
+      case AppScreen.editPaymentsScreen:
+        return 'Edit Payment Screen';
     }
   }
 
@@ -193,6 +216,26 @@ extension AppScreenExtension on AppScreen {
         return '/edit-expense';
       case AppScreen.orderDashboardScreen:
         return '/order-dashboard';
+      case AppScreen.taxesScreen:
+        return '/taxes-screen';
+      case AppScreen.createTaxScreen:
+        return '/create-tax-screen';
+      case AppScreen.editTaxScreen:
+        return '/edit-tax-screen';
+      case AppScreen.itemsScreen:
+        return '/items-screen';
+      case AppScreen.createItemScreen:
+        return '/create-item-screen';
+      case AppScreen.editItemScreen:
+        return '/edit-item-screen';
+      case AppScreen.outletDataRegisterScreen:
+        return '/outlet-data-registration-screen';
+      case AppScreen.paymentsScreen:
+        return '/payments-screen';
+      case AppScreen.createPaymentsScreen:
+        return '/create-payment-screen';
+      case AppScreen.editPaymentsScreen:
+        return '/edit-payment-screen';
     }
   }
 }

@@ -39,7 +39,6 @@ class _InitialSetUpScreenState extends State<InitialSetUpScreen> {
         body: PageView(
           controller: pageController,
           children: [
-            const RegisterSubscriptionScreen(),
             const SetUpTypeScreen(),
             IntroScreen(controller: pageController),
           ],

@@ -200,23 +200,49 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Positioned(
                                               top: 0,
                                               right: 0,
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  UtilDialog.showMyDialog(
-                                                    context,
-                                                    "Alert",
-                                                    "Do you want to delete shortcut?",
-                                                    () {
-                                                      deleteHomeShortcut(
-                                                          homeShortcut.isarId);
-                                                      context.pop();
-                                                    },
-                                                    null,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  CupertinoIcons.delete,
-                                                  size: 15.sp,
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.5,
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.5,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(12),
+                                                    topRight:
+                                                        Radius.circular(12),
+                                                  ),
+                                                ),
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    UtilDialog.showMyDialog(
+                                                      context,
+                                                      "Alert",
+                                                      "Do you want to delete '${homeShortcut.title}' shortcut?",
+                                                      () {
+                                                        deleteHomeShortcut(
+                                                            homeShortcut
+                                                                .isarId);
+                                                        context.pop();
+                                                      },
+                                                      null,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    CupertinoIcons.delete,
+                                                    size: 18.sp,
+                                                    color: KColors.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -271,13 +297,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       title: const Text('Home Screen'),
       actions: [
-        IconButton(
-            onPressed: () {
-              // context.push(AppScreen.vendorScreen.path);
-              context.push(AppScreen.expenseCategoryScreen.path);
-              // context.push(AppScreen.expensesScreen.path);
-            },
-            icon: const Icon(Icons.open_in_new_outlined)),
+        // IconButton(
+        //   onPressed: () {
+        //     // context.push(AppScreen.vendorScreen.path);
+        //     context.push(AppScreen.expenseCategoryScreen.path);
+        //     // context.push(AppScreen.expensesScreen.path);
+        //   },
+        //   icon: const Icon(Icons.open_in_new_outlined),
+        // ),
         BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
           return AnimatedOpacity(
             opacity: state.animationValue,
@@ -364,6 +391,11 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
     title: 'Items Screen',
     path: AppScreen.itemsScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Payments Screen',
+    path: AppScreen.paymentsScreen.path,
     userId: '123123',
   ),
 ];

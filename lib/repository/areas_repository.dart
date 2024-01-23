@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:uuid/uuid.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 
 class AreasRepository {
@@ -26,6 +27,9 @@ class AreasRepository {
           .isDeletedEqualTo(false)
           .findFirst();
       if (dbItem == null) {
+        var uuid = const Uuid();
+        String newUuid = uuid.v4();
+        model.areaId = newUuid;
         db.writeTxnSync(() {
           db.areasModels.putSync(model);
         });

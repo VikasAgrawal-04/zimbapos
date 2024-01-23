@@ -54,91 +54,94 @@ class _VendorsListScreenState extends State<VendorsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Vendors'),
-        actions: [
-          TextButton.icon(
-            onPressed: () => context.push(AppScreen.createVendorScreen.path),
-            label: const Text('Add Vendors'),
-            icon: const Icon(Icons.add),
-          ),
-        ],
-      ),
-      body: StreamBuilder<List<VendorModel>>(
-        stream: getVendorsList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator.adaptive(),
-            );
-          }
-          final data = snapshot.data;
-          if (data == null || data.isEmpty) {
-            return const Center(
-              child: Text('No Vendors'),
-            );
-          }
-          return SizedBox(
-            width: 100.w,
-            child: DataTable(
-              columns: [
-                const DataColumn(
-                  label: Text('Name'),
-                ),
-                const DataColumn(
-                  label: Text('Mobile'),
-                ),
-                const DataColumn(
-                  label: Text('Active'),
-                ),
-                DataColumn(
-                  label: Padding(
-                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                    child: const Text('Actions'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Manage Vendors'),
+          actions: [
+            TextButton.icon(
+              onPressed: () => context.push(AppScreen.createVendorScreen.path),
+              label: const Text('Add Vendors'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: StreamBuilder<List<VendorModel>>(
+          stream: getVendorsList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator.adaptive(),
+              );
+            }
+            final data = snapshot.data;
+            if (data == null || data.isEmpty) {
+              return const Center(
+                child: Text('No Vendors'),
+              );
+            }
+            return SizedBox(
+              width: 100.w,
+              child: DataTable(
+                columns: [
+                  const DataColumn(
+                    label: Text('Name'),
                   ),
-                ),
-              ],
-              rows: data
-                  .map(
-                    (e) => DataRow(
-                      cells: [
-                        DataCell(Text(e.vendorName)),
-                        DataCell(Text(e.mobile.toString())),
-                        DataCell(
-                          Switch.adaptive(
-                            value: e.isActive ?? false,
-                            onChanged: (va) => activeDeactivateVendor(e.id, va),
-                          ),
-                        ),
-                        DataCell(
-                          Container(
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  onPressed: () => editVendorFn(model: e),
-                                  icon: const Icon(Icons.edit),
-                                ),
-                                SizedBox(width: 2.w),
-                                IconButton(
-                                  onPressed: () => deleteVendor(e),
-                                  icon: const Icon(CupertinoIcons.delete),
-                                )
-                              ],
+                  const DataColumn(
+                    label: Text('Mobile'),
+                  ),
+                  const DataColumn(
+                    label: Text('Active'),
+                  ),
+                  DataColumn(
+                    label: Padding(
+                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                      child: const Text('Actions'),
+                    ),
+                  ),
+                ],
+                rows: data
+                    .map(
+                      (e) => DataRow(
+                        cells: [
+                          DataCell(Text(e.vendorName)),
+                          DataCell(Text(e.mobile.toString())),
+                          DataCell(
+                            Switch.adaptive(
+                              value: e.isActive ?? false,
+                              onChanged: (va) =>
+                                  activeDeactivateVendor(e.id, va),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ),
-          );
-        },
+                          DataCell(
+                            Container(
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () => editVendorFn(model: e),
+                                    icon: const Icon(Icons.edit),
+                                  ),
+                                  SizedBox(width: 2.w),
+                                  IconButton(
+                                    onPressed: () => deleteVendor(e),
+                                    icon: const Icon(CupertinoIcons.delete),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

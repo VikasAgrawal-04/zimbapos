@@ -52,44 +52,46 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit category'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Category name',
-                controller: categoryName,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: categoryName,
-              //   decoration: const InputDecoration(
-              //       border: OutlineInputBorder(), hintText: 'Enter Category'),
-              // ),
-              SizedBox(height: 2.h),
-              // ElevatedButton(
-              //   onPressed: () => updateCategory(context),
-              //   child: const Text('Update Category'),
-              // )
-            ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit category'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Category name',
+                  controller: categoryName,
+                  onChanged: (value) {},
+                ),
+                // TextField(
+                //   controller: categoryName,
+                //   decoration: const InputDecoration(
+                //       border: OutlineInputBorder(), hintText: 'Enter Category'),
+                // ),
+                SizedBox(height: 2.h),
+                // ElevatedButton(
+                //   onPressed: () => updateCategory(context),
+                //   child: const Text('Update Category'),
+                // )
+              ],
+            ),
           ),
         ),
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                updateCategory(context);
+              }
+            }),
       ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              updateCategory(context);
-            }
-          }),
     );
   }
 }

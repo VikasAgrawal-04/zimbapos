@@ -7,6 +7,15 @@ sealed class OutletRegisterState extends Equatable {
   List<Object> get props => [];
 }
 
+final class SubscriptionInfoInit extends OutletRegisterState {}
+
+final class SubscriptionInfoLoading extends OutletRegisterState {}
+
+final class SubscriptionInfoModel extends OutletRegisterState {
+  final SubscriberModel model;
+  const SubscriptionInfoModel({required this.model});
+}
+
 final class OutletRegisterInitial extends OutletRegisterState {}
 
 final class OutletRegisterLoading extends OutletRegisterState {}

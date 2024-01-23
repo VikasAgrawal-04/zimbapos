@@ -39,7 +39,10 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Screens'),
+          title: Text(
+            'Screens',
+            style: KTextStyles.kHeader,
+          ),
           content: SizedBox(
             width: 50.w,
             child: SingleChildScrollView(
@@ -88,7 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('Close'),
+              child: Text(
+                'Close',
+                style: KTextStyles.kAlertCancelButton,
+              ),
             ),
           ],
         );
@@ -167,12 +173,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                       HomeShortcutModel(gridPosition: -1),
                                 );
                                 return ElevatedButton(
+                                  // onHover: (isHovered) {
+                                  //   if (isHovered) {
+                                  //     ElevatedButton.styleFrom(
+                                  //       side: const BorderSide(
+                                  //         color: Colors.black54,
+                                  //         width: 20,
+                                  //       ),
+                                  //     );
+                                  //   }
+                                  // },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     elevation: 6,
                                     shadowColor: Colors.black.withOpacity(0.6),
+                                    padding: EdgeInsets.zero,
                                   ),
                                   onPressed: homeShortcut.gridPosition != -1
                                       ? () => context.push(homeShortcut.path!)
@@ -206,7 +223,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Align(
                                                 alignment: Alignment.center,
                                                 child: Text(
-                                                    homeShortcut.title ?? '')),
+                                                  homeShortcut.title ?? '',
+                                                  style: KTextStyles.kTitle,
+                                                )),
                                           ],
                                         )
                                       : const Icon(CupertinoIcons.add),
@@ -335,6 +354,16 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
     title: 'Expense Screen',
     path: AppScreen.expensesScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Taxes Screen',
+    path: AppScreen.taxesScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Items Screen',
+    path: AppScreen.itemsScreen.path,
     userId: '123123',
   ),
 ];

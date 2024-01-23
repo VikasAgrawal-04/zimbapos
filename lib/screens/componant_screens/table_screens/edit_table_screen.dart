@@ -73,108 +73,110 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Table'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              //table
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Table name',
-                controller: tableName,
-                onChanged: (value) {},
-              ),
-              // TextField(
-              //   controller: tableName,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //   ),
-              // ),
-              SizedBox(height: screenSize.height * 0.02),
-              //dropdown for areas
-              SizedBox(
-                // height: 50,
-                width: screenSize.width,
-                child: FutureBuilder<List<AreasModel?>>(
-                  future: getAllAreas(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator.adaptive();
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      final areas = snapshot.data ?? [];
-
-                      return Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            alignment: Alignment.center,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              border: Border.all(
-                                color: KColors.buttonColor,
-                                width: 1.0,
-                              ),
-                              borderRadius: BorderRadius.circular(14.0),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                value: selectedAreaId,
-                                hint: const Text("Choose a area"),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    selectedAreaId = newValue;
-                                  });
-                                },
-                                items: areas.map((area) {
-                                  return DropdownMenuItem<String>(
-                                    value: area?.areaId ?? "",
-                                    child: Text(area?.areaName ?? 'error'),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit Table'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //table
+                PrimaryTextField(
+                  validator: nullCheckValidator,
+                  hintText: 'Table name',
+                  controller: tableName,
+                  onChanged: (value) {},
                 ),
-              ),
-              // ElevatedButton(
-              //   onPressed: () => updateTable(context),
-              //   child: const Text('Update table'),
-              // )
-            ],
+                // TextField(
+                //   controller: tableName,
+                //   decoration: const InputDecoration(
+                //     border: OutlineInputBorder(),
+                //   ),
+                // ),
+                SizedBox(height: screenSize.height * 0.02),
+                //dropdown for areas
+                SizedBox(
+                  // height: 50,
+                  width: screenSize.width,
+                  child: FutureBuilder<List<AreasModel?>>(
+                    future: getAllAreas(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final areas = snapshot.data ?? [];
+
+                        return Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(
+                                  color: KColors.buttonColor,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(14.0),
+                              ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                                  isExpanded: true,
+                                  value: selectedAreaId,
+                                  hint: const Text("Choose a area"),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      selectedAreaId = newValue;
+                                    });
+                                  },
+                                  items: areas.map((area) {
+                                    return DropdownMenuItem<String>(
+                                      value: area?.areaId ?? "",
+                                      child: Text(area?.areaName ?? 'error'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
+                // ElevatedButton(
+                //   onPressed: () => updateTable(context),
+                //   child: const Text('Update table'),
+                // )
+              ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: CustomButton(
-          text: "Save",
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              if (selectedAreaId != null) {
-                updateTable(context);
-              } else {
-                UtillSnackbar.showSnackBar(
-                  context,
-                  title: "Alert",
-                  body: "Please choose a area",
-                  isSuccess: false,
-                );
+        bottomNavigationBar: CustomButton(
+            text: "Save",
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                if (selectedAreaId != null) {
+                  updateTable(context);
+                } else {
+                  UtillSnackbar.showSnackBar(
+                    context,
+                    title: "Alert",
+                    body: "Please choose a area",
+                    isSuccess: false,
+                  );
+                }
               }
-            }
-          }),
+            }),
+      ),
     );
   }
 }

@@ -4,11 +4,16 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
+import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 import 'package:zimbapos/models/global_models/vendor_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/screens/componant_screens/Items_screen/create_item_screen.dart';
+import 'package:zimbapos/screens/componant_screens/Items_screen/edit_item_screen.dart';
+import 'package:zimbapos/screens/componant_screens/Items_screen/items_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/areas_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/create_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
@@ -28,10 +33,13 @@ import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
-import 'package:zimbapos/screens/componant_screens/set_up_screens/outlet_data_setup_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/outlet_setup_screens/outlet_data_setup_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/edit_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.dart';
+import 'package:zimbapos/screens/componant_screens/tax_screen/create_tax_screen.dart';
+import 'package:zimbapos/screens/componant_screens/tax_screen/edit_tax_screen.dart';
+import 'package:zimbapos/screens/componant_screens/tax_screen/tax_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/create_vendor_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/edit_vendors_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/vendors_list_screen.dart';
@@ -317,5 +325,57 @@ final List<GoRoute> routerList = [
     path: AppScreen.outletDataRegisterScreen.path,
     name: AppScreen.outletDataRegisterScreen.name,
     builder: (context, state) => const OutLetDataSetUpScreen(),
-  )
+  ),
+  //Taxes list
+  GoRoute(
+    name: AppScreen.taxesScreen.name,
+    path: AppScreen.taxesScreen.path,
+    builder: (context, state) => const TaxListScreen(),
+  ),
+  // create tax
+  GoRoute(
+    name: AppScreen.createTaxScreen.name,
+    path: AppScreen.createTaxScreen.path,
+    builder: (context, state) => const CreateTaxScreen(),
+  ),
+  //edit tax
+  GoRoute(
+    name: AppScreen.editTaxScreen.name,
+    path: AppScreen.editTaxScreen.path,
+    builder: (context, state) {
+      if (state.extra is TaxModel) {
+        return EditTaxScreen(item: state.extra as TaxModel);
+      } else {
+        return EditTaxScreen(
+          item: TaxModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+  //Expenses item
+  GoRoute(
+    name: AppScreen.itemsScreen.name,
+    path: AppScreen.itemsScreen.path,
+    builder: (context, state) => const ItemsListScreen(),
+  ),
+  // create item
+  GoRoute(
+    name: AppScreen.createItemScreen.name,
+    path: AppScreen.createItemScreen.path,
+    builder: (context, state) => const CreateItemScreen(),
+  ),
+  //edit item
+  GoRoute(
+    name: AppScreen.editItemScreen.name,
+    path: AppScreen.editItemScreen.path,
+    builder: (context, state) {
+      if (state.extra is ItemsModel) {
+        return EditItemsScreen(item: state.extra as ItemsModel);
+      } else {
+        return EditItemsScreen(
+          item: ItemsModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
 ];

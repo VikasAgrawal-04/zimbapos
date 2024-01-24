@@ -2,7 +2,6 @@ import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
-import 'package:zimbapos/models/global_models/discount_bulk_model.dart';
 import 'package:zimbapos/models/global_models/discount_single_model.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
@@ -26,11 +25,9 @@ import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_scr
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';
-import 'package:zimbapos/screens/componant_screens/discounts_bulk_screens/bulk_disc_list.dart';
-import 'package:zimbapos/screens/componant_screens/discounts_bulk_screens/create_b_disc_screen.dart';
-import 'package:zimbapos/screens/componant_screens/discounts_single_screens/create_s_disc.dart';
-import 'package:zimbapos/screens/componant_screens/discounts_single_screens/edit_s_disc.dart';
-import 'package:zimbapos/screens/componant_screens/discounts_single_screens/single_disc_list.dart';
+import 'package:zimbapos/screens/componant_screens/discounts_screens/create_discount.dart';
+import 'package:zimbapos/screens/componant_screens/discounts_screens/edit_discount.dart';
+import 'package:zimbapos/screens/componant_screens/discounts_screens/discount_list.dart';
 import 'package:zimbapos/screens/componant_screens/expense_category_screen/create_exp_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/expense_category_screen/edit_exp_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/expense_category_screen/exp_cat_list_screen.dart';
@@ -60,8 +57,6 @@ import 'package:zimbapos/screens/componant_screens/worker_management_screens/wor
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
-
-import '../../screens/componant_screens/discounts_bulk_screens/edit_b_disc_screen.dart';
 
 final List<GoRoute> routerList = [
   //home
@@ -419,55 +414,28 @@ final List<GoRoute> routerList = [
     },
   ),
 
-  //Single discount list
+  //discount list
   GoRoute(
     name: AppScreen.singleDiscountScreen.name,
     path: AppScreen.singleDiscountScreen.path,
     builder: (context, state) => const SingleDiscountScreen(),
   ),
-  // create single disc
+  // create discount
   GoRoute(
     name: AppScreen.createSingleDiscountScreen.name,
     path: AppScreen.createSingleDiscountScreen.path,
     builder: (context, state) => const CreateSingleDiscScreen(),
   ),
-  //edit single disc
+  //edit discount
   GoRoute(
     name: AppScreen.editSingleDiscountScreen.name,
     path: AppScreen.editSingleDiscountScreen.path,
     builder: (context, state) {
-      if (state.extra is SingleDisc) {
-        return UpdateSingleDiscScreen(item: state.extra as SingleDisc);
+      if (state.extra is DiscountModel) {
+        return UpdateSingleDiscScreen(item: state.extra as DiscountModel);
       } else {
         return UpdateSingleDiscScreen(
-          item: SingleDisc.fromJson(state.extra as Map<String, dynamic>),
-        );
-      }
-    },
-  ),
-
-  //Bulk discount list
-  GoRoute(
-    name: AppScreen.bulkDiscountScreen.name,
-    path: AppScreen.bulkDiscountScreen.path,
-    builder: (context, state) => const BulkDiscountScreen(),
-  ),
-  // create bulk disc
-  GoRoute(
-    name: AppScreen.createBulkDiscountScreen.name,
-    path: AppScreen.createBulkDiscountScreen.path,
-    builder: (context, state) => const CreateBulkDiscScreen(),
-  ),
-  //edit bulk disc
-  GoRoute(
-    name: AppScreen.editBulkDiscountScreen.name,
-    path: AppScreen.editBulkDiscountScreen.path,
-    builder: (context, state) {
-      if (state.extra is SingleDisc) {
-        return UpdateBulkDiscScreen(item: state.extra as BulkDisc);
-      } else {
-        return UpdateBulkDiscScreen(
-          item: BulkDisc.fromJson(state.extra as Map<String, dynamic>),
+          item: DiscountModel.fromJson(state.extra as Map<String, dynamic>),
         );
       }
     },

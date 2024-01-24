@@ -32,6 +32,18 @@ String? nullCheckValidator(String? text) {
   }
 }
 
+String? integerValidator(String? value) {
+  //to check if the entered value contains only numeric characters
+  if (!RegExp(r'^[0-9]+$').hasMatch(value.toString())) {
+    return 'Must contain only numbers';
+  }
+  if (value == null && value!.isEmpty) {
+    return 'This field is required';
+  }
+
+  return null;
+}
+
 String? addressValidator(String? text) {
   if (text != null && text.isNotEmpty) {
     if (text.length < 2) {

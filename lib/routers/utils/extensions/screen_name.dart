@@ -44,6 +44,12 @@ enum AppScreen {
   paymentsScreen,
   createPaymentsScreen,
   editPaymentsScreen,
+  singleDiscountScreen,
+  createSingleDiscountScreen,
+  editSingleDiscountScreen,
+  bulkDiscountScreen,
+  createBulkDiscountScreen,
+  editBulkDiscountScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -140,6 +146,18 @@ extension AppScreenExtension on AppScreen {
         return 'Create Payment Screen';
       case AppScreen.editPaymentsScreen:
         return 'Edit Payment Screen';
+      case AppScreen.singleDiscountScreen:
+        return 'Single Discount Screen';
+      case AppScreen.createSingleDiscountScreen:
+        return 'Create Single Discount Screen';
+      case AppScreen.editSingleDiscountScreen:
+        return 'Edit Single Discount Screen';
+      case AppScreen.bulkDiscountScreen:
+        return 'Bulk Discount Screen';
+      case AppScreen.createBulkDiscountScreen:
+        return 'Create Bulk Discount Screen';
+      case AppScreen.editBulkDiscountScreen:
+        return 'Edit Bulk Discount Screen';
     }
   }
 
@@ -236,6 +254,18 @@ extension AppScreenExtension on AppScreen {
         return '/create-payment-screen';
       case AppScreen.editPaymentsScreen:
         return '/edit-payment-screen';
+      case AppScreen.singleDiscountScreen:
+        return '/single-discount-screen';
+      case AppScreen.createSingleDiscountScreen:
+        return '/create-single-discount-screen';
+      case AppScreen.editSingleDiscountScreen:
+        return '/edit-single-discount-screen';
+      case AppScreen.bulkDiscountScreen:
+        return '/bulk-discount-screen';
+      case AppScreen.createBulkDiscountScreen:
+        return '/create-bulk-discount-screen';
+      case AppScreen.editBulkDiscountScreen:
+        return '/edit-bulk-discount-screen';
     }
   }
 }

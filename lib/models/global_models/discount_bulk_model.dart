@@ -35,6 +35,7 @@ class BulkDisc {
   // Factory method to create an instance from a map
   factory BulkDisc.fromJson(Map<String, dynamic> json) {
     return BulkDisc(
+      id: json['id'],
       couponId: json['couponId'],
       couponName: json['couponName'],
       couponGenAmount: json['couponAmount'],

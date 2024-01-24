@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 
 import '../../../models/global_models/tables_model.dart';
 
@@ -28,8 +29,8 @@ class AreaTablesWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            "$areaName area",
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            areaName,
+            style: KTextStyles.kHeader,
           ),
         ),
         DataTable(

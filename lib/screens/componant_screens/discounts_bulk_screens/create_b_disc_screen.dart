@@ -122,7 +122,7 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create single discount'),
+          title: const Text('Create bulk discount'),
         ),
         body: SingleChildScrollView(
           child: Padding(

@@ -18,7 +18,7 @@ class AreasRepository {
     return db.areasModels.filter().isDeletedEqualTo(false).findAll();
   }
 
-  createArea({required AreasModel model}) async {
+  Future createArea({required AreasModel model}) async {
     try {
       final dbItem = await db.areasModels
           .filter()
@@ -84,7 +84,7 @@ class AreasRepository {
     });
   }
 
-  updateArea(int id,
+  Future updateArea(int id,
       {String? areaName,
       double? exchangePercent,
       String? rateSetId,

@@ -17,5 +17,8 @@ class CategoryRoutes {
 
   void initialiseApi() {
     locRoute.get('/get-category', controller.fetchAllCategory);
+    locRoute.post('/create-category', controller.createCategory);
+    locRoute.delete('/delete-category', controller.deleteCategory);
+    locRoute.post('/update-category', controller.updateCategory);
   }
 }

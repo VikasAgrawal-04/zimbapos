@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits.dart/order_cubit.dart';
-import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits.dart/order_dashboard_state.dart';
+import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_dashboard_state.dart';
+import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 
 class OrderDashboardScreen extends StatefulWidget {
   const OrderDashboardScreen({super.key});
@@ -18,7 +19,6 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
       create: (context) => OrderDashboardCubit(),
       child: BlocBuilder<OrderDashboardCubit, OrderDashboardState>(
         builder: (context, state) {
-          print(state);
           if (state is OrderDashboardLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is OrderDashboardLoaded) {
@@ -66,7 +66,12 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                                 width: 14.9.w,
                                 height: 20.h,
                                 child: GestureDetector(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return const ItemSelectionScreen();
+                                    }));
+                                  },
                                   child: Card(
                                     elevation: 5,
                                     child: Center(

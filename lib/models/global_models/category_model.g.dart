@@ -74,7 +74,12 @@ int _categoryModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.categoryid.length * 3;
+  {
+    final value = object.categoryid;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -100,12 +105,12 @@ CategoryModel _categoryModelDeserialize(
 ) {
   final object = CategoryModel(
     categoryName: reader.readStringOrNull(offsets[0]),
+    categoryid: reader.readStringOrNull(offsets[1]),
     id: id,
     isActive: reader.readBoolOrNull(offsets[3]),
     isDeleted: reader.readBoolOrNull(offsets[4]),
     outletId: reader.readLongOrNull(offsets[5]),
   );
-  object.categoryid = reader.readString(offsets[1]);
   return object;
 }
 
@@ -119,7 +124,7 @@ P _categoryModelDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
@@ -384,8 +389,26 @@ extension CategoryModelQueryFilter
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      categoryidIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'categoryid',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      categoryidIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'categoryid',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       categoryidEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -399,7 +422,7 @@ extension CategoryModelQueryFilter
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       categoryidGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -415,7 +438,7 @@ extension CategoryModelQueryFilter
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       categoryidLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -431,8 +454,8 @@ extension CategoryModelQueryFilter
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       categoryidBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -998,7 +1021,7 @@ extension CategoryModelQueryProperty
     });
   }
 
-  QueryBuilder<CategoryModel, String, QQueryOperations> categoryidProperty() {
+  QueryBuilder<CategoryModel, String?, QQueryOperations> categoryidProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'categoryid');
     });

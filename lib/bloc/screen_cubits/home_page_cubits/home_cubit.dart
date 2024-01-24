@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_state.dart';
+import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_state.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 
 class HomeCubit extends Cubit<HomeState> {

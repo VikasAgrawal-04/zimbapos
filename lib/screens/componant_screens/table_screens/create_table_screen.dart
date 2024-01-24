@@ -75,7 +75,9 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
                   validator: nullCheckValidator,
                   hintText: 'Table name',
                   controller: tableName,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    tableName.text = value.toUpperCase();
+                  },
                 ),
                 // TextField(
                 //   controller: tableName,

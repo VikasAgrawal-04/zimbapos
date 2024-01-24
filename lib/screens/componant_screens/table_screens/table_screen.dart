@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/screens/componant_screens/table_screens/area_table_widget.dart';
 
 import '../../../widgets/my_alert_widget.dart';
 
@@ -17,20 +17,17 @@ class TableScreen extends StatefulWidget {
 }
 
 class _TableScreenState extends State<TableScreen> {
+  //for tables
   Stream<List<TableModel>> tableStream() {
     final dbCubit = DatabaseCubit.dbFrom(context);
     return dbCubit.tableRepository.streamTables();
   }
 
-  toggleFn(int id, bool value) {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    datatbaseCubit.tableRepository.changeActive(id, value);
+  //for areas
+  Stream<List<AreasModel>> areasStream() {
+    final dbCubit = DatabaseCubit.dbFrom(context);
+    return dbCubit.areasRepository.streamAreas();
   }
-
-  // deleteFn(String? id) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.tableRepository.deleteTable(id);
-  // }
 
   deleteTable(TableModel table) {
     UtilDialog.showMyDialog(
@@ -49,12 +46,12 @@ class _TableScreenState extends State<TableScreen> {
     );
   }
 
-  activeDeactivateWorkers(int id, bool value) {
+  activeDeactivateTable(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
     dbCubit.tableRepository.changeActive(id, value);
   }
 
-  editWorkerFn({required TableModel model}) {
+  editTableFn({required TableModel model}) {
     context.push(
       AppScreen.editTableScreen.path,
       extra: model,
@@ -65,7 +62,7 @@ class _TableScreenState extends State<TableScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tables'),
+        title: const Text('Table list'),
         actions: [
           IconButton(
             onPressed: () => context.push(AppScreen.createTableScreen.path),
@@ -76,127 +73,117 @@ class _TableScreenState extends State<TableScreen> {
       body: StreamBuilder<List<TableModel>>(
         stream: tableStream(),
         builder: (context, snapshot) {
-          final data = snapshot.data;
-          if (data == null || data.isEmpty) {
+          final tablesData = snapshot.data;
+          if (tablesData == null || tablesData.isEmpty) {
             return const Center(
               child: Text('No Tables'),
             );
           } else {
-            return SingleChildScrollView(
-              child: DataTable(
-                columns: [
-                  const DataColumn(
-                    label: Text('Name'),
-                  ),
-                  // const DataColumn(
-                  //   label: Text('Area'),
-                  // ),
-                  const DataColumn(
-                    label: Text('Active'),
-                  ),
-                  DataColumn(
-                    label: Padding(
-                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                      child: const Text('Actions'),
-                    ),
-                  ),
-                ],
-                rows: data
-                    .map(
-                      (e) => DataRow(
-                        cells: [
-                          DataCell(Text(e.tableName.toString())),
-                          // DataCell(Text(e.areaId.toString())),
-                          DataCell(
-                            Switch.adaptive(
-                              value: e.isActive as bool,
-                              onChanged: (va) =>
-                                  activeDeactivateWorkers(e.id, va),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editWorkerFn(model: e),
-                                    icon: const Icon(Icons.edit),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  IconButton(
-                                    onPressed: () => deleteTable(e),
-                                    icon: const Icon(CupertinoIcons.delete),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
-            );
-            // ListView.builder(
-            //     itemCount: data.length,
-            //     itemBuilder: (context, index) {
-            //       final rawData = data[index];
-            //       return ListTile(
-            //         title: Text(rawData.tableName ?? "Table Name"),
-            //         subtitle: Text((data[index].isActive ?? false)
-            //             ? 'Active'
-            //             : "InActive"),
-            //         trailing: Row(
-            //           mainAxisSize: MainAxisSize.min,
-            //           children: [
-            //             Switch.adaptive(
-            //               value: data[index].isActive ?? false,
-            //               onChanged: (value) => toggleFn(data[index].id, value),
-            //             ),
-            //             SizedBox(width: 2.w),
-            //             //edit
-            //             IconButton(
-            //               onPressed: () => context.push(
-            //                 AppScreen.editTableScreen.path,
-            //                 //passing data to edit screen
-            //                 extra: data[index],
-            //               ),
-            //               icon: const Icon(
-            //                 Icons.edit,
-            //                 size: 30,
-            //               ),
-            //             ),
+            return StreamBuilder<List<AreasModel>>(
+              stream: areasStream(),
+              builder: (context, areasSnapshot) {
+                final areasData = areasSnapshot.data;
+                if (areasData == null || areasData.isEmpty) {
+                  return const Center(
+                    child: Text('No Areas'),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: areasData.length,
+                    itemBuilder: (context, index) {
+                      final area = areasData[index];
+                      final areaTables = tablesData
+                          .where((table) => table.areaId == area.areaId)
+                          .toList();
 
-            //             //delete
-            //             IconButton(
-            //               onPressed: () => UtilDialog.showMyDialog(
-            //                 context,
-            //                 "Alert",
-            //                 "Are you sure to delete '${rawData.tableName}'?",
-            //                 //this is for ok button
-            //                 () {
-            //                   deleteFn(data[index].id);
-            //                   context.pop();
-            //                 },
-            //                 // this is for cancel button sending null will perform default pop() action
-            //                 null,
-            //               ),
-            //               icon: const Icon(
-            //                 Icons.delete,
-            //                 size: 30,
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       );
-            //     });
+                      return AreaTablesWidget(
+                        areaName: area.areaName ?? '',
+                        tables: areaTables,
+                        editTableFn: (TableModel model) =>
+                            editTableFn(model: model),
+                        deleteTable: deleteTable,
+                        activeDeactivateTable: activeDeactivateTable,
+                      );
+                    },
+                  );
+                }
+              },
+            );
           }
         },
       ),
+
+      // body: StreamBuilder<List<TableModel>>(
+      //   stream: tableStream(),
+      //   builder: (context, snapshot) {
+      //     final data = snapshot.data;
+      //     if (data == null || data.isEmpty) {
+      //       return const Center(
+      //         child: Text('No Tables'),
+      //       );
+      //     } else {
+      //       return SingleChildScrollView(
+      //         child: DataTable(
+      //           columns: [
+      //             const DataColumn(
+      //               label: Text('Name'),
+      //             ),
+      //             // const DataColumn(
+      //             //   label: Text('Area'),
+      //             // ),
+      //             const DataColumn(
+      //               label: Text('Active'),
+      //             ),
+      //             DataColumn(
+      //               label: Padding(
+      //                 padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+      //                 child: const Text('Actions'),
+      //               ),
+      //             ),
+      //           ],
+      //           rows: data
+      //               .map(
+      //                 (e) => DataRow(
+      //                   cells: [
+      //                     DataCell(Text(e.tableName.toString())),
+      //                     // DataCell(Text(e.areaId.toString())),
+      //                     DataCell(
+      //                       Switch.adaptive(
+      //                         value: e.isActive as bool,
+      //                         onChanged: (va) =>
+      //                             activeDeactivateTable(e.id, va),
+      //                       ),
+      //                     ),
+      //                     DataCell(
+      //                       Container(
+      //                         alignment: Alignment.center,
+      //                         child: Row(
+      //                           mainAxisAlignment: MainAxisAlignment.center,
+      //                           crossAxisAlignment: CrossAxisAlignment.center,
+      //                           mainAxisSize: MainAxisSize.min,
+      //                           children: [
+      //                             IconButton(
+      //                               onPressed: () => editTableFn(model: e),
+      //                               icon: const Icon(Icons.edit),
+      //                             ),
+      //                             SizedBox(width: 2.w),
+      //                             IconButton(
+      //                               onPressed: () => deleteTable(e),
+      //                               icon: const Icon(CupertinoIcons.delete),
+      //                             )
+      //                           ],
+      //                         ),
+      //                       ),
+      //                     ),
+      //                   ],
+      //                 ),
+      //               )
+      //               .toList(),
+      //         ),
+      //       );
+      //     }
+      //   },
+      // ),
     );
   }
 }

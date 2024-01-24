@@ -398,6 +398,16 @@ List<HomeShortcutModel> screenList = [
     path: AppScreen.paymentsScreen.path,
     userId: '123123',
   ),
+  HomeShortcutModel(
+    title: 'Single discount Screen',
+    path: AppScreen.singleDiscountScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Bulk discount Screen',
+    path: AppScreen.bulkDiscountScreen.path,
+    userId: '123123',
+  ),
 ];
 
 class Body extends StatelessWidget {

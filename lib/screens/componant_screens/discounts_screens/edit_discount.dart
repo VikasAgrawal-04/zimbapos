@@ -1,11 +1,8 @@
-import 'dart:math';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:zimbapos/models/global_models/discount_bulk_model.dart';
+import 'package:zimbapos/models/global_models/discount_single_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/kcolors.dart';
@@ -15,41 +12,50 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
-class CreateBulkDiscScreen extends StatefulWidget {
-  const CreateBulkDiscScreen({super.key});
+class UpdateSingleDiscScreen extends StatefulWidget {
+  final DiscountModel item;
+  const UpdateSingleDiscScreen({
+    super.key,
+    required this.item,
+  });
 
   @override
-  State<CreateBulkDiscScreen> createState() => _CreateBulkDiscScreenState();
+  State<UpdateSingleDiscScreen> createState() => _UpdateSingleDiscScreenState();
 }
 
-class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
+class _UpdateSingleDiscScreenState extends State<UpdateSingleDiscScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController couponNameController;
-  late final TextEditingController couponAmountController;
   late final TextEditingController couponCodeController;
   late final TextEditingController discountPercentController;
   late final TextEditingController maxDiscountController;
   DateTime? validFromDate;
   DateTime? validToDate;
-  bool? isMultiUse = false;
-  late List<BulkDisc?> bulkDiscountList;
+  bool? isMultiUse;
+  late List<DiscountModel?> discountList;
 
   @override
   void initState() {
     super.initState();
-    getBulkDiscList(context);
+    getDiscountList(context);
     couponNameController = TextEditingController();
-    couponAmountController = TextEditingController();
     couponCodeController = TextEditingController();
     discountPercentController = TextEditingController();
     maxDiscountController = TextEditingController();
+
+    couponNameController.text = widget.item.couponName.toString();
+    couponCodeController.text = widget.item.couponCode.toString();
+    discountPercentController.text = widget.item.discountPercent.toString();
+    maxDiscountController.text = widget.item.maxDiscount.toString();
+    validFromDate = widget.item.validFromDate;
+    validToDate = widget.item.validToDate;
+    isMultiUse = widget.item.isMultiUse;
   }
 
   @override
   void dispose() {
     couponNameController.dispose();
-    couponAmountController.dispose();
     couponCodeController.dispose();
     discountPercentController.dispose();
     maxDiscountController.dispose();
@@ -57,13 +63,17 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
   }
 
   //update tax
-  createBulkDiscFn(BuildContext context) {
+  updateDiscountFn(BuildContext context, int id) {
     final db = DatabaseCubit.dbFrom(context);
-    db.discBulkRepo.createBulkDisc(
-      model: BulkDisc(
-        couponGenAmount: int.parse(couponAmountController.text),
+    String couponNumberPart = couponCodeController.text
+        .substring(couponCodeController.text.length - 6);
+    db.discountRepository.editDiscount(
+      model: DiscountModel(
+        id: widget.item.id,
         couponName: couponNameController.text,
-        couponCode: couponCodeController.text,
+        couponCode: couponNameController.text == widget.item.couponName
+            ? couponCodeController.text
+            : "${couponNameController.text}$couponNumberPart",
         validFromDate: validFromDate as DateTime,
         validToDate: validToDate as DateTime,
         discountPercent: int.parse(discountPercentController.text),
@@ -72,22 +82,15 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
       ),
     );
 
-    EasyLoading.showToast('Bulk Coupon created');
+    EasyLoading.showToast('Coupon Updated');
     context.pop();
-  }
-
-  //get list
-  getBulkDiscList(BuildContext context) async {
-    final db = DatabaseCubit.dbFrom(context);
-    bulkDiscountList =
-        await db.discBulkRepo.getAllBulkDiscs() as List<BulkDisc?>;
   }
 
   // Pick start date method
   Future pickDate(bool isStart) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: isStart ? validFromDate : validToDate ?? DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime(2200),
     );
@@ -99,21 +102,16 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
     }
   }
 
-  // Validation function
-  bool couponNameAlreadyExists(String name) {
-    return bulkDiscountList.any((discount) => discount?.couponName == name);
+  //get list
+  getDiscountList(BuildContext context) async {
+    final db = DatabaseCubit.dbFrom(context);
+    discountList =
+        await db.discountRepository.getDiscountList() as List<DiscountModel?>;
   }
 
-  // Function to generate a random string
-  String generateRandomCode() {
-    // Get the first three letters of the current month in uppercase
-    String monthPrefix = DateFormat('MMM').format(DateTime.now()).toUpperCase();
-
-    // Generate random 5-digit number
-    String randomNumbers = Random().nextInt(99999).toString().padLeft(5, '0');
-
-    // Combine the month prefix and random numbers
-    return '$monthPrefix$randomNumbers';
+  // Validation function
+  bool couponNameAlreadyExists(String name) {
+    return discountList.any((discount) => discount?.couponName == name);
   }
 
   @override
@@ -122,7 +120,7 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create bulk discount'),
+          title: const Text('Edit coupon'),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -135,7 +133,7 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
                 children: [
                   SizedBox(height: screenSize.height * 0.04),
 
-                  //switch from is multi use
+                  //switch from is alcoholic
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -166,9 +164,11 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
                         return 'Coupon name cannot be empty';
                       }
 
-                      bool exists = couponNameAlreadyExists(value);
-                      if (exists) {
-                        return 'Coupon name already exists';
+                      if (couponNameController.text != widget.item.couponName) {
+                        bool exists = couponNameAlreadyExists(value);
+                        if (exists) {
+                          return 'Coupon name already exists';
+                        }
                       }
 
                       return null;
@@ -181,39 +181,17 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
 
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Coupon amount',
-                    controller: couponAmountController,
-                    onChanged: (value) {
-                      couponAmountController.text = value.toUpperCase();
-                    },
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-
                   //coupon code and auto gen
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: PrimaryTextField(
-                          validator: nullCheckValidator,
-                          hintText: 'Coupon code',
-                          controller: couponCodeController,
-                          onChanged: (value) {
-                            couponCodeController.text = value.toUpperCase();
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 18),
-                      TextButton(
-                        onPressed: () {
-                          String generatedString = generateRandomCode();
-                          couponCodeController.text = generatedString;
-                        },
-                        child: const Text("Generate"),
-                      ),
-                    ],
+                  PrimaryTextField(
+                    // validator: nullCheckValidator,
+                    enable: false,
+                    validator: nullCheckValidator,
+                    keyboard: TextInputType.number,
+                    hintText: 'Coupon code',
+                    controller: couponCodeController,
+                    onChanged: (value) {
+                      couponCodeController.text = value.toUpperCase();
+                    },
                   ),
                   SizedBox(height: screenSize.height * 0.02),
 
@@ -221,7 +199,7 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         //start date column
                         Column(
@@ -331,12 +309,11 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
                       ],
                     ),
                   ),
-
                   SizedBox(height: screenSize.height * 0.02),
 
                   //coupon percent
                   PrimaryTextField(
-                    validator: nullCheckValidator,
+                    validator: integerValidator,
                     keyboard: TextInputType.number,
                     hintText: 'Discount percent',
                     controller: discountPercentController,
@@ -346,7 +323,7 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
 
                   //coupon max disc
                   PrimaryTextField(
-                    validator: nullCheckValidator,
+                    validator: integerValidator,
                     hintText: 'Max allowed discount',
                     controller: maxDiscountController,
                     keyboard: TextInputType.number,
@@ -363,7 +340,7 @@ class _CreateBulkDiscScreenState extends State<CreateBulkDiscScreen> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 if (validFromDate != null) {
-                  createBulkDiscFn(context);
+                  updateDiscountFn(context, widget.item.id);
                 } else {
                   UtillSnackbar.showSnackBar(
                     context,

@@ -3,7 +3,7 @@ import 'package:isar/isar.dart';
 part 'discount_single_model.g.dart';
 
 @collection
-class SingleDisc {
+class DiscountModel {
   Id id = Isar.autoIncrement;
   int? couponId;
   String couponName;
@@ -16,7 +16,7 @@ class SingleDisc {
   bool? isActive;
   bool? isDeleted;
 
-  SingleDisc({
+  DiscountModel({
     this.id = Isar.autoIncrement,
     this.couponId,
     required this.couponName,
@@ -31,8 +31,8 @@ class SingleDisc {
   });
 
   // Factory method to create an instance from a map
-  factory SingleDisc.fromJson(Map<String, dynamic> json) {
-    return SingleDisc(
+  factory DiscountModel.fromJson(Map<String, dynamic> json) {
+    return DiscountModel(
       couponId: json['couponId'],
       couponName: json['couponName'],
       couponCode: json['couponCode'],
@@ -47,9 +47,9 @@ class SingleDisc {
   }
 
   // Factory method to create an instance with random values (for testing)
-  factory SingleDisc.randomValues() {
+  factory DiscountModel.randomValues() {
     // Implement logic to generate random values for testing
-    return SingleDisc(
+    return DiscountModel(
       couponName: 'RandomCoupon',
       couponCode: 'RANDOM123',
       validFromDate: DateTime.now(),

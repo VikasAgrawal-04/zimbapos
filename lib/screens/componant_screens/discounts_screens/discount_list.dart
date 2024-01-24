@@ -19,13 +19,13 @@ class SingleDiscountScreen extends StatefulWidget {
 class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
   //
   //
-  Stream<List<SingleDisc>> streamForSingleDiscs() {
+  Stream<List<DiscountModel>> streamForDiscounts() {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
     // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
-    return datatbaseCubit.discSingleRepo.streamSingleDiscList();
+    return datatbaseCubit.discountRepository.streamDiscountList();
   }
 
-  deleteSingleDisc(SingleDisc e) {
+  deleteDiscount(DiscountModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
@@ -33,7 +33,7 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.discSingleRepo.deleteSingleDisc(e.id);
+        dbCubit.discountRepository.deleteDiscount(e.id);
         EasyLoading.showToast('Coupon deleted');
         context.pop();
       },
@@ -42,12 +42,12 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
     );
   }
 
-  activeDeactivateSingleDisc(int id, bool value) {
+  activeDeactivateDiscount(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.discSingleRepo.changeActive(id, value);
+    dbCubit.discountRepository.changeActive(id, value);
   }
 
-  editSingleDiscFn({required SingleDisc model}) {
+  editDiscountFn({required DiscountModel model}) {
     context.push(
       AppScreen.editSingleDiscountScreen.path,
       extra: model,
@@ -59,7 +59,7 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Single coupon list'),
+          title: const Text('Coupon list'),
           actions: [
             // IconButton(
             //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
@@ -68,13 +68,13 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
             TextButton.icon(
               onPressed: () =>
                   context.push(AppScreen.createSingleDiscountScreen.path),
-              label: const Text('Add single coupon'),
+              label: const Text('Add coupon'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: StreamBuilder<List<SingleDisc>>(
-          stream: streamForSingleDiscs(),
+        body: StreamBuilder<List<DiscountModel>>(
+          stream: streamForDiscounts(),
           builder: (context, snapshot) {
             final list = snapshot.data;
             if (list == null || list.isEmpty) {
@@ -112,7 +112,7 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
                             Switch.adaptive(
                               value: e.isActive as bool,
                               onChanged: (va) =>
-                                  activeDeactivateSingleDisc(e.id, va),
+                                  activeDeactivateDiscount(e.id, va),
                             ),
                           ),
                           DataCell(
@@ -124,12 +124,12 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    onPressed: () => editSingleDiscFn(model: e),
+                                    onPressed: () => editDiscountFn(model: e),
                                     icon: const Icon(Icons.edit),
                                   ),
                                   SizedBox(width: 2.w),
                                   IconButton(
-                                    onPressed: () => deleteSingleDisc(e),
+                                    onPressed: () => deleteDiscount(e),
                                     icon: const Icon(CupertinoIcons.delete),
                                   )
                                 ],

@@ -9,13 +9,13 @@ part of 'discount_single_model.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetSingleDiscCollection on Isar {
-  IsarCollection<SingleDisc> get singleDiscs => this.collection();
+extension GetDiscountModelCollection on Isar {
+  IsarCollection<DiscountModel> get discountModels => this.collection();
 }
 
-const SingleDiscSchema = CollectionSchema(
-  name: r'SingleDisc',
-  id: 3188239032480374128,
+const DiscountModelSchema = CollectionSchema(
+  name: r'DiscountModel',
+  id: -4234387549725581625,
   properties: {
     r'couponCode': PropertySchema(
       id: 0,
@@ -68,22 +68,22 @@ const SingleDiscSchema = CollectionSchema(
       type: IsarType.dateTime,
     )
   },
-  estimateSize: _singleDiscEstimateSize,
-  serialize: _singleDiscSerialize,
-  deserialize: _singleDiscDeserialize,
-  deserializeProp: _singleDiscDeserializeProp,
+  estimateSize: _discountModelEstimateSize,
+  serialize: _discountModelSerialize,
+  deserialize: _discountModelDeserialize,
+  deserializeProp: _discountModelDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _singleDiscGetId,
-  getLinks: _singleDiscGetLinks,
-  attach: _singleDiscAttach,
+  getId: _discountModelGetId,
+  getLinks: _discountModelGetLinks,
+  attach: _discountModelAttach,
   version: '3.1.0+1',
 );
 
-int _singleDiscEstimateSize(
-  SingleDisc object,
+int _discountModelEstimateSize(
+  DiscountModel object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -93,8 +93,8 @@ int _singleDiscEstimateSize(
   return bytesCount;
 }
 
-void _singleDiscSerialize(
-  SingleDisc object,
+void _discountModelSerialize(
+  DiscountModel object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -111,13 +111,13 @@ void _singleDiscSerialize(
   writer.writeDateTime(offsets[9], object.validToDate);
 }
 
-SingleDisc _singleDiscDeserialize(
+DiscountModel _discountModelDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = SingleDisc(
+  final object = DiscountModel(
     couponCode: reader.readString(offsets[0]),
     couponId: reader.readLongOrNull(offsets[1]),
     couponName: reader.readString(offsets[2]),
@@ -133,7 +133,7 @@ SingleDisc _singleDiscDeserialize(
   return object;
 }
 
-P _singleDiscDeserializeProp<P>(
+P _discountModelDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -165,30 +165,32 @@ P _singleDiscDeserializeProp<P>(
   }
 }
 
-Id _singleDiscGetId(SingleDisc object) {
+Id _discountModelGetId(DiscountModel object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _singleDiscGetLinks(SingleDisc object) {
+List<IsarLinkBase<dynamic>> _discountModelGetLinks(DiscountModel object) {
   return [];
 }
 
-void _singleDiscAttach(IsarCollection<dynamic> col, Id id, SingleDisc object) {
+void _discountModelAttach(
+    IsarCollection<dynamic> col, Id id, DiscountModel object) {
   object.id = id;
 }
 
-extension SingleDiscQueryWhereSort
-    on QueryBuilder<SingleDisc, SingleDisc, QWhere> {
-  QueryBuilder<SingleDisc, SingleDisc, QAfterWhere> anyId() {
+extension DiscountModelQueryWhereSort
+    on QueryBuilder<DiscountModel, DiscountModel, QWhere> {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension SingleDiscQueryWhere
-    on QueryBuilder<SingleDisc, SingleDisc, QWhereClause> {
-  QueryBuilder<SingleDisc, SingleDisc, QAfterWhereClause> idEqualTo(Id id) {
+extension DiscountModelQueryWhere
+    on QueryBuilder<DiscountModel, DiscountModel, QWhereClause> {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterWhereClause> idEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -197,7 +199,8 @@ extension SingleDiscQueryWhere
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -219,7 +222,8 @@ extension SingleDiscQueryWhere
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<DiscountModel, DiscountModel, QAfterWhereClause> idGreaterThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -228,7 +232,8 @@ extension SingleDiscQueryWhere
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<DiscountModel, DiscountModel, QAfterWhereClause> idLessThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -237,7 +242,7 @@ extension SingleDiscQueryWhere
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterWhereClause> idBetween(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -254,9 +259,10 @@ extension SingleDiscQueryWhere
   }
 }
 
-extension SingleDiscQueryFilter
-    on QueryBuilder<SingleDisc, SingleDisc, QFilterCondition> {
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponCodeEqualTo(
+extension DiscountModelQueryFilter
+    on QueryBuilder<DiscountModel, DiscountModel, QFilterCondition> {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponCodeEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -269,7 +275,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeGreaterThan(
     String value, {
     bool include = false,
@@ -285,7 +291,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeLessThan(
     String value, {
     bool include = false,
@@ -301,7 +307,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponCodeBetween(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponCodeBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -320,7 +327,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -334,7 +341,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -348,7 +355,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -359,9 +366,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponCodeMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponCodeMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'couponCode',
@@ -371,7 +377,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -381,7 +387,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponCodeIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -391,7 +397,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponIdIsNull() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'couponId',
@@ -399,7 +406,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -408,8 +415,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponIdEqualTo(
-      int? value) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'couponId',
@@ -418,7 +425,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponIdGreaterThan(
     int? value, {
     bool include = false,
@@ -432,7 +439,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponIdLessThan(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponIdLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -445,7 +453,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponIdBetween(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponIdBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -462,7 +471,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponNameEqualTo(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponNameEqualTo(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -475,7 +485,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameGreaterThan(
     String value, {
     bool include = false,
@@ -491,7 +501,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameLessThan(
     String value, {
     bool include = false,
@@ -507,7 +517,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponNameBetween(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponNameBetween(
     String lower,
     String upper, {
     bool includeLower = true,
@@ -526,7 +537,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -540,7 +551,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -554,7 +565,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -565,9 +576,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> couponNameMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      couponNameMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'couponName',
@@ -577,7 +587,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -587,7 +597,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       couponNameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -597,7 +607,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       discountPercentEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -607,7 +617,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       discountPercentGreaterThan(
     int value, {
     bool include = false,
@@ -621,7 +631,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       discountPercentLessThan(
     int value, {
     bool include = false,
@@ -635,7 +645,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       discountPercentBetween(
     int lower,
     int upper, {
@@ -653,7 +663,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> idEqualTo(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -663,7 +673,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -676,7 +687,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> idLessThan(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -689,7 +700,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> idBetween(
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -706,7 +717,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> isActiveIsNull() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      isActiveIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'isActive',
@@ -714,7 +726,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       isActiveIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -723,8 +735,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> isActiveEqualTo(
-      bool? value) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      isActiveEqualTo(bool? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isActive',
@@ -733,7 +745,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       isDeletedIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -742,7 +754,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       isDeletedIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -751,8 +763,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> isDeletedEqualTo(
-      bool? value) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      isDeletedEqualTo(bool? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isDeleted',
@@ -761,8 +773,8 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition> isMultiUseEqualTo(
-      bool value) {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
+      isMultiUseEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isMultiUse',
@@ -771,7 +783,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       maxDiscountEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -781,7 +793,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       maxDiscountGreaterThan(
     int value, {
     bool include = false,
@@ -795,7 +807,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       maxDiscountLessThan(
     int value, {
     bool include = false,
@@ -809,7 +821,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       maxDiscountBetween(
     int lower,
     int upper, {
@@ -827,7 +839,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validFromDateEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -837,7 +849,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validFromDateGreaterThan(
     DateTime value, {
     bool include = false,
@@ -851,7 +863,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validFromDateLessThan(
     DateTime value, {
     bool include = false,
@@ -865,7 +877,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validFromDateBetween(
     DateTime lower,
     DateTime upper, {
@@ -883,7 +895,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validToDateEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -893,7 +905,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validToDateGreaterThan(
     DateTime value, {
     bool include = false,
@@ -907,7 +919,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validToDateLessThan(
     DateTime value, {
     bool include = false,
@@ -921,7 +933,7 @@ extension SingleDiscQueryFilter
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterFilterCondition>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterFilterCondition>
       validToDateBetween(
     DateTime lower,
     DateTime upper, {
@@ -940,400 +952,428 @@ extension SingleDiscQueryFilter
   }
 }
 
-extension SingleDiscQueryObject
-    on QueryBuilder<SingleDisc, SingleDisc, QFilterCondition> {}
+extension DiscountModelQueryObject
+    on QueryBuilder<DiscountModel, DiscountModel, QFilterCondition> {}
 
-extension SingleDiscQueryLinks
-    on QueryBuilder<SingleDisc, SingleDisc, QFilterCondition> {}
+extension DiscountModelQueryLinks
+    on QueryBuilder<DiscountModel, DiscountModel, QFilterCondition> {}
 
-extension SingleDiscQuerySortBy
-    on QueryBuilder<SingleDisc, SingleDisc, QSortBy> {
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByCouponCode() {
+extension DiscountModelQuerySortBy
+    on QueryBuilder<DiscountModel, DiscountModel, QSortBy> {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByCouponCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponCode', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByCouponCodeDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByCouponCodeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponCode', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByCouponId() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByCouponId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponId', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByCouponIdDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByCouponIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponId', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByCouponName() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByCouponName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponName', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByCouponNameDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByCouponNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponName', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByDiscountPercent() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByDiscountPercent() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'discountPercent', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
       sortByDiscountPercentDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'discountPercent', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByIsActive() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByIsActiveDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByIsActiveDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByIsDeleted() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByIsDeleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDeleted', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByIsDeletedDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByIsDeletedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDeleted', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByIsMultiUse() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByIsMultiUse() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isMultiUse', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByIsMultiUseDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByIsMultiUseDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isMultiUse', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByMaxDiscount() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByMaxDiscount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'maxDiscount', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByMaxDiscountDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByMaxDiscountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'maxDiscount', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByValidFromDate() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByValidFromDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validFromDate', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByValidFromDateDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByValidFromDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validFromDate', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByValidToDate() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> sortByValidToDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validToDate', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> sortByValidToDateDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      sortByValidToDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validToDate', Sort.desc);
     });
   }
 }
 
-extension SingleDiscQuerySortThenBy
-    on QueryBuilder<SingleDisc, SingleDisc, QSortThenBy> {
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByCouponCode() {
+extension DiscountModelQuerySortThenBy
+    on QueryBuilder<DiscountModel, DiscountModel, QSortThenBy> {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByCouponCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponCode', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByCouponCodeDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByCouponCodeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponCode', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByCouponId() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByCouponId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponId', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByCouponIdDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByCouponIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponId', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByCouponName() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByCouponName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponName', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByCouponNameDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByCouponNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'couponName', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByDiscountPercent() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByDiscountPercent() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'discountPercent', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy>
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
       thenByDiscountPercentDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'discountPercent', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenById() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIsActive() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIsActiveDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByIsActiveDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIsDeleted() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByIsDeleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDeleted', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIsDeletedDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByIsDeletedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDeleted', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIsMultiUse() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByIsMultiUse() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isMultiUse', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByIsMultiUseDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByIsMultiUseDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isMultiUse', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByMaxDiscount() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByMaxDiscount() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'maxDiscount', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByMaxDiscountDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByMaxDiscountDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'maxDiscount', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByValidFromDate() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByValidFromDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validFromDate', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByValidFromDateDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByValidFromDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validFromDate', Sort.desc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByValidToDate() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy> thenByValidToDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validToDate', Sort.asc);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QAfterSortBy> thenByValidToDateDesc() {
+  QueryBuilder<DiscountModel, DiscountModel, QAfterSortBy>
+      thenByValidToDateDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'validToDate', Sort.desc);
     });
   }
 }
 
-extension SingleDiscQueryWhereDistinct
-    on QueryBuilder<SingleDisc, SingleDisc, QDistinct> {
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByCouponCode(
+extension DiscountModelQueryWhereDistinct
+    on QueryBuilder<DiscountModel, DiscountModel, QDistinct> {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct> distinctByCouponCode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'couponCode', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByCouponId() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct> distinctByCouponId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'couponId');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByCouponName(
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct> distinctByCouponName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'couponName', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByDiscountPercent() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct>
+      distinctByDiscountPercent() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'discountPercent');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByIsActive() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct> distinctByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isActive');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByIsDeleted() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct> distinctByIsDeleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isDeleted');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByIsMultiUse() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct> distinctByIsMultiUse() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isMultiUse');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByMaxDiscount() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct>
+      distinctByMaxDiscount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'maxDiscount');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByValidFromDate() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct>
+      distinctByValidFromDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'validFromDate');
     });
   }
 
-  QueryBuilder<SingleDisc, SingleDisc, QDistinct> distinctByValidToDate() {
+  QueryBuilder<DiscountModel, DiscountModel, QDistinct>
+      distinctByValidToDate() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'validToDate');
     });
   }
 }
 
-extension SingleDiscQueryProperty
-    on QueryBuilder<SingleDisc, SingleDisc, QQueryProperty> {
-  QueryBuilder<SingleDisc, int, QQueryOperations> idProperty() {
+extension DiscountModelQueryProperty
+    on QueryBuilder<DiscountModel, DiscountModel, QQueryProperty> {
+  QueryBuilder<DiscountModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<SingleDisc, String, QQueryOperations> couponCodeProperty() {
+  QueryBuilder<DiscountModel, String, QQueryOperations> couponCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'couponCode');
     });
   }
 
-  QueryBuilder<SingleDisc, int?, QQueryOperations> couponIdProperty() {
+  QueryBuilder<DiscountModel, int?, QQueryOperations> couponIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'couponId');
     });
   }
 
-  QueryBuilder<SingleDisc, String, QQueryOperations> couponNameProperty() {
+  QueryBuilder<DiscountModel, String, QQueryOperations> couponNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'couponName');
     });
   }
 
-  QueryBuilder<SingleDisc, int, QQueryOperations> discountPercentProperty() {
+  QueryBuilder<DiscountModel, int, QQueryOperations> discountPercentProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'discountPercent');
     });
   }
 
-  QueryBuilder<SingleDisc, bool?, QQueryOperations> isActiveProperty() {
+  QueryBuilder<DiscountModel, bool?, QQueryOperations> isActiveProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isActive');
     });
   }
 
-  QueryBuilder<SingleDisc, bool?, QQueryOperations> isDeletedProperty() {
+  QueryBuilder<DiscountModel, bool?, QQueryOperations> isDeletedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isDeleted');
     });
   }
 
-  QueryBuilder<SingleDisc, bool, QQueryOperations> isMultiUseProperty() {
+  QueryBuilder<DiscountModel, bool, QQueryOperations> isMultiUseProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isMultiUse');
     });
   }
 
-  QueryBuilder<SingleDisc, int, QQueryOperations> maxDiscountProperty() {
+  QueryBuilder<DiscountModel, int, QQueryOperations> maxDiscountProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'maxDiscount');
     });
   }
 
-  QueryBuilder<SingleDisc, DateTime, QQueryOperations> validFromDateProperty() {
+  QueryBuilder<DiscountModel, DateTime, QQueryOperations>
+      validFromDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'validFromDate');
     });
   }
 
-  QueryBuilder<SingleDisc, DateTime, QQueryOperations> validToDateProperty() {
+  QueryBuilder<DiscountModel, DateTime, QQueryOperations>
+      validToDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'validToDate');
     });

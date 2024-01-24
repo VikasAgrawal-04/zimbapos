@@ -124,7 +124,7 @@ class Helpers {
   static Future<String> getWifiIPAddress() async {
     final wifiIP = await NetworkInfo().getWifiIP();
     if (wifiIP != null) {
-      debugPrint('Device IP Address: $wifiIP');
+      debugPrint('Device IP Address: $wifiIP ');
     } else {
       debugPrint('Device not connected to Wi-Fi.');
     }

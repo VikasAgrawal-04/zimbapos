@@ -18,7 +18,8 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
       create: (context) => OrderDashboardCubit(),
       child: BlocBuilder<OrderDashboardCubit, OrderDashboardState>(
         builder: (context, state) {
-          if (state is OrderDashboardLoading || state is TableLoading) {
+          print(state);
+          if (state is OrderDashboardLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is OrderDashboardLoaded) {
             if (state.areas.isEmpty) {
@@ -32,11 +33,10 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
             return DefaultTabController(
               length: state.areas.length,
               child: Scaffold(
-                
                 appBar: AppBar(
                   elevation: 1,
                   title: TabBar(
-                    dividerColor: Colors.transparent,
+                      dividerColor: Colors.transparent,
                       isScrollable: true,
                       onTap: context.read<OrderDashboardCubit>().onTabChanged,
                       enableFeedback: true,
@@ -44,7 +44,9 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                         final area = state.areas[index];
                         return ConstrainedBox(
                             constraints: BoxConstraints(minWidth: 30.w),
-                            child: Tab(child: Text(area.areaName ?? "--")));
+                            child: Tab(
+                                key: Key(area.areaId.toString()),
+                                child: Text(area.areaName ?? "--")));
                       })),
                 ),
                 body: (state is TableLoading)

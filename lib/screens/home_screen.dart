@@ -173,16 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       HomeShortcutModel(gridPosition: -1),
                                 );
                                 return ElevatedButton(
-                                  // onHover: (isHovered) {
-                                  //   if (isHovered) {
-                                  //     ElevatedButton.styleFrom(
-                                  //       side: const BorderSide(
-                                  //         color: Colors.black54,
-                                  //         width: 20,
-                                  //       ),
-                                  //     );
-                                  //   }
-                                  // },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -276,7 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return OrderDashboardScreen();
+                              return const OrderDashboardScreen();
                             }));
                             // context.push(AppScreen.orderDashboardScreen.path);
                           },

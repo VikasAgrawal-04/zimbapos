@@ -36,8 +36,8 @@ import 'package:zimbapos/screens/componant_screens/payments_screen/payment_list_
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
-import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/outlet_setup_screens/outlet_data_setup_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/edit_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.dart';
@@ -79,9 +79,6 @@ final List<GoRoute> routerList = [
             item: RateSetsModel.fromJson(state.extra as String));
       }
     },
-    // builder: (context, state) => EditRateSetScreen(
-    //   item: state.extra as RateSetsModel,
-    // ),
   ),
   //rateset create
   GoRoute(

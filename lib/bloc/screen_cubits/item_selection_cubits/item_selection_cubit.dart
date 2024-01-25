@@ -55,7 +55,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       }, (success) {
         mainGroups = success;
         getItemGroup(success.first.mainGroupId!);
-        emit(state.copyWith(mainGroups: mainGroups));
+        emit(state.copyWith(mainGroups: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -72,7 +72,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         emit(state.copyWith(itemGroups: itemGroups));
       }, (success) {
         itemGroups = success;
-        emit(state.copyWith(itemGroups: itemGroups));
+        emit(state.copyWith(itemGroups: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());

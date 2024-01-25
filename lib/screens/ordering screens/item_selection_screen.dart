@@ -25,17 +25,31 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
           builder: (context, state) {
             return Row(
               children: [
-                SizedBox(
-                  width: 30.w,
+                Container(
+                  width: 25.w,
+                  decoration: BoxDecoration(border: Border.all()),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(state.mainGroups.length, (index) {
-                      final category = state.mainGroups[index];
+                      final mainGroup = state.mainGroups[index];
                       return Padding(
                         padding: EdgeInsets.only(bottom: 1.h),
-                        child: Text(
-                          category.mainGroupName ?? "--",
-                          style: Theme.of(context).textTheme.displayLarge,
+                        child: ExpansionTile(
+                          title: Text(
+                            mainGroup.mainGroupName ?? "--",
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                          onExpansionChanged: (value) async {
+                            if (value) {
+                             await context.read<ItemSelectionCubit>().getItemGroup(
+                                  mainGroup.mainGroupId.toString());
+                            }
+                          },
+                          children:
+                              List.generate(state.itemGroups.length, (index) {
+                            final itemGroup = state.itemGroups[index];
+                            return Text(itemGroup.itemGroupName.toString());
+                          }),
                         ),
                       );
                     }),

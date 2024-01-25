@@ -15,7 +15,6 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ItemSelectionCubit>(
-      lazy: false,
       create: (context) => ItemSelectionCubit(),
       child: Scaffold(
         appBar: AppBar(

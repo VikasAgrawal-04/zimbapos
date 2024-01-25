@@ -14,7 +14,7 @@ class ItemSelectionState extends Equatable {
       required this.itemGroups});
 
   @override
-  List<Object?> get props => [categories];
+  List<Object?> get props => [categories, mainGroups, itemGroups];
 
   ItemSelectionState copyWith(
       {List<CategoryModel>? categories,

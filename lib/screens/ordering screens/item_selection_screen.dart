@@ -40,8 +40,10 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                           ),
                           onExpansionChanged: (value) async {
                             if (value) {
-                             await context.read<ItemSelectionCubit>().getItemGroup(
-                                  mainGroup.mainGroupId.toString());
+                              await context
+                                  .read<ItemSelectionCubit>()
+                                  .getItemGroup(
+                                      mainGroup.mainGroupId.toString());
                             }
                           },
                           children:

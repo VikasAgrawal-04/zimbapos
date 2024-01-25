@@ -13,7 +13,10 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   late List<MainGroupModel> mainGroups;
   late List<ItemGroupModel> itemGroups;
   ItemSelectionCubit()
-      : super(const ItemSelectionState(
+      : categories = [],
+        mainGroups = [],
+        itemGroups = [],
+        super(const ItemSelectionState(
             categories: [], mainGroups: [], itemGroups: [])) {
     init();
   }
@@ -55,7 +58,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       }, (success) {
         mainGroups = success;
         getItemGroup(success.first.mainGroupId!);
-        emit(state.copyWith(mainGroups: success));
+        emit(state.copyWith(mainGroups: success, itemGroups: itemGroups));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -72,7 +75,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         emit(state.copyWith(itemGroups: itemGroups));
       }, (success) {
         itemGroups = success;
-        emit(state.copyWith(itemGroups: success));
+        emit(state.copyWith(mainGroups: mainGroups, itemGroups: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());

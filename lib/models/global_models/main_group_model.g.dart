@@ -79,7 +79,12 @@ int _mainGroupModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.mainGroupId.length * 3;
+  {
+    final value = object.mainGroupId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.mainGroupName;
     if (value != null) {
@@ -115,10 +120,10 @@ MainGroupModel _mainGroupModelDeserialize(
     id: id,
     isActive: reader.readBoolOrNull(offsets[2]),
     isDeleted: reader.readBoolOrNull(offsets[3]),
+    mainGroupId: reader.readStringOrNull(offsets[4]),
     mainGroupName: reader.readStringOrNull(offsets[5]),
     outletId: reader.readLongOrNull(offsets[6]),
   );
-  object.mainGroupId = reader.readString(offsets[4]);
   return object;
 }
 
@@ -138,7 +143,7 @@ P _mainGroupModelDeserializeProp<P>(
     case 3:
       return (reader.readBoolOrNull(offset)) as P;
     case 4:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
@@ -566,8 +571,26 @@ extension MainGroupModelQueryFilter
   }
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      mainGroupIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'mainGroupId',
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      mainGroupIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'mainGroupId',
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       mainGroupIdEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -581,7 +604,7 @@ extension MainGroupModelQueryFilter
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       mainGroupIdGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -597,7 +620,7 @@ extension MainGroupModelQueryFilter
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       mainGroupIdLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -613,8 +636,8 @@ extension MainGroupModelQueryFilter
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       mainGroupIdBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1224,7 +1247,8 @@ extension MainGroupModelQueryProperty
     });
   }
 
-  QueryBuilder<MainGroupModel, String, QQueryOperations> mainGroupIdProperty() {
+  QueryBuilder<MainGroupModel, String?, QQueryOperations>
+      mainGroupIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'mainGroupId');
     });

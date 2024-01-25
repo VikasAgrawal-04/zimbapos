@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'item_group_model.g.dart';
 
@@ -9,15 +8,16 @@ part 'item_group_model.g.dart';
 class ItemGroupModel {
   Id id = Isar.autoIncrement;
   int? outletId;
-  String itemGroupId = const Uuid().v1();
+  String? itemGroupId;
   String? mainGroupId;
   String? itemGroupName;
   String? printerId;
   bool? isActive;
   bool? isDeleted;
   ItemGroupModel({
-    required this.id,
+    this.id = Isar.autoIncrement,
     this.outletId,
+    this.itemGroupId,
     this.mainGroupId,
     this.itemGroupName,
     this.printerId,
@@ -28,6 +28,7 @@ class ItemGroupModel {
   ItemGroupModel copyWith({
     Id? id,
     int? outletId,
+    String? itemGroupId,
     String? mainGroupId,
     String? itemGroupName,
     String? printerId,
@@ -37,6 +38,7 @@ class ItemGroupModel {
     return ItemGroupModel(
       id: id ?? this.id,
       outletId: outletId ?? this.outletId,
+      itemGroupId: itemGroupId ?? this.itemGroupId,
       mainGroupId: mainGroupId ?? this.mainGroupId,
       itemGroupName: itemGroupName ?? this.itemGroupName,
       printerId: printerId ?? this.printerId,
@@ -49,6 +51,7 @@ class ItemGroupModel {
     return <String, dynamic>{
       'id': id,
       'outletId': outletId,
+      'itemGroupId': itemGroupId,
       'mainGroupId': mainGroupId,
       'itemGroupName': itemGroupName,
       'printerId': printerId,
@@ -61,6 +64,8 @@ class ItemGroupModel {
     return ItemGroupModel(
       id: map['id'],
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      itemGroupId:
+          map['itemGroupId'] != null ? map['itemGroupId'] as String : null,
       mainGroupId:
           map['mainGroupId'] != null ? map['mainGroupId'] as String : null,
       itemGroupName:
@@ -78,7 +83,7 @@ class ItemGroupModel {
 
   @override
   String toString() {
-    return 'ItemGroupModel(id: $id, outletId: $outletId, mainGroupId: $mainGroupId, itemGroupName: $itemGroupName, printerId: $printerId, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'ItemGroupModel(id: $id, outletId: $outletId, itemGroupId: $itemGroupId, mainGroupId: $mainGroupId, itemGroupName: $itemGroupName, printerId: $printerId, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -87,6 +92,7 @@ class ItemGroupModel {
 
     return other.id == id &&
         other.outletId == outletId &&
+        other.itemGroupId == itemGroupId &&
         other.mainGroupId == mainGroupId &&
         other.itemGroupName == itemGroupName &&
         other.printerId == printerId &&
@@ -98,6 +104,7 @@ class ItemGroupModel {
   int get hashCode {
     return id.hashCode ^
         outletId.hashCode ^
+        itemGroupId.hashCode ^
         mainGroupId.hashCode ^
         itemGroupName.hashCode ^
         printerId.hashCode ^

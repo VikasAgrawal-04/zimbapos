@@ -1,17 +1,18 @@
 import 'package:isar/isar.dart';
+
 part 'items_model.g.dart';
 
 @collection
 class ItemsModel {
   Id id = Isar.autoIncrement;
-  int? itemId;
-  String itemName;
-  int? itemGroupId;
+  String? itemId;
+  String? itemName;
+  String? itemGroupId;
   String? foodType;
   bool? isAlcohol;
-  int? itemRate;
-  int? taxId;
-  int? rateWithTax;
+  double? itemRate;
+  String? taxId;
+  double? rateWithTax;
   bool? isOpenItem;
   String? barcode;
   String? shortcode;
@@ -25,7 +26,7 @@ class ItemsModel {
   ItemsModel({
     this.id = Isar.autoIncrement,
     this.itemId,
-    required this.itemName,
+    this.itemName,
     this.itemGroupId,
     this.foodType,
     this.isAlcohol = false,
@@ -45,7 +46,7 @@ class ItemsModel {
   // Factory method to create ItemsModel from a JSON map
   factory ItemsModel.fromJson(Map<String, dynamic> json) {
     return ItemsModel(
-      itemId: json['itemId'],
+      itemId: json['itemId'] ?? Isar.autoIncrement,
       itemName: json['itemName'],
       itemGroupId: json['itemGroupId'],
       foodType: json['foodType'],

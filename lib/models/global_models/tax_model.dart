@@ -4,10 +4,10 @@ part 'tax_model.g.dart';
 @collection
 class TaxModel {
   Id id = Isar.autoIncrement;
-  int? taxId;
+  String? taxId;
   String taxName;
   String? taxType;
-  int? taxPercent;
+  double? taxPercent;
   bool? isActive;
   bool? isDeleted;
 

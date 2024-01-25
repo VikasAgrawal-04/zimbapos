@@ -25,11 +25,11 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController itemNameController;
-  int? itemGroupId;
+  String? itemGroupId;
   String? foodType = 'V';
   bool isAlcoholic = false;
   late final TextEditingController itemRateController;
-  int? taxId;
+  String? taxId;
   late final TextEditingController itemRateWithTaxController;
   bool isOpenItem = false;
   late final TextEditingController barcodeController;
@@ -72,9 +72,9 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
         itemGroupId: itemGroupId,
         foodType: foodType,
         isAlcohol: isAlcoholic,
-        itemRate: enableTF ? int.parse(itemRateController.text) : null,
+        itemRate: enableTF ? double.parse(itemRateController.text) : null,
         taxId: taxId,
-        rateWithTax: int.parse(itemRateWithTaxController.text),
+        rateWithTax: double.parse(itemRateWithTaxController.text),
         isOpenItem: isOpenItem,
         barcode: barcodeController.text,
         shortcode: shortcodeController.text,
@@ -285,7 +285,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                                   borderRadius: BorderRadius.circular(14.0),
                                 ),
                                 child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<int>(
+                                  child: DropdownButton<String>(
                                     value: taxId,
                                     isExpanded: true,
                                     hint: const Text("Choose a tax"),
@@ -295,9 +295,9 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                                       });
                                     },
                                     items: rateSets.map((tax) {
-                                      return DropdownMenuItem<int>(
-                                        value: tax!.id,
-                                        child: Text(tax.taxName ?? 'error'),
+                                      return DropdownMenuItem<String>(
+                                        value: tax?.taxId,
+                                        child: Text(tax?.taxName ?? 'error'),
                                       );
                                     }).toList(),
                                   ),

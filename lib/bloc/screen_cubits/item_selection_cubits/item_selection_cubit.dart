@@ -16,8 +16,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       : categories = [],
         mainGroups = [],
         itemGroups = [],
-        super(const ItemSelectionState(
-            selectedTile: -1, categories: [], mainGroups: [], itemGroups: [])) {
+        super(ItemSelectionState.initial()) {
     init();
   }
 

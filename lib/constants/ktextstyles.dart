@@ -29,6 +29,14 @@ class KTextStyles {
     // Add other properties as needed
   );
 
+  static TextStyle kHeaderSub = TextStyle(
+    fontSize: 18.sp,
+    fontWeight: FontWeight.w600,
+    color: KColors.textColor,
+    fontFamily: "PJS",
+    // Add other properties as needed
+  );
+
   //for titles
   static TextStyle kTitle = TextStyle(
     fontSize: 16.sp,

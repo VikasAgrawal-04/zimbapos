@@ -10,4 +10,10 @@ class EndPoints {
 
   //Categories
   static const String getCategories = '/get-category';
+
+  //Workers
+  static const String getWorkers = '/get-workers';
+  static const String createWorker = '/create-worker';
+  static const String deleteWorker = '/delete-worker';
+  static const String updateWorker = '/update-worker';
 }

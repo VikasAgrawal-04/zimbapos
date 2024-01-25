@@ -12,6 +12,7 @@ import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/home_screen_widgets/home_screen_drawer.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -122,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (context) => HomeCubit(),
       child: Scaffold(
         appBar: _buildAppbar(),
+        drawer: const HomeScreenDrawer(),
         body: OrientationBuilder(
           builder: (context, orientation) =>
               StreamBuilder<List<HomeShortcutModel>>(

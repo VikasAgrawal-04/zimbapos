@@ -62,7 +62,7 @@ class ItemGroupModel {
 
   factory ItemGroupModel.fromMap(Map<String, dynamic> map) {
     return ItemGroupModel(
-      id: map['id'],
+      id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
       itemGroupId:
           map['itemGroupId'] != null ? map['itemGroupId'] as String : null,
@@ -71,8 +71,8 @@ class ItemGroupModel {
       itemGroupName:
           map['itemGroupName'] != null ? map['itemGroupName'] as String : null,
       printerId: map['printerId'] != null ? map['printerId'] as String : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
-      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : true,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );
   }
 

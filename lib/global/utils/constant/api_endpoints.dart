@@ -16,4 +16,10 @@ class EndPoints {
   static const String createMainGroup = '/create-main-group';
   static const String updateMainGroup = '/update-main-group';
   static const String deleteMainGroup = '/delete-main-group';
+
+  //Item Groups
+  static const String getItemGroup = '/get-item-group';
+  static const String createItemGroup = '/create-item-group';
+  static const String updateItemGroup = '/update-item-group';
+  static const String deleteItemGroup = '/delete-item-group';
 }

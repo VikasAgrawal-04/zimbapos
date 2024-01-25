@@ -7,4 +7,7 @@ class EndPoints {
 
   //Tables
   static const String getTableByArea = '/fetch-tables-id';
+
+  //Categories
+  static const String getCategories = '/get-category';
 }

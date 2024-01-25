@@ -16,7 +16,7 @@ class AreaController {
       final areas = await dbCubit.areasRepository.getAreas();
       return okResponse(areas);
     } catch (e) {
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 
@@ -25,9 +25,7 @@ class AreaController {
       final requiredFields = ['areaName', 'rateSetId', 'extraChargePercent'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode(
-                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+        return badArguments('Fields Required ${requiredFields.join(',')}');
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =
@@ -36,8 +34,7 @@ class AreaController {
       if (missingFields.isNotEmpty) {
         final missingFieldsMessage =
             'Missing fields: ${missingFields.join(', ')}';
-        return Response.badRequest(
-            body: jsonEncode({"data": missingFieldsMessage}));
+        return badArguments(missingFieldsMessage);
       }
       decodedData['areaId'] = Helpers.generateUuId();
       final success = await dbCubit.areasRepository

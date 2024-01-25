@@ -15,9 +15,11 @@ import 'package:zimbapos/models/user_models/user_model.dart';
 import 'package:zimbapos/repository/areas_repository.dart';
 import 'package:zimbapos/repository/category_repository.dart';
 import 'package:zimbapos/repository/customer_repository.dart';
+import 'package:zimbapos/repository/discount_single_repo.dart';
 import 'package:zimbapos/repository/expense_category_repository.dart';
 import 'package:zimbapos/repository/expenses_repository.dart';
 import 'package:zimbapos/repository/items_repository.dart';
+import 'package:zimbapos/repository/payments_repository.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/system_repository/home_shortcut_repository.dart';
 import 'package:zimbapos/repository/system_repository/system_configuration_repository.dart';
@@ -27,9 +29,11 @@ import 'package:zimbapos/repository/user_repository/subscription_repository.dart
 import 'package:zimbapos/repository/user_repository/user_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
 import 'package:zimbapos/repository/workers_repository.dart';
+import '../models/global_models/discount_single_model.dart';
 import '../models/global_models/expense_category_model.dart';
 import '../models/global_models/expenses_model.dart';
 import '../models/global_models/items_model.dart';
+import '../models/global_models/payments_model.dart';
 import '../models/global_models/tax_model.dart';
 import '../models/global_models/vendor_model.dart';
 
@@ -58,6 +62,8 @@ class IsarService {
           UserModelSchema,
           TaxModelSchema,
           ItemsModelSchema,
+          PaymentModelSchema,
+          DiscountModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -106,4 +112,8 @@ class IsarService {
   TaxesRepository get taxesRepository => TaxesRepository(db);
   //for items
   ItemsRepository get itemsRepository => ItemsRepository(db);
+  //for payments
+  PaymentsRepository get paymentsRepository => PaymentsRepository(db);
+  //for single discount
+  DiscountRepository get discountRepository => DiscountRepository(db);
 }

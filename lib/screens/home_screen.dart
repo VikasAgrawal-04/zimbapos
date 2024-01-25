@@ -4,12 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_cubit.dart';
-import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_state.dart';
+import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
@@ -172,16 +173,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       HomeShortcutModel(gridPosition: -1),
                                 );
                                 return ElevatedButton(
-                                  // onHover: (isHovered) {
-                                  //   if (isHovered) {
-                                  //     ElevatedButton.styleFrom(
-                                  //       side: const BorderSide(
-                                  //         color: Colors.black54,
-                                  //         width: 20,
-                                  //       ),
-                                  //     );
-                                  //   }
-                                  // },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
@@ -199,23 +190,49 @@ class _HomeScreenState extends State<HomeScreen> {
                                             Positioned(
                                               top: 0,
                                               right: 0,
-                                              child: IconButton(
-                                                onPressed: () {
-                                                  UtilDialog.showMyDialog(
-                                                    context,
-                                                    "Alert",
-                                                    "Do you want to delete shortcut?",
-                                                    () {
-                                                      deleteHomeShortcut(
-                                                          homeShortcut.isarId);
-                                                      context.pop();
-                                                    },
-                                                    null,
-                                                  );
-                                                },
-                                                icon: Icon(
-                                                  CupertinoIcons.delete,
-                                                  size: 15.sp,
+                                              child: Container(
+                                                constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .width *
+                                                          0.5,
+                                                  maxHeight:
+                                                      MediaQuery.of(context)
+                                                              .size
+                                                              .height *
+                                                          0.5,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(12),
+                                                    topRight:
+                                                        Radius.circular(12),
+                                                  ),
+                                                ),
+                                                child: IconButton(
+                                                  onPressed: () {
+                                                    UtilDialog.showMyDialog(
+                                                      context,
+                                                      "Alert",
+                                                      "Do you want to delete '${homeShortcut.title}' shortcut?",
+                                                      () {
+                                                        deleteHomeShortcut(
+                                                            homeShortcut
+                                                                .isarId);
+                                                        context.pop();
+                                                      },
+                                                      null,
+                                                    );
+                                                  },
+                                                  icon: Icon(
+                                                    CupertinoIcons.delete,
+                                                    size: 18.sp,
+                                                    color: KColors.white,
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -247,8 +264,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: EdgeInsets.symmetric(vertical: 1.h),
                           text: 'Ordering Dashboard',
                           onTap: () {
-                            context
-                                .pushNamed(AppScreen.orderDashboardScreen.name);
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const OrderDashboardScreen();
+                            }));
+                            // context.push(AppScreen.orderDashboardScreen.path);
                           },
                         )
                       ],
@@ -267,13 +287,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       title: const Text('Home Screen'),
       actions: [
-        IconButton(
-            onPressed: () {
-              // context.push(AppScreen.vendorScreen.path);
-              context.push(AppScreen.expenseCategoryScreen.path);
-              // context.push(AppScreen.expensesScreen.path);
-            },
-            icon: const Icon(Icons.open_in_new_outlined)),
+        // IconButton(
+        //   onPressed: () {
+        //     // context.push(AppScreen.vendorScreen.path);
+        //     context.push(AppScreen.expenseCategoryScreen.path);
+        //     // context.push(AppScreen.expensesScreen.path);
+        //   },
+        //   icon: const Icon(Icons.open_in_new_outlined),
+        // ),
         BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
           return AnimatedOpacity(
             opacity: state.animationValue,
@@ -360,6 +381,21 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
     title: 'Items Screen',
     path: AppScreen.itemsScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Payments Screen',
+    path: AppScreen.paymentsScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Single discount Screen',
+    path: AppScreen.singleDiscountScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Bulk discount Screen',
+    path: AppScreen.bulkDiscountScreen.path,
     userId: '123123',
   ),
 ];

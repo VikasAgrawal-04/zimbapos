@@ -2,16 +2,25 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zimbapos/bloc/screen_cubits/home_page_cubits.dart/home_state.dart';
+import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_state.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 
 class HomeCubit extends Cubit<HomeState> {
+  late Timer clockTimer;
+  late Timer blinkingTimer;
   HomeCubit()
       : super(HomeState(
             initialDateTime: DateTime.now(),
             animationValue: 1.0,
             ipAddress: '....')) {
     init();
+  }
+
+  @override
+  Future<void> close() {
+    clockTimer.cancel();
+    blinkingTimer.cancel();
+    return super.close();
   }
 
   Future<bool> checkServerStarted() async {
@@ -35,13 +44,13 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void startClock() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
+    clockTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       emit(state.copyWith(initialDateTime: DateTime.now()));
     });
   }
 
   void startBlinking() {
-    Timer.periodic(const Duration(milliseconds: 300), (timer) {
+    blinkingTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       emit(state.copyWith(
           animationValue: state.animationValue == 1.0 ? 0.0 : 1.0));
     });

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
 
 part 'category_model.g.dart';
 
@@ -9,13 +8,14 @@ part 'category_model.g.dart';
 class CategoryModel {
   Id id = Isar.autoIncrement;
   int? outletId;
-  String categoryid = const Uuid().v1();
+  String? categoryid;
   String? categoryName;
   bool? isActive;
   bool? isDeleted;
   CategoryModel({
     this.id = Isar.autoIncrement,
     this.outletId,
+    this.categoryid,
     this.categoryName,
     this.isActive = true,
     this.isDeleted = false,
@@ -24,6 +24,7 @@ class CategoryModel {
   CategoryModel copyWith({
     Id? id,
     int? outletId,
+    String? categoryid,
     String? categoryName,
     bool? isActive,
     bool? isDeleted,
@@ -31,6 +32,7 @@ class CategoryModel {
     return CategoryModel(
       id: id ?? this.id,
       outletId: outletId ?? this.outletId,
+      categoryid: categoryid ?? this.categoryid,
       categoryName: categoryName ?? this.categoryName,
       isActive: isActive ?? this.isActive,
       isDeleted: isDeleted ?? this.isDeleted,
@@ -41,6 +43,7 @@ class CategoryModel {
     return <String, dynamic>{
       'id': id,
       'outletId': outletId,
+      'categoryid': categoryid,
       'categoryName': categoryName,
       'isActive': isActive,
       'isDeleted': isDeleted,
@@ -49,12 +52,14 @@ class CategoryModel {
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
-      id: map['id'],
+      id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      categoryid:
+          map['categoryid'] != null ? map['categoryid'] as String : null,
       categoryName:
           map['categoryName'] != null ? map['categoryName'] as String : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
-      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : true,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );
   }
 
@@ -65,7 +70,7 @@ class CategoryModel {
 
   @override
   String toString() {
-    return 'CategoryModel(id: $id, outletId: $outletId, categoryName: $categoryName, isActive: $isActive, isDeleted: $isDeleted)';
+    return 'CategoryModel(id: $id, outletId: $outletId, categoryid: $categoryid, categoryName: $categoryName, isActive: $isActive, isDeleted: $isDeleted)';
   }
 
   @override
@@ -74,6 +79,7 @@ class CategoryModel {
 
     return other.id == id &&
         other.outletId == outletId &&
+        other.categoryid == categoryid &&
         other.categoryName == categoryName &&
         other.isActive == isActive &&
         other.isDeleted == isDeleted;
@@ -83,6 +89,7 @@ class CategoryModel {
   int get hashCode {
     return id.hashCode ^
         outletId.hashCode ^
+        categoryid.hashCode ^
         categoryName.hashCode ^
         isActive.hashCode ^
         isDeleted.hashCode;

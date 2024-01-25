@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits.dart/order_dashboard_state.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_dashboard_state.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
@@ -14,11 +15,10 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
   }
 
   void onTabChanged(int index) {
-    if (state is OrderDashboardLoaded) {
-      final areas = (state as OrderDashboardLoaded).areas;
-      final id = areas[index].areaId;
-      fetchTableByArea(id ?? "");
-    }
+    print("index $index");
+    final areas = (state as OrderDashboardLoaded).areas;
+    final id = areas[index].areaId;
+    fetchTableByArea(id ?? "");
   }
 
   Future<void> fetchAreas() async {
@@ -30,7 +30,9 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
       }, (success) {
         _fetchedAreas = success;
         emit(OrderDashboardLoaded(_fetchedAreas, const []));
-        fetchTableByArea(success.first.areaId ?? "");
+        if (success.isNotEmpty) {
+          fetchTableByArea(success.first.areaId ?? "");
+        }
       });
     } catch (e) {
       emit(OrderDashboardError(e.toString()));
@@ -38,9 +40,10 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
   }
 
   Future<void> fetchTableByArea(String id) async {
-    emit(TableLoading());
+    EasyLoading.show(maskType: EasyLoadingMaskType.black);
     try {
       final data = await _repo.getTableByArea(id);
+      EasyLoading.dismiss();
       data.fold((failure) {
         emit(OrderDashboardError(failure.toString()));
       }, (success) {

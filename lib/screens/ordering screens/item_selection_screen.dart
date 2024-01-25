@@ -29,12 +29,12 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                   width: 30.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(state.categories.length, (index) {
-                      final category = state.categories[index];
+                    children: List.generate(state.mainGroups.length, (index) {
+                      final category = state.mainGroups[index];
                       return Padding(
                         padding: EdgeInsets.only(bottom: 1.h),
                         child: Text(
-                          category.categoryName ?? "--",
+                          category.mainGroupName ?? "--",
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
                       );

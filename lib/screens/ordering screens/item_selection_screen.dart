@@ -18,6 +18,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
       create: (context) => ItemSelectionCubit(),
       child: Scaffold(
         appBar: AppBar(
+          elevation: 1,
           title: const Text('Billing Screen'),
         ),
         body: BlocBuilder<ItemSelectionCubit, ItemSelectionState>(
@@ -34,22 +35,36 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                       return Padding(
                         padding: EdgeInsets.only(bottom: 1.h),
                         child: ExpansionTile(
+                          key: Key(state.selectedTile.toString()),
+                          initiallyExpanded: state.selectedTile == index,
                           title: Text(
                             mainGroup.mainGroupName ?? "--",
                             style: Theme.of(context).textTheme.displayMedium,
                           ),
+                          backgroundColor: Colors.yellow.shade600,
+                          collapsedBackgroundColor: Colors.white,
                           onExpansionChanged: (value) async {
                             if (value) {
-                              await context
-                                  .read<ItemSelectionCubit>()
-                                  .getItemGroup(
-                                      mainGroup.mainGroupId.toString());
+                              context.read<ItemSelectionCubit>().getItemGroup(
+                                  mainGroup.mainGroupId.toString());
                             }
+                            context
+                                .read<ItemSelectionCubit>()
+                                .changeTile(index);
                           },
                           children:
                               List.generate(state.itemGroups.length, (index) {
                             final itemGroup = state.itemGroups[index];
-                            return Text(itemGroup.itemGroupName.toString());
+                            return Container(
+                              width: 100.w,
+                              decoration: const BoxDecoration(
+                                  border: Border(bottom: BorderSide())),
+                              child: Text(
+                                itemGroup.itemGroupName.toString(),
+                                style: Theme.of(context).textTheme.displaySmall,
+                                textAlign: TextAlign.center,
+                              ),
+                            );
                           }),
                         ),
                       );

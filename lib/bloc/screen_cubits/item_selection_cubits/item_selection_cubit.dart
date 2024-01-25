@@ -17,7 +17,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         mainGroups = [],
         itemGroups = [],
         super(const ItemSelectionState(
-            categories: [], mainGroups: [], itemGroups: [])) {
+            selectedTile: -1, categories: [], mainGroups: [], itemGroups: [])) {
     init();
   }
 
@@ -57,8 +57,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         emit(state.copyWith(mainGroups: mainGroups));
       }, (success) {
         mainGroups = success;
-        getItemGroup(success.first.mainGroupId!);
-        emit(state.copyWith(mainGroups: success, itemGroups: itemGroups));
+        emit(state.copyWith(mainGroups: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -67,6 +66,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   }
 
   Future<void> getItemGroup(String id) async {
+    emit(state.copyWith(itemGroups: []));
     try {
       final data = await _repo.fetchItemGroup(id);
       data.fold((failure) {
@@ -75,11 +75,15 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         emit(state.copyWith(itemGroups: itemGroups));
       }, (success) {
         itemGroups = success;
-        emit(state.copyWith(mainGroups: mainGroups, itemGroups: success));
+        emit(state.copyWith(itemGroups: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void changeTile(int index) {
+    emit(state.copyWith(selectedTile: index));
   }
 }

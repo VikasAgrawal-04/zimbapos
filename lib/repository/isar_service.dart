@@ -124,7 +124,7 @@ class IsarService {
   //for single discount
   DiscountRepository get discountRepository => DiscountRepository(db);
 
-  MaiGroupRepository get maiGroupRepository => MaiGroupRepository(db);
+  MainGroupRepository get mainGroupRepository => MainGroupRepository(db);
 
   ItemGroupRepository get itemGroupReposiory => ItemGroupRepository(db);
 }

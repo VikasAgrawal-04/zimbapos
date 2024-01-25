@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 
-class MaiGroupRepository {
+class MainGroupRepository {
   Isar db;
-  MaiGroupRepository(this.db);
+  MainGroupRepository(this.db);
 
   Future<List<MainGroupModel>> getMainGroups() async {
     return db.mainGroupModels.filter().isDeletedEqualTo(false).findAllSync();
@@ -46,6 +46,8 @@ class MaiGroupRepository {
               .mainGroupNameEqualTo(data.mainGroupName)
               .and()
               .isDeletedEqualTo(false)
+              .and()
+              .categoryIdEqualTo(data.categoryId)
               .findFirstSync();
           if (existingGroup != null) {
             throw IsarError('Main Group Already Exists');
@@ -53,6 +55,7 @@ class MaiGroupRepository {
         }
         dbItem.mainGroupName = data.mainGroupName;
         dbItem.isActive = data.isActive;
+        dbItem.categoryId = data.categoryId;
 
         db.writeTxnSync(() => db.mainGroupModels.putSync(dbItem));
         return const Tuple2(true, 'Main Group Updated!');

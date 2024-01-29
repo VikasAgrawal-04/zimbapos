@@ -27,73 +27,78 @@ const ItemsModelSchema = CollectionSchema(
       name: r'foodType',
       type: IsarType.string,
     ),
-    r'hsnCode': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 2,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'hsnCode': PropertySchema(
+      id: 3,
       name: r'hsnCode',
       type: IsarType.string,
     ),
     r'imgLink': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'imgLink',
       type: IsarType.string,
     ),
     r'isActive': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'isActive',
       type: IsarType.bool,
     ),
     r'isAlcohol': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'isAlcohol',
       type: IsarType.bool,
     ),
     r'isDeleted': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'isDeleted',
       type: IsarType.bool,
     ),
     r'isOpenItem': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'isOpenItem',
       type: IsarType.bool,
     ),
     r'isWeightItem': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'isWeightItem',
       type: IsarType.bool,
     ),
     r'itemGroupId': PropertySchema(
-      id: 9,
+      id: 10,
       name: r'itemGroupId',
       type: IsarType.string,
     ),
     r'itemId': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'itemId',
       type: IsarType.string,
     ),
     r'itemName': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'itemName',
       type: IsarType.string,
     ),
     r'itemRate': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'itemRate',
       type: IsarType.double,
     ),
     r'rateWithTax': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'rateWithTax',
       type: IsarType.double,
     ),
     r'shortcode': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'shortcode',
       type: IsarType.string,
     ),
     r'taxId': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'taxId',
       type: IsarType.string,
     )
@@ -183,20 +188,21 @@ void _itemsModelSerialize(
 ) {
   writer.writeString(offsets[0], object.barcode);
   writer.writeString(offsets[1], object.foodType);
-  writer.writeString(offsets[2], object.hsnCode);
-  writer.writeString(offsets[3], object.imgLink);
-  writer.writeBool(offsets[4], object.isActive);
-  writer.writeBool(offsets[5], object.isAlcohol);
-  writer.writeBool(offsets[6], object.isDeleted);
-  writer.writeBool(offsets[7], object.isOpenItem);
-  writer.writeBool(offsets[8], object.isWeightItem);
-  writer.writeString(offsets[9], object.itemGroupId);
-  writer.writeString(offsets[10], object.itemId);
-  writer.writeString(offsets[11], object.itemName);
-  writer.writeDouble(offsets[12], object.itemRate);
-  writer.writeDouble(offsets[13], object.rateWithTax);
-  writer.writeString(offsets[14], object.shortcode);
-  writer.writeString(offsets[15], object.taxId);
+  writer.writeLong(offsets[2], object.hashCode);
+  writer.writeString(offsets[3], object.hsnCode);
+  writer.writeString(offsets[4], object.imgLink);
+  writer.writeBool(offsets[5], object.isActive);
+  writer.writeBool(offsets[6], object.isAlcohol);
+  writer.writeBool(offsets[7], object.isDeleted);
+  writer.writeBool(offsets[8], object.isOpenItem);
+  writer.writeBool(offsets[9], object.isWeightItem);
+  writer.writeString(offsets[10], object.itemGroupId);
+  writer.writeString(offsets[11], object.itemId);
+  writer.writeString(offsets[12], object.itemName);
+  writer.writeDouble(offsets[13], object.itemRate);
+  writer.writeDouble(offsets[14], object.rateWithTax);
+  writer.writeString(offsets[15], object.shortcode);
+  writer.writeString(offsets[16], object.taxId);
 }
 
 ItemsModel _itemsModelDeserialize(
@@ -208,21 +214,21 @@ ItemsModel _itemsModelDeserialize(
   final object = ItemsModel(
     barcode: reader.readStringOrNull(offsets[0]),
     foodType: reader.readStringOrNull(offsets[1]),
-    hsnCode: reader.readStringOrNull(offsets[2]),
+    hsnCode: reader.readStringOrNull(offsets[3]),
     id: id,
-    imgLink: reader.readStringOrNull(offsets[3]),
-    isActive: reader.readBoolOrNull(offsets[4]),
-    isAlcohol: reader.readBoolOrNull(offsets[5]),
-    isDeleted: reader.readBoolOrNull(offsets[6]),
-    isOpenItem: reader.readBoolOrNull(offsets[7]),
-    isWeightItem: reader.readBoolOrNull(offsets[8]),
-    itemGroupId: reader.readStringOrNull(offsets[9]),
-    itemId: reader.readStringOrNull(offsets[10]),
-    itemName: reader.readStringOrNull(offsets[11]),
-    itemRate: reader.readDoubleOrNull(offsets[12]),
-    rateWithTax: reader.readDoubleOrNull(offsets[13]),
-    shortcode: reader.readStringOrNull(offsets[14]),
-    taxId: reader.readStringOrNull(offsets[15]),
+    imgLink: reader.readStringOrNull(offsets[4]),
+    isActive: reader.readBoolOrNull(offsets[5]),
+    isAlcohol: reader.readBoolOrNull(offsets[6]),
+    isDeleted: reader.readBoolOrNull(offsets[7]),
+    isOpenItem: reader.readBoolOrNull(offsets[8]),
+    isWeightItem: reader.readBoolOrNull(offsets[9]),
+    itemGroupId: reader.readStringOrNull(offsets[10]),
+    itemId: reader.readStringOrNull(offsets[11]),
+    itemName: reader.readStringOrNull(offsets[12]),
+    itemRate: reader.readDoubleOrNull(offsets[13]),
+    rateWithTax: reader.readDoubleOrNull(offsets[14]),
+    shortcode: reader.readStringOrNull(offsets[15]),
+    taxId: reader.readStringOrNull(offsets[16]),
   );
   return object;
 }
@@ -239,11 +245,11 @@ P _itemsModelDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readBoolOrNull(offset)) as P;
     case 6:
@@ -253,18 +259,20 @@ P _itemsModelDeserializeProp<P>(
     case 8:
       return (reader.readBoolOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 13:
       return (reader.readDoubleOrNull(offset)) as P;
     case 14:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 15:
+      return (reader.readStringOrNull(offset)) as P;
+    case 16:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -658,6 +666,60 @@ extension ItemsModelQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'foodType',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition>
+      hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2101,6 +2163,18 @@ extension ItemsModelQuerySortBy
     });
   }
 
+  QueryBuilder<ItemsModel, ItemsModel, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<ItemsModel, ItemsModel, QAfterSortBy> sortByHsnCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hsnCode', Sort.asc);
@@ -2293,6 +2367,18 @@ extension ItemsModelQuerySortThenBy
   QueryBuilder<ItemsModel, ItemsModel, QAfterSortBy> thenByFoodTypeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'foodType', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -2493,6 +2579,12 @@ extension ItemsModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<ItemsModel, ItemsModel, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<ItemsModel, ItemsModel, QDistinct> distinctByHsnCode(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2602,6 +2694,12 @@ extension ItemsModelQueryProperty
   QueryBuilder<ItemsModel, String?, QQueryOperations> foodTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'foodType');
+    });
+  }
+
+  QueryBuilder<ItemsModel, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 

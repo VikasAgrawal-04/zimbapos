@@ -12,6 +12,10 @@ class ItemsRepository {
     return db.itemsModels.where().watch(fireImmediately: true);
   }
 
+  Future<List<ItemsModel>> getItems() async {
+    return db.itemsModels.filter().isDeletedEqualTo(false).findAllSync();
+  }
+
   createItem({required ItemsModel model}) {
     db.writeTxnSync(() => db.itemsModels.putSync(model));
   }

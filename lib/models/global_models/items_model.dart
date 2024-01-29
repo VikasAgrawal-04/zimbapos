@@ -106,7 +106,7 @@ class ItemsModel {
       'imgLink': imgLink,
       'isActive': isActive,
       'isDeleted': isDeleted,
-      'tax': taxDetails.value
+      'tax': jsonDecode(taxDetails.value!.toJson().toString())
     };
   }
 

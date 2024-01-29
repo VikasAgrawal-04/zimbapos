@@ -22,4 +22,8 @@ class EndPoints {
   static const String createItemGroup = '/create-item-group';
   static const String updateItemGroup = '/update-item-group';
   static const String deleteItemGroup = '/delete-item-group';
+
+  //Items
+  static const String getAllItems = '/get-all-items';
+  static const String getItemsByGroupId = '/get-items-id';
 }

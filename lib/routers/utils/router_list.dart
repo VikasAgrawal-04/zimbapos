@@ -352,7 +352,7 @@ final List<GoRoute> routerList = [
         return EditTaxScreen(item: state.extra as TaxModel);
       } else {
         return EditTaxScreen(
-          item: TaxModel.fromJson(state.extra as Map<String, dynamic>),
+          item: TaxModel.fromMap(state.extra as Map<String, dynamic>),
         );
       }
     },

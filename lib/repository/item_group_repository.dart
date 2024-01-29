@@ -28,6 +28,8 @@ class ItemGroupRepository {
           .mainGroupIdEqualTo(data.mainGroupId)
           .and()
           .itemGroupNameEqualTo(data.itemGroupName)
+          .and()
+          .isDeletedEqualTo(false)
           .findFirstSync();
       if (dbItem == null) {
         db.writeTxnSync(() => db.itemGroupModels.putSync(data));

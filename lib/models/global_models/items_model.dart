@@ -109,26 +109,26 @@ class ItemsModel {
 
   factory ItemsModel.fromMap(Map<String, dynamic> map) {
     return ItemsModel(
-      id: map['id'],
+      id: map['id'] ?? Isar.autoIncrement,
       itemId: map['itemId'] != null ? map['itemId'] as String : null,
       itemName: map['itemName'] != null ? map['itemName'] as String : null,
       itemGroupId:
           map['itemGroupId'] != null ? map['itemGroupId'] as String : null,
       foodType: map['foodType'] != null ? map['foodType'] as String : null,
-      isAlcohol: map['isAlcohol'] != null ? map['isAlcohol'] as bool : null,
+      isAlcohol: map['isAlcohol'] != null ? map['isAlcohol'] as bool : false,
       itemRate: map['itemRate'] != null ? map['itemRate'] as double : null,
       taxId: map['taxId'] != null ? map['taxId'] as String : null,
       rateWithTax:
           map['rateWithTax'] != null ? map['rateWithTax'] as double : null,
-      isOpenItem: map['isOpenItem'] != null ? map['isOpenItem'] as bool : null,
+      isOpenItem: map['isOpenItem'] != null ? map['isOpenItem'] as bool : false,
       barcode: map['barcode'] != null ? map['barcode'] as String : null,
       shortcode: map['shortcode'] != null ? map['shortcode'] as String : null,
       isWeightItem:
-          map['isWeightItem'] != null ? map['isWeightItem'] as bool : null,
+          map['isWeightItem'] != null ? map['isWeightItem'] as bool : false,
       hsnCode: map['hsnCode'] != null ? map['hsnCode'] as String : null,
       imgLink: map['imgLink'] != null ? map['imgLink'] as String : null,
-      isActive: map['isActive'] != null ? map['isActive'] as bool : null,
-      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : null,
+      isActive: map['isActive'] != null ? map['isActive'] as bool : true,
+      isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );
   }
 

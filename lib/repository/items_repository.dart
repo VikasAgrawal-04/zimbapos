@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 
 class ItemsRepository {
   final Isar db;
@@ -79,6 +80,13 @@ class ItemsRepository {
           .isDeletedEqualTo(false)
           .findFirstSync();
       if (dbItem == null) {
+        final tax = await db.taxModels
+            .filter()
+            .taxIdEqualTo(data.taxId)
+            .and()
+            .isDeletedEqualTo(false)
+            .findFirst();
+        data.taxDetails.value = tax;
         db.writeTxnSync(() => db.itemsModels.putSync(data));
         return const Tuple2(true, 'Item Created Successfully');
       } else {
@@ -123,6 +131,14 @@ class ItemsRepository {
         dbItem.isWeightItem = data.isWeightItem;
         dbItem.imgLink = data.imgLink;
         dbItem.isActive = data.isActive;
+
+        final tax = await db.taxModels
+            .filter()
+            .taxIdEqualTo(data.taxId)
+            .and()
+            .isDeletedEqualTo(false)
+            .findFirst();
+        dbItem.taxDetails.value = tax;
 
         db.writeTxnSync(() => db.itemsModels.putSync(dbItem));
         return const Tuple2(true, 'Item Updated');

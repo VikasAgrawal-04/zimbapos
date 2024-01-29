@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 
 part 'items_model.g.dart';
 
@@ -23,6 +24,7 @@ class ItemsModel {
   String? imgLink;
   bool? isActive;
   bool? isDeleted;
+  final taxDetails = IsarLink<TaxModel>();
 
   // Constructor
   ItemsModel({
@@ -104,6 +106,7 @@ class ItemsModel {
       'imgLink': imgLink,
       'isActive': isActive,
       'isDeleted': isDeleted,
+      'tax': taxDetails.value
     };
   }
 

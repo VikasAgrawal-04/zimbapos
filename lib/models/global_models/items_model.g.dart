@@ -109,7 +109,14 @@ const ItemsModelSchema = CollectionSchema(
   deserializeProp: _itemsModelDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'taxDetails': LinkSchema(
+      id: 4434017478640948639,
+      name: r'taxDetails',
+      target: r'TaxModel',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _itemsModelGetId,
   getLinks: _itemsModelGetLinks,
@@ -284,11 +291,13 @@ Id _itemsModelGetId(ItemsModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _itemsModelGetLinks(ItemsModel object) {
-  return [];
+  return [object.taxDetails];
 }
 
 void _itemsModelAttach(IsarCollection<dynamic> col, Id id, ItemsModel object) {
   object.id = id;
+  object.taxDetails
+      .attach(col, col.isar.collection<TaxModel>(), r'taxDetails', id);
 }
 
 extension ItemsModelQueryWhereSort
@@ -2135,7 +2144,21 @@ extension ItemsModelQueryObject
     on QueryBuilder<ItemsModel, ItemsModel, QFilterCondition> {}
 
 extension ItemsModelQueryLinks
-    on QueryBuilder<ItemsModel, ItemsModel, QFilterCondition> {}
+    on QueryBuilder<ItemsModel, ItemsModel, QFilterCondition> {
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition> taxDetails(
+      FilterQuery<TaxModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'taxDetails');
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition>
+      taxDetailsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'taxDetails', 0, true, 0, true);
+    });
+  }
+}
 
 extension ItemsModelQuerySortBy
     on QueryBuilder<ItemsModel, ItemsModel, QSortBy> {

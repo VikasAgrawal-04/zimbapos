@@ -17,33 +17,38 @@ const TaxModelSchema = CollectionSchema(
   name: r'TaxModel',
   id: -3753743766418626748,
   properties: {
-    r'isActive': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 0,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'isActive': PropertySchema(
+      id: 1,
       name: r'isActive',
       type: IsarType.bool,
     ),
     r'isDeleted': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'isDeleted',
       type: IsarType.bool,
     ),
     r'taxId': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'taxId',
       type: IsarType.string,
     ),
     r'taxName': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'taxName',
       type: IsarType.string,
     ),
     r'taxPercent': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'taxPercent',
       type: IsarType.double,
     ),
     r'taxType': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'taxType',
       type: IsarType.string,
     )
@@ -74,7 +79,12 @@ int _taxModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.taxName.length * 3;
+  {
+    final value = object.taxName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.taxType;
     if (value != null) {
@@ -90,12 +100,13 @@ void _taxModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeBool(offsets[0], object.isActive);
-  writer.writeBool(offsets[1], object.isDeleted);
-  writer.writeString(offsets[2], object.taxId);
-  writer.writeString(offsets[3], object.taxName);
-  writer.writeDouble(offsets[4], object.taxPercent);
-  writer.writeString(offsets[5], object.taxType);
+  writer.writeLong(offsets[0], object.hashCode);
+  writer.writeBool(offsets[1], object.isActive);
+  writer.writeBool(offsets[2], object.isDeleted);
+  writer.writeString(offsets[3], object.taxId);
+  writer.writeString(offsets[4], object.taxName);
+  writer.writeDouble(offsets[5], object.taxPercent);
+  writer.writeString(offsets[6], object.taxType);
 }
 
 TaxModel _taxModelDeserialize(
@@ -106,12 +117,12 @@ TaxModel _taxModelDeserialize(
 ) {
   final object = TaxModel(
     id: id,
-    isActive: reader.readBoolOrNull(offsets[0]),
-    isDeleted: reader.readBoolOrNull(offsets[1]),
-    taxId: reader.readStringOrNull(offsets[2]),
-    taxName: reader.readString(offsets[3]),
-    taxPercent: reader.readDoubleOrNull(offsets[4]),
-    taxType: reader.readStringOrNull(offsets[5]),
+    isActive: reader.readBoolOrNull(offsets[1]),
+    isDeleted: reader.readBoolOrNull(offsets[2]),
+    taxId: reader.readStringOrNull(offsets[3]),
+    taxName: reader.readStringOrNull(offsets[4]),
+    taxPercent: reader.readDoubleOrNull(offsets[5]),
+    taxType: reader.readStringOrNull(offsets[6]),
   );
   return object;
 }
@@ -124,16 +135,18 @@ P _taxModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 1:
       return (reader.readBoolOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 6:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -229,6 +242,59 @@ extension TaxModelQueryWhere on QueryBuilder<TaxModel, TaxModel, QWhereClause> {
 
 extension TaxModelQueryFilter
     on QueryBuilder<TaxModel, TaxModel, QFilterCondition> {
+  QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -479,8 +545,24 @@ extension TaxModelQueryFilter
     });
   }
 
+  QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> taxNameIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'taxName',
+      ));
+    });
+  }
+
+  QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> taxNameIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'taxName',
+      ));
+    });
+  }
+
   QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> taxNameEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -493,7 +575,7 @@ extension TaxModelQueryFilter
   }
 
   QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> taxNameGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -508,7 +590,7 @@ extension TaxModelQueryFilter
   }
 
   QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> taxNameLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -523,8 +605,8 @@ extension TaxModelQueryFilter
   }
 
   QueryBuilder<TaxModel, TaxModel, QAfterFilterCondition> taxNameBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -842,6 +924,18 @@ extension TaxModelQueryLinks
     on QueryBuilder<TaxModel, TaxModel, QFilterCondition> {}
 
 extension TaxModelQuerySortBy on QueryBuilder<TaxModel, TaxModel, QSortBy> {
+  QueryBuilder<TaxModel, TaxModel, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaxModel, TaxModel, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaxModel, TaxModel, QAfterSortBy> sortByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.asc);
@@ -917,6 +1011,18 @@ extension TaxModelQuerySortBy on QueryBuilder<TaxModel, TaxModel, QSortBy> {
 
 extension TaxModelQuerySortThenBy
     on QueryBuilder<TaxModel, TaxModel, QSortThenBy> {
+  QueryBuilder<TaxModel, TaxModel, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TaxModel, TaxModel, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<TaxModel, TaxModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1004,6 +1110,12 @@ extension TaxModelQuerySortThenBy
 
 extension TaxModelQueryWhereDistinct
     on QueryBuilder<TaxModel, TaxModel, QDistinct> {
+  QueryBuilder<TaxModel, TaxModel, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<TaxModel, TaxModel, QDistinct> distinctByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isActive');
@@ -1052,6 +1164,12 @@ extension TaxModelQueryProperty
     });
   }
 
+  QueryBuilder<TaxModel, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
+    });
+  }
+
   QueryBuilder<TaxModel, bool?, QQueryOperations> isActiveProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isActive');
@@ -1070,7 +1188,7 @@ extension TaxModelQueryProperty
     });
   }
 
-  QueryBuilder<TaxModel, String, QQueryOperations> taxNameProperty() {
+  QueryBuilder<TaxModel, String?, QQueryOperations> taxNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'taxName');
     });

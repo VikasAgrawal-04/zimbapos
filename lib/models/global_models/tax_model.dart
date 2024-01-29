@@ -8,7 +8,7 @@ part 'tax_model.g.dart';
 class TaxModel {
   Id id = Isar.autoIncrement;
   String? taxId;
-  String taxName;
+  String? taxName;
   String? taxType;
   double? taxPercent;
   bool? isActive;
@@ -17,7 +17,7 @@ class TaxModel {
   TaxModel({
     this.id = Isar.autoIncrement,
     this.taxId,
-    required this.taxName,
+    this.taxName,
     this.taxType,
     this.taxPercent,
     this.isActive = true,
@@ -60,7 +60,7 @@ class TaxModel {
     return TaxModel(
       id: map['id'] ?? Isar.autoIncrement,
       taxId: map['taxId'] != null ? map['taxId'] as String : null,
-      taxName: map['taxName'] as String,
+      taxName: map['taxName'] != null ? map['taxName'] as String : null,
       taxType: map['taxType'] != null ? map['taxType'] as String : null,
       taxPercent:
           map['taxPercent'] != null ? map['taxPercent'] as double : null,

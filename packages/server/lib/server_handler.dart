@@ -9,6 +9,7 @@ import 'package:server/apis/routes/item_routes.dart';
 import 'package:server/apis/routes/main_group_routes.dart';
 import 'package:server/apis/routes/rateset_routes.dart';
 import 'package:server/apis/routes/table_routes.dart';
+import 'package:server/apis/routes/tax_routes.dart';
 import 'package:server/apis/routes/user_routes.dart';
 import 'package:server/apis/routes/workers_routes.dart';
 import 'package:shelf/shelf.dart';
@@ -33,6 +34,7 @@ class Server {
     MainGroupRoutes(context, router);
     ItemGroupRoutes(context, router);
     ItemRoutes(context, router);
+    TaxRoutes(context, router);
   }
 
   Future<void> runServer() async {

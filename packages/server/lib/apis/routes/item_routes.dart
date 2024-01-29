@@ -19,6 +19,7 @@ class ItemRoutes {
     locRoute.get('/get-all-items', controller.fetchAllItems);
     locRoute.get('/get-items-id', controller.fetchItemsByGroupId);
     locRoute.post('/create-item', controller.createItem);
+    locRoute.post('/update-item', controller.updateItem);
     locRoute.delete('/delete-item', controller.deleteItem);
   }
 }

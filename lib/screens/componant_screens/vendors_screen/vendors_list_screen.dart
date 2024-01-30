@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/vendor_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
@@ -57,7 +58,10 @@ class _VendorsListScreenState extends State<VendorsListScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Manage Vendors'),
+          title: Text(
+            'Manage Vendors',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             TextButton.icon(
               onPressed: () => context.push(AppScreen.createVendorScreen.path),
@@ -83,6 +87,7 @@ class _VendorsListScreenState extends State<VendorsListScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -104,8 +109,14 @@ class _VendorsListScreenState extends State<VendorsListScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.vendorName)),
-                          DataCell(Text(e.mobile.toString())),
+                          DataCell(Text(
+                            e.vendorName,
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            e.mobile.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive ?? false,

@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
@@ -52,7 +53,10 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Manage Expense'),
+          title: Text(
+            'Manage Expense',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             TextButton.icon(
               onPressed: () => context.push(AppScreen.createExpenseScreen.path),
@@ -78,6 +82,7 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Bill Name'),
@@ -99,13 +104,22 @@ class _ExpensesListScreenState extends State<ExpensesListScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.description.toString())),
+                          DataCell(Text(
+                            e.description.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           // DataCell(
                           //   Text(
                           //       "${e.entryDatetime!.day}/${e.entryDatetime!.month}/${e.entryDatetime!.year}"),
                           // ),
-                          DataCell(Text(e.payMode.toString())),
-                          DataCell(Text(e.amount.toString())),
+                          DataCell(Text(
+                            e.payMode.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            e.amount.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Container(
                               alignment: Alignment.center,

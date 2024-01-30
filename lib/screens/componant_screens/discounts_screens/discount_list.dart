@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/discount_single_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
@@ -59,7 +60,10 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Coupon list'),
+          title: Text(
+            'Coupon list',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             // IconButton(
             //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
@@ -73,76 +77,85 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
             ),
           ],
         ),
-        body: StreamBuilder<List<DiscountModel>>(
-          stream: streamForDiscounts(),
-          builder: (context, snapshot) {
-            final list = snapshot.data;
-            if (list == null || list.isEmpty) {
-              return const Center(
-                child: Text('No coupons available,create one.'),
-              );
-            }
-            return SizedBox(
-              width: 100.w,
-              child: DataTable(
-                columns: [
-                  const DataColumn(
-                    label: Text('Name'),
-                  ),
-                  const DataColumn(
-                    label: Text('Percent'),
-                  ),
-                  const DataColumn(
-                    label: Text('Active'),
-                  ),
-                  DataColumn(
-                    label: Padding(
-                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                      child: const Text('Actions'),
+        body: SingleChildScrollView(
+          child: StreamBuilder<List<DiscountModel>>(
+            stream: streamForDiscounts(),
+            builder: (context, snapshot) {
+              final list = snapshot.data;
+              if (list == null || list.isEmpty) {
+                return const Center(
+                  child: Text('No coupons available,create one.'),
+                );
+              }
+              return SizedBox(
+                width: 100.w,
+                child: DataTable(
+                  headingTextStyle: KTextStyles.kTitle,
+                  columns: [
+                    const DataColumn(
+                      label: Text('Name'),
                     ),
-                  ),
-                ],
-                rows: list
-                    .map(
-                      (e) => DataRow(
-                        cells: [
-                          DataCell(Text(e.couponName.toString())),
-                          DataCell(Text("${e.discountPercent.toString()}%")),
-                          DataCell(
-                            Switch.adaptive(
-                              value: e.isActive as bool,
-                              onChanged: (va) =>
-                                  activeDeactivateDiscount(e.id, va),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editDiscountFn(model: e),
-                                    icon: const Icon(Icons.edit),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  IconButton(
-                                    onPressed: () => deleteDiscount(e),
-                                    icon: const Icon(CupertinoIcons.delete),
-                                  )
-                                ],
+                    const DataColumn(
+                      label: Text('Percent'),
+                    ),
+                    const DataColumn(
+                      label: Text('Active'),
+                    ),
+                    DataColumn(
+                      label: Padding(
+                        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                        child: const Text('Actions'),
+                      ),
+                    ),
+                  ],
+                  rows: list
+                      .map(
+                        (e) => DataRow(
+                          cells: [
+                            DataCell(Text(
+                              e.couponName.toString(),
+                              style: KTextStyles.kSubtitle,
+                            )),
+                            DataCell(Text(
+                              "${e.discountPercent.toString()}%",
+                              style: KTextStyles.kSubtitle,
+                            )),
+                            DataCell(
+                              Switch.adaptive(
+                                value: e.isActive as bool,
+                                onChanged: (va) =>
+                                    activeDeactivateDiscount(e.id, va),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
-            );
-          },
+                            DataCell(
+                              Container(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => editDiscountFn(model: e),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    IconButton(
+                                      onPressed: () => deleteDiscount(e),
+                                      icon: const Icon(CupertinoIcons.delete),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                      .toList(),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

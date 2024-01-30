@@ -7,6 +7,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../constants/ktextstyles.dart';
 import '../../../widgets/my_alert_widget.dart';
 
 class RateSetOverviewScreen extends StatefulWidget {
@@ -66,7 +67,10 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Rate Sets'),
+          title: Text(
+            'Rate Sets',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             // IconButton(
             //   onPressed: () => context.push(AppScreen.createRateSetsScreen.path),
@@ -92,6 +96,7 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -113,7 +118,10 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.ratesetName.toString())),
+                          DataCell(Text(
+                            e.ratesetName.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,

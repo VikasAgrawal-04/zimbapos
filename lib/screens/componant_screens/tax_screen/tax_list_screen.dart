@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
@@ -59,7 +60,10 @@ class _TaxListScreenState extends State<TaxListScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Tax list'),
+          title: Text(
+            'Tax list',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             // IconButton(
             //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
@@ -84,6 +88,7 @@ class _TaxListScreenState extends State<TaxListScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -105,8 +110,14 @@ class _TaxListScreenState extends State<TaxListScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.taxName.toString())),
-                          DataCell(Text("${e.taxPercent.toString()}%")),
+                          DataCell(Text(
+                            e.taxName.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            "${e.taxPercent.toString()}%",
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,

@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:server/apis/routes/area_routes.dart';
 import 'package:server/apis/routes/category_routes.dart';
 import 'package:server/apis/routes/customer_category_routes.dart';
+import 'package:server/apis/routes/item_group_routes.dart';
+import 'package:server/apis/routes/item_routes.dart';
+import 'package:server/apis/routes/main_group_routes.dart';
 import 'package:server/apis/routes/rateset_routes.dart';
 import 'package:server/apis/routes/table_routes.dart';
+import 'package:server/apis/routes/tax_routes.dart';
 import 'package:server/apis/routes/user_routes.dart';
 import 'package:server/apis/routes/workers_routes.dart';
 import 'package:shelf/shelf.dart';
@@ -27,6 +31,10 @@ class Server {
     AreaRoutes(context, router);
     CategoryRoutes(context, router);
     UserRoutes(context, router);
+    MainGroupRoutes(context, router);
+    ItemGroupRoutes(context, router);
+    ItemRoutes(context, router);
+    TaxRoutes(context, router);
   }
 
   Future<void> runServer() async {

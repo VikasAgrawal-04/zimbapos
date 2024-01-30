@@ -11,6 +11,22 @@ class EndPoints {
   //Categories
   static const String getCategories = '/get-category';
 
+  //Main Groups
+  static const String getMainGroup = '/get-main-groups';
+  static const String createMainGroup = '/create-main-group';
+  static const String updateMainGroup = '/update-main-group';
+  static const String deleteMainGroup = '/delete-main-group';
+
+  //Item Groups
+  static const String getItemGroup = '/get-item-group';
+  static const String createItemGroup = '/create-item-group';
+  static const String updateItemGroup = '/update-item-group';
+  static const String deleteItemGroup = '/delete-item-group';
+
+  //Items
+  static const String getAllItems = '/get-all-items';
+  static const String getItemsByGroupId = '/get-items-id';
+
   //Workers
   static const String getWorkers = '/get-workers';
   static const String createWorker = '/create-worker';

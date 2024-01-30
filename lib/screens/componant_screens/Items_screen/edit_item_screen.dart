@@ -29,11 +29,11 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController itemNameController;
-  int? itemGroupId;
+  String? itemGroupId;
   String? foodType;
   bool? isAlcoholic;
   late final TextEditingController itemRateController;
-  int? taxId;
+  String? taxId;
   late final TextEditingController itemRateWithTaxController;
   bool? isOpenItem;
   late final TextEditingController barcodeController;
@@ -56,7 +56,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
     imgLinkController = TextEditingController();
 
     //init with vals
-    itemNameController.text = widget.item.itemName;
+    itemNameController.text = widget.item.itemName.toString();
     itemRateController.text = widget.item.itemRate.toString();
     itemRateWithTaxController.text = widget.item.rateWithTax.toString();
     barcodeController.text = widget.item.barcode.toString();
@@ -92,9 +92,9 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
         itemGroupId: itemGroupId,
         foodType: foodType,
         isAlcohol: isAlcoholic,
-        itemRate: int.parse(itemRateController.text),
+        itemRate: double.parse(itemRateController.text),
         taxId: taxId,
-        rateWithTax: int.parse(itemRateWithTaxController.text),
+        rateWithTax: double.parse(itemRateWithTaxController.text),
         isOpenItem: isOpenItem,
         barcode: barcodeController.text,
         shortcode: shortcodeController.text,
@@ -304,7 +304,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                   borderRadius: BorderRadius.circular(14.0),
                                 ),
                                 child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<int>(
+                                  child: DropdownButton<String>(
                                     value: taxId,
                                     isExpanded: true,
                                     hint: const Text("Choose a tax"),
@@ -314,9 +314,9 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                       });
                                     },
                                     items: rateSets.map((tax) {
-                                      return DropdownMenuItem<int>(
-                                        value: tax!.id,
-                                        child: Text(tax.taxName ?? 'error'),
+                                      return DropdownMenuItem<String>(
+                                        value: tax?.taxId,
+                                        child: Text(tax?.taxName ?? 'error'),
                                       );
                                     }).toList(),
                                   ),

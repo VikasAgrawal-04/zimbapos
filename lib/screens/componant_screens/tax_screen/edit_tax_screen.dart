@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
@@ -56,7 +54,7 @@ class _EditTaxScreenState extends State<EditTaxScreen> {
         id: widget.item.id,
         taxName: taxNameController.text,
         taxType: taxType,
-        taxPercent: int.parse(taxPercentController.text),
+        taxPercent: double.parse(taxPercentController.text),
       ),
     );
 

@@ -44,7 +44,7 @@ class _CreateTaxScreenState extends State<CreateTaxScreen> {
       model: TaxModel(
         taxName: taxNameController.text,
         taxType: taxType,
-        taxPercent: int.parse(taxPercentController.text),
+        taxPercent: double.parse(taxPercentController.text),
       ),
     );
     EasyLoading.showToast('Tax Created');

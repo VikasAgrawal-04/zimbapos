@@ -78,7 +78,12 @@ int _itemGroupModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  bytesCount += 3 + object.itemGroupId.length * 3;
+  {
+    final value = object.itemGroupId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.itemGroupName;
     if (value != null) {
@@ -126,12 +131,12 @@ ItemGroupModel _itemGroupModelDeserialize(
     id: id,
     isActive: reader.readBoolOrNull(offsets[1]),
     isDeleted: reader.readBoolOrNull(offsets[2]),
+    itemGroupId: reader.readStringOrNull(offsets[3]),
     itemGroupName: reader.readStringOrNull(offsets[4]),
     mainGroupId: reader.readStringOrNull(offsets[5]),
     outletId: reader.readLongOrNull(offsets[6]),
     printerId: reader.readStringOrNull(offsets[7]),
   );
-  object.itemGroupId = reader.readString(offsets[3]);
   return object;
 }
 
@@ -149,7 +154,7 @@ P _itemGroupModelDeserializeProp<P>(
     case 2:
       return (reader.readBoolOrNull(offset)) as P;
     case 3:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -427,8 +432,26 @@ extension ItemGroupModelQueryFilter
   }
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      itemGroupIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'itemGroupId',
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      itemGroupIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'itemGroupId',
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       itemGroupIdEqualTo(
-    String value, {
+    String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -442,7 +465,7 @@ extension ItemGroupModelQueryFilter
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       itemGroupIdGreaterThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -458,7 +481,7 @@ extension ItemGroupModelQueryFilter
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       itemGroupIdLessThan(
-    String value, {
+    String? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -474,8 +497,8 @@ extension ItemGroupModelQueryFilter
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       itemGroupIdBetween(
-    String lower,
-    String upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1420,7 +1443,8 @@ extension ItemGroupModelQueryProperty
     });
   }
 
-  QueryBuilder<ItemGroupModel, String, QQueryOperations> itemGroupIdProperty() {
+  QueryBuilder<ItemGroupModel, String?, QQueryOperations>
+      itemGroupIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'itemGroupId');
     });

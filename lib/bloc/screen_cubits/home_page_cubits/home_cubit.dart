@@ -6,8 +6,8 @@ import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_state.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  late Timer clockTimer;
-  late Timer blinkingTimer;
+  Timer clockTimer = Timer.periodic(Duration.zero, (timer) {});
+  Timer blinkingTimer = Timer.periodic(Duration.zero, (timer) {});
   HomeCubit()
       : super(HomeState(
             initialDateTime: DateTime.now(),

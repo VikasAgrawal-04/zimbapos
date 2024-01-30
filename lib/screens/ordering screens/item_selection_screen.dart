@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
+import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
   const ItemSelectionScreen({super.key});
@@ -15,36 +16,89 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ItemSelectionCubit>(
-      lazy: false,
       create: (context) => ItemSelectionCubit(),
       child: Scaffold(
         appBar: AppBar(
+          elevation: 1,
           title: const Text('Billing Screen'),
         ),
         body: BlocBuilder<ItemSelectionCubit, ItemSelectionState>(
           builder: (context, state) {
             return Row(
               children: [
-                SizedBox(
-                  width: 30.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(state.categories.length, (index) {
-                      final category = state.categories[index];
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: 1.h),
-                        child: Text(
-                          category.categoryName ?? "--",
-                          style: Theme.of(context).textTheme.displayLarge,
-                        ),
-                      );
-                    }),
-                  ),
-                )
+                groupTab(context, state),
+                searchAndItemTab(context, state)
               ],
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget groupTab(BuildContext context, ItemSelectionState state) {
+    return Container(
+      width: 25.w,
+      decoration: BoxDecoration(border: Border.all()),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(state.mainGroups.length, (index) {
+          final mainGroup = state.mainGroups[index];
+          return Padding(
+            padding: EdgeInsets.only(bottom: 1.h),
+            child: ExpansionTile(
+              key: Key(state.selectedTile.toString()),
+              initiallyExpanded: state.selectedTile == index,
+              title: Text(
+                mainGroup.mainGroupName ?? "--",
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              backgroundColor: Colors.yellow.shade600,
+              collapsedBackgroundColor: Colors.white,
+              onExpansionChanged: (value) async {
+                if (value) {
+                  context
+                      .read<ItemSelectionCubit>()
+                      .getItemGroup(mainGroup.mainGroupId.toString());
+                }
+                context.read<ItemSelectionCubit>().changeTile(index);
+              },
+              children: List.generate(state.itemGroups.length, (index) {
+                final itemGroup = state.itemGroups[index];
+                return Container(
+                  width: 100.w,
+                  decoration:
+                      const BoxDecoration(border: Border(bottom: BorderSide())),
+                  child: Text(
+                    itemGroup.itemGroupName.toString(),
+                    style: Theme.of(context).textTheme.displaySmall,
+                    textAlign: TextAlign.center,
+                  ),
+                );
+              }),
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget searchAndItemTab(BuildContext context, ItemSelectionState state) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: .5.h),
+        child: Column(children: [
+          CustomTextFieldNew(
+            hint: 'Search Items',
+            hintStyle: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.headlineSmall,
+            isRequired: false,
+            keyboardType: TextInputType.text,
+            isNumber: false,
+            textInputAction: TextInputAction.search,
+            control: state.searchController,
+          )
+        ]),
       ),
     );
   }

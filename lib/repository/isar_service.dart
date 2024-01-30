@@ -5,6 +5,8 @@ import 'package:zimbapos/constants/contants.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
+import 'package:zimbapos/models/global_models/item_group_model.dart';
+import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
@@ -18,7 +20,9 @@ import 'package:zimbapos/repository/customer_repository.dart';
 import 'package:zimbapos/repository/discount_single_repo.dart';
 import 'package:zimbapos/repository/expense_category_repository.dart';
 import 'package:zimbapos/repository/expenses_repository.dart';
+import 'package:zimbapos/repository/item_group_repository.dart';
 import 'package:zimbapos/repository/items_repository.dart';
+import 'package:zimbapos/repository/main_group_repository.dart';
 import 'package:zimbapos/repository/payments_repository.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/system_repository/home_shortcut_repository.dart';
@@ -29,6 +33,7 @@ import 'package:zimbapos/repository/user_repository/subscription_repository.dart
 import 'package:zimbapos/repository/user_repository/user_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
 import 'package:zimbapos/repository/workers_repository.dart';
+
 import '../models/global_models/discount_single_model.dart';
 import '../models/global_models/expense_category_model.dart';
 import '../models/global_models/expenses_model.dart';
@@ -63,7 +68,9 @@ class IsarService {
           TaxModelSchema,
           ItemsModelSchema,
           PaymentModelSchema,
-          DiscountModelSchema
+          DiscountModelSchema,
+          MainGroupModelSchema,
+          ItemGroupModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -116,4 +123,8 @@ class IsarService {
   PaymentsRepository get paymentsRepository => PaymentsRepository(db);
   //for single discount
   DiscountRepository get discountRepository => DiscountRepository(db);
+
+  MainGroupRepository get mainGroupRepository => MainGroupRepository(db);
+
+  ItemGroupRepository get itemGroupReposiory => ItemGroupRepository(db);
 }

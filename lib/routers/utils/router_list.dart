@@ -26,8 +26,8 @@ import 'package:zimbapos/screens/componant_screens/customer_category_screens/cre
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/discounts_screens/create_discount.dart';
-import 'package:zimbapos/screens/componant_screens/discounts_screens/edit_discount.dart';
 import 'package:zimbapos/screens/componant_screens/discounts_screens/discount_list.dart';
+import 'package:zimbapos/screens/componant_screens/discounts_screens/edit_discount.dart';
 import 'package:zimbapos/screens/componant_screens/expense_category_screen/create_exp_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/expense_category_screen/edit_exp_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/expense_category_screen/exp_cat_list_screen.dart';
@@ -352,7 +352,7 @@ final List<GoRoute> routerList = [
         return EditTaxScreen(item: state.extra as TaxModel);
       } else {
         return EditTaxScreen(
-          item: TaxModel.fromJson(state.extra as Map<String, dynamic>),
+          item: TaxModel.fromMap(state.extra as Map<String, dynamic>),
         );
       }
     },
@@ -378,7 +378,7 @@ final List<GoRoute> routerList = [
         return EditItemsScreen(item: state.extra as ItemsModel);
       } else {
         return EditItemsScreen(
-          item: ItemsModel.fromJson(state.extra as Map<String, dynamic>),
+          item: ItemsModel.fromMap(state.extra as Map<String, dynamic>),
         );
       }
     },

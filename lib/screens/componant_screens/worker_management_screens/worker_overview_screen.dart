@@ -7,6 +7,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../constants/ktextstyles.dart';
 import '../../../widgets/my_alert_widget.dart';
 
 class WorkerOverviewScreen extends StatefulWidget {
@@ -56,7 +57,10 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Manage Workers'),
+          title: Text(
+            'Manage Workers',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             TextButton.icon(
               onPressed: () => context.push(AppScreen.createWorkerScreen.path),
@@ -82,6 +86,7 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -103,8 +108,14 @@ class _WorkerOverviewScreenState extends State<WorkerOverviewScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.workerName)),
-                          DataCell(Text(e.workerRoleDisplay(e.workerRole))),
+                          DataCell(Text(
+                            e.workerName,
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            e.workerRoleDisplay(e.workerRole),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive,

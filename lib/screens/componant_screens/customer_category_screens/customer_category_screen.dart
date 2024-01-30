@@ -7,6 +7,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../constants/ktextstyles.dart';
 import '../../../widgets/my_alert_widget.dart';
 
 class CustomerCategoryScreen extends StatefulWidget {
@@ -66,7 +67,10 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Customer Category'),
+          title: Text(
+            'Customer Category',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             // IconButton(
             //   onPressed: () =>
@@ -93,6 +97,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
               return SizedBox(
                 width: 100.w,
                 child: DataTable(
+                  headingTextStyle: KTextStyles.kTitle,
                   columns: [
                     const DataColumn(
                       label: Text('Name'),
@@ -114,7 +119,10 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                       .map(
                         (e) => DataRow(
                           cells: [
-                            DataCell(Text(e.custCategoryName.toString())),
+                            DataCell(Text(
+                              e.custCategoryName.toString(),
+                              style: KTextStyles.kSubtitle,
+                            )),
                             DataCell(
                               Switch.adaptive(
                                 value: e.isActive as bool,

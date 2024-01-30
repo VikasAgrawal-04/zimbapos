@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
@@ -62,12 +63,16 @@ class _TableScreenState extends State<TableScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Table list'),
+        title: Text(
+          'Table list',
+          style: KTextStyles.kBlackAppBarHeader,
+        ),
         actions: [
-          IconButton(
+          TextButton.icon(
             onPressed: () => context.push(AppScreen.createTableScreen.path),
+            label: const Text('Add table'),
             icon: const Icon(Icons.add),
-          )
+          ),
         ],
       ),
       body: StreamBuilder<List<TableModel>>(

@@ -5,6 +5,8 @@ import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_cubit.d
 import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_dashboard_state.dart';
 import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 
+import '../../constants/ktextstyles.dart';
+
 class OrderDashboardScreen extends StatefulWidget {
   const OrderDashboardScreen({super.key});
 
@@ -46,7 +48,10 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                             constraints: BoxConstraints(minWidth: 30.w),
                             child: Tab(
                                 key: Key(area.areaId.toString()),
-                                child: Text(area.areaName ?? "--")));
+                                child: Text(
+                                  area.areaName ?? "--",
+                                  style: KTextStyles.kTitle,
+                                )));
                       })),
                 ),
                 body: (state is TableLoading)
@@ -82,7 +87,10 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                                             Icons.table_bar,
                                             size: 40,
                                           ),
-                                          Text(table.tableName ?? ""),
+                                          Text(
+                                            table.tableName ?? "",
+                                            style: KTextStyles.kSubtitle,
+                                          ),
                                         ],
                                       ),
                                     ),

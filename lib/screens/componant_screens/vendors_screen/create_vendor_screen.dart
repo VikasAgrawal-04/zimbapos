@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/helpers/validators.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
@@ -120,10 +121,13 @@ class _CreateVendorScreenState extends State<CreateVendorScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Save'),
+          title: Text(
+            'Create vendor',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
         ),
         bottomNavigationBar: CustomButton(
-            text: "Create vendor",
+            text: "Save",
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 createVendor();

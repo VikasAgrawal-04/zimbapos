@@ -8,17 +8,23 @@ import 'package:zimbapos/models/response_models/item_response_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
+enum OnClick { add, subtract }
+
 class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   final ApiRepo _repo = ApiRepoImpl();
   late List<CategoryModel> categories;
   late List<MainGroupModel> mainGroups;
   late List<ItemGroupModel> itemGroups;
   late List<ItemList> items;
+  late List<ItemList> filteredItems;
+  late List<ItemList> addedItems;
   ItemSelectionCubit()
       : categories = [],
         mainGroups = [],
         itemGroups = [],
         items = [],
+        filteredItems = [],
+        addedItems = [],
         super(ItemSelectionState.initial()) {
     init();
   }
@@ -93,7 +99,8 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         debugPrint(failure.toString());
       }, (success) {
         items = success.data;
-        emit(state.copyWith(items: items));
+        filteredItems = success.data;
+        emit(state.copyWith(items: items, filteredItems: filteredItems));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -103,5 +110,51 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
 
   void changeTile(int index) {
     emit(state.copyWith(selectedTile: index));
+  }
+
+  void onItemClick({required OnClick action, required ItemList item}) {
+    switch (action) {
+      case OnClick.add:
+        return addOrIncProduct(item);
+      case OnClick.subtract:
+        return removeOrDecProduct(item);
+    }
+  }
+
+  void addOrIncProduct(ItemList item) {
+    List<ItemList> updatedAddedItems = List.from(addedItems);
+
+    int index = updatedAddedItems
+        .indexWhere((element) => element.itemId == item.itemId);
+    if (index != -1) {
+      // If item exists, update the quantity
+      updatedAddedItems[index] = updatedAddedItems[index]
+          .copyWith(quantity: updatedAddedItems[index].quantity + 1);
+    } else {
+      // If item doesn't exist, add it with quantity 1
+      updatedAddedItems.add(item.copyWith(quantity: 1));
+    }
+    addedItems = updatedAddedItems;
+    emit(state.copyWith(addedItems: addedItems));
+  }
+
+  void removeOrDecProduct(ItemList item) {
+    List<ItemList> updatedAddedItems = List.from(addedItems);
+
+    int index = updatedAddedItems
+        .indexWhere((element) => element.itemId == item.itemId);
+
+    if (index != -1) {
+      if (updatedAddedItems[index].quantity > 1) {
+        // If item exists, update the quantity
+        updatedAddedItems[index] = updatedAddedItems[index]
+            .copyWith(quantity: updatedAddedItems[index].quantity - 1);
+      } else {
+        // If item doesn't exist, remove it from the list 1
+        updatedAddedItems.removeAt(index);
+      }
+    }
+    addedItems = updatedAddedItems;
+    emit(state.copyWith(addedItems: addedItems));
   }
 }

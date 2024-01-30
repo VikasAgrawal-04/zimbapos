@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
+import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
 
@@ -86,6 +87,8 @@ class ItemsRepository {
             .and()
             .isDeletedEqualTo(false)
             .findFirst();
+        data.rateWithTax =
+            Helpers.taxPrice(tax?.taxPercent ?? 0.0, data.itemRate ?? 0.0);
         data.taxDetails.value = tax;
         db.writeTxnSync(() => db.itemsModels.putSync(data));
         return const Tuple2(true, 'Item Created Successfully');
@@ -138,8 +141,9 @@ class ItemsRepository {
             .and()
             .isDeletedEqualTo(false)
             .findFirst();
+        dbItem.rateWithTax =
+            Helpers.taxPrice(tax?.taxPercent ?? 0.0, dbItem.itemRate ?? 0.0);
         dbItem.taxDetails.value = tax;
-
         db.writeTxnSync(() => db.itemsModels.putSync(dbItem));
         return const Tuple2(true, 'Item Updated');
       } else {

@@ -22,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final ScrollController scrollController;
+  final ScrollController scrollController = ScrollController();
 
   Stream<List<HomeShortcutModel>> getList() {
     final dbCubit = DatabaseCubit.dbFrom(context);
@@ -100,14 +100,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      scrollController = ScrollController();
-    });
   }
 
   @override

@@ -12,14 +12,17 @@ class ItemSelectionState extends Equatable {
   final List<MainGroupModel> mainGroups;
   final List<ItemGroupModel> itemGroups;
   final List<ItemList> items;
-
+  final List<ItemList> filteredItems;
+  final List<ItemList> addedItems;
   const ItemSelectionState(
       {required this.searchController,
       required this.selectedTile,
       required this.categories,
       required this.mainGroups,
       required this.itemGroups,
-      required this.items});
+      required this.items,
+      required this.filteredItems,
+      required this.addedItems});
 
   @override
   List<Object?> get props => [
@@ -28,7 +31,9 @@ class ItemSelectionState extends Equatable {
         itemGroups,
         selectedTile,
         searchController,
-        items
+        items,
+        filteredItems,
+        addedItems
       ];
 
   factory ItemSelectionState.initial() {
@@ -38,7 +43,9 @@ class ItemSelectionState extends Equatable {
         categories: const [],
         mainGroups: const [],
         itemGroups: const [],
-        items: const []);
+        items: const [],
+        filteredItems: const [],
+        addedItems: const []);
   }
 
   ItemSelectionState copyWith(
@@ -47,13 +54,17 @@ class ItemSelectionState extends Equatable {
       List<CategoryModel>? categories,
       List<MainGroupModel>? mainGroups,
       List<ItemList>? items,
-      List<ItemGroupModel>? itemGroups}) {
+      List<ItemGroupModel>? itemGroups,
+      List<ItemList>? filteredItems,
+      List<ItemList>? addedItems}) {
     return ItemSelectionState(
         searchController: searchController ?? this.searchController,
         selectedTile: selectedTile ?? this.selectedTile,
         categories: categories ?? this.categories,
         mainGroups: mainGroups ?? this.mainGroups,
         itemGroups: itemGroups ?? this.itemGroups,
-        items: items ?? this.items);
+        items: items ?? this.items,
+        filteredItems: filteredItems ?? this.filteredItems,
+        addedItems: addedItems ?? this.addedItems);
   }
 }

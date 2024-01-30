@@ -13,7 +13,6 @@ class ItemApiRepoImpl implements ItemApiRepo {
     try {
       final response =
           await Helpers.sendRequest(RequestType.get, EndPoints.getAllItems);
-      print(response?['data']);
       return Right(ItemApiResponseModel.fromJson(response ?? {}));
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
+import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
@@ -27,7 +28,8 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
             return Row(
               children: [
                 groupTab(context, state),
-                searchAndItemTab(context, state)
+                searchAndItemTab(context, state),
+                detailsTab(context, state)
               ],
             );
           },
@@ -37,54 +39,60 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   }
 
   Widget groupTab(BuildContext context, ItemSelectionState state) {
-    return Container(
-      width: 25.w,
-      decoration: BoxDecoration(border: Border.all()),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(state.mainGroups.length, (index) {
-          final mainGroup = state.mainGroups[index];
-          return Padding(
-            padding: EdgeInsets.only(bottom: 1.h),
-            child: ExpansionTile(
-              key: Key(state.selectedTile.toString()),
-              initiallyExpanded: state.selectedTile == index,
-              title: Text(
-                mainGroup.mainGroupName ?? "--",
-                style: Theme.of(context).textTheme.displayMedium,
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(border: Border.all()),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: List.generate(state.mainGroups.length, (index) {
+            final mainGroup = state.mainGroups[index];
+            return Padding(
+              padding: EdgeInsets.only(bottom: 1.h),
+              child: ExpansionTile(
+                key: Key(state.selectedTile.toString()),
+                initiallyExpanded: state.selectedTile == index,
+                title: Text(
+                  mainGroup.mainGroupName ?? "--",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineSmall
+                      ?.copyWith(fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+                backgroundColor: Colors.yellow.shade600,
+                collapsedBackgroundColor: Colors.white,
+                onExpansionChanged: (value) async {
+                  if (value) {
+                    context
+                        .read<ItemSelectionCubit>()
+                        .getItemGroup(mainGroup.mainGroupId.toString());
+                  }
+                  context.read<ItemSelectionCubit>().changeTile(index);
+                },
+                children: List.generate(state.itemGroups.length, (index) {
+                  final itemGroup = state.itemGroups[index];
+                  return Container(
+                    width: 100.w,
+                    decoration: const BoxDecoration(
+                        border: Border(bottom: BorderSide())),
+                    child: Text(
+                      itemGroup.itemGroupName.toString(),
+                      style: Theme.of(context).textTheme.titleLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                }),
               ),
-              backgroundColor: Colors.yellow.shade600,
-              collapsedBackgroundColor: Colors.white,
-              onExpansionChanged: (value) async {
-                if (value) {
-                  context
-                      .read<ItemSelectionCubit>()
-                      .getItemGroup(mainGroup.mainGroupId.toString());
-                }
-                context.read<ItemSelectionCubit>().changeTile(index);
-              },
-              children: List.generate(state.itemGroups.length, (index) {
-                final itemGroup = state.itemGroups[index];
-                return Container(
-                  width: 100.w,
-                  decoration:
-                      const BoxDecoration(border: Border(bottom: BorderSide())),
-                  child: Text(
-                    itemGroup.itemGroupName.toString(),
-                    style: Theme.of(context).textTheme.displaySmall,
-                    textAlign: TextAlign.center,
-                  ),
-                );
-              }),
-            ),
-          );
-        }),
+            );
+          }),
+        ),
       ),
     );
   }
 
   Widget searchAndItemTab(BuildContext context, ItemSelectionState state) {
     return Expanded(
+      flex: 2,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: .5.h),
         child: Column(children: [
@@ -97,8 +105,131 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
             isNumber: false,
             textInputAction: TextInputAction.search,
             control: state.searchController,
+          ),
+          SizedBox(height: 4.h),
+          Wrap(
+            spacing: 1.w,
+            alignment: WrapAlignment.spaceBetween,
+            runSpacing: 2.h,
+            children: List.generate(state.filteredItems.length, (index) {
+              final item = state.items[index];
+              return GestureDetector(
+                onTap: () {
+                  context
+                      .read<ItemSelectionCubit>()
+                      .onItemClick(action: OnClick.add, item: item);
+                },
+                child: Container(
+                  width: 10.w,
+                  height: 12.h,
+                  decoration: BoxDecoration(border: Border.all()),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Container(
+                        color: item.foodType == "V"
+                            ? Colors.green[600]
+                            : item.foodType == "E"
+                                ? Colors.yellow.shade600
+                                : Colors.red.shade700,
+                      )),
+                      Expanded(
+                          flex: 20,
+                          child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: .5.w),
+                              child: Center(child: Text(item.itemName))))
+                    ],
+                  ),
+                ),
+              );
+            }),
           )
         ]),
+      ),
+    );
+  }
+
+  Widget detailsTab(BuildContext context, ItemSelectionState state) {
+    return Expanded(
+      flex: 2,
+      child: Container(
+        decoration: BoxDecoration(border: Border.all()),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                    child: CustomButtonNew(text: 'Customer', onTap: () {})),
+                Expanded(child: CustomButtonNew(text: 'Pax', onTap: () {})),
+                Expanded(child: CustomButtonNew(text: 'Waiter', onTap: () {}))
+              ],
+            ),
+            SizedBox(height: 1.h),
+            Container(
+              height: 25.h,
+              decoration: BoxDecoration(border: Border.all()),
+              child: Column(
+                children: [
+                  const Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Center(child: Text('Item')),
+                      ),
+                      Expanded(
+                        child: Center(child: Text('Price')),
+                      ),
+                      Expanded(
+                        child: Center(child: Text('Qty')),
+                      ),
+                      Expanded(
+                        child: Center(child: Text('Total')),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 1.h),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: state.addedItems.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final addedItem = state.addedItems[index];
+                          return GestureDetector(
+                            onTap: () {
+                              context.read<ItemSelectionCubit>().onItemClick(
+                                  action: OnClick.subtract, item: addedItem);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                    child:
+                                        Center(child: Text(addedItem.itemName))),
+                                Expanded(
+                                    child: Center(
+                                        child:
+                                            Text(addedItem.itemRate.toString()))),
+                                Expanded(
+                                    child: Center(
+                                        child:
+                                            Text(addedItem.quantity.toString()))),
+                                Expanded(
+                                  child: Center(
+                                    child: Text(
+                                        (addedItem.quantity * addedItem.itemRate)
+                                            .toString()),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

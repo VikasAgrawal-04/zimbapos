@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final itemApiResponseModel = itemApiResponseModelFromJson(jsonString);
@@ -19,8 +20,8 @@ class ItemApiResponseModel {
 
   factory ItemApiResponseModel.fromJson(Map<String, dynamic> json) =>
       ItemApiResponseModel(
-        data:
-            List<ItemList>.from(json["data"].map((x) => ItemList.fromJson(jsonDecode(x)))),
+        data: List<ItemList>.from(
+            json["data"].map((x) => ItemList.fromJson(jsonDecode(x)))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +48,7 @@ class ItemList {
   bool isActive;
   bool isDeleted;
   Tax tax;
+  int quantity;
 
   ItemList({
     required this.id,
@@ -67,6 +69,7 @@ class ItemList {
     required this.isActive,
     required this.isDeleted,
     required this.tax,
+    this.quantity = 0,
   });
 
   factory ItemList.fromJson(Map<String, dynamic> json) => ItemList(
@@ -110,6 +113,50 @@ class ItemList {
         "isDeleted": isDeleted,
         "tax": tax.toJson(),
       };
+
+  ItemList copyWith({
+    int? id,
+    String? itemId,
+    String? itemName,
+    String? itemGroupId,
+    String? foodType,
+    bool? isAlcohol,
+    double? itemRate,
+    String? taxId,
+    dynamic rateWithTax,
+    bool? isOpenItem,
+    dynamic barcode,
+    dynamic shortcode,
+    bool? isWeightItem,
+    dynamic hsnCode,
+    dynamic imgLink,
+    bool? isActive,
+    bool? isDeleted,
+    Tax? tax,
+    int? quantity,
+  }) {
+    return ItemList(
+      id: id ?? this.id,
+      itemId: itemId ?? this.itemId,
+      itemName: itemName ?? this.itemName,
+      itemGroupId: itemGroupId ?? this.itemGroupId,
+      foodType: foodType ?? this.foodType,
+      isAlcohol: isAlcohol ?? this.isAlcohol,
+      itemRate: itemRate ?? this.itemRate,
+      taxId: taxId ?? this.taxId,
+      rateWithTax: rateWithTax ?? this.rateWithTax,
+      isOpenItem: isOpenItem ?? this.isOpenItem,
+      barcode: barcode ?? this.barcode,
+      shortcode: shortcode ?? this.shortcode,
+      isWeightItem: isWeightItem ?? this.isWeightItem,
+      hsnCode: hsnCode ?? this.hsnCode,
+      imgLink: imgLink ?? this.imgLink,
+      isActive: isActive ?? this.isActive,
+      isDeleted: isDeleted ?? this.isDeleted,
+      tax: tax ?? this.tax,
+      quantity: quantity ?? this.quantity,
+    );
+  }
 }
 
 class Tax {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -71,14 +72,22 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                 },
                 children: List.generate(state.itemGroups.length, (index) {
                   final itemGroup = state.itemGroups[index];
-                  return Container(
-                    width: 100.w,
-                    decoration: const BoxDecoration(
-                        border: Border(bottom: BorderSide())),
-                    child: Text(
-                      itemGroup.itemGroupName.toString(),
-                      style: Theme.of(context).textTheme.titleLarge,
-                      textAlign: TextAlign.center,
+                  return InkWell(
+                    onTap: () {
+                      context
+                          .read<ItemSelectionCubit>()
+                          .getAllItemsById(itemGroup.itemGroupId ?? "");
+                    },
+                    splashColor: Colors.transparent,
+                    child: Container(
+                      width: 100.w,
+                      decoration: const BoxDecoration(
+                          border: Border(bottom: BorderSide())),
+                      child: Text(
+                        itemGroup.itemGroupName.toString(),
+                        style: Theme.of(context).textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   );
                 }),
@@ -105,44 +114,50 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
             isNumber: false,
             textInputAction: TextInputAction.search,
             control: state.searchController,
+            onChanged: context.read<ItemSelectionCubit>().searchItems,
           ),
           SizedBox(height: 4.h),
-          Wrap(
-            spacing: 1.w,
-            alignment: WrapAlignment.spaceBetween,
-            runSpacing: 2.h,
-            children: List.generate(state.filteredItems.length, (index) {
-              final item = state.items[index];
-              return GestureDetector(
-                onTap: () {
-                  context
-                      .read<ItemSelectionCubit>()
-                      .onItemClick(action: OnClick.add, item: item);
-                },
-                child: Container(
-                  width: 10.w,
-                  height: 12.h,
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Container(
-                        color: item.foodType == "V"
-                            ? Colors.green[600]
-                            : item.foodType == "E"
-                                ? Colors.yellow.shade600
-                                : Colors.red.shade700,
-                      )),
-                      Expanded(
-                          flex: 20,
-                          child: Container(
-                              padding: EdgeInsets.symmetric(horizontal: .5.w),
-                              child: Center(child: Text(item.itemName))))
-                    ],
-                  ),
-                ),
-              );
-            }),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Wrap(
+                spacing: 1.w,
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: 2.h,
+                children: List.generate(state.filteredItems.length, (index) {
+                  final item = state.filteredItems[index];
+                  return GestureDetector(
+                    onTap: () {
+                      context
+                          .read<ItemSelectionCubit>()
+                          .onItemClick(action: OnClick.add, item: item);
+                    },
+                    child: Container(
+                      width: 10.w,
+                      height: 12.h,
+                      decoration: BoxDecoration(border: Border.all()),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Container(
+                            color: item.foodType == "V"
+                                ? Colors.green[600]
+                                : item.foodType == "E"
+                                    ? Colors.yellow.shade600
+                                    : Colors.red.shade700,
+                          )),
+                          Expanded(
+                              flex: 20,
+                              child: Container(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: .5.w),
+                                  child: Center(child: Text(item.itemName))))
+                        ],
+                      ),
+                    ),
+                  );
+                }),
+              ),
+            ),
           )
         ]),
       ),
@@ -170,8 +185,30 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
               decoration: BoxDecoration(border: Border.all()),
               child: Column(
                 children: [
+                  Container(
+                    width: 100.w,
+                    decoration: BoxDecoration(border: Border.all()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Current KOT',
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        ),
+                        CustomButtonNew(
+                          margin: EdgeInsets.symmetric(
+                              vertical: .5.h, horizontal: 1.w),
+                          width: 12.w,
+                          text: 'Save KOT',
+                          onTap: () {},
+                        )
+                      ],
+                    ),
+                  ),
                   const Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Center(child: Text('Item')),
@@ -194,34 +231,53 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final addedItem = state.addedItems[index];
-                          return GestureDetector(
-                            onTap: () {
-                              context.read<ItemSelectionCubit>().onItemClick(
-                                  action: OnClick.subtract, item: addedItem);
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child:
-                                        Center(child: Text(addedItem.itemName))),
-                                Expanded(
-                                    child: Center(
-                                        child:
-                                            Text(addedItem.itemRate.toString()))),
-                                Expanded(
-                                    child: Center(
-                                        child:
-                                            Text(addedItem.quantity.toString()))),
-                                Expanded(
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child:
+                                      Center(child: Text(addedItem.itemName))),
+                              Expanded(
                                   child: Center(
-                                    child: Text(
-                                        (addedItem.quantity * addedItem.itemRate)
-                                            .toString()),
-                                  ),
+                                      child:
+                                          Text(addedItem.itemRate.toString()))),
+                              Expanded(
+                                  child: Row(children: [
+                                Expanded(
+                                  child: IconButton(
+                                      onPressed: () {
+                                        context
+                                            .read<ItemSelectionCubit>()
+                                            .onItemClick(
+                                                action: OnClick.subtract,
+                                                item: addedItem);
+                                      },
+                                      icon: const Icon(CupertinoIcons.minus)),
                                 ),
-                              ],
-                            ),
+                                Expanded(
+                                    child: Center(
+                                        child: Text(
+                                            addedItem.quantity.toString()))),
+                                Expanded(
+                                  child: IconButton(
+                                      onPressed: () {
+                                        context
+                                            .read<ItemSelectionCubit>()
+                                            .onItemClick(
+                                                action: OnClick.add,
+                                                item: addedItem);
+                                      },
+                                      icon: const Icon(CupertinoIcons.add)),
+                                ),
+                              ])),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                      (addedItem.quantity * addedItem.itemRate)
+                                          .toString()),
+                                ),
+                              ),
+                            ],
                           );
                         }),
                   )

@@ -14,6 +14,7 @@ class ItemSelectionState extends Equatable {
   final List<ItemList> items;
   final List<ItemList> filteredItems;
   final List<ItemList> addedItems;
+  final List<ItemList> itemsById;
   const ItemSelectionState(
       {required this.searchController,
       required this.selectedTile,
@@ -22,7 +23,8 @@ class ItemSelectionState extends Equatable {
       required this.itemGroups,
       required this.items,
       required this.filteredItems,
-      required this.addedItems});
+      required this.addedItems,
+      required this.itemsById});
 
   @override
   List<Object?> get props => [
@@ -33,7 +35,8 @@ class ItemSelectionState extends Equatable {
         searchController,
         items,
         filteredItems,
-        addedItems
+        addedItems,
+        itemsById
       ];
 
   factory ItemSelectionState.initial() {
@@ -45,7 +48,8 @@ class ItemSelectionState extends Equatable {
         itemGroups: const [],
         items: const [],
         filteredItems: const [],
-        addedItems: const []);
+        addedItems: const [],
+        itemsById: const []);
   }
 
   ItemSelectionState copyWith(
@@ -56,6 +60,7 @@ class ItemSelectionState extends Equatable {
       List<ItemList>? items,
       List<ItemGroupModel>? itemGroups,
       List<ItemList>? filteredItems,
+      List<ItemList>? itemsById,
       List<ItemList>? addedItems}) {
     return ItemSelectionState(
         searchController: searchController ?? this.searchController,
@@ -65,6 +70,7 @@ class ItemSelectionState extends Equatable {
         itemGroups: itemGroups ?? this.itemGroups,
         items: items ?? this.items,
         filteredItems: filteredItems ?? this.filteredItems,
-        addedItems: addedItems ?? this.addedItems);
+        addedItems: addedItems ?? this.addedItems,
+        itemsById: itemsById ?? this.itemsById);
   }
 }

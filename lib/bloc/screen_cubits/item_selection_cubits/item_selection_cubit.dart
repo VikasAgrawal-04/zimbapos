@@ -16,6 +16,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   late List<MainGroupModel> mainGroups;
   late List<ItemGroupModel> itemGroups;
   late List<ItemList> items;
+  late List<ItemList> itemsById;
   late List<ItemList> filteredItems;
   late List<ItemList> addedItems;
   ItemSelectionCubit()
@@ -23,6 +24,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         mainGroups = [],
         itemGroups = [],
         items = [],
+        itemsById = [],
         filteredItems = [],
         addedItems = [],
         super(ItemSelectionState.initial()) {
@@ -108,8 +110,45 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     }
   }
 
+  Future<void> getAllItemsById(String id) async {
+    try {
+      final data = await _repo.getAllItemsById(id);
+      data.fold((failure) {
+        itemsById = <ItemList>[];
+        debugPrint(failure.toString());
+      }, (success) {
+        itemsById = success.data;
+        filteredItems = success.data;
+        emit(
+            state.copyWith(itemsById: itemsById, filteredItems: filteredItems));
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  //Functions For Item Screen
+
   void changeTile(int index) {
     emit(state.copyWith(selectedTile: index));
+  }
+
+  void searchItems(String query) {
+    List<ItemList> allItems = List.from(items);
+    if (query.isEmpty) {
+      allItems.clear();
+      allItems.addAll(items);
+    } else {
+      allItems.clear();
+      for (final item in items) {
+        if (item.itemName.toLowerCase().contains(query.toLowerCase())) {
+          allItems.add(item);
+        }
+      }
+    }
+    filteredItems = allItems;
+    emit(state.copyWith(filteredItems: filteredItems));
   }
 
   void onItemClick({required OnClick action, required ItemList item}) {

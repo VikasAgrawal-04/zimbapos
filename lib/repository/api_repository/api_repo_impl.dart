@@ -64,4 +64,9 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, ItemApiResponseModel>> getAllItems() {
     return _itemApiRepo.getAllItems();
   }
+
+  @override
+  Future<Either<Failure, ItemApiResponseModel>> getAllItemsById(String id) {
+    return _itemApiRepo.getAllItemsById(id);
+  }
 }

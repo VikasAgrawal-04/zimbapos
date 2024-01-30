@@ -11,6 +11,7 @@ import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 
 class AreasOverviewScreen extends StatefulWidget {
   const AreasOverviewScreen({super.key});
@@ -82,7 +83,10 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Areas'),
+          title: Text(
+            'Areas',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             // IconButton(
             //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
@@ -107,6 +111,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -128,8 +133,14 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.areaName.toString())),
-                          DataCell(Text("${e.extraChargePercent.toString()}%")),
+                          DataCell(Text(
+                            e.areaName.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            "${e.extraChargePercent.toString()}%",
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,

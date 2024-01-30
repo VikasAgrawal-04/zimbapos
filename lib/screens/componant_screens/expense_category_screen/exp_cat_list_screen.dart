@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
@@ -58,7 +59,10 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Manage Expense categories'),
+          title: Text(
+            'Manage Expense categories',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             TextButton.icon(
               onPressed: () =>
@@ -85,6 +89,7 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -103,7 +108,10 @@ class _ExpenseCategoryListScreenState extends State<ExpenseCategoryListScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.expenseCategoryName.toString())),
+                          DataCell(Text(
+                            e.expenseCategoryName.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,

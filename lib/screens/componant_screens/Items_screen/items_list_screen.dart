@@ -6,6 +6,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
@@ -59,7 +60,10 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Item list'),
+          title: Text(
+            'Item list',
+            style: KTextStyles.kBlackAppBarHeader,
+          ),
           actions: [
             // IconButton(
             //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
@@ -84,6 +88,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
             return SizedBox(
               width: 100.w,
               child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
@@ -108,9 +113,18 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                     .map(
                       (e) => DataRow(
                         cells: [
-                          DataCell(Text(e.itemName.toString())),
-                          DataCell(Text(e.foodType.toString())),
-                          DataCell(Text(e.rateWithTax.toString())),
+                          DataCell(Text(
+                            e.itemName.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            e.foodType.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(Text(
+                            e.rateWithTax.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,

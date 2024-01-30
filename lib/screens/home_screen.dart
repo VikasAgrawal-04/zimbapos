@@ -88,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           actions: [
             TextButton(
+              autofocus: true,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -196,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       MediaQuery.of(context)
                                                               .size
                                                               .width *
-                                                          0.5,
+                                                          0.2,
                                                   maxHeight:
                                                       MediaQuery.of(context)
                                                               .size
@@ -285,7 +286,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar _buildAppbar() {
     return AppBar(
-      title: const Text('Home Screen'),
+      title: Text(
+        'Home Screen',
+        style: KTextStyles.kBlackAppBarHeader,
+      ),
       actions: [
         // IconButton(
         //   onPressed: () {
@@ -314,7 +318,10 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
           return Padding(
             padding: EdgeInsets.only(right: 4.w),
-            child: Text('IP Address : ${state.ipAddress}'),
+            child: Text(
+              'IP Address : ${state.ipAddress}',
+              style: KTextStyles.kSubtitle,
+            ),
           );
         })
       ],
@@ -389,15 +396,15 @@ List<HomeShortcutModel> screenList = [
     userId: '123123',
   ),
   HomeShortcutModel(
-    title: 'Single discount Screen',
+    title: 'Discount Screen',
     path: AppScreen.singleDiscountScreen.path,
     userId: '123123',
   ),
-  HomeShortcutModel(
-    title: 'Bulk discount Screen',
-    path: AppScreen.bulkDiscountScreen.path,
-    userId: '123123',
-  ),
+  // HomeShortcutModel(
+  //   title: 'Bulk discount Screen',
+  //   path: AppScreen.bulkDiscountScreen.path,
+  //   userId: '123123',
+  // ),
 ];
 
 class Body extends StatelessWidget {

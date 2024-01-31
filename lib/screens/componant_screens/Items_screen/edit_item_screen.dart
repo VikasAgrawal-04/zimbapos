@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
 
@@ -118,6 +119,19 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
     return taxList;
   }
 
+  //get items
+  Future<List<ItemGroupModel?>> getAllItemGroups() async {
+    final datatbaseCubit = DatabaseCubit.dbFrom(context);
+    final itemGroupList =
+        await datatbaseCubit.itemGroupReposiory.getItemGroups();
+    // log(rateSets.toString());
+    for (var item in itemGroupList) {
+      log(item.itemGroupName.toString());
+      log(item.id.toString());
+    }
+    return itemGroupList;
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
@@ -218,8 +232,77 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                   SizedBox(height: screenSize.height * 0.02),
 
                   //dropdown for item group id
+                  SizedBox(
+                    // height: 50,
+                    width: screenSize.width,
+                    child: FutureBuilder<List<ItemGroupModel?>>(
+                      future: getAllItemGroups(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator.adaptive();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          final rateSets = snapshot.data ?? [];
+
+                          return Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Item group:",
+                                  style: KTextStyles.kTitle,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                alignment: Alignment.center,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  border: Border.all(
+                                    color: KColors.buttonColor,
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(14.0),
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<String>(
+                                    value: itemGroupId,
+                                    isExpanded: true,
+                                    hint: const Text("Choose a item group"),
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        itemGroupId = newValue;
+                                      });
+                                    },
+                                    items: rateSets.map((item) {
+                                      return DropdownMenuItem<String>(
+                                        value: item?.id.toString(),
+                                        child: Text(
+                                            item?.itemGroupName ?? 'error'),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: screenSize.height * 0.02),
 
                   //dropdown for food type
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "Food type:",
+                      style: KTextStyles.kTitle,
+                    ),
+                  ),
                   Container(
                     padding: const EdgeInsets.all(8),
                     alignment: Alignment.center,
@@ -291,6 +374,13 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
 
                           return Column(
                             children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Tax type:",
+                                  style: KTextStyles.kTitle,
+                                ),
+                              ),
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 alignment: Alignment.center,

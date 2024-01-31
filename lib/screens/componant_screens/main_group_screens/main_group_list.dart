@@ -1,64 +1,39 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/models/global_models/area_model.dart';
-import 'package:zimbapos/models/global_models/rate_sets_model.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
+import '../../../models/global_models/main_group_model.dart';
+import '../../../routers/utils/extensions/screen_name.dart';
+import '../../../widgets/my_alert_widget.dart';
 
-class AreasOverviewScreen extends StatefulWidget {
-  const AreasOverviewScreen({super.key});
+class MainGroupListScreen extends StatefulWidget {
+  const MainGroupListScreen({super.key});
 
   @override
-  State<AreasOverviewScreen> createState() => _AreasOverviewScreenState();
+  State<MainGroupListScreen> createState() => _MainGroupListScreenState();
 }
 
-class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
+class _MainGroupListScreenState extends State<MainGroupListScreen> {
   //
-  Stream<List<AreasModel>> streamForAreas() {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
-    return datatbaseCubit.areasRepository.streamAreas();
+  Stream<List<MainGroupModel>> mainGroupStream() {
+    final dbCubit = DatabaseCubit.dbFrom(context);
+    return dbCubit.mainGroupRepository.streamMainGroups();
   }
 
-  //fetch ratesets and compare their ids and show ratesetname in area list
-  Future<List<RateSetsModel?>> getAllRateSets() async {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    final rateSets = await datatbaseCubit.rateSetsRepository.getRateSets();
-    // log(rateSets.toString());
-    for (var rateSet in rateSets) {
-      log(rateSet!.ratesetName.toString());
-    }
-    return rateSets;
-  }
-
-  // toggleAreaFn(int id, bool value) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.areasRepository.changeActiveArea(id, value);
-  // }
-
-  // deleteAreaFn(int id) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.areasRepository.deleteAreabyID(id);
-  // }
-
-  deleteArea(AreasModel area) {
+  deleteMainGroup(MainGroupModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${area.areaName}'?",
+      "Do you want to delete '${e.mainGroupName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.areasRepository.deleteAreabyID(area.id);
-        EasyLoading.showToast('Area deleted');
+        dbCubit.mainGroupRepository.deleteMainGroup(e.id.toString());
+        EasyLoading.showToast('Main group deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
@@ -66,14 +41,14 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
     );
   }
 
-  activeDeactivateAreas(int id, bool value) {
+  activeDeactivateMainGroup(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.areasRepository.changeActiveArea(id, value);
+    dbCubit.mainGroupRepository.changeActive(id, value);
   }
 
-  editAreaFn({required AreasModel model}) {
+  editMainGroupFn({required MainGroupModel model}) {
     context.push(
-      AppScreen.editAreaScreen.path,
+      AppScreen.editMainGroupScreen.path,
       extra: model,
     );
   }
@@ -84,7 +59,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Areas',
+            'Main group list',
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
@@ -93,19 +68,20 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
             //   icon: const Icon(Icons.add),
             // ),
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createAreasScreen.path),
-              label: const Text('Add Area'),
+              onPressed: () =>
+                  context.push(AppScreen.createMainGroupScreen.path),
+              label: const Text('Add main group'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: StreamBuilder<List<AreasModel>>(
-          stream: streamForAreas(),
+        body: StreamBuilder<List<MainGroupModel>>(
+          stream: mainGroupStream(),
           builder: (context, snapshot) {
             final list = snapshot.data;
             if (list == null || list.isEmpty) {
               return const Center(
-                child: Text('No areas available,create one.'),
+                child: Text('No main groups available.'),
               );
             }
             return SizedBox(
@@ -115,9 +91,6 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                 columns: [
                   const DataColumn(
                     label: Text('Name'),
-                  ),
-                  const DataColumn(
-                    label: Text('Charges'),
                   ),
                   const DataColumn(
                     label: Text('Active'),
@@ -134,18 +107,14 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                       (e) => DataRow(
                         cells: [
                           DataCell(Text(
-                            e.areaName.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(Text(
-                            "${e.extraChargePercent.toString()}%",
+                            e.mainGroupName.toString(),
                             style: KTextStyles.kSubtitle,
                           )),
                           DataCell(
                             Switch.adaptive(
                               value: e.isActive as bool,
                               onChanged: (va) =>
-                                  activeDeactivateAreas(e.id, va),
+                                  activeDeactivateMainGroup(e.id, va),
                             ),
                           ),
                           DataCell(
@@ -157,12 +126,12 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    onPressed: () => editAreaFn(model: e),
+                                    onPressed: () => editMainGroupFn(model: e),
                                     icon: const Icon(Icons.edit),
                                   ),
                                   SizedBox(width: 2.w),
                                   IconButton(
-                                    onPressed: () => deleteArea(e),
+                                    onPressed: () => deleteMainGroup(e),
                                     icon: const Icon(CupertinoIcons.delete),
                                   )
                                 ],

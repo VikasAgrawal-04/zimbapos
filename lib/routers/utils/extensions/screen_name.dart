@@ -1,55 +1,74 @@
 enum AppScreen {
+  //home screen
   homeScreen,
+  //login screen
   loginScreen,
+  //CRUD screens @ Areas
   areasScreen,
   createAreasScreen,
   editAreaScreen,
+  //CRUD screens @ Rate Sets
   rateSetScreen,
   editRateSetScreen,
   createRateSetsScreen,
+  //CRUD screens @ Tables
   tableScreen,
   createTableScreen,
   editTableScreen,
+  //CRUD screens @ Workers
   workerOverviewScreen,
   createWorkerScreen,
   editWorkerScreen,
+  //Initial setup screen
   initialSetUpScreen,
+  //CRUD screens @ Customer Category
   customerCategory,
   createCustomerCategory,
   editCustomerCategory,
+  //CRUD screens @ Category
   category,
   createCategory,
   editCategory,
-  mainGroup,
-  createMainGroup,
-  itemGroup,
-  createItemGroup,
+  //CRUD screens @ Main Group
+  mainGroupScreen,
+  createMainGroupScreen,
+  editMainGroupScreen,
+  //CRUD screens @ Item Group
+  itemGroupScreen,
+  createItemGroupScreen,
+  editItemGroupScreen,
+  //CRUD screens @ Vendors
   vendorScreen,
   createVendorScreen,
   editVendorScreen,
+  //CRUD screens @ Expense Category
   expenseCategoryScreen,
   createExpenseCategoryScreen,
   editExpenseCategoryScreen,
+  //CRUD screens @ Expenses
   expensesScreen,
   createExpenseScreen,
   editExpenseScreen,
+  //Ordering dashboard screen
   orderDashboardScreen,
+  //CRUD screens @ Taxes
   taxesScreen,
   createTaxScreen,
   editTaxScreen,
+  //CRUD screens @ Items
   itemsScreen,
   createItemScreen,
   editItemScreen,
+  //Outlet registration screen
   outletDataRegisterScreen,
+  //CRUD screens @ Payments
   paymentsScreen,
   createPaymentsScreen,
   editPaymentsScreen,
-  singleDiscountScreen,
-  createSingleDiscountScreen,
-  editSingleDiscountScreen,
-  bulkDiscountScreen,
-  createBulkDiscountScreen,
-  editBulkDiscountScreen,
+  //CRUD screens @ Discounts
+  discountScreen,
+  createDiscountScreen,
+  editDiscountScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -98,14 +117,18 @@ extension AppScreenExtension on AppScreen {
         return 'Create Category';
       case AppScreen.editCategory:
         return 'Edit Category';
-      case AppScreen.mainGroup:
+      case AppScreen.mainGroupScreen:
         return 'Main Group';
-      case AppScreen.createMainGroup:
+      case AppScreen.createMainGroupScreen:
         return 'Create Main Group';
-      case AppScreen.itemGroup:
+      case AppScreen.editMainGroupScreen:
+        return 'Edit Main Group';
+      case AppScreen.itemGroupScreen:
         return 'Item Group';
-      case AppScreen.createItemGroup:
+      case AppScreen.createItemGroupScreen:
         return 'Create Item Group';
+      case AppScreen.editItemGroupScreen:
+        return 'Edit Item Group';
       case AppScreen.vendorScreen:
         return 'Vendors';
       case AppScreen.createVendorScreen:
@@ -146,18 +169,12 @@ extension AppScreenExtension on AppScreen {
         return 'Create Payment Screen';
       case AppScreen.editPaymentsScreen:
         return 'Edit Payment Screen';
-      case AppScreen.singleDiscountScreen:
-        return 'Single Discount Screen';
-      case AppScreen.createSingleDiscountScreen:
-        return 'Create Single Discount Screen';
-      case AppScreen.editSingleDiscountScreen:
-        return 'Edit Single Discount Screen';
-      case AppScreen.bulkDiscountScreen:
-        return 'Bulk Discount Screen';
-      case AppScreen.createBulkDiscountScreen:
-        return 'Create Bulk Discount Screen';
-      case AppScreen.editBulkDiscountScreen:
-        return 'Edit Bulk Discount Screen';
+      case AppScreen.discountScreen:
+        return 'Discount Screen';
+      case AppScreen.createDiscountScreen:
+        return 'Create Discount Screen';
+      case AppScreen.editDiscountScreen:
+        return 'Edit Discount Screen';
     }
   }
 
@@ -206,14 +223,18 @@ extension AppScreenExtension on AppScreen {
         return '/create-category';
       case AppScreen.editCategory:
         return '/edit-category';
-      case AppScreen.mainGroup:
+      case AppScreen.mainGroupScreen:
         return '/main-group';
-      case AppScreen.createMainGroup:
+      case AppScreen.createMainGroupScreen:
         return '/create-main-group';
-      case AppScreen.itemGroup:
+      case AppScreen.editMainGroupScreen:
+        return '/edit-main-group';
+      case AppScreen.itemGroupScreen:
         return '/item-group';
-      case AppScreen.createItemGroup:
+      case AppScreen.createItemGroupScreen:
         return '/create-item-group';
+      case AppScreen.editItemGroupScreen:
+        return '/edit-item-group';
       case AppScreen.vendorScreen:
         return '/vendors';
       case AppScreen.createVendorScreen:
@@ -254,18 +275,12 @@ extension AppScreenExtension on AppScreen {
         return '/create-payment-screen';
       case AppScreen.editPaymentsScreen:
         return '/edit-payment-screen';
-      case AppScreen.singleDiscountScreen:
-        return '/single-discount-screen';
-      case AppScreen.createSingleDiscountScreen:
-        return '/create-single-discount-screen';
-      case AppScreen.editSingleDiscountScreen:
-        return '/edit-single-discount-screen';
-      case AppScreen.bulkDiscountScreen:
-        return '/bulk-discount-screen';
-      case AppScreen.createBulkDiscountScreen:
-        return '/create-bulk-discount-screen';
-      case AppScreen.editBulkDiscountScreen:
-        return '/edit-bulk-discount-screen';
+      case AppScreen.discountScreen:
+        return '/discount-screen';
+      case AppScreen.createDiscountScreen:
+        return '/create-discount-screen';
+      case AppScreen.editDiscountScreen:
+        return '/edit-discount-screen';
     }
   }
 }

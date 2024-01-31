@@ -7,6 +7,27 @@ class ItemGroupRepository {
   Isar db;
   ItemGroupRepository(this.db);
 
+  Stream<List<ItemGroupModel>> streamItemGroups() {
+    return db.itemGroupModels
+        .filter()
+        .isDeletedEqualTo(false)
+        .watch(fireImmediately: true);
+  }
+
+  Future<void> changeActive(int id, bool isActive) async {
+    ItemGroupModel? model = await db.itemGroupModels.get(id);
+    if (model != null) {
+      model.isActive = isActive;
+      db.writeTxnSync(() {
+        db.itemGroupModels.putSync(model);
+      });
+    }
+  }
+
+  Future<List<ItemGroupModel>> getItemGroups() async {
+    return db.itemGroupModels.filter().isDeletedEqualTo(false).findAllSync();
+  }
+
   Future<List<ItemGroupModel>> getItemsByMainGroupId(String id) async {
     try {
       return db.itemGroupModels

@@ -77,6 +77,12 @@ class ApiRepoImpl implements ApiRepo {
   }
 
   @override
+  Future<Either<Failure, Map<String, dynamic>>> createCategory(
+      CategoryModel data) {
+    return _categoryApiRepo.createCategory(data);
+  }
+
+  @override
   Future<Either<Failure, List<WorkersModel>>> getWorkers() {
     return _workerApiRepo.getWorkers();
   }

@@ -10,6 +10,8 @@ class EndPoints {
 
   //Categories
   static const String getCategories = '/get-category';
+  static const String createCategory = '/create-category';
+  static const String updateCategory = '/update-category';
 
   //Main Groups
   static const String getMainGroup = '/get-main-groups';

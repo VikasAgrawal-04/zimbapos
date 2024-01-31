@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:zimbapos/global/error/exception.dart';
@@ -17,8 +15,25 @@ class CategoryApiRepoImpl implements CategoryApiRepo {
           await Helpers.sendRequest(RequestType.get, EndPoints.getCategories);
       final List<dynamic> data = response?['data'];
       final List<CategoryModel> categories =
-          data.map((e) => CategoryModel.fromMap(jsonDecode(e))).toList();
+          data.map((e) => CategoryModel.fromMap(e)).toList();
       return Right(categories);
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createCategory(
+      CategoryModel data) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.createCategory,
+          queryParams: data.toMap());
+      return Right(response ?? {});
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);
       return Left(ServerFailure(message: error.message.toString()));

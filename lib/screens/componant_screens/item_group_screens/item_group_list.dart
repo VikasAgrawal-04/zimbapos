@@ -3,36 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/models/global_models/category_model.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/models/global_models/item_group_model.dart';
 
+import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
+import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
 
-class CategoryScreen extends StatefulWidget {
-  const CategoryScreen({super.key});
+class ItemGroupListScreen extends StatefulWidget {
+  const ItemGroupListScreen({super.key});
 
   @override
-  State<CategoryScreen> createState() => _CategoryScreenState();
+  State<ItemGroupListScreen> createState() => _ItemGroupListScreenState();
 }
 
-class _CategoryScreenState extends State<CategoryScreen> {
-  Stream<List<CategoryModel>> categoryStream() {
+class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
+  //
+  Stream<List<ItemGroupModel>> itemGroupStream() {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.categoryRepository.streamCategory();
+    return dbCubit.itemGroupReposiory.streamItemGroups();
   }
 
-  deleteCategory(CategoryModel e) {
+  deleteItemGroup(ItemGroupModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete '${e.categoryName}'?",
+      "Do you want to delete '${e.itemGroupName}'?",
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.categoryRepository.deleteCategory(e.id);
-        EasyLoading.showToast('Category deleted');
+        dbCubit.itemGroupReposiory.deleteItemGroup(e.id.toString());
+        EasyLoading.showToast('Item group deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
@@ -40,14 +41,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  activeDeactivateCategory(int id, bool value) {
+  activeDeactivateItemGroup(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.categoryRepository.changeActive(id, value);
+    dbCubit.itemGroupReposiory.changeActive(id, value);
   }
 
-  editCategoryFn({required CategoryModel model}) {
+  editItemGroupFn({required ItemGroupModel model}) {
     context.push(
-      AppScreen.editCategory.path,
+      AppScreen.editItemGroupScreen.path,
       extra: model,
     );
   }
@@ -58,7 +59,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Categories',
+            'Item group list',
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
@@ -67,14 +68,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
             //   icon: const Icon(Icons.add),
             // ),
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createCategory.path),
-              label: const Text('Add Category'),
+              onPressed: () =>
+                  context.push(AppScreen.createItemGroupScreen.path),
+              label: const Text('Add item group'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: StreamBuilder<List<CategoryModel>>(
-          stream: categoryStream(),
+        body: StreamBuilder<List<ItemGroupModel>>(
+          stream: itemGroupStream(),
           builder: (context, snapshot) {
             final data = snapshot.data;
             if (data == null || data.isEmpty) {
@@ -108,14 +110,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         (e) => DataRow(
                           cells: [
                             DataCell(Text(
-                              e.categoryName.toString(),
+                              e.itemGroupName.toString(),
                               style: KTextStyles.kSubtitle,
                             )),
                             DataCell(
                               Switch.adaptive(
                                 value: e.isActive as bool,
                                 onChanged: (va) =>
-                                    activeDeactivateCategory(e.id, va),
+                                    activeDeactivateItemGroup(e.id, va),
                               ),
                             ),
                             DataCell(
@@ -127,12 +129,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      onPressed: () => editCategoryFn(model: e),
+                                      onPressed: () =>
+                                          editItemGroupFn(model: e),
                                       icon: const Icon(Icons.edit),
                                     ),
                                     SizedBox(width: 2.w),
                                     IconButton(
-                                      onPressed: () => deleteCategory(e),
+                                      onPressed: () => deleteItemGroup(e),
                                       icon: const Icon(CupertinoIcons.delete),
                                     )
                                   ],

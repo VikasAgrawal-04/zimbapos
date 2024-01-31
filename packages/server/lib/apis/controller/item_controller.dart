@@ -14,7 +14,7 @@ class ItemController {
   Future<Response> fetchAllItems(Request request) async {
     try {
       final items = await dbCubit.itemsRepository.getItems();
-      return okResponse(items);
+      return okResponse(items.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
@@ -34,7 +34,7 @@ class ItemController {
       final itemsByGrp =
           await dbCubit.itemsRepository.getItemsByGroupId(itemGroupId);
 
-      return okResponse(itemsByGrp);
+      return okResponse(itemsByGrp.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:zimbapos/global/error/exception.dart';
@@ -20,7 +18,7 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
       final List<dynamic> data = response?['data'];
 
       final List<ItemGroupModel> itemGrp =
-          data.map((e) => ItemGroupModel.fromMap(jsonDecode(e))).toList();
+          data.map((e) => ItemGroupModel.fromMap(e)).toList();
       return Right(itemGrp);
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
+import 'package:zimbapos/repository/api_repository/api_repo.dart';
+import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
@@ -20,7 +21,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
-
+  final ApiRepo _repo = ApiRepoImpl();
   @override
   void dispose() {
     categoryName.dispose();
@@ -28,9 +29,10 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
   }
 
   void createCategory(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.categoryRepository
-        .createCategory(data: CategoryModel(categoryName: categoryName.text));
+    _repo.createCategory(CategoryModel(categoryName: categoryName.text));
+    // final db = DatabaseCubit.dbFrom(context);
+    // db.categoryRepository
+    // .createCategory(data: CategoryModel(categoryName: categoryName.text));
     EasyLoading.showToast('Category Created');
     context.pop();
   }

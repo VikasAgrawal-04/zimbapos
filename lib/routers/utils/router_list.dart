@@ -5,7 +5,9 @@ import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/discount_single_model.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
+import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
+import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/payments_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
@@ -34,6 +36,9 @@ import 'package:zimbapos/screens/componant_screens/expense_category_screen/exp_c
 import 'package:zimbapos/screens/componant_screens/expenses_screens/create_expense_screen.dart';
 import 'package:zimbapos/screens/componant_screens/expenses_screens/edit_expense_screen.dart';
 import 'package:zimbapos/screens/componant_screens/expenses_screens/expense_list_screen.dart';
+import 'package:zimbapos/screens/componant_screens/item_group_screens/create_item_group.dart';
+import 'package:zimbapos/screens/componant_screens/item_group_screens/item_group_list.dart';
+import 'package:zimbapos/screens/componant_screens/main_group_screens/main_group_list.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/create_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/edit_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/payment_list_screen.dart';
@@ -59,6 +64,10 @@ import 'package:zimbapos/screens/login/login_view.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 
+import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
+import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
+import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
+
 final List<GoRoute> routerList = [
   //home
   GoRoute(
@@ -66,6 +75,7 @@ final List<GoRoute> routerList = [
     path: AppScreen.homeScreen.path,
     builder: (context, state) => const HomeScreen(),
   ),
+
   //ratesetlist
   GoRoute(
     name: AppScreen.rateSetScreen.name,
@@ -91,6 +101,7 @@ final List<GoRoute> routerList = [
     path: AppScreen.createRateSetsScreen.path,
     builder: (context, state) => const CreateRateSetsScreen(),
   ),
+
   //table list
   GoRoute(
     name: AppScreen.tableScreen.name,
@@ -115,16 +126,15 @@ final List<GoRoute> routerList = [
             item: TableModel.fromJson(state.extra as String));
       }
     },
-    // builder: (context, state) => UpdateTableScreen(
-    //   item: state.extra as TableModel,
-    // ),
   ),
+
   //login
   GoRoute(
     name: AppScreen.loginScreen.name,
     path: AppScreen.loginScreen.path,
     builder: (context, state) => const LoginScreen(),
   ),
+
   //areas list
   GoRoute(
     name: AppScreen.areasScreen.name,
@@ -150,10 +160,8 @@ final List<GoRoute> routerList = [
         );
       }
     },
-    // builder: (context, state) => EditAreaScreen(
-    //   item: state.extra as AreasModel,
-    // ),
   ),
+
   //worker overview
   GoRoute(
     name: AppScreen.workerOverviewScreen.name,
@@ -180,12 +188,14 @@ final List<GoRoute> routerList = [
       }
     },
   ),
+
   //initial setup
   GoRoute(
     name: AppScreen.initialSetUpScreen.name,
     path: AppScreen.initialSetUpScreen.path,
     builder: (context, state) => const InitialSetUpScreen(),
   ),
+
   //customer category
   GoRoute(
     name: AppScreen.customerCategory.name,
@@ -213,32 +223,7 @@ final List<GoRoute> routerList = [
       }
     },
   ),
-  //category list
-  GoRoute(
-    name: AppScreen.category.name,
-    path: AppScreen.category.path,
-    builder: (context, state) => const CategoryScreen(),
-  ),
-  // create category
-  GoRoute(
-    name: AppScreen.createCategory.name,
-    path: AppScreen.createCategory.path,
-    builder: (context, state) => const CreateCategoryScreen(),
-  ),
-  //edit category
-  GoRoute(
-    name: AppScreen.editCategory.name,
-    path: AppScreen.editCategory.path,
-    builder: (context, state) {
-      if (state.extra is CategoryModel) {
-        return UpdateCategoryScreen(item: state.extra as CategoryModel);
-      } else {
-        return UpdateCategoryScreen(
-          item: CategoryModel.fromJson(state.extra as String),
-        );
-      }
-    },
-  ),
+
   //Vendor list
   GoRoute(
     name: AppScreen.vendorScreen.name,
@@ -265,6 +250,7 @@ final List<GoRoute> routerList = [
       }
     },
   ),
+
   //Expense cat list
   GoRoute(
     name: AppScreen.expenseCategoryScreen.name,
@@ -293,6 +279,7 @@ final List<GoRoute> routerList = [
       }
     },
   ),
+
   //Expenses list
   GoRoute(
     name: AppScreen.expensesScreen.name,
@@ -319,7 +306,8 @@ final List<GoRoute> routerList = [
       }
     },
   ),
-  //Ordering Section Pages
+
+  //Ordering dashboard Page
   GoRoute(
     path: AppScreen.orderDashboardScreen.path,
     name: AppScreen.orderDashboardScreen.name,
@@ -327,11 +315,14 @@ final List<GoRoute> routerList = [
       return const OrderDashboardScreen();
     },
   ),
+
+  //outlet registration screen
   GoRoute(
     path: AppScreen.outletDataRegisterScreen.path,
     name: AppScreen.outletDataRegisterScreen.name,
     builder: (context, state) => const OutLetDataSetUpScreen(),
   ),
+
   //Taxes list
   GoRoute(
     name: AppScreen.taxesScreen.name,
@@ -358,6 +349,88 @@ final List<GoRoute> routerList = [
       }
     },
   ),
+
+  //category list
+  GoRoute(
+    name: AppScreen.category.name,
+    path: AppScreen.category.path,
+    builder: (context, state) => const CategoryScreen(),
+  ),
+  // create category
+  GoRoute(
+    name: AppScreen.createCategory.name,
+    path: AppScreen.createCategory.path,
+    builder: (context, state) => const CreateCategoryScreen(),
+  ),
+  //edit category
+  GoRoute(
+    name: AppScreen.editCategory.name,
+    path: AppScreen.editCategory.path,
+    builder: (context, state) {
+      if (state.extra is CategoryModel) {
+        return UpdateCategoryScreen(item: state.extra as CategoryModel);
+      } else {
+        return UpdateCategoryScreen(
+          item: CategoryModel.fromJson(state.extra as String),
+        );
+      }
+    },
+  ),
+
+  //main-group list
+  GoRoute(
+    name: AppScreen.mainGroupScreen.name,
+    path: AppScreen.mainGroupScreen.path,
+    builder: (context, state) => const MainGroupListScreen(),
+  ),
+  // create main-group
+  GoRoute(
+    name: AppScreen.createMainGroupScreen.name,
+    path: AppScreen.createMainGroupScreen.path,
+    builder: (context, state) => const CreateMainGroupScreen(),
+  ),
+  //edit main-group
+  GoRoute(
+    name: AppScreen.editMainGroupScreen.name,
+    path: AppScreen.editMainGroupScreen.path,
+    builder: (context, state) {
+      if (state.extra is MainGroupModel) {
+        return EditMainGroupScreen(item: state.extra as MainGroupModel);
+      } else {
+        return EditMainGroupScreen(
+          item: MainGroupModel.fromMap(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+
+  //item-group list
+  GoRoute(
+    name: AppScreen.itemGroupScreen.name,
+    path: AppScreen.itemGroupScreen.path,
+    builder: (context, state) => const ItemGroupListScreen(),
+  ),
+  // create item-group
+  GoRoute(
+    name: AppScreen.createItemGroupScreen.name,
+    path: AppScreen.createItemGroupScreen.path,
+    builder: (context, state) => const CreateItemGroupScreen(),
+  ),
+  //edit item-group
+  GoRoute(
+    name: AppScreen.editItemGroupScreen.name,
+    path: AppScreen.editItemGroupScreen.path,
+    builder: (context, state) {
+      if (state.extra is ItemGroupModel) {
+        return EditItemGroupScreen(item: state.extra as ItemGroupModel);
+      } else {
+        return EditItemGroupScreen(
+          item: ItemGroupModel.fromMap(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+
   //item list
   GoRoute(
     name: AppScreen.itemsScreen.name,
@@ -414,20 +487,20 @@ final List<GoRoute> routerList = [
 
   //discount list
   GoRoute(
-    name: AppScreen.singleDiscountScreen.name,
-    path: AppScreen.singleDiscountScreen.path,
+    name: AppScreen.discountScreen.name,
+    path: AppScreen.discountScreen.path,
     builder: (context, state) => const SingleDiscountScreen(),
   ),
   // create discount
   GoRoute(
-    name: AppScreen.createSingleDiscountScreen.name,
-    path: AppScreen.createSingleDiscountScreen.path,
+    name: AppScreen.createDiscountScreen.name,
+    path: AppScreen.createDiscountScreen.path,
     builder: (context, state) => const CreateSingleDiscScreen(),
   ),
   //edit discount
   GoRoute(
-    name: AppScreen.editSingleDiscountScreen.name,
-    path: AppScreen.editSingleDiscountScreen.path,
+    name: AppScreen.editDiscountScreen.name,
+    path: AppScreen.editDiscountScreen.path,
     builder: (context, state) {
       if (state.extra is DiscountModel) {
         return UpdateSingleDiscScreen(item: state.extra as DiscountModel);

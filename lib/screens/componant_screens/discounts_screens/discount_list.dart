@@ -50,7 +50,7 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
 
   editDiscountFn({required DiscountModel model}) {
     context.push(
-      AppScreen.editSingleDiscountScreen.path,
+      AppScreen.editDiscountScreen.path,
       extra: model,
     );
   }
@@ -71,7 +71,7 @@ class _SingleDiscountScreenState extends State<SingleDiscountScreen> {
             // ),
             TextButton.icon(
               onPressed: () =>
-                  context.push(AppScreen.createSingleDiscountScreen.path),
+                  context.push(AppScreen.createDiscountScreen.path),
               label: const Text('Add coupon'),
               icon: const Icon(Icons.add),
             ),

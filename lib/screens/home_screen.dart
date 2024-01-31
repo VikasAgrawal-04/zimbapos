@@ -391,63 +391,68 @@ List<HomeShortcutModel> screenList = [
   ),
   HomeShortcutModel(
     title: 'Discount Screen',
-    path: AppScreen.singleDiscountScreen.path,
+    path: AppScreen.discountScreen.path,
     userId: '123123',
   ),
-  // HomeShortcutModel(
-  //   title: 'Bulk discount Screen',
-  //   path: AppScreen.bulkDiscountScreen.path,
-  //   userId: '123123',
-  // ),
+  HomeShortcutModel(
+    title: 'MainGroup Screen',
+    path: AppScreen.mainGroupScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'ItemGroup Screen',
+    path: AppScreen.itemGroupScreen.path,
+    userId: '123123',
+  ),
 ];
 
-class Body extends StatelessWidget {
-  const Body({
-    super.key,
-  });
+// class Body extends StatelessWidget {
+//   const Body({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.rateSetScreen.path),
-            child: const Text('Rate Sets'),
-          ),
-          SizedBox(height: 2.h),
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.tableScreen.path),
-            child: const Text('Tables'),
-          ),
-          SizedBox(height: 2.h),
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.customerCategory.path),
-            child: const Text('Customer Category'),
-          ),
-          SizedBox(height: 2.h),
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.initialSetUpScreen.path),
-            child: const Text('Intro Screen'),
-          ),
-          SizedBox(height: 2.h),
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.workerOverviewScreen.path),
-            child: const Text('Worker Screen'),
-          ),
-          SizedBox(height: 2.h),
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.category.path),
-            child: const Text('Category'),
-          ),
-          //areas
-          ElevatedButton(
-            onPressed: () => context.push(AppScreen.areasScreen.path),
-            child: const Text('Areas'),
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Column(
+//         mainAxisSize: MainAxisSize.min,
+//         children: [
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.rateSetScreen.path),
+//             child: const Text('Rate Sets'),
+//           ),
+//           SizedBox(height: 2.h),
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.tableScreen.path),
+//             child: const Text('Tables'),
+//           ),
+//           SizedBox(height: 2.h),
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.customerCategory.path),
+//             child: const Text('Customer Category'),
+//           ),
+//           SizedBox(height: 2.h),
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.initialSetUpScreen.path),
+//             child: const Text('Intro Screen'),
+//           ),
+//           SizedBox(height: 2.h),
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.workerOverviewScreen.path),
+//             child: const Text('Worker Screen'),
+//           ),
+//           SizedBox(height: 2.h),
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.category.path),
+//             child: const Text('Category'),
+//           ),
+//           //areas
+//           ElevatedButton(
+//             onPressed: () => context.push(AppScreen.areasScreen.path),
+//             child: const Text('Areas'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

@@ -14,9 +14,7 @@ class WorkerController {
   Future<Response> getWorkers(Request request) async {
     try {
       final workers = await dbCubit.workerRepository.getWokers();
-
-      return Response.ok(
-          (jsonEncode({'data': workers.map((e) => e.toMap()).toList()})));
+      return okResponse(workers.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

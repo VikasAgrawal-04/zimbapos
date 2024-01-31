@@ -9,12 +9,15 @@ import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
+import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
+import 'package:zimbapos/models/global_models/temp_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/models/user_models/subscriber_model.dart';
 import 'package:zimbapos/models/user_models/system_config_model.dart';
 import 'package:zimbapos/models/user_models/user_model.dart';
 import 'package:zimbapos/repository/areas_repository.dart';
+import 'package:zimbapos/repository/bill_repository.dart';
 import 'package:zimbapos/repository/category_repository.dart';
 import 'package:zimbapos/repository/customer_repository.dart';
 import 'package:zimbapos/repository/discount_single_repo.dart';
@@ -70,7 +73,9 @@ class IsarService {
           PaymentModelSchema,
           DiscountModelSchema,
           MainGroupModelSchema,
-          ItemGroupModelSchema
+          ItemGroupModelSchema,
+          TempBillHeaderModelSchema,
+          TempBillLinesSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -127,4 +132,6 @@ class IsarService {
   MainGroupRepository get mainGroupRepository => MainGroupRepository(db);
 
   ItemGroupRepository get itemGroupReposiory => ItemGroupRepository(db);
+
+  BillRepository get billRepository => BillRepository(db);
 }

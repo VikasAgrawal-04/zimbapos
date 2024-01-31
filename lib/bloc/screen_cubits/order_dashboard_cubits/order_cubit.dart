@@ -15,7 +15,6 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
   }
 
   void onTabChanged(int index) {
-    print("index $index");
     final areas = (state as OrderDashboardLoaded).areas;
     final id = areas[index].areaId;
     fetchTableByArea(id ?? "");

@@ -22,7 +22,7 @@ class ItemGroupController {
       }
       final itemGrps =
           await dbCubit.itemGroupReposiory.getItemsByMainGroupId(mainGroupId);
-      return okResponse(itemGrps);
+      return okResponse(itemGrps.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

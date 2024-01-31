@@ -14,7 +14,7 @@ class CategoryController {
   Future<Response> fetchAllCategory(Request request) async {
     try {
       final categories = await dbCubit.categoryRepository.getAllCategory();
-      return okResponse(categories);
+      return okResponse(categories.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

@@ -14,9 +14,8 @@ class AreaApiRepoImpl implements AreaApiRepo {
       final response =
           await Helpers.sendRequest(RequestType.get, EndPoints.getAreas);
       final List<dynamic> data = response?['data'];
-      // Convert the dynamic list to a List<AreasModel>
       final List<AreasModel> areas =
-          data.map((item) => AreasModel.fromJson(item)).toList();
+          data.map((item) => AreasModel.fromMap(item)).toList();
       return Right(areas);
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

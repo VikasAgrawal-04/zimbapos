@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
@@ -31,7 +29,6 @@ class MainGroupRepository {
   }
 
   Future<Tuple2<bool, String>> createMainGroup(MainGroupModel data) async {
-    log("this is item recieved in fn : ${data.mainGroupName}");
     try {
       final dbItem = db.mainGroupModels
           .filter()
@@ -39,7 +36,6 @@ class MainGroupRepository {
           .and()
           .categoryIdEqualTo(data.categoryId)
           .findFirstSync();
-      // log("this is dbItem : ${dbItem!.mainGroupName.toString()}");
       if (dbItem == null) {
         db.writeTxnSync(() => db.mainGroupModels.putSync(data));
         return const Tuple2(true, 'Main Group Created');

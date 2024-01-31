@@ -69,4 +69,10 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, ItemApiResponseModel>> getAllItemsById(String id) {
     return _itemApiRepo.getAllItemsById(id);
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createCategory(
+      CategoryModel data) {
+    return _categoryApiRepo.createCategory(data);
+  }
 }

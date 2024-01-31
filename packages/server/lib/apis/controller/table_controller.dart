@@ -14,7 +14,7 @@ class TableController {
   Future<Response> fetchAllTables(Request request) async {
     try {
       final tables = await dbCubit.tableRepository.getAllTables();
-      return Response.ok(jsonEncode({'data': tables}));
+      return okResponse(tables.map((e) => e.toMap()).toList());
     } catch (e) {
       return Response.badRequest(body: 'Invalid Arguments');
     }
@@ -109,7 +109,7 @@ class TableController {
         return badArguments('Please Enter Table Id as a key id');
       }
       final tables = await dbCubit.tableRepository.fetchTableById(id);
-      return okResponse(tables);
+      return okResponse(tables.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

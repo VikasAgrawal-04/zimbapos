@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:zimbapos/global/error/exception.dart';
@@ -17,7 +15,7 @@ class MainGroupApiRepoImpl implements MainGroupApiRepo {
           await Helpers.sendRequest(RequestType.get, EndPoints.getMainGroup);
       final List<dynamic> data = response?['data'];
       final List<MainGroupModel> mainGroup =
-          data.map((e) => MainGroupModel.fromMap(jsonDecode(e))).toList();
+          data.map((e) => MainGroupModel.fromMap(e)).toList();
       return Right(mainGroup);
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

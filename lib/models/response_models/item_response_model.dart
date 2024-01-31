@@ -20,8 +20,8 @@ class ItemApiResponseModel {
 
   factory ItemApiResponseModel.fromJson(Map<String, dynamic> json) =>
       ItemApiResponseModel(
-        data: List<ItemList>.from(
-            json["data"].map((x) => ItemList.fromJson(jsonDecode(x)))),
+        data:
+            List<ItemList>.from(json["data"].map((x) => ItemList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

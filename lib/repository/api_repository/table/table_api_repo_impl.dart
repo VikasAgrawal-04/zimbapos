@@ -18,7 +18,7 @@ class TableApiRepoImpl implements TableApiRepo {
 
       final List<dynamic> data = response?['data'];
       final List<TableModel> tables =
-          data.map((e) => TableModel.fromJson(e)).toList();
+          data.map((e) => TableModel.fromMap(e)).toList();
       return Right(tables);
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

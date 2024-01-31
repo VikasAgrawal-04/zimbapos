@@ -23,7 +23,6 @@ class CreateMainGroupScreen extends StatefulWidget {
 }
 
 class _CreateMainGroupScreenState extends State<CreateMainGroupScreen> {
-  //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController mainGroupNameController;
   String? catId;

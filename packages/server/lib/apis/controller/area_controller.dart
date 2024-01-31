@@ -14,7 +14,7 @@ class AreaController {
   Future<Response> fetchAllArea(Request request) async {
     try {
       final areas = await dbCubit.areasRepository.getAreas();
-      return okResponse(areas);
+      return okResponse(areas.map((e) => e.toMap()).toList());
     } catch (e) {
       return invalidResponse();
     }

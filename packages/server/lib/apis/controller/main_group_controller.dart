@@ -14,7 +14,7 @@ class MainGroupController {
   Future<Response> fetchMainGroups(Request request) async {
     try {
       final mainGrps = await dbCubit.mainGroupRepository.getMainGroups();
-      return okResponse(mainGrps);
+      return okResponse(mainGrps.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

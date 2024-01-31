@@ -50,6 +50,7 @@ enum AppScreen {
   bulkDiscountScreen,
   createBulkDiscountScreen,
   editBulkDiscountScreen,
+  settingsOverviewScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -158,6 +159,8 @@ extension AppScreenExtension on AppScreen {
         return 'Create Bulk Discount Screen';
       case AppScreen.editBulkDiscountScreen:
         return 'Edit Bulk Discount Screen';
+      case AppScreen.settingsOverviewScreen:
+        return 'Settings Overview Screen';
     }
   }
 
@@ -266,6 +269,8 @@ extension AppScreenExtension on AppScreen {
         return '/create-bulk-discount-screen';
       case AppScreen.editBulkDiscountScreen:
         return '/edit-bulk-discount-screen';
+      case AppScreen.settingsOverviewScreen:
+        return '/settings-overview-screen';
     }
   }
 }

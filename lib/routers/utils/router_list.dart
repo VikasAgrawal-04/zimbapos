@@ -57,6 +57,7 @@ import 'package:zimbapos/screens/componant_screens/worker_management_screens/wor
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
+import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 
 final List<GoRoute> routerList = [
   //home
@@ -436,5 +437,10 @@ final List<GoRoute> routerList = [
         );
       }
     },
+  ),
+  GoRoute(
+    name: AppScreen.settingsOverviewScreen.name,
+    path: AppScreen.settingsOverviewScreen.path,
+    builder: (context, state) => const SettingsOverviewScreen(),
   ),
 ];

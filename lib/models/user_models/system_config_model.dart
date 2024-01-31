@@ -12,6 +12,7 @@ class SystemConfigModel {
   bool mainServer;
   String ipAddress;
   String port;
+
   SystemConfigModel({
     this.isarID = Isar.autoIncrement,
     required this.hybrid,

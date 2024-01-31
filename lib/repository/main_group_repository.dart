@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
@@ -7,11 +9,29 @@ class MainGroupRepository {
   Isar db;
   MainGroupRepository(this.db);
 
+  Stream<List<MainGroupModel>> streamMainGroups() {
+    return db.mainGroupModels
+        .filter()
+        .isDeletedEqualTo(false)
+        .watch(fireImmediately: true);
+  }
+
+  Future<void> changeActive(int id, bool isActive) async {
+    MainGroupModel? model = await db.mainGroupModels.get(id);
+    if (model != null) {
+      model.isActive = isActive;
+      db.writeTxnSync(() {
+        db.mainGroupModels.putSync(model);
+      });
+    }
+  }
+
   Future<List<MainGroupModel>> getMainGroups() async {
     return db.mainGroupModels.filter().isDeletedEqualTo(false).findAllSync();
   }
 
   Future<Tuple2<bool, String>> createMainGroup(MainGroupModel data) async {
+    log("this is item recieved in fn : ${data.mainGroupName}");
     try {
       final dbItem = db.mainGroupModels
           .filter()
@@ -19,6 +39,7 @@ class MainGroupRepository {
           .and()
           .categoryIdEqualTo(data.categoryId)
           .findFirstSync();
+      // log("this is dbItem : ${dbItem!.mainGroupName.toString()}");
       if (dbItem == null) {
         db.writeTxnSync(() => db.mainGroupModels.putSync(data));
         return const Tuple2(true, 'Main Group Created');

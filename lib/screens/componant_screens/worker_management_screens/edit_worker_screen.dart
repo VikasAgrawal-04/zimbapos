@@ -133,34 +133,36 @@ class EditWorkerScreenState extends State<EditWorkerScreen> {
                     ),
                     borderRadius: BorderRadius.circular(14.0),
                   ),
-                  child: DropdownButton(
-                    value: dropDownValue,
-                    enableFeedback: true,
-                    isExpanded: true,
-                    hint: const Text('Select Role'),
-                    items: const [
-                      DropdownMenuItem(
-                        value: 'W',
-                        child: Text('Waiter'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'C',
-                        child: Text('Captain'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'D',
-                        child: Text('Delivery Boy'),
-                      ),
-                      DropdownMenuItem(
-                        value: 'S',
-                        child: Text('Steward'),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        dropDownValue = value;
-                      });
-                    },
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      value: dropDownValue,
+                      enableFeedback: true,
+                      isExpanded: true,
+                      hint: const Text('Select Role'),
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'W',
+                          child: Text('Waiter'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'C',
+                          child: Text('Captain'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'D',
+                          child: Text('Delivery Boy'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'S',
+                          child: Text('Steward'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          dropDownValue = value;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 SizedBox(height: 5.h),

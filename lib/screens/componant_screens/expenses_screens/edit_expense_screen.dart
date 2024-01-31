@@ -7,6 +7,7 @@ import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/kcolors.dart';
 import '../../../models/global_models/expense_category_model.dart';
 import '../../../models/global_models/rate_sets_model.dart';
 import '../../../widgets/custom_button.dart';
@@ -195,70 +196,97 @@ class _UpdateExpenseScreenState extends State<UpdateExpenseScreen> {
                   // SizedBox(height: screenSize.height * 0.02),
                   //dropdown for expense cat
 
-                  SizedBox(
-                    height: 50,
-                    width: screenSize.width,
-                    child: FutureBuilder<List<ExpenseCategoryModel?>>(
-                      future: getAllExpCats(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator.adaptive();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          final exCats = snapshot.data ?? [];
+                  FutureBuilder<List<ExpenseCategoryModel?>>(
+                    future: getAllExpCats(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        final exCats = snapshot.data ?? [];
 
-                          return Column(
-                            children: [
-                              DropdownButton<int>(
-                                value: expenseCatId,
-                                hint: const Text("Choose a expense category"),
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    expenseCatId = newValue;
-                                  });
-                                },
-                                items: exCats.map((rateSet) {
-                                  return DropdownMenuItem<int>(
-                                    value: rateSet!.id,
-                                    child: Text(
-                                        rateSet.expenseCategoryName ?? 'error'),
-                                  );
-                                }).toList(),
+                        return Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                border: Border.all(
+                                  color: KColors.buttonColor,
+                                  width: 1.0,
+                                ),
+                                borderRadius: BorderRadius.circular(14.0),
                               ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton<int>(
+                                  isExpanded: true,
+                                  value: expenseCatId,
+                                  hint: const Text("Choose a expense category"),
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      expenseCatId = newValue;
+                                    });
+                                  },
+                                  items: exCats.map((rateSet) {
+                                    return DropdownMenuItem<int>(
+                                      value: rateSet!.id,
+                                      child: Text(rateSet.expenseCategoryName ??
+                                          'error'),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    },
                   ),
                   SizedBox(height: screenSize.height * 0.02),
 
-                  DropdownButton<String>(
-                    hint: const Text("Choose a payment method"),
-                    value: payMode,
-                    icon: const Icon(Icons.arrow_drop_down),
-                    iconSize: 24,
-                    elevation: 16,
-                    onChanged: (newValue) {
-                      setState(() {
-                        payMode = newValue;
-                      });
-                    },
-                    items: <String>[
-                      'Cash',
-                      'Card',
-                      'Credit',
-                      'UPI',
-                      'Cheque',
-                      // Add more options as needed
-                    ].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      border: Border.all(
+                        color: KColors.buttonColor,
+                        width: 1.0,
+                      ),
+                      borderRadius: BorderRadius.circular(14.0),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        hint: const Text("Choose a payment method"),
+                        value: payMode,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        iconSize: 24,
+                        elevation: 16,
+                        onChanged: (newValue) {
+                          setState(() {
+                            payMode = newValue;
+                          });
+                        },
+                        items: <String>[
+                          'Cash',
+                          'Card',
+                          'Credit',
+                          'UPI',
+                          'Cheque',
+                          // Add more options as needed
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
                   ),
 
                   //dropdown for paymode

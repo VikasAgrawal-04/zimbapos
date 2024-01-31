@@ -13,7 +13,7 @@ class AppRouter {
       //Check if system have the OutletID
       bool outletcheck = databaseCubit.outletId == null;
       if (outletcheck) {
-        return AppScreen.createCategory.path;
+        return AppScreen.mainGroupScreen.path;
       }
       return null;
     },

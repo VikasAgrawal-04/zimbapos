@@ -4,4 +4,5 @@ import 'package:zimbapos/models/response_models/item_response_model.dart';
 
 abstract class ItemApiRepo {
   Future<Either<Failure, ItemApiResponseModel>> getAllItems();
+  Future<Either<Failure, ItemApiResponseModel>> getAllItemsById(String id);
 }

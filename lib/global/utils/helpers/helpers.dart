@@ -241,10 +241,12 @@ class Helpers {
   }
 
   static bool checkPassword(String inputPassword, String storedHashedPassword) {
-    print(inputPassword);
-    print(storedHashedPassword);
     String hashedInputPassword = hashPassword(inputPassword);
     return hashedInputPassword == storedHashedPassword;
+  }
+
+  static double taxPrice(double taxPercent, double price) {
+    return (price + (price * (taxPercent / 100)));
   }
 }
 

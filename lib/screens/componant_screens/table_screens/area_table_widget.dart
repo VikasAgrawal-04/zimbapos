@@ -24,7 +24,8 @@ class AreaTablesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -36,6 +37,7 @@ class AreaTablesWidget extends StatelessWidget {
         SizedBox(
           width: 100.w,
           child: DataTable(
+            headingTextStyle: KTextStyles.kTitle,
             columns: [
               const DataColumn(
                 label: Text('Name'),
@@ -54,7 +56,10 @@ class AreaTablesWidget extends StatelessWidget {
                 .map(
                   (e) => DataRow(
                     cells: [
-                      DataCell(Text(e.tableName.toString())),
+                      DataCell(Text(
+                        e.tableName.toString(),
+                        style: KTextStyles.kSubtitle,
+                      )),
                       DataCell(
                         Switch.adaptive(
                           value: e.isActive as bool,
@@ -88,6 +93,14 @@ class AreaTablesWidget extends StatelessWidget {
                 .toList(),
           ),
         ),
+        tables.isEmpty
+            ? Center(
+                child: Text(
+                  "No tables added for this area",
+                  style: KTextStyles.kSubtitle,
+                ),
+              )
+            : const SizedBox(),
       ],
     );
   }

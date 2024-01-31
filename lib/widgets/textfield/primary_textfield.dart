@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 
 class PrimaryTextField extends StatelessWidget {
@@ -44,18 +45,31 @@ class PrimaryTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
-          labelText: hintText,
-          alignLabelWithHint: true,
-          hintText: insideHintText,
-          hintStyle: KTextStyles.kTitle,
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black)),
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black))),
+        fillColor: Colors.grey.shade200,
+        filled: true,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        labelText: hintText,
+        alignLabelWithHint: true,
+        hintText: insideHintText,
+        hintStyle: KTextStyles.kTitle,
+        border: OutlineInputBorder(
+          // borderSide:
+          //     const BorderSide(width: 18, color: Colors.white),
+          borderRadius: BorderRadius.circular(14.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            width: 2,
+            color: KColors.buttonColor,
+          ),
+          borderRadius: BorderRadius.circular(14.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(width: 2, color: Colors.white),
+          borderRadius: BorderRadius.circular(14.0),
+        ),
+      ),
     );
   }
 }

@@ -13,7 +13,23 @@ class ItemApiRepoImpl implements ItemApiRepo {
     try {
       final response =
           await Helpers.sendRequest(RequestType.get, EndPoints.getAllItems);
-      print(response?['data']);
+      return Right(ItemApiResponseModel.fromJson(response ?? {}));
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ItemApiResponseModel>> getAllItemsById(
+      String id) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.get, EndPoints.getItemsByGroupId,
+          queryParams: {"itemGroupId": id});
       return Right(ItemApiResponseModel.fromJson(response ?? {}));
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

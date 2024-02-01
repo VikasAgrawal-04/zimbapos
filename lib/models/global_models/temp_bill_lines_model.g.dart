@@ -37,24 +37,24 @@ const TempBillLinesSchema = CollectionSchema(
       name: r'discountPercent',
       type: IsarType.double,
     ),
-    r'hashCode': PropertySchema(
-      id: 4,
-      name: r'hashCode',
-      type: IsarType.long,
-    ),
     r'itemGroupId': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'itemGroupId',
       type: IsarType.double,
     ),
     r'itemId': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'itemId',
       type: IsarType.string,
     ),
     r'itemName': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'itemName',
+      type: IsarType.string,
+    ),
+    r'kotId': PropertySchema(
+      id: 7,
+      name: r'kotId',
       type: IsarType.string,
     ),
     r'lineId': PropertySchema(
@@ -153,6 +153,12 @@ int _tempBillLinesEstimateSize(
     }
   }
   {
+    final value = object.kotId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.lineId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -183,10 +189,10 @@ void _tempBillLinesSerialize(
   writer.writeString(offsets[1], object.comment);
   writer.writeDouble(offsets[2], object.discountAmount);
   writer.writeDouble(offsets[3], object.discountPercent);
-  writer.writeLong(offsets[4], object.hashCode);
-  writer.writeDouble(offsets[5], object.itemGroupId);
-  writer.writeString(offsets[6], object.itemId);
-  writer.writeString(offsets[7], object.itemName);
+  writer.writeDouble(offsets[4], object.itemGroupId);
+  writer.writeString(offsets[5], object.itemId);
+  writer.writeString(offsets[6], object.itemName);
+  writer.writeString(offsets[7], object.kotId);
   writer.writeString(offsets[8], object.lineId);
   writer.writeLong(offsets[9], object.linePosition);
   writer.writeDouble(offsets[10], object.lineTotal);
@@ -211,9 +217,10 @@ TempBillLines _tempBillLinesDeserialize(
     discountAmount: reader.readDoubleOrNull(offsets[2]),
     discountPercent: reader.readDoubleOrNull(offsets[3]),
     id: id,
-    itemGroupId: reader.readDoubleOrNull(offsets[5]),
-    itemId: reader.readStringOrNull(offsets[6]),
-    itemName: reader.readStringOrNull(offsets[7]),
+    itemGroupId: reader.readDoubleOrNull(offsets[4]),
+    itemId: reader.readStringOrNull(offsets[5]),
+    itemName: reader.readStringOrNull(offsets[6]),
+    kotId: reader.readStringOrNull(offsets[7]),
     lineId: reader.readStringOrNull(offsets[8]),
     linePosition: reader.readLongOrNull(offsets[9]),
     lineTotal: reader.readDoubleOrNull(offsets[10]),
@@ -244,9 +251,9 @@ P _tempBillLinesDeserializeProp<P>(
     case 3:
       return (reader.readDoubleOrNull(offset)) as P;
     case 4:
-      return (reader.readLong(offset)) as P;
-    case 5:
       return (reader.readDoubleOrNull(offset)) as P;
+    case 5:
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
@@ -848,62 +855,6 @@ extension TempBillLinesQueryFilter
     });
   }
 
-  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
-      hashCodeEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
-      hashCodeGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
-      hashCodeLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
-      hashCodeBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hashCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -1345,6 +1296,160 @@ extension TempBillLinesQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'itemName',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'kotId',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'kotId',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'kotId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'kotId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'kotId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'kotId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'kotId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'kotId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'kotId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'kotId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'kotId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      kotIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'kotId',
         value: '',
       ));
     });
@@ -2441,19 +2546,6 @@ extension TempBillLinesQuerySortBy
     });
   }
 
-  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> sortByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy>
-      sortByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> sortByItemGroupId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'itemGroupId', Sort.asc);
@@ -2489,6 +2581,18 @@ extension TempBillLinesQuerySortBy
       sortByItemNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'itemName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> sortByKotId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kotId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> sortByKotIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kotId', Sort.desc);
     });
   }
 
@@ -2676,19 +2780,6 @@ extension TempBillLinesQuerySortThenBy
     });
   }
 
-  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> thenByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy>
-      thenByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -2736,6 +2827,18 @@ extension TempBillLinesQuerySortThenBy
       thenByItemNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'itemName', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> thenByKotId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kotId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterSortBy> thenByKotIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'kotId', Sort.desc);
     });
   }
 
@@ -2899,12 +3002,6 @@ extension TempBillLinesQueryWhereDistinct
     });
   }
 
-  QueryBuilder<TempBillLines, TempBillLines, QDistinct> distinctByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hashCode');
-    });
-  }
-
   QueryBuilder<TempBillLines, TempBillLines, QDistinct>
       distinctByItemGroupId() {
     return QueryBuilder.apply(this, (query) {
@@ -2923,6 +3020,13 @@ extension TempBillLinesQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'itemName', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QDistinct> distinctByKotId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'kotId', caseSensitive: caseSensitive);
     });
   }
 
@@ -3027,12 +3131,6 @@ extension TempBillLinesQueryProperty
     });
   }
 
-  QueryBuilder<TempBillLines, int, QQueryOperations> hashCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hashCode');
-    });
-  }
-
   QueryBuilder<TempBillLines, double?, QQueryOperations> itemGroupIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'itemGroupId');
@@ -3048,6 +3146,12 @@ extension TempBillLinesQueryProperty
   QueryBuilder<TempBillLines, String?, QQueryOperations> itemNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'itemName');
+    });
+  }
+
+  QueryBuilder<TempBillLines, String?, QQueryOperations> kotIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'kotId');
     });
   }
 

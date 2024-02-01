@@ -33,25 +33,25 @@ const TempBillHeaderModelSchema = CollectionSchema(
       name: r'customerId',
       type: IsarType.double,
     ),
-    r'hashCode': PropertySchema(
-      id: 3,
-      name: r'hashCode',
-      type: IsarType.long,
-    ),
     r'isBillPrinted': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'isBillPrinted',
       type: IsarType.bool,
     ),
     r'outletId': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'outletId',
       type: IsarType.long,
     ),
     r'pax': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'pax',
       type: IsarType.double,
+    ),
+    r'recNo': PropertySchema(
+      id: 6,
+      name: r'recNo',
+      type: IsarType.long,
     ),
     r'roundOffAmount': PropertySchema(
       id: 7,
@@ -166,10 +166,10 @@ void _tempBillHeaderModelSerialize(
   writer.writeString(offsets[0], object.billId);
   writer.writeString(offsets[1], object.billStartDateTime);
   writer.writeDouble(offsets[2], object.customerId);
-  writer.writeLong(offsets[3], object.hashCode);
-  writer.writeBool(offsets[4], object.isBillPrinted);
-  writer.writeLong(offsets[5], object.outletId);
-  writer.writeDouble(offsets[6], object.pax);
+  writer.writeBool(offsets[3], object.isBillPrinted);
+  writer.writeLong(offsets[4], object.outletId);
+  writer.writeDouble(offsets[5], object.pax);
+  writer.writeLong(offsets[6], object.recNo);
   writer.writeDouble(offsets[7], object.roundOffAmount);
   writer.writeDouble(offsets[8], object.serviceChargeAmount);
   writer.writeString(offsets[9], object.tableId);
@@ -193,9 +193,10 @@ TempBillHeaderModel _tempBillHeaderModelDeserialize(
     billStartDateTime: reader.readStringOrNull(offsets[1]),
     customerId: reader.readDoubleOrNull(offsets[2]),
     id: id,
-    isBillPrinted: reader.readBoolOrNull(offsets[4]),
-    outletId: reader.readLongOrNull(offsets[5]),
-    pax: reader.readDoubleOrNull(offsets[6]),
+    isBillPrinted: reader.readBoolOrNull(offsets[3]),
+    outletId: reader.readLongOrNull(offsets[4]),
+    pax: reader.readDoubleOrNull(offsets[5]),
+    recNo: reader.readLongOrNull(offsets[6]),
     roundOffAmount: reader.readDoubleOrNull(offsets[7]),
     serviceChargeAmount: reader.readDoubleOrNull(offsets[8]),
     tableId: reader.readStringOrNull(offsets[9]),
@@ -224,13 +225,13 @@ P _tempBillHeaderModelDeserializeProp<P>(
     case 2:
       return (reader.readDoubleOrNull(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
-    case 4:
       return (reader.readBoolOrNull(offset)) as P;
-    case 5:
+    case 4:
       return (reader.readLongOrNull(offset)) as P;
-    case 6:
+    case 5:
       return (reader.readDoubleOrNull(offset)) as P;
+    case 6:
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
       return (reader.readDoubleOrNull(offset)) as P;
     case 8:
@@ -745,62 +746,6 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hashCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1038,6 +983,80 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
         upper: upper,
         includeUpper: includeUpper,
         epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'recNo',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'recNo',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'recNo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'recNo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'recNo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'recNo',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2144,20 +2163,6 @@ extension TempBillHeaderModelQuerySortBy
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      sortByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      sortByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
       sortByIsBillPrinted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isBillPrinted', Sort.asc);
@@ -2196,6 +2201,20 @@ extension TempBillHeaderModelQuerySortBy
       sortByPaxDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pax', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      sortByRecNo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      sortByRecNoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.desc);
     });
   }
 
@@ -2385,20 +2404,6 @@ extension TempBillHeaderModelQuerySortThenBy
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      thenByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      thenByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
       thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -2451,6 +2456,20 @@ extension TempBillHeaderModelQuerySortThenBy
       thenByPaxDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pax', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      thenByRecNo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      thenByRecNoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.desc);
     });
   }
 
@@ -2620,13 +2639,6 @@ extension TempBillHeaderModelQueryWhereDistinct
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
-      distinctByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hashCode');
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
       distinctByIsBillPrinted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isBillPrinted');
@@ -2644,6 +2656,13 @@ extension TempBillHeaderModelQueryWhereDistinct
       distinctByPax() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pax');
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
+      distinctByRecNo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'recNo');
     });
   }
 
@@ -2747,12 +2766,6 @@ extension TempBillHeaderModelQueryProperty
     });
   }
 
-  QueryBuilder<TempBillHeaderModel, int, QQueryOperations> hashCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hashCode');
-    });
-  }
-
   QueryBuilder<TempBillHeaderModel, bool?, QQueryOperations>
       isBillPrintedProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -2769,6 +2782,12 @@ extension TempBillHeaderModelQueryProperty
   QueryBuilder<TempBillHeaderModel, double?, QQueryOperations> paxProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pax');
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, int?, QQueryOperations> recNoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'recNo');
     });
   }
 

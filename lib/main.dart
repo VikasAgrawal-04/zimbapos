@@ -69,7 +69,6 @@ class MyApp extends StatelessWidget {
                 )),
               );
             } else {
-              debugPrint('got the path');
               return MultiBlocProvider(
                 providers: [
                   BlocProvider(
@@ -81,10 +80,6 @@ class MyApp extends StatelessWidget {
                   BlocProvider(
                       create: (context) => CategoryScreenCubit()..init())
                 ],
-                // create: (context) => DatabaseCubit(
-                //   snapshot.data!.directory,
-                //   snapshot.data!.outletId,
-                // ),
                 child: BlocBuilder<DatabaseCubit, IsarService?>(
                   builder: (context, state) {
                     Server(context: context);

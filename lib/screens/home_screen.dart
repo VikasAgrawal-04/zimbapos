@@ -402,6 +402,11 @@ List<HomeShortcutModel> screenList = [
     path: AppScreen.itemGroupScreen.path,
     userId: '123123',
   ),
+  HomeShortcutModel(
+    title: 'Cards Screen',
+    path: AppScreen.cardListScreen.path,
+    userId: '123123',
+  ),
 ];
 
 // class Body extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
+import 'package:zimbapos/models/global_models/card_model.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/discount_single_model.dart';
@@ -21,6 +22,8 @@ import 'package:zimbapos/screens/componant_screens/Items_screen/items_list_scree
 import 'package:zimbapos/screens/componant_screens/area_screen/areas_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/create_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
+import 'package:zimbapos/screens/componant_screens/card_screens/card_list_screen.dart';
+import 'package:zimbapos/screens/componant_screens/card_screens/edit_card_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
@@ -63,6 +66,7 @@ import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 
+import '../../screens/componant_screens/card_screens/create_card_screen.dart';
 import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
@@ -506,6 +510,33 @@ final List<GoRoute> routerList = [
       } else {
         return UpdateSingleDiscScreen(
           item: DiscountModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+
+  //card list
+  GoRoute(
+    name: AppScreen.cardListScreen.name,
+    path: AppScreen.cardListScreen.path,
+    builder: (context, state) => const CardListScreen(),
+  ),
+  // create card
+  GoRoute(
+    name: AppScreen.createCardScreen.name,
+    path: AppScreen.createCardScreen.path,
+    builder: (context, state) => const CreateCardScreen(),
+  ),
+  //edit card
+  GoRoute(
+    name: AppScreen.editCardScreen.name,
+    path: AppScreen.editCardScreen.path,
+    builder: (context, state) {
+      if (state.extra is CardModel) {
+        return EditCardScreen(item: state.extra as CardModel);
+      } else {
+        return EditCardScreen(
+          item: CardModel.fromJson(state.extra as Map<String, dynamic>),
         );
       }
     },

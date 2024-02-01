@@ -11,6 +11,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
@@ -69,11 +70,18 @@ class MyApp extends StatelessWidget {
               );
             } else {
               debugPrint('got the path');
-              return BlocProvider(
-                create: (context) => DatabaseCubit(
-                  snapshot.data!.directory,
-                  snapshot.data!.outletId,
-                ),
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                    create: (context) => DatabaseCubit(
+                      snapshot.data!.directory,
+                      snapshot.data!.outletId,
+                    ),
+                  ),
+                  BlocProvider(
+                    create: (context) => DeviceControlCubit(),
+                  ),
+                ],
                 child: BlocBuilder<DatabaseCubit, IsarService?>(
                   builder: (context, state) {
                     Server(context: context);

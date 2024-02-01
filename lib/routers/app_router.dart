@@ -10,7 +10,6 @@ class AppRouter {
     routes: routerList,
     redirect: (context, state) {
       final databaseCubit = context.read<DatabaseCubit>();
-      //Check if system have the OutletID
       bool outletcheck = databaseCubit.outletId == null;
       if (outletcheck) {
         return AppScreen.mainGroupScreen.path;

@@ -9,10 +9,12 @@ class HomeCubit extends Cubit<HomeState> {
   Timer clockTimer = Timer.periodic(Duration.zero, (timer) {});
   Timer blinkingTimer = Timer.periodic(Duration.zero, (timer) {});
   HomeCubit()
-      : super(HomeState(
-            initialDateTime: DateTime.now(),
-            animationValue: 1.0,
-            ipAddress: '....')) {
+      : super(
+          HomeState(
+              initialDateTime: DateTime.now(),
+              animationValue: 1.0,
+              ipAddress: '....'),
+        ) {
     init();
   }
 

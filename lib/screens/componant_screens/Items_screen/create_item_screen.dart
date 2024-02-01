@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
-
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/kcolors.dart';
 import '../../../helpers/validators.dart';

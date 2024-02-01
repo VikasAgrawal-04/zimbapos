@@ -13,8 +13,11 @@ class HomeState extends Equatable {
   @override
   List<Object?> get props => [initialDateTime, animationValue, ipAddress];
 
-  HomeState copyWith(
-      {DateTime? initialDateTime, double? animationValue, String? ipAddress}) {
+  HomeState copyWith({
+    DateTime? initialDateTime,
+    double? animationValue,
+    String? ipAddress,
+  }) {
     return HomeState(
         initialDateTime: initialDateTime ?? this.initialDateTime,
         animationValue: animationValue ?? this.animationValue,

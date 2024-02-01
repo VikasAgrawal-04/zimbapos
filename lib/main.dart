@@ -12,11 +12,15 @@ import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
+import 'package:zimbapos/bloc/global_cubits/device_control_state.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
+import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
+import 'package:zimbapos/routers/utils/go_router_functions.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 
 import 'constants/kcolors.dart';
 
@@ -40,73 +44,81 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  Future<FutureObject> getObject() async {
-    final MySecureStorage storage = MySecureStorage();
-    Directory dir = await getApplicationCacheDirectory();
-    String? outletId = await storage.getOutletID();
-    return FutureObject(directory: dir, outletId: outletId);
-  }
 
   @override
   Widget build(BuildContext context) {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
-        return FutureBuilder<FutureObject>(
-          future: getObject(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  colorScheme:
-                      ColorScheme.fromSeed(seedColor: KColors.buttonColor),
-                  fontFamily: 'PJS',
-                  useMaterial3: true,
-                ),
-                home: const Scaffold(
-                    body: Center(
-                  child: CircularProgressIndicator.adaptive(),
-                )),
-              );
-            } else {
-              debugPrint('got the path');
-              return MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                    create: (context) => DatabaseCubit(
-                      snapshot.data!.directory,
-                      snapshot.data!.outletId,
+        return BlocProvider(
+          create: (context) => DeviceControlCubit(),
+          child: BlocConsumer<DeviceControlCubit, DeviceState>(
+            listener: (context, state) {
+              // if (state is IncompleteInformation) {
+              //   showDialog(
+              //     context: context,
+              //     builder: (context) => AlertDialog(title: Text(state.message)),
+              //   );
+              // }
+            },
+            builder: (context, state) {
+              if (state is FinalDeviceState) {
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => DatabaseCubit(
+                        state.directory,
+                        state.outletId,
+                      ),
                     ),
+                  ],
+                  child: BlocBuilder<DatabaseCubit, IsarService?>(
+                    builder: (context, state) {
+                      Server(context: context);
+                      if (state != null) {}
+                      return MaterialApp.router(
+                        debugShowCheckedModeBanner: false,
+                        routerConfig: AppRouter.router,
+                        builder: EasyLoading.init(),
+                      );
+                    },
                   ),
-                  BlocProvider(
-                    create: (context) => DeviceControlCubit(),
+                );
+              } else {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  theme: ThemeData(
+                    colorScheme:
+                        ColorScheme.fromSeed(seedColor: KColors.buttonColor),
+                    fontFamily: 'PJS',
+                    useMaterial3: true,
                   ),
-                ],
-                child: BlocBuilder<DatabaseCubit, IsarService?>(
-                  builder: (context, state) {
-                    Server(context: context);
-                    if (state != null) {}
-                    return MaterialApp.router(
-                      debugShowCheckedModeBanner: false,
-                      routerConfig: AppRouter.router,
-                      builder: EasyLoading.init(),
-                    );
-                  },
-                ),
-              );
-            }
-          },
+                  home: Scaffold(
+                      body: Center(
+                    child: (state is IncompleteInformation)
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(state.message),
+                              ElevatedButton(
+                                onPressed: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const InitialSetUpScreen(),
+                                  ),
+                                ),
+                                child: const Text('Go to Outlet Setup'),
+                              )
+                            ],
+                          )
+                        : const CircularProgressIndicator.adaptive(),
+                  )),
+                );
+              }
+            },
+          ),
         );
       },
     );
   }
-}
-
-class FutureObject {
-  final Directory directory;
-  final String? outletId;
-  FutureObject({
-    required this.directory,
-    required this.outletId,
-  });
 }

@@ -40,7 +40,7 @@ const TempBillLinesSchema = CollectionSchema(
     r'itemGroupId': PropertySchema(
       id: 4,
       name: r'itemGroupId',
-      type: IsarType.double,
+      type: IsarType.string,
     ),
     r'itemId': PropertySchema(
       id: 5,
@@ -75,7 +75,7 @@ const TempBillLinesSchema = CollectionSchema(
     r'mainGroupId': PropertySchema(
       id: 11,
       name: r'mainGroupId',
-      type: IsarType.double,
+      type: IsarType.string,
     ),
     r'priceExTax': PropertySchema(
       id: 12,
@@ -141,6 +141,12 @@ int _tempBillLinesEstimateSize(
     }
   }
   {
+    final value = object.itemGroupId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.itemId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -160,6 +166,12 @@ int _tempBillLinesEstimateSize(
   }
   {
     final value = object.lineId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.mainGroupId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -189,14 +201,14 @@ void _tempBillLinesSerialize(
   writer.writeString(offsets[1], object.comment);
   writer.writeDouble(offsets[2], object.discountAmount);
   writer.writeDouble(offsets[3], object.discountPercent);
-  writer.writeDouble(offsets[4], object.itemGroupId);
+  writer.writeString(offsets[4], object.itemGroupId);
   writer.writeString(offsets[5], object.itemId);
   writer.writeString(offsets[6], object.itemName);
   writer.writeString(offsets[7], object.kotId);
   writer.writeString(offsets[8], object.lineId);
   writer.writeLong(offsets[9], object.linePosition);
   writer.writeDouble(offsets[10], object.lineTotal);
-  writer.writeDouble(offsets[11], object.mainGroupId);
+  writer.writeString(offsets[11], object.mainGroupId);
   writer.writeDouble(offsets[12], object.priceExTax);
   writer.writeDouble(offsets[13], object.priceWithTax);
   writer.writeLong(offsets[14], object.quantity);
@@ -217,14 +229,14 @@ TempBillLines _tempBillLinesDeserialize(
     discountAmount: reader.readDoubleOrNull(offsets[2]),
     discountPercent: reader.readDoubleOrNull(offsets[3]),
     id: id,
-    itemGroupId: reader.readDoubleOrNull(offsets[4]),
+    itemGroupId: reader.readStringOrNull(offsets[4]),
     itemId: reader.readStringOrNull(offsets[5]),
     itemName: reader.readStringOrNull(offsets[6]),
     kotId: reader.readStringOrNull(offsets[7]),
     lineId: reader.readStringOrNull(offsets[8]),
     linePosition: reader.readLongOrNull(offsets[9]),
     lineTotal: reader.readDoubleOrNull(offsets[10]),
-    mainGroupId: reader.readDoubleOrNull(offsets[11]),
+    mainGroupId: reader.readStringOrNull(offsets[11]),
     priceExTax: reader.readDoubleOrNull(offsets[12]),
     priceWithTax: reader.readDoubleOrNull(offsets[13]),
     quantity: reader.readLongOrNull(offsets[14]),
@@ -251,7 +263,7 @@ P _tempBillLinesDeserializeProp<P>(
     case 3:
       return (reader.readDoubleOrNull(offset)) as P;
     case 4:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
@@ -265,7 +277,7 @@ P _tempBillLinesDeserializeProp<P>(
     case 10:
       return (reader.readDoubleOrNull(offset)) as P;
     case 11:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 12:
       return (reader.readDoubleOrNull(offset)) as P;
     case 13:
@@ -929,57 +941,57 @@ extension TempBillLinesQueryFilter
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       itemGroupIdEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'itemGroupId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       itemGroupIdGreaterThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'itemGroupId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       itemGroupIdLessThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'itemGroupId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       itemGroupIdBetween(
-    double? lower,
-    double? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -988,7 +1000,77 @@ extension TempBillLinesQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      itemGroupIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'itemGroupId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      itemGroupIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'itemGroupId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      itemGroupIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'itemGroupId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      itemGroupIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'itemGroupId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      itemGroupIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'itemGroupId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      itemGroupIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'itemGroupId',
+        value: '',
       ));
     });
   }
@@ -1787,57 +1869,57 @@ extension TempBillLinesQueryFilter
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       mainGroupIdEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'mainGroupId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       mainGroupIdGreaterThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'mainGroupId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       mainGroupIdLessThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'mainGroupId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
       mainGroupIdBetween(
-    double? lower,
-    double? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1846,7 +1928,77 @@ extension TempBillLinesQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      mainGroupIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'mainGroupId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      mainGroupIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'mainGroupId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      mainGroupIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'mainGroupId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      mainGroupIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'mainGroupId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      mainGroupIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'mainGroupId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillLines, TempBillLines, QAfterFilterCondition>
+      mainGroupIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'mainGroupId',
+        value: '',
       ));
     });
   }
@@ -3002,10 +3154,10 @@ extension TempBillLinesQueryWhereDistinct
     });
   }
 
-  QueryBuilder<TempBillLines, TempBillLines, QDistinct>
-      distinctByItemGroupId() {
+  QueryBuilder<TempBillLines, TempBillLines, QDistinct> distinctByItemGroupId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'itemGroupId');
+      return query.addDistinctBy(r'itemGroupId', caseSensitive: caseSensitive);
     });
   }
 
@@ -3050,10 +3202,10 @@ extension TempBillLinesQueryWhereDistinct
     });
   }
 
-  QueryBuilder<TempBillLines, TempBillLines, QDistinct>
-      distinctByMainGroupId() {
+  QueryBuilder<TempBillLines, TempBillLines, QDistinct> distinctByMainGroupId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'mainGroupId');
+      return query.addDistinctBy(r'mainGroupId', caseSensitive: caseSensitive);
     });
   }
 
@@ -3131,7 +3283,7 @@ extension TempBillLinesQueryProperty
     });
   }
 
-  QueryBuilder<TempBillLines, double?, QQueryOperations> itemGroupIdProperty() {
+  QueryBuilder<TempBillLines, String?, QQueryOperations> itemGroupIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'itemGroupId');
     });
@@ -3173,7 +3325,7 @@ extension TempBillLinesQueryProperty
     });
   }
 
-  QueryBuilder<TempBillLines, double?, QQueryOperations> mainGroupIdProperty() {
+  QueryBuilder<TempBillLines, String?, QQueryOperations> mainGroupIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'mainGroupId');
     });

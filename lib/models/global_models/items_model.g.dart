@@ -115,6 +115,12 @@ const ItemsModelSchema = CollectionSchema(
       name: r'taxDetails',
       target: r'TaxModel',
       single: true,
+    ),
+    r'mainGroupDetails': LinkSchema(
+      id: 269875758796472009,
+      name: r'mainGroupDetails',
+      target: r'MainGroupModel',
+      single: true,
     )
   },
   embeddedSchemas: {},
@@ -291,13 +297,15 @@ Id _itemsModelGetId(ItemsModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _itemsModelGetLinks(ItemsModel object) {
-  return [object.taxDetails];
+  return [object.taxDetails, object.mainGroupDetails];
 }
 
 void _itemsModelAttach(IsarCollection<dynamic> col, Id id, ItemsModel object) {
   object.id = id;
   object.taxDetails
       .attach(col, col.isar.collection<TaxModel>(), r'taxDetails', id);
+  object.mainGroupDetails.attach(
+      col, col.isar.collection<MainGroupModel>(), r'mainGroupDetails', id);
 }
 
 extension ItemsModelQueryWhereSort
@@ -2156,6 +2164,20 @@ extension ItemsModelQueryLinks
       taxDetailsIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(r'taxDetails', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition> mainGroupDetails(
+      FilterQuery<MainGroupModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'mainGroupDetails');
+    });
+  }
+
+  QueryBuilder<ItemsModel, ItemsModel, QAfterFilterCondition>
+      mainGroupDetailsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'mainGroupDetails', 0, true, 0, true);
     });
   }
 }

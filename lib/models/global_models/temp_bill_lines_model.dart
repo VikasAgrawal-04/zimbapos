@@ -21,8 +21,8 @@ class TempBillLines {
   double? discountAmount;
   double? lineTotal;
   String? kotId;
-  double? itemGroupId;
-  double? mainGroupId;
+  String? itemGroupId;
+  String? mainGroupId;
 
   TempBillLines(
       {this.id = Isar.autoIncrement,
@@ -62,8 +62,8 @@ class TempBillLines {
       double? discountPercent,
       double? discountAmount,
       double? lineTotal,
-      double? itemGroupId,
-      double? mainGroupId,
+      String? itemGroupId,
+      String? mainGroupId,
       String? kotId}) {
     return TempBillLines(
         id: id ?? this.id,
@@ -139,9 +139,9 @@ class TempBillLines {
             : null,
         lineTotal: map['lineTotal'] != null ? map['lineTotal'] as double : null,
         itemGroupId:
-            map['itemGroupId'] != null ? map['itemGroupId'] as double : null,
+            map['itemGroupId'] != null ? map['itemGroupId'] as String : null,
         mainGroupId:
-            map['mainGroupId'] != null ? map['mainGroupId'] as double : null,
+            map['mainGroupId'] != null ? map['mainGroupId'] as String : null,
         kotId: map['kotId'] != null ? map['kotId'] as String : null);
   }
 }

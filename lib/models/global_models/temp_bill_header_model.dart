@@ -8,7 +8,7 @@ part 'temp_bill_header_model.g.dart';
 class TempBillHeaderModel {
   Id id = Isar.autoIncrement;
   String? billId;
-  int? outletId;
+  String? outletId;
   String? terminalId;
   String? tableId;
   String? billStartDateTime;
@@ -19,8 +19,8 @@ class TempBillHeaderModel {
   double? totalVatAmount;
   double? roundOffAmount;
   double? totalAmount;
-  double? customerId;
-  double? pax;
+  String? customerId;
+  int? pax;
   String? waiterId;
   bool? isBillPrinted;
   int? recNo;
@@ -48,7 +48,7 @@ class TempBillHeaderModel {
   TempBillHeaderModel copyWith(
       {Id? id,
       String? billId,
-      int? outletId,
+      String? outletId,
       String? terminalId,
       String? tableId,
       String? billStartDateTime,
@@ -59,8 +59,8 @@ class TempBillHeaderModel {
       double? totalVatAmount,
       double? roundOffAmount,
       double? totalAmount,
-      double? customerId,
-      double? pax,
+      String? customerId,
+      int? pax,
       String? waiterId,
       bool? isBillPrinted,
       int? recNo}) {
@@ -112,7 +112,7 @@ class TempBillHeaderModel {
     return TempBillHeaderModel(
       id: map['id'] ?? Isar.autoIncrement,
       billId: map['billId'] != null ? map['billId'] as String : null,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       terminalId:
           map['terminalId'] != null ? map['terminalId'] as String : null,
       tableId: map['tableId'] != null ? map['tableId'] as String : null,
@@ -139,8 +139,8 @@ class TempBillHeaderModel {
       totalAmount:
           map['totalAmount'] != null ? map['totalAmount'] as double : null,
       customerId:
-          map['customerId'] != null ? map['customerId'] as double : null,
-      pax: map['pax'] != null ? map['pax'] as double : null,
+          map['customerId'] != null ? map['customerId'] as String : null,
+      pax: map['pax'] != null ? map['pax'] as int : null,
       waiterId: map['waiterId'] != null ? map['waiterId'] as String : null,
       isBillPrinted:
           map['isBillPrinted'] != null ? map['isBillPrinted'] as bool : null,

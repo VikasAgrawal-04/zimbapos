@@ -35,90 +35,90 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<CategoryScreenCubit>(
-      create: (context) => CategoryScreenCubit(),
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Categories',
-              style: KTextStyles.kBlackAppBarHeader,
-            ),
-            actions: [
-              TextButton.icon(
-                onPressed: () => context.push(AppScreen.createCategory.path),
-                label: const Text('Add Category'),
-                icon: const Icon(Icons.add),
-              ),
-            ],
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Categories',
+            style: KTextStyles.kBlackAppBarHeader,
           ),
-          body: BlocBuilder<CategoryScreenCubit, CategoryScreenState>(
-              builder: ((context, state) {
-            final data = state.categories;
-            if (state.status == Status.loading) {
-              return const MyLoadingIndicator();
-            }
-            if (data.isEmpty) {
-              return const Center(
-                child: Text('No Categories'),
-              );
-            } else {
-              return SizedBox(
-                width: 100.w,
-                child: DataTable(
-                  headingTextStyle: KTextStyles.kTitle,
-                  columns: const [
-                    DataColumn(
-                      label: Text('Name'),
-                    ),
-                    DataColumn(
-                      label: Text('Active'),
-                    ),
-                    DataColumn(
-                      label: Text('Actions'),
-                    ),
-                  ],
-                  rows: data
-                      .map(
-                        (e) => DataRow(
-                          cells: [
-                            DataCell(Text(
-                              e.categoryName.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(
-                              Switch.adaptive(
-                                value: e.isActive as bool,
-                                onChanged: (va) =>
-                                    activeDeactivateCategory(e.id, va),
-                              ),
+          actions: [
+            TextButton.icon(
+              onPressed: () => context.push(AppScreen.createCategory.path),
+              label: const Text('Add Category'),
+              icon: const Icon(Icons.add),
+            ),
+          ],
+        ),
+        body: BlocBuilder<CategoryScreenCubit, CategoryScreenState>(
+            builder: ((context, state) {
+          final data = state.categories;
+          if (state.status == Status.loading) {
+            return const MyLoadingIndicator();
+          }
+          if (data.isEmpty) {
+            return const Center(
+              child: Text('No Categories'),
+            );
+          } else {
+            return SizedBox(
+              width: 100.w,
+              child: DataTable(
+                headingTextStyle: KTextStyles.kTitle,
+                columns: const [
+                  DataColumn(
+                    label: Text('Name'),
+                  ),
+                  DataColumn(
+                    label: Text('Active'),
+                  ),
+                  DataColumn(
+                    label: Text('Actions'),
+                  ),
+                ],
+                rows: data
+                    .map(
+                      (e) => DataRow(
+                        cells: [
+                          DataCell(Text(
+                            e.categoryName.toString(),
+                            style: KTextStyles.kSubtitle,
+                          )),
+                          DataCell(
+                            Switch.adaptive(
+                              value: e.isActive as bool,
+                              onChanged: (va) {
+                                context
+                                    .read<CategoryScreenCubit>()
+                                    .updateCategory(e, val: va);
+                              },
                             ),
-                            DataCell(
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editCategoryFn(model: e),
-                                    icon: const Icon(Icons.edit),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  IconButton(
-                                    onPressed: () => context
-                                        .read<CategoryScreenCubit>()
-                                        .deleteCategory(
-                                            e.categoryid.toString()),
-                                    icon: const Icon(CupertinoIcons.delete),
-                                  )
-                                ],
-                              ),
+                          ),
+                          DataCell(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                IconButton(
+                                  onPressed: () => editCategoryFn(model: e),
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                SizedBox(width: 2.w),
+                                IconButton(
+                                  onPressed: () => context
+                                      .read<CategoryScreenCubit>()
+                                      .deleteCategory(
+                                          e.categoryid.toString()),
+                                  icon: const Icon(CupertinoIcons.delete),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                      .toList(),
-                ),
-              );
-            }
-          }))),
-    );
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList(),
+              ),
+            );
+          }
+        })));
   }
 }

@@ -97,12 +97,12 @@ class Helpers {
           response.statusCode == 401 ||
           response.statusCode == 402) {
         throw ServerException(
-            code: response.statusCode, message: response.data['message']);
+            code: response.statusCode,
+            message: jsonDecode(response.data)['data']);
       } else {
         throw ServerException(
-            message:
-                response.data['message'] ?? response.data['errors']['message'],
-            code: response.statusCode);
+            code: response.statusCode,
+            message: jsonDecode(response.data)['data']);
       }
     } on ServerException catch (e) {
       debugPrint("I go here 2");

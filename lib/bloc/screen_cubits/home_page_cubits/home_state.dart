@@ -5,10 +5,11 @@ class HomeState extends Equatable {
   final double animationValue;
   final String ipAddress;
 
-  const HomeState(
-      {required this.initialDateTime,
-      required this.animationValue,
-      required this.ipAddress});
+  const HomeState({
+    required this.initialDateTime,
+    required this.animationValue,
+    required this.ipAddress,
+  });
 
   @override
   List<Object?> get props => [initialDateTime, animationValue, ipAddress];

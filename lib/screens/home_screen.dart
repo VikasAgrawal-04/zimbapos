@@ -293,22 +293,24 @@ class _HomeScreenState extends State<HomeScreen> {
         //   },
         //   icon: const Icon(Icons.open_in_new_outlined),
         // ),
-        BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
-          return AnimatedOpacity(
-            opacity: state.animationValue,
-            duration: const Duration(milliseconds: 400),
-            child: AnimatedContainer(
-              margin: EdgeInsets.only(right: 4.w),
+        BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            return AnimatedOpacity(
+              opacity: state.animationValue,
               duration: const Duration(milliseconds: 400),
-              width: 10.w,
-              height: 2.5.h,
-              decoration: BoxDecoration(
-                color: KColors.greenBlinkColor,
-                shape: BoxShape.circle,
+              child: AnimatedContainer(
+                margin: EdgeInsets.only(right: 1.w),
+                duration: const Duration(milliseconds: 400),
+                width: 10.w,
+                height: 2.5.h,
+                decoration: BoxDecoration(
+                  color: KColors.greenBlinkColor,
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),
-          );
-        }),
+            );
+          },
+        ),
         BlocBuilder<HomeCubit, HomeState>(builder: (context, state) {
           return Padding(
             padding: EdgeInsets.only(right: 4.w),

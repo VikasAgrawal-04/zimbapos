@@ -15,6 +15,7 @@ class BillRoutes {
     initialiseApi();
   }
   void initialiseApi() {
+    locRoute.get('/get-temp-bill', controller.getBillDetails);
     locRoute.post('/action-temp-bill', controller.createOrUpdateBill);
   }
 }

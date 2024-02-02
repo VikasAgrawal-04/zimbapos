@@ -11,6 +11,34 @@ class BillController {
   final IsarService db;
   BillController(this.db);
 
+  Future<Response> getBillDetails(Request request) async {
+    try {
+      if (request.url.queryParameters.isEmpty) {
+        return badArguments('Please Enter Table Id as a key tableId');
+      }
+      final tableId = request.url.queryParameters['tableId'];
+      if (tableId == null) {
+        return badArguments('Please Enter Table Id as a key tableId');
+      } else {
+        final success = await db.billRepository.getBill(tableId: tableId);
+        if (success.value1 == null) {
+          return okResponse({"bill_header": null, "bill_lines": []});
+        } else {
+          return okResponse({
+            {
+              "bill_header": success.value1?.toMap(),
+              "bill_lines": success.value2.map((e) => e.toMap()).toList()
+            }
+          });
+        }
+      }
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
+    }
+  }
+
   Future<Response> createOrUpdateBill(Request request) async {
     try {
       final decodedData = await utf8

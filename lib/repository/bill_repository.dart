@@ -9,6 +9,29 @@ class BillRepository {
   Isar db;
   BillRepository(this.db);
 
+  Future<Tuple2<TempBillHeaderModel?, List<TempBillLines>>> getBill(
+      {required String tableId}) async {
+    try {
+      final billHeader = db.tempBillHeaderModels
+          .filter()
+          .tableIdEqualTo(tableId)
+          .findFirstSync();
+      if (billHeader == null) {
+        throw IsarError("No Bill Found");
+      } else {
+        final billLines = db.tempBillLines
+            .filter()
+            .billIdEqualTo(billHeader.billId)
+            .findAllSync();
+
+        return Tuple2(billHeader, billLines);
+      }
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return const Tuple2(null, []);
+    }
+  }
+
   Future<Tuple2<bool, String>> createOrUpdateBill(
       {required TempBillHeaderModel header,
       required List<TempBillLines> lines}) async {

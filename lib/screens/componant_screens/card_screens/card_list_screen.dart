@@ -63,6 +63,13 @@ class _CardListScreenState extends State<CardListScreen> {
     );
   }
 
+  actOnCardFn({required CardModel model}) {
+    context.push(
+      AppScreen.cardActionScreen.path,
+      extra: model,
+    );
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -91,24 +98,30 @@ class _CardListScreenState extends State<CardListScreen> {
             Row(
               children: [
                 //search bar
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: PrimaryTextField(
-                    controller: _searchController,
-                    onChanged: (value) {
-                      setState(() {});
-                    },
-                    hintText: "Search by name",
-                    prefixIcon: const Icon(Icons.search),
+                Expanded(
+                  flex: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: PrimaryTextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      hintText: "Search by name",
+                      prefixIcon: const Icon(Icons.search),
+                    ),
                   ),
                 ),
 
                 //void all
-                CustomButton(
-                  text: "Void all",
-                  onPressed: () {
-                    EasyLoading.showToast('Cards voided');
-                  },
+                Expanded(
+                  flex: 1,
+                  child: CustomButton(
+                    text: "Void all",
+                    onPressed: () {
+                      EasyLoading.showToast('Cards voided');
+                    },
+                  ),
                 ),
               ],
             ),
@@ -130,7 +143,7 @@ class _CardListScreenState extends State<CardListScreen> {
 
                   if (filteredList == null || filteredList.isEmpty) {
                     return const Center(
-                      child: Text('No Cards'),
+                      child: Text('No Cards found'),
                     );
                   }
                   if (data == null || data.isEmpty) {
@@ -146,9 +159,9 @@ class _CardListScreenState extends State<CardListScreen> {
                           const DataColumn(
                             label: Text('Card Id'),
                           ),
-                          // const DataColumn(
-                          //   label: Text('Balance decimal'),
-                          // ),
+                          const DataColumn(
+                            label: Text('Balance'),
+                          ),
                           const DataColumn(
                             label: Text('Name'),
                           ),
@@ -175,12 +188,12 @@ class _CardListScreenState extends State<CardListScreen> {
                                       style: KTextStyles.kSubtitle,
                                     ),
                                   ),
-                                  // DataCell(
-                                  //   Text(
-                                  //     e.balanceDecimal.toString(),
-                                  //     style: KTextStyles.kSubtitle,
-                                  //   ),
-                                  // ),
+                                  DataCell(
+                                    Text(
+                                      e.balance.toString(),
+                                      style: KTextStyles.kSubtitle,
+                                    ),
+                                  ),
                                   DataCell(
                                     Text(
                                       e.customerName.toString(),
@@ -210,6 +223,12 @@ class _CardListScreenState extends State<CardListScreen> {
                                             CrossAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
+                                          TextButton(
+                                              onPressed: () {
+                                                actOnCardFn(model: e);
+                                              },
+                                              child: const Text("View")),
+                                          SizedBox(width: 2.w),
                                           IconButton(
                                             onPressed: () =>
                                                 editCardFn(model: e),

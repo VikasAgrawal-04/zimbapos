@@ -20,7 +20,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController cardIdController;
-  late final TextEditingController balanceDecimalController;
+  late final TextEditingController balanceController;
   late final TextEditingController customerNameController;
   late final TextEditingController customerMobileController;
   late final TextEditingController customerEmailController;
@@ -30,17 +30,19 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
   void initState() {
     super.initState();
     cardIdController = TextEditingController();
-    balanceDecimalController = TextEditingController();
+    balanceController = TextEditingController();
     customerNameController = TextEditingController();
     customerMobileController = TextEditingController();
     customerEmailController = TextEditingController();
     outletId = BlocProvider.of<DatabaseCubit>(context).outletId;
+
+    balanceController.text = "0.0";
   }
 
   @override
   void dispose() {
     cardIdController.dispose();
-    balanceDecimalController.dispose();
+    balanceController.dispose();
     customerNameController.dispose();
     customerMobileController.dispose();
     customerEmailController.dispose();
@@ -53,7 +55,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
       CardModel(
         outletId: outletId,
         cardId: int.parse(cardIdController.text),
-        balanceDecimal: int.parse(balanceDecimalController.text),
+        balance: double.parse(balanceController.text),
         customerName: customerNameController.text,
         customerMobile: int.parse(customerMobileController.text),
         customerEmail: customerEmailController.text,
@@ -90,9 +92,10 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   PrimaryTextField(
-                    validator: integerValidator,
-                    hintText: 'Card balance decimal',
-                    controller: balanceDecimalController,
+                    // validator: integerValidator,
+                    enable: false,
+                    hintText: 'Card balance',
+                    controller: balanceController,
                     keyboard: TextInputType.number,
                     onChanged: (value) {},
                   ),

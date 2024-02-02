@@ -15,7 +15,7 @@ class CardLogModel {
   String? actionType;
   String? payMode;
   String? customerName;
-  String? customerMobile;
+  int? customerMobile;
   String? customerEmail;
 
   CardLogModel({

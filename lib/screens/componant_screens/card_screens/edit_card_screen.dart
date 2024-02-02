@@ -24,7 +24,7 @@ class _EditCardScreenState extends State<EditCardScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController cardIdController;
-  late final TextEditingController balanceDecimalController;
+  late final TextEditingController balanceController;
   late final TextEditingController customerNameController;
   late final TextEditingController customerMobileController;
   late final TextEditingController customerEmailController;
@@ -34,14 +34,14 @@ class _EditCardScreenState extends State<EditCardScreen> {
   void initState() {
     super.initState();
     cardIdController = TextEditingController();
-    balanceDecimalController = TextEditingController();
+    balanceController = TextEditingController();
     customerNameController = TextEditingController();
     customerMobileController = TextEditingController();
     customerEmailController = TextEditingController();
     outletId = BlocProvider.of<DatabaseCubit>(context).outletId;
 
     cardIdController.text = widget.item.cardId.toString();
-    balanceDecimalController.text = widget.item.balanceDecimal.toString();
+    balanceController.text = widget.item.balance.toString();
     customerNameController.text = widget.item.customerName.toString();
     customerMobileController.text = widget.item.customerMobile.toString();
     customerEmailController.text = widget.item.customerEmail.toString();
@@ -50,7 +50,7 @@ class _EditCardScreenState extends State<EditCardScreen> {
   @override
   void dispose() {
     cardIdController.dispose();
-    balanceDecimalController.dispose();
+    balanceController.dispose();
     customerNameController.dispose();
     customerMobileController.dispose();
     customerEmailController.dispose();
@@ -64,7 +64,7 @@ class _EditCardScreenState extends State<EditCardScreen> {
         id: widget.item.id,
         outletId: outletId,
         cardId: int.parse(cardIdController.text),
-        balanceDecimal: int.parse(balanceDecimalController.text),
+        balance: double.parse(balanceController.text),
         customerName: customerNameController.text,
         customerMobile: int.parse(customerMobileController.text),
         customerEmail: customerEmailController.text,
@@ -105,9 +105,10 @@ class _EditCardScreenState extends State<EditCardScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   PrimaryTextField(
-                    validator: integerValidator,
-                    hintText: 'Card balance decimal',
-                    controller: balanceDecimalController,
+                    // validator: integerValidator,
+                    enable: false,
+                    hintText: 'Card balance',
+                    controller: balanceController,
                     keyboard: TextInputType.number,
                     onChanged: (value) {},
                   ),

@@ -73,6 +73,7 @@ enum AppScreen {
   cardListScreen,
   createCardScreen,
   editCardScreen,
+  cardActionScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -185,6 +186,8 @@ extension AppScreenExtension on AppScreen {
         return 'Create Card Screen';
       case AppScreen.editCardScreen:
         return 'Edit Card Screen';
+      case AppScreen.cardActionScreen:
+        return 'Card Action Screen';
     }
   }
 
@@ -297,6 +300,8 @@ extension AppScreenExtension on AppScreen {
         return '/create-card-screen';
       case AppScreen.editCardScreen:
         return '/edit-card-screen';
+      case AppScreen.cardActionScreen:
+        return '/card-action-screen';
     }
   }
 }

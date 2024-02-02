@@ -8,7 +8,7 @@ class CardModel {
   String? outletId;
   int? cardId;
   DateTime? createDatetime;
-  int? balanceDecimal;
+  double? balance;
   DateTime? lastLoadedDatetime;
   DateTime? lastUsedDatetime;
   String? customerName;
@@ -22,7 +22,7 @@ class CardModel {
     this.outletId,
     this.cardId,
     this.createDatetime,
-    this.balanceDecimal,
+    this.balance,
     this.lastLoadedDatetime,
     this.lastUsedDatetime,
     this.customerName,
@@ -40,7 +40,7 @@ class CardModel {
       createDatetime: json['createDatetime'] != null
           ? DateTime.parse(json['createDatetime'])
           : null,
-      balanceDecimal: json['balanceDecimal'],
+      balance: json['balance'],
       lastLoadedDatetime: json['lastLoadedDatetime'] != null
           ? DateTime.parse(json['lastLoadedDatetime'])
           : null,
@@ -61,7 +61,7 @@ class CardModel {
       'outletId': outletId,
       'cardId': cardId,
       'createDatetime': createDatetime?.toIso8601String(),
-      'balanceDecimal': balanceDecimal,
+      'balance': balance,
       'lastLoadedDatetime': lastLoadedDatetime?.toIso8601String(),
       'lastUsedDatetime': lastUsedDatetime?.toIso8601String(),
       'customerName': customerName,

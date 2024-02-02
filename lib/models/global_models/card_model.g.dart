@@ -17,10 +17,10 @@ const CardModelSchema = CollectionSchema(
   name: r'CardModel',
   id: -4511307714291515206,
   properties: {
-    r'balanceDecimal': PropertySchema(
+    r'balance': PropertySchema(
       id: 0,
-      name: r'balanceDecimal',
-      type: IsarType.long,
+      name: r'balance',
+      type: IsarType.double,
     ),
     r'cardId': PropertySchema(
       id: 1,
@@ -120,7 +120,7 @@ void _cardModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.balanceDecimal);
+  writer.writeDouble(offsets[0], object.balance);
   writer.writeLong(offsets[1], object.cardId);
   writer.writeDateTime(offsets[2], object.createDatetime);
   writer.writeString(offsets[3], object.customerEmail);
@@ -140,7 +140,7 @@ CardModel _cardModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = CardModel(
-    balanceDecimal: reader.readLongOrNull(offsets[0]),
+    balance: reader.readDoubleOrNull(offsets[0]),
     cardId: reader.readLongOrNull(offsets[1]),
     createDatetime: reader.readDateTimeOrNull(offsets[2]),
     customerEmail: reader.readStringOrNull(offsets[3]),
@@ -164,7 +164,7 @@ P _cardModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
@@ -281,76 +281,80 @@ extension CardModelQueryWhere
 
 extension CardModelQueryFilter
     on QueryBuilder<CardModel, CardModel, QFilterCondition> {
-  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
-      balanceDecimalIsNull() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> balanceIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'balanceDecimal',
+        property: r'balance',
       ));
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
-      balanceDecimalIsNotNull() {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> balanceIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'balanceDecimal',
+        property: r'balance',
       ));
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
-      balanceDecimalEqualTo(int? value) {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> balanceEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'balanceDecimal',
+        property: r'balance',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
-      balanceDecimalGreaterThan(
-    int? value, {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> balanceGreaterThan(
+    double? value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'balanceDecimal',
+        property: r'balance',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
-      balanceDecimalLessThan(
-    int? value, {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> balanceLessThan(
+    double? value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'balanceDecimal',
+        property: r'balance',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterFilterCondition>
-      balanceDecimalBetween(
-    int? lower,
-    int? upper, {
+  QueryBuilder<CardModel, CardModel, QAfterFilterCondition> balanceBetween(
+    double? lower,
+    double? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'balanceDecimal',
+        property: r'balance',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -1290,15 +1294,15 @@ extension CardModelQueryLinks
     on QueryBuilder<CardModel, CardModel, QFilterCondition> {}
 
 extension CardModelQuerySortBy on QueryBuilder<CardModel, CardModel, QSortBy> {
-  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByBalanceDecimal() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByBalance() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'balanceDecimal', Sort.asc);
+      return query.addSortBy(r'balance', Sort.asc);
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByBalanceDecimalDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> sortByBalanceDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'balanceDecimal', Sort.desc);
+      return query.addSortBy(r'balance', Sort.desc);
     });
   }
 
@@ -1427,15 +1431,15 @@ extension CardModelQuerySortBy on QueryBuilder<CardModel, CardModel, QSortBy> {
 
 extension CardModelQuerySortThenBy
     on QueryBuilder<CardModel, CardModel, QSortThenBy> {
-  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByBalanceDecimal() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByBalance() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'balanceDecimal', Sort.asc);
+      return query.addSortBy(r'balance', Sort.asc);
     });
   }
 
-  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByBalanceDecimalDesc() {
+  QueryBuilder<CardModel, CardModel, QAfterSortBy> thenByBalanceDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'balanceDecimal', Sort.desc);
+      return query.addSortBy(r'balance', Sort.desc);
     });
   }
 
@@ -1576,9 +1580,9 @@ extension CardModelQuerySortThenBy
 
 extension CardModelQueryWhereDistinct
     on QueryBuilder<CardModel, CardModel, QDistinct> {
-  QueryBuilder<CardModel, CardModel, QDistinct> distinctByBalanceDecimal() {
+  QueryBuilder<CardModel, CardModel, QDistinct> distinctByBalance() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'balanceDecimal');
+      return query.addDistinctBy(r'balance');
     });
   }
 
@@ -1655,9 +1659,9 @@ extension CardModelQueryProperty
     });
   }
 
-  QueryBuilder<CardModel, int?, QQueryOperations> balanceDecimalProperty() {
+  QueryBuilder<CardModel, double?, QQueryOperations> balanceProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'balanceDecimal');
+      return query.addPropertyName(r'balance');
     });
   }
 

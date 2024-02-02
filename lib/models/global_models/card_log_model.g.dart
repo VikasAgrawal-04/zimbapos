@@ -40,7 +40,7 @@ const CardLogModelSchema = CollectionSchema(
     r'customerMobile': PropertySchema(
       id: 4,
       name: r'customerMobile',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'customerName': PropertySchema(
       id: 5,
@@ -111,12 +111,6 @@ int _cardLogModelEstimateSize(
     }
   }
   {
-    final value = object.customerMobile;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.customerName;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -153,7 +147,7 @@ void _cardLogModelSerialize(
   writer.writeDouble(offsets[1], object.amount);
   writer.writeLong(offsets[2], object.cardLogId);
   writer.writeString(offsets[3], object.customerEmail);
-  writer.writeString(offsets[4], object.customerMobile);
+  writer.writeLong(offsets[4], object.customerMobile);
   writer.writeString(offsets[5], object.customerName);
   writer.writeDateTime(offsets[6], object.entryDatetime);
   writer.writeLong(offsets[7], object.loggedUserId);
@@ -174,7 +168,7 @@ CardLogModel _cardLogModelDeserialize(
     amount: reader.readDoubleOrNull(offsets[1]),
     cardLogId: reader.readLongOrNull(offsets[2]),
     customerEmail: reader.readStringOrNull(offsets[3]),
-    customerMobile: reader.readStringOrNull(offsets[4]),
+    customerMobile: reader.readLongOrNull(offsets[4]),
     customerName: reader.readStringOrNull(offsets[5]),
     entryDatetime: reader.readDateTimeOrNull(offsets[6]),
     id: id,
@@ -203,7 +197,7 @@ P _cardLogModelDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
@@ -800,58 +794,49 @@ extension CardLogModelQueryFilter
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      customerMobileEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'customerMobile',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       customerMobileGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'customerMobile',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       customerMobileLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'customerMobile',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       customerMobileBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -860,77 +845,6 @@ extension CardLogModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'customerMobile',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'customerMobile',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'customerMobile',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'customerMobile',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'customerMobile',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      customerMobileIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'customerMobile',
-        value: '',
       ));
     });
   }
@@ -2186,11 +2100,10 @@ extension CardLogModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByCustomerMobile(
-      {bool caseSensitive = true}) {
+  QueryBuilder<CardLogModel, CardLogModel, QDistinct>
+      distinctByCustomerMobile() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'customerMobile',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'customerMobile');
     });
   }
 
@@ -2275,8 +2188,7 @@ extension CardLogModelQueryProperty
     });
   }
 
-  QueryBuilder<CardLogModel, String?, QQueryOperations>
-      customerMobileProperty() {
+  QueryBuilder<CardLogModel, int?, QQueryOperations> customerMobileProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'customerMobile');
     });

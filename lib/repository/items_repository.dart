@@ -4,7 +4,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
+import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
+import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
 
 class ItemsRepository {
@@ -81,6 +83,14 @@ class ItemsRepository {
           .isDeletedEqualTo(false)
           .findFirstSync();
       if (dbItem == null) {
+        final itemGrp = await db.itemGroupModels
+            .filter()
+            .itemGroupIdEqualTo(data.itemGroupId)
+            .findFirst();
+        final mainGrp = await db.mainGroupModels
+            .filter()
+            .mainGroupIdEqualTo(itemGrp?.mainGroupId)
+            .findFirst();
         final tax = await db.taxModels
             .filter()
             .taxIdEqualTo(data.taxId)
@@ -90,6 +100,7 @@ class ItemsRepository {
         data.rateWithTax =
             Helpers.taxPrice(tax?.taxPercent ?? 0.0, data.itemRate ?? 0.0);
         data.taxDetails.value = tax;
+        data.mainGroupDetails.value = mainGrp;
         db.writeTxnSync(() => db.itemsModels.putSync(data));
         return const Tuple2(true, 'Item Created Successfully');
       } else {
@@ -135,6 +146,14 @@ class ItemsRepository {
         dbItem.imgLink = data.imgLink;
         dbItem.isActive = data.isActive;
 
+        final itemGrp = await db.itemGroupModels
+            .filter()
+            .itemGroupIdEqualTo(data.itemGroupId)
+            .findFirst();
+        final mainGrp = await db.mainGroupModels
+            .filter()
+            .mainGroupIdEqualTo(itemGrp?.mainGroupId)
+            .findFirst();
         final tax = await db.taxModels
             .filter()
             .taxIdEqualTo(data.taxId)
@@ -144,6 +163,7 @@ class ItemsRepository {
         dbItem.rateWithTax =
             Helpers.taxPrice(tax?.taxPercent ?? 0.0, dbItem.itemRate ?? 0.0);
         dbItem.taxDetails.value = tax;
+        data.mainGroupDetails.value = mainGrp;
         db.writeTxnSync(() => db.itemsModels.putSync(dbItem));
         return const Tuple2(true, 'Item Updated');
       } else {

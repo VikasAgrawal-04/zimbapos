@@ -31,27 +31,27 @@ const TempBillHeaderModelSchema = CollectionSchema(
     r'customerId': PropertySchema(
       id: 2,
       name: r'customerId',
-      type: IsarType.double,
-    ),
-    r'hashCode': PropertySchema(
-      id: 3,
-      name: r'hashCode',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'isBillPrinted': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'isBillPrinted',
       type: IsarType.bool,
     ),
     r'outletId': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'pax': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'pax',
-      type: IsarType.double,
+      type: IsarType.long,
+    ),
+    r'recNo': PropertySchema(
+      id: 6,
+      name: r'recNo',
+      type: IsarType.long,
     ),
     r'roundOffAmount': PropertySchema(
       id: 7,
@@ -137,6 +137,18 @@ int _tempBillHeaderModelEstimateSize(
     }
   }
   {
+    final value = object.customerId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.tableId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -165,11 +177,11 @@ void _tempBillHeaderModelSerialize(
 ) {
   writer.writeString(offsets[0], object.billId);
   writer.writeString(offsets[1], object.billStartDateTime);
-  writer.writeDouble(offsets[2], object.customerId);
-  writer.writeLong(offsets[3], object.hashCode);
-  writer.writeBool(offsets[4], object.isBillPrinted);
-  writer.writeLong(offsets[5], object.outletId);
-  writer.writeDouble(offsets[6], object.pax);
+  writer.writeString(offsets[2], object.customerId);
+  writer.writeBool(offsets[3], object.isBillPrinted);
+  writer.writeString(offsets[4], object.outletId);
+  writer.writeLong(offsets[5], object.pax);
+  writer.writeLong(offsets[6], object.recNo);
   writer.writeDouble(offsets[7], object.roundOffAmount);
   writer.writeDouble(offsets[8], object.serviceChargeAmount);
   writer.writeString(offsets[9], object.tableId);
@@ -191,11 +203,12 @@ TempBillHeaderModel _tempBillHeaderModelDeserialize(
   final object = TempBillHeaderModel(
     billId: reader.readStringOrNull(offsets[0]),
     billStartDateTime: reader.readStringOrNull(offsets[1]),
-    customerId: reader.readDoubleOrNull(offsets[2]),
+    customerId: reader.readStringOrNull(offsets[2]),
     id: id,
-    isBillPrinted: reader.readBoolOrNull(offsets[4]),
-    outletId: reader.readLongOrNull(offsets[5]),
-    pax: reader.readDoubleOrNull(offsets[6]),
+    isBillPrinted: reader.readBoolOrNull(offsets[3]),
+    outletId: reader.readStringOrNull(offsets[4]),
+    pax: reader.readLongOrNull(offsets[5]),
+    recNo: reader.readLongOrNull(offsets[6]),
     roundOffAmount: reader.readDoubleOrNull(offsets[7]),
     serviceChargeAmount: reader.readDoubleOrNull(offsets[8]),
     tableId: reader.readStringOrNull(offsets[9]),
@@ -222,15 +235,15 @@ P _tempBillHeaderModelDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readLong(offset)) as P;
-    case 4:
       return (reader.readBoolOrNull(offset)) as P;
+    case 4:
+      return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readLongOrNull(offset)) as P;
     case 6:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
       return (reader.readDoubleOrNull(offset)) as P;
     case 8:
@@ -680,57 +693,57 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       customerIdEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
+    String? value, {
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'customerId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       customerIdGreaterThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'customerId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       customerIdLessThan(
-    double? value, {
+    String? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'customerId',
         value: value,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       customerIdBetween(
-    double? lower,
-    double? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -739,63 +752,77 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeEqualTo(int value) {
+      customerIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      customerIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      customerIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'customerId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      customerIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'customerId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      customerIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hashCode',
-        value: value,
+        property: r'customerId',
+        value: '',
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
+      customerIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      hashCodeBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hashCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
+        property: r'customerId',
+        value: '',
       ));
     });
   }
@@ -903,49 +930,58 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      outletIdEqualTo(int? value) {
+      outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -954,6 +990,77 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -977,58 +1084,49 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
-      paxEqualTo(
-    double? value, {
-    double epsilon = Query.epsilon,
-  }) {
+      paxEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'pax',
         value: value,
-        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       paxGreaterThan(
-    double? value, {
+    int? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'pax',
         value: value,
-        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       paxLessThan(
-    double? value, {
+    int? value, {
     bool include = false,
-    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'pax',
         value: value,
-        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
       paxBetween(
-    double? lower,
-    double? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1037,7 +1135,80 @@ extension TempBillHeaderModelQueryFilter on QueryBuilder<TempBillHeaderModel,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'recNo',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'recNo',
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'recNo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'recNo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'recNo',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterFilterCondition>
+      recNoBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'recNo',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2144,20 +2315,6 @@ extension TempBillHeaderModelQuerySortBy
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      sortByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      sortByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
       sortByIsBillPrinted() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isBillPrinted', Sort.asc);
@@ -2196,6 +2353,20 @@ extension TempBillHeaderModelQuerySortBy
       sortByPaxDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pax', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      sortByRecNo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      sortByRecNoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.desc);
     });
   }
 
@@ -2385,20 +2556,6 @@ extension TempBillHeaderModelQuerySortThenBy
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      thenByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
-      thenByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
       thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -2451,6 +2608,20 @@ extension TempBillHeaderModelQuerySortThenBy
       thenByPaxDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'pax', Sort.desc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      thenByRecNo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QAfterSortBy>
+      thenByRecNoDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'recNo', Sort.desc);
     });
   }
 
@@ -2613,16 +2784,9 @@ extension TempBillHeaderModelQueryWhereDistinct
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
-      distinctByCustomerId() {
+      distinctByCustomerId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'customerId');
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
-      distinctByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hashCode');
+      return query.addDistinctBy(r'customerId', caseSensitive: caseSensitive);
     });
   }
 
@@ -2634,9 +2798,9 @@ extension TempBillHeaderModelQueryWhereDistinct
   }
 
   QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
-      distinctByOutletId() {
+      distinctByOutletId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
@@ -2644,6 +2808,13 @@ extension TempBillHeaderModelQueryWhereDistinct
       distinctByPax() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'pax');
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, TempBillHeaderModel, QDistinct>
+      distinctByRecNo() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'recNo');
     });
   }
 
@@ -2740,16 +2911,10 @@ extension TempBillHeaderModelQueryProperty
     });
   }
 
-  QueryBuilder<TempBillHeaderModel, double?, QQueryOperations>
+  QueryBuilder<TempBillHeaderModel, String?, QQueryOperations>
       customerIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'customerId');
-    });
-  }
-
-  QueryBuilder<TempBillHeaderModel, int, QQueryOperations> hashCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hashCode');
     });
   }
 
@@ -2760,15 +2925,22 @@ extension TempBillHeaderModelQueryProperty
     });
   }
 
-  QueryBuilder<TempBillHeaderModel, int?, QQueryOperations> outletIdProperty() {
+  QueryBuilder<TempBillHeaderModel, String?, QQueryOperations>
+      outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });
   }
 
-  QueryBuilder<TempBillHeaderModel, double?, QQueryOperations> paxProperty() {
+  QueryBuilder<TempBillHeaderModel, int?, QQueryOperations> paxProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'pax');
+    });
+  }
+
+  QueryBuilder<TempBillHeaderModel, int?, QQueryOperations> recNoProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'recNo');
     });
   }
 

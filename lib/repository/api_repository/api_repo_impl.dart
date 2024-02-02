@@ -5,8 +5,8 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
-import 'package:zimbapos/models/response_models/item_response_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
+import 'package:zimbapos/models/response_models/item_response_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo_impl.dart';
@@ -90,5 +90,17 @@ class ApiRepoImpl implements ApiRepo {
   @override
   Future<Either<Failure, String>> createWorker({required WorkersModel model}) {
     return _workerApiRepo.createWorker(model: model);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCategory(
+      String categoryId) {
+    return _categoryApiRepo.deleteCategory(categoryId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCategory(
+      CategoryModel data) {
+    return _categoryApiRepo.updateCategory(data);
   }
 }

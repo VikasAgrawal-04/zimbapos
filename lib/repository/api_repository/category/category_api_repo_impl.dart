@@ -42,4 +42,38 @@ class CategoryApiRepoImpl implements CategoryApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCategory(
+      String categoryId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.delete, EndPoints.deleteCategory,
+          queryParams: {"categoryid": categoryId});
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCategory(
+      CategoryModel data) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.updateCategory,
+          queryParams: data.toMap());
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

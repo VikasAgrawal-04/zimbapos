@@ -9,11 +9,13 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zimbapos/global/error/exception.dart';
 import 'package:zimbapos/global/error/failures.dart';
 import 'package:zimbapos/global/utils/environment.dart';
+import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 
 enum RequestType { get, post, put, delete }
 
@@ -97,12 +99,12 @@ class Helpers {
           response.statusCode == 401 ||
           response.statusCode == 402) {
         throw ServerException(
-            code: response.statusCode, message: response.data['message']);
+            code: response.statusCode,
+            message: jsonDecode(response.data)['data']);
       } else {
         throw ServerException(
-            message:
-                response.data['message'] ?? response.data['errors']['message'],
-            code: response.statusCode);
+            code: response.statusCode,
+            message: jsonDecode(response.data)['data']);
       }
     } on ServerException catch (e) {
       debugPrint("I go here 2");
@@ -247,6 +249,28 @@ class Helpers {
 
   static double taxPrice(double taxPercent, double price) {
     return (price + (price * (taxPercent / 100)));
+  }
+
+  static Future<String> fetchDeviceId() async {
+    try {
+      final deviceId = await PlatformDeviceId.getDeviceId;
+      return deviceId.toString();
+    } catch (error) {
+      debugPrint("Failed to get device $error");
+      return (error.toString());
+    }
+  }
+
+  static Future<String?> getOutletId() async {
+    final MySecureStorage storage = MySecureStorage();
+    String? outletId = await storage.getOutletID();
+
+    if (outletId != null) {
+      var bytes = utf8.encode(outletId);
+      var digest = md5.convert(bytes);
+      return digest.toString();
+    }
+    return null;
   }
 }
 

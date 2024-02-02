@@ -16,7 +16,7 @@ class CustCatController {
   Future<Response> fetchCustCategory(Request request) async {
     try {
       final cusCat = await dbCubit.customerRepository.getAllCusCat();
-      return Response.ok(jsonEncode({'data': cusCat}));
+      return okResponse(cusCat.map((e) => e.toMap()).toList());
     } catch (e) {
       return invalidResponse();
     }
@@ -27,9 +27,7 @@ class CustCatController {
       final requiredFields = ['custCategoryName', 'custCategoryDiscount'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode(
-                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+        return badArguments('Fields Required ${requiredFields.join(',')}');
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =
@@ -38,34 +36,34 @@ class CustCatController {
       if (missingFields.isNotEmpty) {
         final missingFieldsMessage =
             'Missing fields: ${missingFields.join(', ')}';
-        return Response.badRequest(
-            body: jsonEncode({"data": missingFieldsMessage}));
+        return badArguments(missingFieldsMessage);
       }
       decodedData['custCategoryId'] = Helpers.generateUuId();
       dbCubit.customerRepository.createCusCat(
           data: CustomerCategoryModel.fromJson(jsonEncode(decodedData)));
-      return Response.ok(
-          jsonEncode({'data': 'Customer Category Created Successfully'}));
+      return okResponse('Customer Category Created Successfully');
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 
   Future<Response> deleteCustCategory(Request request) async {
     try {
       if (request.url.queryParameters.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode({
-          "data": 'Please Enter Customer Category Id as a key cusCatId'
-        }));
+        return badArguments(
+            'Please Enter Customer Category Id as a key cusCatId');
       }
       final cusCatId = request.url.queryParameters['cusCatId'];
+      if (cusCatId == null) {
+        return badArguments(
+            'Please Enter Customer Category Id as a key cusCatId');
+      }
       dbCubit.customerRepository.deleteCusCat(cusCatId);
-      return Response.ok(jsonEncode({'data': 'Customer Category Deleted!'}));
+      return okResponse('Customer Category Deleted!');
     } catch (e) {
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 
@@ -80,9 +78,7 @@ class CustCatController {
       ];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode(
-                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+        return badArguments('Fields Required ${requiredFields.join(',')}');
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =
@@ -91,14 +87,13 @@ class CustCatController {
       if (missingFields.isNotEmpty) {
         final missingFieldsMessage =
             'Missing fields: ${missingFields.join(', ')}';
-        return Response.badRequest(
-            body: jsonEncode({"data": missingFieldsMessage}));
+        return badArguments(missingFieldsMessage);
       }
       await dbCubit.customerRepository.updateCusCat(
           data: CustomerCategoryModel.fromJson(jsonEncode(decodedData)));
-      return Response.ok(jsonEncode({'data': 'Customer Category Updated!'}));
+      return okResponse('Customer Category Updated!');
     } catch (e) {
-      return Response.badRequest(body: 'Invalid Arguments');
+      return badArguments('Invalid Arguments');
     }
   }
 }

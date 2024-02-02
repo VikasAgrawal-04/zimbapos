@@ -31,64 +31,67 @@ class AreaTablesWidget extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             areaName,
-            style: KTextStyles.kHeader,
+            style: KTextStyles.kHeaderSub,
           ),
         ),
-        DataTable(
-          headingTextStyle: KTextStyles.kTitle,
-          columns: const [
-            DataColumn(
-              label: Text('Name'),
-            ),
-            DataColumn(
-              label: Text('Active'),
-            ),
-            DataColumn(
-              label: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Text('Actions'),
+        SizedBox(
+          width: 100.w,
+          child: DataTable(
+            headingTextStyle: KTextStyles.kTitle,
+            columns: [
+              const DataColumn(
+                label: Text('Name'),
               ),
-            ),
-          ],
-          rows: tables
-              .map(
-                (e) => DataRow(
-                  cells: [
-                    DataCell(Text(
-                      e.tableName.toString(),
-                      style: KTextStyles.kSubtitle,
-                    )),
-                    DataCell(
-                      Switch.adaptive(
-                        value: e.isActive as bool,
-                        onChanged: (va) => activeDeactivateTable(e.id, va),
-                      ),
-                    ),
-                    DataCell(
-                      Container(
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () => editTableFn(e),
-                              icon: const Icon(Icons.edit),
-                            ),
-                            SizedBox(width: 2.w),
-                            IconButton(
-                              onPressed: () => deleteTable(e),
-                              icon: const Icon(CupertinoIcons.delete),
-                            )
-                          ],
+              const DataColumn(
+                label: Text('Active'),
+              ),
+              DataColumn(
+                label: Padding(
+                  padding: EdgeInsets.fromLTRB(45.sp, 0, 0, 0),
+                  child: const Text('Actions'),
+                ),
+              ),
+            ],
+            rows: tables
+                .map(
+                  (e) => DataRow(
+                    cells: [
+                      DataCell(Text(
+                        e.tableName.toString(),
+                        style: KTextStyles.kSubtitle,
+                      )),
+                      DataCell(
+                        Switch.adaptive(
+                          value: e.isActive as bool,
+                          onChanged: (va) => activeDeactivateTable(e.id, va),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-              .toList(),
+                      DataCell(
+                        Container(
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                onPressed: () => editTableFn(e),
+                                icon: const Icon(Icons.edit),
+                              ),
+                              SizedBox(width: 2.w),
+                              IconButton(
+                                onPressed: () => deleteTable(e),
+                                icon: const Icon(CupertinoIcons.delete),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                .toList(),
+          ),
         ),
         tables.isEmpty
             ? Center(

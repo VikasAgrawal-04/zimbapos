@@ -5,6 +5,7 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
+import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo.dart';
@@ -19,6 +20,8 @@ import 'package:zimbapos/repository/api_repository/main_group/main_group_api_rep
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
 class ApiRepoImpl implements ApiRepo {
   final AreaApiRepo _areaApiRepo;
@@ -27,10 +30,13 @@ class ApiRepoImpl implements ApiRepo {
   final MainGroupApiRepo _mainGroupApiRepo;
   final ItemGroupApiRepo _itemGroupApiRepo;
   final ItemApiRepo _itemApiRepo;
+  final WorkerApiRepo _workerApiRepo;
+
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
         _tableApiRepo = TableApiRepoImpl(),
         _categoryApiRepo = CategoryApiRepoImpl(),
+        _workerApiRepo = WorkerApiRepoImpl(),
         _mainGroupApiRepo = MainGroupApiRepoImpl(),
         _itemGroupApiRepo = ItemGroupApiRepoImpl(),
         _itemApiRepo = ItemApiRepoImpl();
@@ -74,5 +80,27 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createCategory(
       CategoryModel data) {
     return _categoryApiRepo.createCategory(data);
+  }
+
+  @override
+  Future<Either<Failure, List<WorkersModel>>> getWorkers() {
+    return _workerApiRepo.getWorkers();
+  }
+
+  @override
+  Future<Either<Failure, String>> createWorker({required WorkersModel model}) {
+    return _workerApiRepo.createWorker(model: model);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCategory(
+      String categoryId) {
+    return _categoryApiRepo.deleteCategory(categoryId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCategory(
+      CategoryModel data) {
+    return _categoryApiRepo.updateCategory(data);
   }
 }

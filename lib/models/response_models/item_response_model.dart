@@ -49,6 +49,7 @@ class ItemList {
   bool isDeleted;
   Tax tax;
   int quantity;
+  MainGroupDetails? mainGroupDetails;
 
   ItemList({
     required this.id,
@@ -69,6 +70,7 @@ class ItemList {
     required this.isActive,
     required this.isDeleted,
     required this.tax,
+    this.mainGroupDetails,
     this.quantity = 0,
   });
 
@@ -91,6 +93,9 @@ class ItemList {
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
         tax: Tax.fromJson(json["tax"]),
+        mainGroupDetails: json["main_group_details"] == null
+            ? null
+            : MainGroupDetails.fromJson(json["main_group_details"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -112,6 +117,7 @@ class ItemList {
         "isActive": isActive,
         "isDeleted": isDeleted,
         "tax": tax.toJson(),
+        "main_group_details": mainGroupDetails?.toJson(),
       };
 
   ItemList copyWith({
@@ -157,6 +163,47 @@ class ItemList {
       quantity: quantity ?? this.quantity,
     );
   }
+}
+
+class MainGroupDetails {
+  int id;
+  String mainGroupId;
+  String categoryId;
+  String mainGroupName;
+  dynamic outletId;
+  bool isActive;
+  bool isDeleted;
+
+  MainGroupDetails({
+    required this.id,
+    required this.mainGroupId,
+    required this.categoryId,
+    required this.mainGroupName,
+    required this.outletId,
+    required this.isActive,
+    required this.isDeleted,
+  });
+
+  factory MainGroupDetails.fromJson(Map<String, dynamic> json) =>
+      MainGroupDetails(
+        id: json["id"],
+        mainGroupId: json["mainGroupId"],
+        categoryId: json["categoryId"],
+        mainGroupName: json["mainGroupName"],
+        outletId: json["outletId"],
+        isActive: json["isActive"],
+        isDeleted: json["isDeleted"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "mainGroupId": mainGroupId,
+        "categoryId": categoryId,
+        "mainGroupName": mainGroupName,
+        "outletId": outletId,
+        "isActive": isActive,
+        "isDeleted": isDeleted,
+      };
 }
 
 class Tax {

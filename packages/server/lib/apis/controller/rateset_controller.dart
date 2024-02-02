@@ -14,9 +14,9 @@ class RateSetController {
   Future<Response> fetchAllRateSets(Request request) async {
     try {
       final rateSets = await dbCubit.rateSetsRepository.getAllRateSets();
-      return Response.ok(jsonEncode({'data': rateSets}));
+      return okResponse(rateSets.map((e) => e.toMap()).toList());
     } catch (e) {
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 
@@ -25,9 +25,7 @@ class RateSetController {
       final requiredFields = ['ratesetName'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode(
-                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+        return badArguments('Fields Required ${requiredFields.join(',')}');
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =
@@ -36,23 +34,21 @@ class RateSetController {
       if (missingFields.isNotEmpty) {
         final missingFieldsMessage =
             'Missing fields: ${missingFields.join(', ')}';
-        return Response.badRequest(
-            body: jsonEncode({"data": missingFieldsMessage}));
+        return badArguments(missingFieldsMessage);
       }
       decodedData['ratesetId'] = Helpers.generateUuId();
 
       final success = dbCubit.rateSetsRepository.createRateSet(
           model: RateSetsModel.fromJson(jsonEncode(decodedData)));
       if (success) {
-        return Response.ok(
-            jsonEncode({'data': 'Rateset Created Successfully!'}));
+        return okResponse('Rateset Created Successfully!');
       } else {
         return badArguments('Rate Set Already Exists');
       }
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 
@@ -61,9 +57,7 @@ class RateSetController {
       final requiredFields = ['id', 'ratesetId', 'ratesetName', 'isActive'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
-        return Response.badRequest(
-            body: jsonEncode(
-                {'data': 'Fields Required ${requiredFields.join(',')}'}));
+        return badArguments('Fields Required ${requiredFields.join(',')}');
       }
       final Map<String, dynamic> decodedData = jsonDecode(reqData);
       final missingFields =
@@ -72,17 +66,15 @@ class RateSetController {
       if (missingFields.isNotEmpty) {
         final missingFieldsMessage =
             'Missing fields: ${missingFields.join(', ')}';
-        return Response.badRequest(
-            body: jsonEncode({"data": missingFieldsMessage}));
+        return badArguments(missingFieldsMessage);
       }
       await dbCubit.rateSetsRepository.updateRateSet(
           model: RateSetsModel.fromJson(jsonEncode(decodedData)));
-
-      return Response.ok(jsonEncode({"data": "Rateset Updated Successfully!"}));
+      return okResponse("Rateset Updated Successfully!");
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
-      return Response.badRequest(body: 'Invalid Arguments');
+      return invalidResponse();
     }
   }
 
@@ -98,7 +90,7 @@ class RateSetController {
       } else {
         dbCubit.rateSetsRepository.deleteRateSetbyID(ratesetId);
       }
-      return Response.ok(jsonEncode({'data': 'Rate Set Deleted!'}));
+      return okResponse('Rate Set Deleted!');
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

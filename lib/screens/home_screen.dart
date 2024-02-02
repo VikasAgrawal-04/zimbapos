@@ -8,10 +8,12 @@ import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
+import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/home_screen_widgets/home_screen_drawer.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -110,11 +112,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final deviceId = await Helpers.fetchDeviceId();
+      print("deviceId $deviceId");
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => HomeCubit(),
       child: Scaffold(
         appBar: _buildAppbar(),
+        drawer: const HomeScreenDrawer(),
         body: OrientationBuilder(
           builder: (context, orientation) =>
               StreamBuilder<List<HomeShortcutModel>>(

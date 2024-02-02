@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:server/apis/routes/area_routes.dart';
+import 'package:server/apis/routes/bill_routes.dart';
 import 'package:server/apis/routes/category_routes.dart';
 import 'package:server/apis/routes/customer_category_routes.dart';
 import 'package:server/apis/routes/item_group_routes.dart';
@@ -35,6 +36,7 @@ class Server {
     ItemGroupRoutes(context, router);
     ItemRoutes(context, router);
     TaxRoutes(context, router);
+    BillRoutes(context, router);
   }
 
   Future<void> runServer() async {

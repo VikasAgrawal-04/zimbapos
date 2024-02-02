@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
@@ -75,47 +76,50 @@ class _TableScreenState extends State<TableScreen> {
           ),
         ],
       ),
-      body: StreamBuilder<List<TableModel>>(
-        stream: tableStream(),
-        builder: (context, snapshot) {
-          final tablesData = snapshot.data;
-          if (tablesData == null || tablesData.isEmpty) {
-            return const Center(
-              child: Text('No Tables'),
-            );
-          } else {
-            return StreamBuilder<List<AreasModel>>(
-              stream: areasStream(),
-              builder: (context, areasSnapshot) {
-                final areasData = areasSnapshot.data;
-                if (areasData == null || areasData.isEmpty) {
-                  return const Center(
-                    child: Text('No Areas'),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: areasData.length,
-                    itemBuilder: (context, index) {
-                      final area = areasData[index];
-                      final areaTables = tablesData
-                          .where((table) => table.areaId == area.areaId)
-                          .toList();
+      body: SizedBox(
+        width: double.infinity,
+        child: StreamBuilder<List<TableModel>>(
+          stream: tableStream(),
+          builder: (context, snapshot) {
+            final tablesData = snapshot.data;
+            if (tablesData == null || tablesData.isEmpty) {
+              return const Center(
+                child: Text('No Tables'),
+              );
+            } else {
+              return StreamBuilder<List<AreasModel>>(
+                stream: areasStream(),
+                builder: (context, areasSnapshot) {
+                  final areasData = areasSnapshot.data;
+                  if (areasData == null || areasData.isEmpty) {
+                    return const Center(
+                      child: Text('No Areas'),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: areasData.length,
+                      itemBuilder: (context, index) {
+                        final area = areasData[index];
+                        final areaTables = tablesData
+                            .where((table) => table.areaId == area.areaId)
+                            .toList();
 
-                      return AreaTablesWidget(
-                        areaName: area.areaName ?? '',
-                        tables: areaTables,
-                        editTableFn: (TableModel model) =>
-                            editTableFn(model: model),
-                        deleteTable: deleteTable,
-                        activeDeactivateTable: activeDeactivateTable,
-                      );
-                    },
-                  );
-                }
-              },
-            );
-          }
-        },
+                        return AreaTablesWidget(
+                          areaName: area.areaName ?? '',
+                          tables: areaTables,
+                          editTableFn: (TableModel model) =>
+                              editTableFn(model: model),
+                          deleteTable: deleteTable,
+                          activeDeactivateTable: activeDeactivateTable,
+                        );
+                      },
+                    );
+                  }
+                },
+              );
+            }
+          },
+        ),
       ),
 
       // body: StreamBuilder<List<TableModel>>(

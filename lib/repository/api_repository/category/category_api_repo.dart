@@ -6,4 +6,8 @@ abstract class CategoryApiRepo {
   Future<Either<Failure, List<CategoryModel>>> fetchCategories();
   Future<Either<Failure, Map<String, dynamic>>> createCategory(
       CategoryModel data);
+  Future<Either<Failure, Map<String, dynamic>>> deleteCategory(
+      String categoryId);
+  Future<Either<Failure, Map<String, dynamic>>> updateCategory(
+      CategoryModel data);
 }

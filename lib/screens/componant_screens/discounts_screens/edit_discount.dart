@@ -105,8 +105,7 @@ class _UpdateSingleDiscScreenState extends State<UpdateSingleDiscScreen> {
   //get list
   getDiscountList(BuildContext context) async {
     final db = DatabaseCubit.dbFrom(context);
-    discountList =
-        await db.discountRepository.getDiscountList() as List<DiscountModel?>;
+    discountList = await db.discountRepository.getDiscountList();
   }
 
   // Validation function

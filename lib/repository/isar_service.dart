@@ -11,6 +11,7 @@ import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_lines_model.dart';
+import 'package:zimbapos/models/global_models/terminal_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/models/user_models/subscriber_model.dart';
@@ -33,6 +34,7 @@ import 'package:zimbapos/repository/system_repository/home_shortcut_repository.d
 import 'package:zimbapos/repository/system_repository/system_configuration_repository.dart';
 import 'package:zimbapos/repository/table_repository.dart';
 import 'package:zimbapos/repository/taxes_repository.dart';
+import 'package:zimbapos/repository/terminal_repository.dart';
 import 'package:zimbapos/repository/user_repository/subscription_repository.dart';
 import 'package:zimbapos/repository/user_repository/user_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
@@ -80,6 +82,7 @@ class IsarService {
           ItemGroupModelSchema,
           TempBillHeaderModelSchema,
           TempBillLinesSchema,
+          TerminalModelSchema,
           CardModelSchema,
           CardLogModelSchema,
         ],
@@ -140,6 +143,8 @@ class IsarService {
   ItemGroupRepository get itemGroupReposiory => ItemGroupRepository(db);
   //for bill repo
   BillRepository get billRepository => BillRepository(db);
+
+  TerminalRepository get terminalRepository => TerminalRepository(db);
   //for cards
   CardRepository get cardRepository => CardRepository(db);
   //for card logs

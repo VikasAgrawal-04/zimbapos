@@ -6,9 +6,9 @@ part 'card_log_model.g.dart';
 class CardLogModel {
   Id id = Isar.autoIncrement;
   String? outletId;
-  int? terminalId;
-  int? loggedUserId;
-  int? cardLogId;
+  String? terminalId;
+  String? loggedUserId;
+  int? cardId;
   DateTime? entryDatetime;
   double? amount;
   String? newBalance;
@@ -23,7 +23,7 @@ class CardLogModel {
     this.outletId,
     this.terminalId,
     this.loggedUserId,
-    this.cardLogId,
+    this.cardId,
     this.entryDatetime,
     this.amount,
     this.newBalance,
@@ -40,7 +40,7 @@ class CardLogModel {
       outletId: json['outletId'],
       terminalId: json['terminalId'],
       loggedUserId: json['loggedUserId'],
-      cardLogId: json['cardId'],
+      cardId: json['cardId'],
       entryDatetime: json['entryDatetime'] != null
           ? DateTime.parse(json['entryDatetime'])
           : null,
@@ -60,7 +60,7 @@ class CardLogModel {
       'outletId': outletId,
       'terminalId': terminalId,
       'loggedUserId': loggedUserId,
-      'cardId': cardLogId,
+      'cardId': cardId,
       'entryDatetime': entryDatetime?.toIso8601String(),
       'amount': amount,
       'newBalance': newBalance,

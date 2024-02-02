@@ -70,6 +70,24 @@ class _CardListScreenState extends State<CardListScreen> {
     );
   }
 
+  voidAll(BuildContext context) async {
+    final db = DatabaseCubit.dbFrom(context);
+    final List<CardModel> cards = await db.cardRepository.getCards();
+
+    if (cards.isNotEmpty) {
+      for (final CardModel card in cards) {
+        db.cardRepository.updateBalance(
+          card.id,
+          0.0,
+          card.lastLoadedDatetime as DateTime,
+        );
+      }
+      EasyLoading.showToast('All cards voided');
+    } else {
+      EasyLoading.showToast('No cards found to void');
+    }
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -119,7 +137,19 @@ class _CardListScreenState extends State<CardListScreen> {
                   child: CustomButton(
                     text: "Void all",
                     onPressed: () {
-                      EasyLoading.showToast('Cards voided');
+                      UtilDialog.showMyDialog(
+                        context,
+                        "Alert!",
+                        "Do you really want to void all card?",
+                        () {
+                          //perform void action
+                          voidAll(context);
+                          EasyLoading.showToast('All cards voided');
+
+                          context.pop();
+                        },
+                        null,
+                      );
                     },
                   ),
                 ),
@@ -157,7 +187,7 @@ class _CardListScreenState extends State<CardListScreen> {
                         headingTextStyle: KTextStyles.kTitle,
                         columns: [
                           const DataColumn(
-                            label: Text('Card Id'),
+                            label: Text('Card Num'),
                           ),
                           const DataColumn(
                             label: Text('Balance'),

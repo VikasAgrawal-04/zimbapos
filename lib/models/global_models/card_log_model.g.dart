@@ -27,9 +27,9 @@ const CardLogModelSchema = CollectionSchema(
       name: r'amount',
       type: IsarType.double,
     ),
-    r'cardLogId': PropertySchema(
+    r'cardId': PropertySchema(
       id: 2,
-      name: r'cardLogId',
+      name: r'cardId',
       type: IsarType.long,
     ),
     r'customerEmail': PropertySchema(
@@ -55,7 +55,7 @@ const CardLogModelSchema = CollectionSchema(
     r'loggedUserId': PropertySchema(
       id: 7,
       name: r'loggedUserId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'newBalance': PropertySchema(
       id: 8,
@@ -75,7 +75,7 @@ const CardLogModelSchema = CollectionSchema(
     r'terminalId': PropertySchema(
       id: 11,
       name: r'terminalId',
-      type: IsarType.long,
+      type: IsarType.string,
     )
   },
   estimateSize: _cardLogModelEstimateSize,
@@ -117,6 +117,12 @@ int _cardLogModelEstimateSize(
     }
   }
   {
+    final value = object.loggedUserId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.newBalance;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -134,6 +140,12 @@ int _cardLogModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.terminalId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -145,16 +157,16 @@ void _cardLogModelSerialize(
 ) {
   writer.writeString(offsets[0], object.actionType);
   writer.writeDouble(offsets[1], object.amount);
-  writer.writeLong(offsets[2], object.cardLogId);
+  writer.writeLong(offsets[2], object.cardId);
   writer.writeString(offsets[3], object.customerEmail);
   writer.writeLong(offsets[4], object.customerMobile);
   writer.writeString(offsets[5], object.customerName);
   writer.writeDateTime(offsets[6], object.entryDatetime);
-  writer.writeLong(offsets[7], object.loggedUserId);
+  writer.writeString(offsets[7], object.loggedUserId);
   writer.writeString(offsets[8], object.newBalance);
   writer.writeString(offsets[9], object.outletId);
   writer.writeString(offsets[10], object.payMode);
-  writer.writeLong(offsets[11], object.terminalId);
+  writer.writeString(offsets[11], object.terminalId);
 }
 
 CardLogModel _cardLogModelDeserialize(
@@ -166,17 +178,17 @@ CardLogModel _cardLogModelDeserialize(
   final object = CardLogModel(
     actionType: reader.readStringOrNull(offsets[0]),
     amount: reader.readDoubleOrNull(offsets[1]),
-    cardLogId: reader.readLongOrNull(offsets[2]),
+    cardId: reader.readLongOrNull(offsets[2]),
     customerEmail: reader.readStringOrNull(offsets[3]),
     customerMobile: reader.readLongOrNull(offsets[4]),
     customerName: reader.readStringOrNull(offsets[5]),
     entryDatetime: reader.readDateTimeOrNull(offsets[6]),
     id: id,
-    loggedUserId: reader.readLongOrNull(offsets[7]),
+    loggedUserId: reader.readStringOrNull(offsets[7]),
     newBalance: reader.readStringOrNull(offsets[8]),
     outletId: reader.readStringOrNull(offsets[9]),
     payMode: reader.readStringOrNull(offsets[10]),
-    terminalId: reader.readLongOrNull(offsets[11]),
+    terminalId: reader.readStringOrNull(offsets[11]),
   );
   return object;
 }
@@ -203,7 +215,7 @@ P _cardLogModelDeserializeProp<P>(
     case 6:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 7:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
@@ -211,7 +223,7 @@ P _cardLogModelDeserializeProp<P>(
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -548,63 +560,62 @@ extension CardLogModelQueryFilter
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      cardLogIdIsNull() {
+      cardIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'cardLogId',
+        property: r'cardId',
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      cardLogIdIsNotNull() {
+      cardIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'cardLogId',
+        property: r'cardId',
       ));
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      cardLogIdEqualTo(int? value) {
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition> cardIdEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'cardLogId',
+        property: r'cardId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      cardLogIdGreaterThan(
+      cardIdGreaterThan(
     int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'cardLogId',
+        property: r'cardId',
         value: value,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      cardLogIdLessThan(
+      cardIdLessThan(
     int? value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'cardLogId',
+        property: r'cardId',
         value: value,
       ));
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      cardLogIdBetween(
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition> cardIdBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -612,7 +623,7 @@ extension CardLogModelQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'cardLogId',
+        property: r'cardId',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1149,49 +1160,58 @@ extension CardLogModelQueryFilter
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      loggedUserIdEqualTo(int? value) {
+      loggedUserIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'loggedUserId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       loggedUserIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'loggedUserId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       loggedUserIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'loggedUserId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       loggedUserIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1200,6 +1220,77 @@ extension CardLogModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      loggedUserIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'loggedUserId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      loggedUserIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'loggedUserId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      loggedUserIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'loggedUserId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      loggedUserIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'loggedUserId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      loggedUserIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'loggedUserId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      loggedUserIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'loggedUserId',
+        value: '',
       ));
     });
   }
@@ -1685,49 +1776,58 @@ extension CardLogModelQueryFilter
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
-      terminalIdEqualTo(int? value) {
+      terminalIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'terminalId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       terminalIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'terminalId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       terminalIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'terminalId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
       terminalIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1736,6 +1836,77 @@ extension CardLogModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      terminalIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'terminalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      terminalIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'terminalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      terminalIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'terminalId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      terminalIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'terminalId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      terminalIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'terminalId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CardLogModel, CardLogModel, QAfterFilterCondition>
+      terminalIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'terminalId',
+        value: '',
       ));
     });
   }
@@ -1774,15 +1945,15 @@ extension CardLogModelQuerySortBy
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> sortByCardLogId() {
+  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> sortByCardId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardLogId', Sort.asc);
+      return query.addSortBy(r'cardId', Sort.asc);
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> sortByCardLogIdDesc() {
+  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> sortByCardIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardLogId', Sort.desc);
+      return query.addSortBy(r'cardId', Sort.desc);
     });
   }
 
@@ -1930,15 +2101,15 @@ extension CardLogModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> thenByCardLogId() {
+  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> thenByCardId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardLogId', Sort.asc);
+      return query.addSortBy(r'cardId', Sort.asc);
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> thenByCardLogIdDesc() {
+  QueryBuilder<CardLogModel, CardLogModel, QAfterSortBy> thenByCardIdDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'cardLogId', Sort.desc);
+      return query.addSortBy(r'cardId', Sort.desc);
     });
   }
 
@@ -2086,9 +2257,9 @@ extension CardLogModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByCardLogId() {
+  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByCardId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'cardLogId');
+      return query.addDistinctBy(r'cardId');
     });
   }
 
@@ -2121,9 +2292,10 @@ extension CardLogModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByLoggedUserId() {
+  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByLoggedUserId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'loggedUserId');
+      return query.addDistinctBy(r'loggedUserId', caseSensitive: caseSensitive);
     });
   }
 
@@ -2148,9 +2320,10 @@ extension CardLogModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByTerminalId() {
+  QueryBuilder<CardLogModel, CardLogModel, QDistinct> distinctByTerminalId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'terminalId');
+      return query.addDistinctBy(r'terminalId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -2175,9 +2348,9 @@ extension CardLogModelQueryProperty
     });
   }
 
-  QueryBuilder<CardLogModel, int?, QQueryOperations> cardLogIdProperty() {
+  QueryBuilder<CardLogModel, int?, QQueryOperations> cardIdProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'cardLogId');
+      return query.addPropertyName(r'cardId');
     });
   }
 
@@ -2207,7 +2380,7 @@ extension CardLogModelQueryProperty
     });
   }
 
-  QueryBuilder<CardLogModel, int?, QQueryOperations> loggedUserIdProperty() {
+  QueryBuilder<CardLogModel, String?, QQueryOperations> loggedUserIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'loggedUserId');
     });
@@ -2231,7 +2404,7 @@ extension CardLogModelQueryProperty
     });
   }
 
-  QueryBuilder<CardLogModel, int?, QQueryOperations> terminalIdProperty() {
+  QueryBuilder<CardLogModel, String?, QQueryOperations> terminalIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'terminalId');
     });

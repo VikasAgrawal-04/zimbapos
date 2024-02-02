@@ -28,7 +28,7 @@ class CardLogRepository {
 
   Future<List<CardLogModel>> getCardLogByCardId(int id) async {
     try {
-      return db.cardLogModels.filter().cardLogIdEqualTo(id).findAllSync();
+      return db.cardLogModels.filter().idEqualTo(id).findAllSync();
     } on IsarError catch (error) {
       debugPrint(error.message);
       return [];
@@ -38,7 +38,7 @@ class CardLogRepository {
   Future<Tuple2<bool, String>> createCardLog(CardLogModel data) async {
     try {
       final dbItem =
-          db.cardLogModels.filter().cardLogIdEqualTo(data.id).findFirstSync();
+          db.cardLogModels.filter().idEqualTo(data.id).findFirstSync();
       if (dbItem == null) {
         db.writeTxnSync(() => db.cardLogModels.putSync(data));
         return const Tuple2(true, 'Card Log Created');
@@ -54,11 +54,11 @@ class CardLogRepository {
   Future<Tuple2<bool, String>> updateCardLog(CardLogModel data) async {
     try {
       CardLogModel? dbItem =
-          db.cardLogModels.filter().cardLogIdEqualTo(data.id).findFirstSync();
+          db.cardLogModels.filter().idEqualTo(data.id).findFirstSync();
       if (dbItem != null && data.id == dbItem.id) {
         dbItem.id = data.id;
         dbItem.outletId = data.outletId;
-        dbItem.cardLogId = data.cardLogId;
+        dbItem.cardId = data.cardId;
         dbItem.actionType = data.actionType;
         dbItem.amount = data.amount;
         dbItem.customerEmail = data.customerEmail;
@@ -83,8 +83,7 @@ class CardLogRepository {
 
   Future<bool> deleteCardLog(int id) async {
     try {
-      final dbItem =
-          db.cardLogModels.filter().cardLogIdEqualTo(id).findFirstSync();
+      final dbItem = db.cardLogModels.filter().idEqualTo(id).findFirstSync();
       if (dbItem != null) {
         // dbItem.isDeleted = true;
         db.writeTxnSync(() => db.cardLogModels.putSync(dbItem));

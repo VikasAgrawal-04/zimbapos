@@ -24,6 +24,18 @@ class CardRepository {
     }
   }
 
+  Future<void> updateBalance(
+      int id, double balance, DateTime lastLoadedDatetime) async {
+    CardModel? model = await db.cardModels.get(id);
+    if (model != null) {
+      model.balance = balance;
+      model.lastLoadedDatetime = lastLoadedDatetime;
+      db.writeTxnSync(() {
+        db.cardModels.putSync(model);
+      });
+    }
+  }
+
   Future<List<CardModel>> getCards() async {
     return db.cardModels.filter().isDeletedEqualTo(false).findAllSync();
   }

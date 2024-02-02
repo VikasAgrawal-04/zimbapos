@@ -99,7 +99,7 @@ class _EditCardScreenState extends State<EditCardScreen> {
                   SizedBox(height: screenSize.height * 0.04),
                   PrimaryTextField(
                     validator: integerValidator,
-                    hintText: 'Card id',
+                    hintText: 'Card number',
                     controller: cardIdController,
                     onChanged: (value) {},
                   ),

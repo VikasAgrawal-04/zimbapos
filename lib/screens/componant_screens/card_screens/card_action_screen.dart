@@ -8,6 +8,7 @@ import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/card_model.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
+import 'package:zimbapos/widgets/my_snackbar_widget.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/kcolors.dart';
@@ -39,7 +40,8 @@ class _CardActionScreenState extends State<CardActionScreen> {
   String? outletId;
   String? payMode;
   String? actionType;
-  String? terminalId;
+  String? terminalIp;
+  String? deviceId;
 
   @override
   void initState() {
@@ -52,9 +54,16 @@ class _CardActionScreenState extends State<CardActionScreen> {
     amountController = TextEditingController();
     outletId = BlocProvider.of<DatabaseCubit>(context).outletId;
     getTerminalIp();
+    getuserId();
 
     balanceController.text = widget.item.balance.toString();
     actionType = "U";
+
+    cardIdController.text = widget.item.cardId.toString();
+    balanceController.text = widget.item.balance.toString();
+    customerNameController.text = widget.item.customerName.toString();
+    customerMobileController.text = widget.item.customerMobile.toString();
+    customerEmailController.text = widget.item.customerEmail.toString();
   }
 
   @override
@@ -73,10 +82,39 @@ class _CardActionScreenState extends State<CardActionScreen> {
 
     //check action type
     if (actionType == "L") {
+      //update card with balance
+
+      // db.cardRepository.updateCard(
+      //   CardModel(
+      //     id: widget.item.id,
+      //     outletId: outletId,
+      //     cardId: widget.item.cardId,
+      //     balance: double.parse((int.parse(balanceController.text) +
+      //             int.parse(amountController.text))
+      //         .toString()),
+      //     customerName: widget.item.customerName,
+      //     customerMobile: widget.item.customerMobile,
+      //     customerEmail: widget.item.customerEmail,
+      //     createDatetime: widget.item.createDatetime,
+      //     lastLoadedDatetime: DateTime.now(),
+      //     lastUsedDatetime: widget.item.lastLoadedDatetime,
+      //     isActive: widget.item.isActive,
+      //     isDeleted: widget.item.isDeleted,
+      //   ),
+      // );
+
+      db.cardRepository.updateBalance(
+        widget.item.id,
+        double.parse((double.parse(balanceController.text) +
+                double.parse(amountController.text))
+            .toString()),
+        DateTime.now(),
+      );
+
       db.cardLogRepository.createCardLog(
         CardLogModel(
           outletId: outletId,
-          cardLogId: int.parse(cardIdController.text),
+          cardId: int.parse(cardIdController.text),
           customerName: customerNameController.text,
           customerMobile: int.parse(customerMobileController.text),
           customerEmail: customerEmailController.text,
@@ -84,20 +122,48 @@ class _CardActionScreenState extends State<CardActionScreen> {
           actionType: actionType,
           amount: double.parse(amountController.text),
           entryDatetime: DateTime.now(),
-          loggedUserId: 1,
-          newBalance: (int.parse(balanceController.text) +
-                  int.parse(amountController.text))
+          loggedUserId: deviceId,
+          newBalance: (double.parse(balanceController.text) +
+                  double.parse(amountController.text))
               .toString(),
-          terminalId: int.parse(terminalId.toString()),
+          terminalId: deviceId.toString(),
         ),
       );
       EasyLoading.showToast('Card loaded');
-      context.pop();
     } else if (actionType == "U") {
+      //update card with balance
+
+      // db.cardRepository.updateCard(
+      //   CardModel(
+      //     id: widget.item.id,
+      //     outletId: outletId,
+      //     cardId: widget.item.cardId,
+      //     balance: double.parse((int.parse(balanceController.text) -
+      //             int.parse(amountController.text))
+      //         .toString()),
+      //     customerName: customerNameController.text,
+      //     customerMobile: int.parse(customerMobileController.text),
+      //     customerEmail: customerEmailController.text,
+      //     createDatetime: widget.item.createDatetime,
+      //     lastLoadedDatetime: widget.item.lastLoadedDatetime,
+      //     lastUsedDatetime: DateTime.now(),
+      //     isActive: widget.item.isActive,
+      //     isDeleted: widget.item.isDeleted,
+      //   ),
+      // );
+      db.cardRepository.updateBalance(
+        widget.item.id,
+        double.parse((double.parse(balanceController.text) -
+                double.parse(amountController.text))
+            .toString()),
+        DateTime.now(),
+      );
+
+      //create card log
       db.cardLogRepository.createCardLog(
         CardLogModel(
           outletId: outletId,
-          cardLogId: int.parse(cardIdController.text),
+          cardId: int.parse(cardIdController.text),
           customerName: customerNameController.text,
           customerMobile: int.parse(customerMobileController.text),
           customerEmail: customerEmailController.text,
@@ -105,63 +171,93 @@ class _CardActionScreenState extends State<CardActionScreen> {
           actionType: actionType,
           amount: double.parse(amountController.text),
           entryDatetime: DateTime.now(),
-          loggedUserId: 1,
-          newBalance: (int.parse(balanceController.text) -
-                  int.parse(amountController.text))
+          loggedUserId: deviceId,
+          newBalance: (double.parse(balanceController.text) -
+                  double.parse(amountController.text))
               .toString(),
-          terminalId: int.parse(terminalId.toString()),
+          terminalId: deviceId.toString(),
         ),
       );
       EasyLoading.showToast('Card used');
-      context.pop();
     } else if (actionType == "R") {
-      //log in card
-      db.cardLogRepository.createCardLog(
-        CardLogModel(
-          outletId: outletId,
-          cardLogId: int.parse(cardIdController.text),
-          customerName: customerNameController.text,
-          customerMobile: int.parse(customerMobileController.text),
-          customerEmail: customerEmailController.text,
-          payMode: payMode,
-          actionType: actionType,
-          amount: double.parse(amountController.text),
-          entryDatetime: DateTime.now(),
-          loggedUserId: 1,
-          newBalance: (int.parse(balanceController.text) -
-                  int.parse(amountController.text))
-              .toString(),
-          terminalId: int.parse(terminalId.toString()),
-        ),
-      );
+      //delete old card
+      db.cardRepository.deleteCard(widget.item.id);
 
-      //update balance
-      db.cardRepository.updateCard(
+      //create new card with balance
+      db.cardRepository.createCard(
         CardModel(
-          id: widget.item.id,
+          // id: widget.item.id,
           outletId: outletId,
           cardId: int.parse(cardIdController.text),
           balance: double.parse(balanceController.text),
           customerName: customerNameController.text,
           customerMobile: int.parse(customerMobileController.text),
           customerEmail: customerEmailController.text,
-          createDatetime: widget.item.createDatetime,
-          lastLoadedDatetime: widget.item.lastLoadedDatetime,
+          createDatetime: DateTime.now(),
+          lastLoadedDatetime: DateTime.now(),
           lastUsedDatetime: widget.item.lastUsedDatetime,
           isActive: widget.item.isActive,
           isDeleted: widget.item.isDeleted,
         ),
       );
+
+      //create log in cardlog
+      db.cardLogRepository.createCardLog(
+        CardLogModel(
+          outletId: outletId,
+          cardId: int.parse(cardIdController.text),
+          customerName: customerNameController.text,
+          customerMobile: int.parse(customerMobileController.text),
+          customerEmail: customerEmailController.text,
+          payMode: payMode,
+          actionType: actionType,
+          amount: double.parse(amountController.text),
+          entryDatetime: DateTime.now(),
+          loggedUserId: deviceId,
+          newBalance: amountController.text,
+          terminalId: deviceId.toString(),
+        ),
+      );
       EasyLoading.showToast('Card replaced');
-      context.pop();
     }
     context.pop();
   }
 
   getTerminalIp() async {
-    // terminalId = BlocProvider.of<HomeCubit>(context).getIp() as String?;
-    terminalId = await Helpers.getWifiIPAddress();
-    log(terminalId.toString());
+    terminalIp = await Helpers.getWifiIPAddress();
+    log(terminalIp.toString());
+  }
+
+  getuserId() async {
+    deviceId = await Helpers.fetchDeviceId();
+    log(deviceId.toString());
+  }
+
+  voidCard(BuildContext context) {
+    final db = DatabaseCubit.dbFrom(context);
+    db.cardRepository.updateBalance(
+      widget.item.id,
+      0.0,
+      widget.item.lastLoadedDatetime as DateTime,
+    );
+
+    //create log in cardlog
+    db.cardLogRepository.createCardLog(
+      CardLogModel(
+        outletId: outletId,
+        cardId: int.parse(cardIdController.text),
+        customerName: customerNameController.text,
+        customerMobile: int.parse(customerMobileController.text),
+        customerEmail: customerEmailController.text,
+        payMode: payMode,
+        actionType: "V",
+        amount: double.parse(balanceController.text),
+        entryDatetime: DateTime.now(),
+        loggedUserId: deviceId,
+        newBalance: "0.0",
+        terminalId: deviceId.toString(),
+      ),
+    );
   }
 
   @override
@@ -184,7 +280,7 @@ class _CardActionScreenState extends State<CardActionScreen> {
                   SizedBox(height: screenSize.height * 0.04),
                   PrimaryTextField(
                     validator: integerValidator,
-                    hintText: 'Card id',
+                    hintText: 'Card number',
                     controller: cardIdController,
                     onChanged: (value) {},
                   ),
@@ -210,7 +306,10 @@ class _CardActionScreenState extends State<CardActionScreen> {
                               "Do you really want to void this card?",
                               () {
                                 //perform void action
+                                voidCard(context);
                                 EasyLoading.showToast('Card voided');
+                                context.pop();
+                                context.pop();
                               },
                               null,
                             );
@@ -221,6 +320,7 @@ class _CardActionScreenState extends State<CardActionScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   PrimaryTextField(
+                    enable: false,
                     validator: nullCheckValidator,
                     hintText: 'Customer name',
                     controller: customerNameController,
@@ -228,6 +328,7 @@ class _CardActionScreenState extends State<CardActionScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   PrimaryTextField(
+                    enable: false,
                     validator: integerValidator,
                     hintText: 'Customer mobile',
                     controller: customerMobileController,
@@ -235,6 +336,7 @@ class _CardActionScreenState extends State<CardActionScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   PrimaryTextField(
+                    enable: false,
                     validator: emailValidator,
                     hintText: 'Customer email',
                     controller: customerEmailController,
@@ -266,6 +368,11 @@ class _CardActionScreenState extends State<CardActionScreen> {
                         onChanged: (newValue) {
                           setState(() {
                             actionType = newValue;
+                            if (newValue == "R") {
+                              amountController.text = balanceController.text;
+                            } else {
+                              amountController.clear();
+                            }
                           });
                         },
                         items: <String>[
@@ -284,7 +391,7 @@ class _CardActionScreenState extends State<CardActionScreen> {
                   ),
                   SizedBox(height: screenSize.height * 0.02),
                   PrimaryTextField(
-                    validator: integerValidator,
+                    validator: doubleValidator,
                     hintText: actionType == 'L'
                         ? 'Load amount'
                         : actionType == 'U'
@@ -349,7 +456,21 @@ class _CardActionScreenState extends State<CardActionScreen> {
             text: "Save",
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                createCardFn(context);
+                if (actionType == "U") {
+                  if (double.parse(amountController.text) <=
+                      double.parse(balanceController.text)) {
+                    createCardFn(context);
+                  } else {
+                    UtillSnackbar.showSnackBar(
+                      context,
+                      title: "Alert",
+                      body: "Available balance is less",
+                      isSuccess: false,
+                    );
+                  }
+                } else {
+                  createCardFn(context);
+                }
               }
             }),
       ),

@@ -8,7 +8,8 @@ import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
-  const ItemSelectionScreen({super.key});
+  final String tableId;
+  const ItemSelectionScreen({required this.tableId, super.key});
 
   @override
   State<ItemSelectionScreen> createState() => _ItemSelectionScreenState();
@@ -203,7 +204,11 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                               vertical: .5.h, horizontal: 1.w),
                           width: 12.w,
                           text: 'Save KOT',
-                          onTap: () {},
+                          onTap: () async {
+                            await context
+                                .read<ItemSelectionCubit>()
+                                .placeKot(widget.tableId);
+                          },
                         )
                       ],
                     ),
@@ -242,34 +247,35 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                                       child:
                                           Text(addedItem.itemRate.toString()))),
                               Expanded(
-                                  child: Row(children: [
-                                Expanded(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        context
-                                            .read<ItemSelectionCubit>()
-                                            .onItemClick(
-                                                action: OnClick.subtract,
-                                                item: addedItem);
-                                      },
-                                      icon: const Icon(CupertinoIcons.minus)),
-                                ),
-                                Expanded(
-                                    child: Center(
-                                        child: Text(
-                                            addedItem.quantity.toString()))),
-                                Expanded(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        context
-                                            .read<ItemSelectionCubit>()
-                                            .onItemClick(
-                                                action: OnClick.add,
-                                                item: addedItem);
-                                      },
-                                      icon: const Icon(CupertinoIcons.add)),
-                                ),
-                              ])),
+                                child: Row(children: [
+                                  Expanded(
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ItemSelectionCubit>()
+                                              .onItemClick(
+                                                  action: OnClick.subtract,
+                                                  item: addedItem);
+                                        },
+                                        icon: const Icon(CupertinoIcons.minus)),
+                                  ),
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                              addedItem.quantity.toString()))),
+                                  Expanded(
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ItemSelectionCubit>()
+                                              .onItemClick(
+                                                  action: OnClick.add,
+                                                  item: addedItem);
+                                        },
+                                        icon: const Icon(CupertinoIcons.add)),
+                                  ),
+                                ]),
+                              ),
                               Expanded(
                                 child: Center(
                                   child: Text(

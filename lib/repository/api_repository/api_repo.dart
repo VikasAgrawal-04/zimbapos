@@ -1,4 +1,5 @@
 import 'package:zimbapos/repository/api_repository/area/area_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/bills/bill_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/category/category_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
@@ -14,4 +15,5 @@ abstract class ApiRepo
         WorkerApiRepo,
         MainGroupApiRepo,
         ItemGroupApiRepo,
-        ItemApiRepo {}
+        ItemApiRepo,
+        BillApiRepo {}

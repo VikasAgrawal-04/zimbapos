@@ -35,4 +35,7 @@ class EndPoints {
   static const String createWorker = '/create-worker';
   static const String deleteWorker = '/delete-worker';
   static const String updateWorker = '/update-worker';
+
+  //Bill
+  static const String createKot = '/action-temp-bill';
 }

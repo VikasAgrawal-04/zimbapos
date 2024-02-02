@@ -61,6 +61,7 @@ import 'package:zimbapos/screens/componant_screens/worker_management_screens/edi
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/worker_overview_screen.dart';
 import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/login/login_view.dart';
+import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 
@@ -516,4 +517,11 @@ final List<GoRoute> routerList = [
     path: AppScreen.settingsOverviewScreen.path,
     builder: (context, state) => const SettingsOverviewScreen(),
   ),
+
+  GoRoute(
+      name: AppScreen.itemsSelectionScreen.name,
+      path: AppScreen.itemsSelectionScreen.path,
+      builder: (context, state) => ItemSelectionScreen(
+            tableId: state.extra as String,
+          ))
 ];

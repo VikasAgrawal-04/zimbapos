@@ -11,7 +11,6 @@ import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/home_screen_widgets/home_screen_drawer.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
@@ -269,11 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: EdgeInsets.symmetric(vertical: 1.h),
                           text: 'Ordering Dashboard',
                           onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const OrderDashboardScreen();
-                            }));
-                            // context.push(AppScreen.orderDashboardScreen.path);
+                            context.push(AppScreen.orderDashboardScreen.path);
                           },
                         )
                       ],

@@ -128,6 +128,13 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     }
   }
 
+  Future<void> placeKot(String tableId) async {
+    try {} catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
   //Functions For Item Screen
 
   void changeTile(int index) {

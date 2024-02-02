@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import 'package:zimbapos/global/error/exception.dart';
@@ -247,6 +248,16 @@ class Helpers {
 
   static double taxPrice(double taxPercent, double price) {
     return (price + (price * (taxPercent / 100)));
+  }
+
+  static Future<String> fetchDeviceId() async {
+    try {
+      final deviceId = await PlatformDeviceId.getDeviceId;
+      return deviceId.toString();
+    } catch (error) {
+      debugPrint("Failed to get device $error");
+      return (error.toString());
+    }
   }
 }
 

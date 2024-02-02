@@ -14,7 +14,7 @@ class TaxController {
   Future<Response> fetchAllTax(Request request) async {
     try {
       final taxes = await dbCubit.taxesRepository.getTaxList();
-      return okResponse(taxes);
+      return okResponse(taxes.map((e) => e.toMap()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

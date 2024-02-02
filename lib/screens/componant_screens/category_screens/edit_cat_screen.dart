@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_state.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
@@ -21,14 +21,12 @@ class UpdateCategoryScreen extends StatefulWidget {
 }
 
 class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
-  //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-
     categoryName.text = widget.item.categoryName.toString();
   }
 
@@ -38,59 +36,42 @@ class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
     super.dispose();
   }
 
-  void updateCategory(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.categoryRepository.updateCategory(
-      data: CategoryModel(
-        id: widget.item.id,
-        categoryName: categoryName.text,
-      ),
-    );
-    EasyLoading.showToast('Category updated');
-    context.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Edit category'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                PrimaryTextField(
-                  validator: nullCheckValidator,
-                  hintText: 'Category name',
-                  controller: categoryName,
-                  onChanged: (value) {},
-                ),
-                // TextField(
-                //   controller: categoryName,
-                //   decoration: const InputDecoration(
-                //       border: OutlineInputBorder(), hintText: 'Enter Category'),
-                // ),
-                SizedBox(height: 2.h),
-                // ElevatedButton(
-                //   onPressed: () => updateCategory(context),
-                //   child: const Text('Update Category'),
-                // )
-              ],
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit category'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PrimaryTextField(
+                validator: nullCheckValidator,
+                hintText: 'Category name',
+                controller: categoryName,
+                onChanged: (value) {},
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                updateCategory(context);
-              }
-            }),
+      ),
+      bottomNavigationBar:
+          BlocBuilder<CategoryScreenCubit, CategoryScreenState>(
+        builder: (context, state) {
+          return CustomButton(
+              text: "Save",
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await context.read<CategoryScreenCubit>().updateCategory(
+                      widget.item.copyWith(categoryName: categoryName.text));
+                  context.pop();
+                }
+              });
+        },
       ),
     );
   }

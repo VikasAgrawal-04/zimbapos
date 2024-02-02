@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:isar/isar.dart';
+import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
 
 part 'items_model.g.dart';
@@ -25,6 +26,7 @@ class ItemsModel {
   bool? isActive;
   bool? isDeleted;
   final taxDetails = IsarLink<TaxModel>();
+  final mainGroupDetails = IsarLink<MainGroupModel>();
 
   // Constructor
   ItemsModel({
@@ -106,7 +108,10 @@ class ItemsModel {
       'imgLink': imgLink,
       'isActive': isActive,
       'isDeleted': isDeleted,
-      'tax': jsonDecode(taxDetails.value!.toJson().toString())
+      'tax': jsonDecode(taxDetails.value!.toJson().toString()),
+      'main_group_details': mainGroupDetails.value != null
+          ? jsonDecode(mainGroupDetails.value!.toJson().toString())
+          : null
     };
   }
 

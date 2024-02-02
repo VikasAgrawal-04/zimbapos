@@ -9,6 +9,7 @@ import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/my_alert_widget.dart';
+import '../../../widgets/textfield/primary_textfield.dart';
 
 class ItemsListScreen extends StatefulWidget {
   const ItemsListScreen({super.key});
@@ -19,7 +20,14 @@ class ItemsListScreen extends StatefulWidget {
 
 class _ItemsListScreenState extends State<ItemsListScreen> {
   //
-  //
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+  }
+
   Stream<List<ItemsModel>> streamForItems() {
     final datatbaseCubit = DatabaseCubit.dbFrom(context);
     // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
@@ -56,6 +64,12 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -76,89 +90,122 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
             ),
           ],
         ),
-        body: StreamBuilder<List<ItemsModel>>(
-          stream: streamForItems(),
-          builder: (context, snapshot) {
-            final list = snapshot.data;
-            if (list == null || list.isEmpty) {
-              return const Center(
-                child: Text('No items available.'),
-              );
-            }
-            return SizedBox(
-              width: 100.w,
-              child: DataTable(
-                headingTextStyle: KTextStyles.kTitle,
-                columns: [
-                  const DataColumn(
-                    label: Text('Name'),
-                  ),
-                  const DataColumn(
-                    label: Text('Type'),
-                  ),
-                  const DataColumn(
-                    label: Text('Price'),
-                  ),
-                  const DataColumn(
-                    label: Text('Active'),
-                  ),
-                  DataColumn(
-                    label: Padding(
-                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                      child: const Text('Actions'),
-                    ),
-                  ),
-                ],
-                rows: list
-                    .map(
-                      (e) => DataRow(
-                        cells: [
-                          DataCell(Text(
-                            e.itemName.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(Text(
-                            e.foodType.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(Text(
-                            e.rateWithTax.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(
-                            Switch.adaptive(
-                              value: e.isActive as bool,
-                              onChanged: (va) => activeDeactivateItem(e.id, va),
-                            ),
-                          ),
-                          DataCell(
-                            Container(
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editItemFn(model: e),
-                                    icon: const Icon(Icons.edit),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  IconButton(
-                                    onPressed: () => deleteItem(e),
-                                    icon: const Icon(CupertinoIcons.delete),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
+        body: Column(
+          children: [
+            //search
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: PrimaryTextField(
+                controller: _searchController,
+                onChanged: (value) {
+                  setState(() {});
+                },
+                hintText: "Search by name",
+                prefixIcon: const Icon(Icons.search),
               ),
-            );
-          },
+            ),
+            //stream
+            StreamBuilder<List<ItemsModel>>(
+              stream: streamForItems(),
+              builder: (context, snapshot) {
+                final list = snapshot.data;
+                final filteredList = _searchController.text.isEmpty
+                    ? list
+                    : list!.where((card) {
+                        final name = card.itemName ?? '';
+                        return name.toLowerCase().contains(
+                              _searchController.text.toLowerCase(),
+                            );
+                      }).toList();
+
+                if (filteredList == null || filteredList.isEmpty) {
+                  return const Center(
+                    child: Text('No customer category found'),
+                  );
+                }
+                if (list == null || list.isEmpty) {
+                  return const Center(
+                    child: Text('No items available.'),
+                  );
+                }
+                return SizedBox(
+                  width: 100.w,
+                  child: DataTable(
+                    headingTextStyle: KTextStyles.kTitle,
+                    columns: [
+                      const DataColumn(
+                        label: Text('Name'),
+                      ),
+                      const DataColumn(
+                        label: Text('Type'),
+                      ),
+                      const DataColumn(
+                        label: Text('Price'),
+                      ),
+                      const DataColumn(
+                        label: Text('Active'),
+                      ),
+                      DataColumn(
+                        label: Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                          child: const Text('Actions'),
+                        ),
+                      ),
+                    ],
+                    rows: filteredList
+                        .map(
+                          (e) => DataRow(
+                            cells: [
+                              DataCell(Text(
+                                e.itemName.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(Text(
+                                e.foodType.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(Text(
+                                e.rateWithTax.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(
+                                Switch.adaptive(
+                                  value: e.isActive as bool,
+                                  onChanged: (va) =>
+                                      activeDeactivateItem(e.id, va),
+                                ),
+                              ),
+                              DataCell(
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () => editItemFn(model: e),
+                                        icon: const Icon(Icons.edit),
+                                      ),
+                                      SizedBox(width: 2.w),
+                                      IconButton(
+                                        onPressed: () => deleteItem(e),
+                                        icon: const Icon(CupertinoIcons.delete),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );

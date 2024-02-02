@@ -8,6 +8,7 @@ import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/home_page_cubits/home_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
+import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
@@ -108,6 +109,15 @@ class _HomeScreenState extends State<HomeScreen> {
   void dispose() {
     scrollController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final deviceId = await Helpers.fetchDeviceId();
+      print("deviceId $deviceId");
+    });
   }
 
   @override
@@ -402,6 +412,11 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
     title: 'ItemGroup Screen',
     path: AppScreen.itemGroupScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+    title: 'Cards Screen',
+    path: AppScreen.cardListScreen.path,
     userId: '123123',
   ),
 ];

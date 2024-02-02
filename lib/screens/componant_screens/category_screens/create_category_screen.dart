@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
-import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
@@ -18,7 +17,6 @@ class CreateCategoryScreen extends StatefulWidget {
 }
 
 class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
-  //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
   final ApiRepo _repo = ApiRepoImpl();
@@ -30,9 +28,6 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
 
   void createCategory(BuildContext context) {
     _repo.createCategory(CategoryModel(categoryName: categoryName.text));
-    // final db = DatabaseCubit.dbFrom(context);
-    // db.categoryRepository
-    // .createCategory(data: CategoryModel(categoryName: categoryName.text));
     EasyLoading.showToast('Category Created');
     context.pop();
   }
@@ -51,23 +46,12 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //cat name
                 PrimaryTextField(
                   validator: nullCheckValidator,
                   hintText: 'Category name',
                   controller: categoryName,
                   onChanged: (value) {},
                 ),
-                // TextField(
-                //   controller: categoryName,
-                //   decoration: const InputDecoration(
-                //       border: OutlineInputBorder(), hintText: 'Enter Category'),
-                // ),
-                SizedBox(height: 2.h),
-                // ElevatedButton(
-                //   onPressed: () => createCategory(context),
-                //   child: const Text('Create Category'),
-                // )
               ],
             ),
           ),

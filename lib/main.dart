@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:server/server_handler.dart';
@@ -15,11 +14,8 @@ import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_state.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
-import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/routers/utils/go_router_functions.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 
 import 'constants/kcolors.dart';
@@ -52,14 +48,7 @@ class MyApp extends StatelessWidget {
         return BlocProvider(
           create: (context) => DeviceControlCubit(),
           child: BlocConsumer<DeviceControlCubit, DeviceState>(
-            listener: (context, state) {
-              // if (state is IncompleteInformation) {
-              //   showDialog(
-              //     context: context,
-              //     builder: (context) => AlertDialog(title: Text(state.message)),
-              //   );
-              // }
-            },
+            listener: (context, state) {},
             builder: (context, state) {
               if (state is FinalDeviceState) {
                 return MultiBlocProvider(

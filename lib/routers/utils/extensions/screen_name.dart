@@ -70,6 +70,7 @@ enum AppScreen {
   createDiscountScreen,
   editDiscountScreen,
   settingsOverviewScreen,
+  terminalSetUpScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -178,6 +179,8 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Discount Screen';
       case AppScreen.settingsOverviewScreen:
         return 'Settings Overview Screen';
+      case AppScreen.terminalSetUpScreen:
+        return 'Terminal SetUp Screen';
     }
   }
 
@@ -286,6 +289,8 @@ extension AppScreenExtension on AppScreen {
         return '/edit-discount-screen';
       case AppScreen.settingsOverviewScreen:
         return '/settings-overview-screen';
+      case AppScreen.terminalSetUpScreen:
+        return '/terminal-setup-screen';
     }
   }
 }

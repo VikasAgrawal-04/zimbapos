@@ -5,6 +5,8 @@ class MySecureStorage {
   // Keys setup
   final String _outletStorageKey = 'outletStorageKey';
   final String _deviceConfig = 'DeviceConfigKey';
+  final String _mainTerminal = 'MainTermmial';
+  final String _terminalID = 'TerminalID';
   final String _loginCred = 'loginCred';
 
   setOutletId({required String outletID}) async {
@@ -17,6 +19,28 @@ class MySecureStorage {
 
   setLoginCred({required String logInCred}) async {
     return await storage.write(key: _loginCred, value: logInCred);
+  }
+
+  setTerminalType({required bool terminalType}) async {
+    return await storage.write(
+        key: _mainTerminal, value: terminalType.toString());
+  }
+
+  setTerminalID({required String terminalID}) async {
+    return await storage.write(key: _terminalID, value: terminalID);
+  }
+
+  Future<bool?> getmainTerminal() async {
+    final String? data = await storage.read(key: _mainTerminal);
+    if (data != null) {
+      final bool mainTerminal = bool.fromEnvironment(data);
+      return mainTerminal;
+    }
+    return null;
+  }
+
+  Future<String?> getTerminalID() async {
+    return await storage.read(key: _terminalID);
   }
 
   Future<String?> getDeviceConfig() async {

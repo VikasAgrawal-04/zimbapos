@@ -12,9 +12,9 @@ class AppRouter {
       final databaseCubit = context.read<DatabaseCubit>();
       bool outletcheck = databaseCubit.outletId == null;
       if (outletcheck) {
-        return AppScreen.mainGroupScreen.path;
+        return AppScreen.outletDataRegisterScreen.path;
       }
-      return null;
+      return AppScreen.terminalSetUpScreen.path;
     },
   );
 }

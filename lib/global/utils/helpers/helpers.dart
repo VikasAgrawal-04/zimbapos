@@ -15,6 +15,7 @@ import 'package:uuid/uuid.dart';
 import 'package:zimbapos/global/error/exception.dart';
 import 'package:zimbapos/global/error/failures.dart';
 import 'package:zimbapos/global/utils/environment.dart';
+import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 
 enum RequestType { get, post, put, delete }
 
@@ -258,6 +259,18 @@ class Helpers {
       debugPrint("Failed to get device $error");
       return (error.toString());
     }
+  }
+
+  static Future<String?> getOutletId() async {
+    final MySecureStorage storage = MySecureStorage();
+    String? outletId = await storage.getOutletID();
+
+    if (outletId != null) {
+      var bytes = utf8.encode(outletId);
+      var digest = md5.convert(bytes);
+      return digest.toString();
+    }
+    return null;
   }
 }
 

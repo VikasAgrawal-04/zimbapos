@@ -43,7 +43,7 @@ class TerminalModel {
 
   factory TerminalModel.fromMap(Map<String, dynamic> map) {
     return TerminalModel(
-      id: map['id'],
+      id: map['id'] ?? Isar.autoIncrement,
       outletId: map['outletId'] != null ? map['outletId'] as String : null,
       terminalId: map['terminalId'] != null ? map['terminalId'] as int : null,
       deviceId: map['deviceId'] != null ? map['deviceId'] as String : null,

@@ -15,5 +15,12 @@ class TerminalRoutes {
     controller = TerminalController(dbCubit);
     initialiseApi();
   }
-  void initialiseApi() {}
+  void initialiseApi() {
+    locRoute.get('/get-all-terminals', controller.getAllTerminals);
+    locRoute.get('/get-terminal-id', controller.getTerminalId);
+    locRoute.post('/create-terminal', controller.createTerminal);
+    locRoute.post(
+        '/update-terminal-deviceId', controller.updateTerminalWithDeviceId);
+    locRoute.delete('/delete-terminal', controller.deleteTerminal);
+  }
 }

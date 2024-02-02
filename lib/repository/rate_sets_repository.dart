@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:uuid/uuid.dart';
-import 'package:uuid/v1.dart';
+import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 
 class RateSetsRepository {
@@ -32,9 +31,7 @@ class RateSetsRepository {
           .isDeletedEqualTo(false)
           .findFirstSync();
       if (dbItem == null) {
-        var uuid = Uuid();
-        String newUuid = uuid.v4();
-        model.ratesetId = newUuid;
+        model.ratesetId = Helpers.generateUuId();
         db.writeTxnSync(() {
           db.rateSetsModels.putSync(model);
         });

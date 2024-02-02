@@ -7,7 +7,7 @@ class TempBillLines {
   Id id = Isar.autoIncrement;
   String? billId;
   String? lineId;
-  int? linePosition = Isar.autoIncrement;
+  int? linePosition;
   String? itemId;
   String? itemName;
   int? quantity;
@@ -28,7 +28,7 @@ class TempBillLines {
       {this.id = Isar.autoIncrement,
       this.billId,
       this.lineId,
-      this.linePosition = Isar.autoIncrement,
+      this.linePosition,
       this.itemId,
       this.itemName,
       this.quantity,
@@ -116,9 +116,8 @@ class TempBillLines {
         id: map['id'] ?? Isar.autoIncrement,
         billId: map['billId'] != null ? map['billId'] as String : null,
         lineId: map['lineId'] != null ? map['lineId'] as String : null,
-        linePosition: map['linePosition'] != null
-            ? map['linePosition'] as int
-            : Isar.autoIncrement,
+        linePosition:
+            map['linePosition'] != null ? map['linePosition'] as int : null,
         itemId: map['itemId'] != null ? map['itemId'] as String : null,
         itemName: map['itemName'] != null ? map['itemName'] as String : null,
         quantity: map['quantity'] != null ? map['quantity'] as int : null,

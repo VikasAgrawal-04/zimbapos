@@ -21,10 +21,13 @@ class BillController {
       final lines = (decodedData['bill_lines'] as List<dynamic>)
           .map((e) => TempBillLines.fromMap(e))
           .toList();
-      print(lines.length);
-      await db.billRepository.createOrUpdateBill(header: header, lines: []);
-
-      return okResponse('result');
+      final success = await db.billRepository
+          .createOrUpdateBill(header: header, lines: lines);
+      if (success.value1) {
+        return okResponse(success.value2);
+      } else {
+        return badArguments(success.value2);
+      }
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

@@ -117,7 +117,7 @@ class _CreateSingleDiscScreenState extends State<CreateSingleDiscScreen> {
   getDiscountList(BuildContext context) async {
     final db = DatabaseCubit.dbFrom(context);
     discountList =
-        await db.discountRepository.getDiscountList() as List<DiscountModel?>;
+        await db.discountRepository.getDiscountList();
   }
 
   // Pick start date method

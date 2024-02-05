@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_state.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 
@@ -21,23 +23,19 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final custCatName = TextEditingController();
   final discount = TextEditingController();
+  String? outletId;
+
+  @override
+  void initState() {
+    super.initState();
+    outletId = BlocProvider.of<DatabaseCubit>(context).outletId;
+  }
 
   @override
   void dispose() {
     custCatName.dispose();
     discount.dispose();
     super.dispose();
-  }
-
-  createCustCat(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.customerCategoryRepository.createCusCat(
-        data: CustomerCategoryModel(
-            custCategoryName: custCatName.text,
-            custCategoryDiscount:
-                double.parse(discount.text.isEmpty ? '0.0' : discount.text)));
-    EasyLoading.showToast('Customer Category Created');
-    context.pop();
   }
 
   @override
@@ -89,13 +87,28 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                createCustCat(context);
-              }
-            }),
+        bottomNavigationBar: BlocBuilder<CustomerCategoryScreenCubit,
+            CustomerCategoryScreenState>(
+          builder: (context, state) {
+            return CustomButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    await context
+                        .read<CustomerCategoryScreenCubit>()
+                        .createCustomerCategories(
+                          CustomerCategoryModel(
+                            // outletId: outletId,
+                            custCategoryName: custCatName.text,
+                            custCategoryDiscount: double.parse(discount.text),
+                          ),
+                        );
+
+                    context.pop();
+                  }
+                });
+          },
+        ),
       ),
     );
   }

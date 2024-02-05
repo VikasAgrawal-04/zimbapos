@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -7,9 +8,12 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_state.dart';
 import '../../../constants/ktextstyles.dart';
+import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../widgets/indicators/loading_indicator.dart';
 import '../../../widgets/my_alert_widget.dart';
-import '../../../widgets/textfield/primary_textfield.dart';
 
 class CustomerCategoryScreen extends StatefulWidget {
   const CustomerCategoryScreen({super.key});
@@ -65,7 +69,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
     dbCubit.customerCategoryRepository.changeActive(id, value);
   }
 
-  editWorkerFn({required CustomerCategoryModel model}) {
+  editCusCatFn({required CustomerCategoryModel model}) {
     context.push(
       AppScreen.editCustomerCategory.path,
       extra: model,
@@ -101,167 +105,131 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            //search
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: PrimaryTextField(
-                controller: _searchController,
-                onChanged: (value) {
-                  setState(() {});
-                },
-                hintText: "Search by name",
-                prefixIcon: const Icon(Icons.search),
-              ),
-            ),
-            //stream
-            StreamBuilder<List<CustomerCategoryModel>>(
-              stream: custCatStream(),
-              builder: (context, snapshot) {
-                final data = snapshot.data;
-                final filteredList = _searchController.text.isEmpty
-                    ? data
-                    : data!.where((card) {
-                        final name = card.custCategoryName ?? '';
-                        return name.toLowerCase().contains(
-                              _searchController.text.toLowerCase(),
-                            );
-                      }).toList();
-
-                if (filteredList == null || filteredList.isEmpty) {
-                  return const Center(
-                    child: Text('No customer category found'),
-                  );
-                }
-                if (data == null || data.isEmpty) {
-                  return const Center(
-                    child: Text('No customer categorues available'),
-                  );
-                } else {
-                  return SizedBox(
-                    width: 100.w,
-                    child: DataTable(
-                      headingTextStyle: KTextStyles.kTitle,
-                      columns: [
-                        const DataColumn(
-                          label: Text('Name'),
-                        ),
-                        // const DataColumn(
-                        //   label: Text('Role'),
-                        // ),
-                        const DataColumn(
-                          label: Text('Active'),
-                        ),
-                        DataColumn(
-                          label: Padding(
-                            padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                            child: const Text('Actions'),
-                          ),
-                        ),
-                      ],
-                      rows: filteredList
-                          .map(
-                            (e) => DataRow(
-                              cells: [
-                                DataCell(Text(
-                                  e.custCategoryName.toString(),
-                                  style: KTextStyles.kSubtitle,
-                                )),
-                                DataCell(
-                                  Switch.adaptive(
-                                    value: e.isActive as bool,
-                                    onChanged: (va) =>
-                                        activeDeactivateCusCat(e.id, va),
-                                  ),
-                                ),
-                                DataCell(
-                                  Container(
-                                    alignment: Alignment.center,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          onPressed: () =>
-                                              editWorkerFn(model: e),
-                                          icon: const Icon(Icons.edit),
-                                        ),
-                                        SizedBox(width: 2.w),
-                                        IconButton(
-                                          onPressed: () => deleteCusCat(e),
-                                          icon:
-                                              const Icon(CupertinoIcons.delete),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList(),
+        body: BlocBuilder<CustomerCategoryScreenCubit,
+            CustomerCategoryScreenState>(
+          builder: ((context, state) {
+            final data = state.customerCategories;
+            if (state.status == Status.loading) {
+              return const MyLoadingIndicator();
+            }
+            if (data.isEmpty) {
+              return const Center(
+                child: Text('No Customer Categories'),
+              );
+            } else {
+              return SizedBox(
+                width: 100.w,
+                child: DataTable(
+                  headingTextStyle: KTextStyles.kTitle,
+                  columns: [
+                    const DataColumn(
+                      label: Text('Name'),
                     ),
-                  );
-                  // ListView.builder(
-                  //     itemCount: data.length,
-                  //     itemBuilder: (context, index) {
-                  //       final rawData = data[index];
-                  //       return ListTile(
-                  //         title: Text(rawData.custCategoryName ?? "Category Name"),
-                  //         subtitle: Column(
-                  //           mainAxisAlignment: MainAxisAlignment.start,
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             //discount
-                  //             Text(
-                  //                 "Discount: ${rawData.custCategoryDiscount ?? '0.0'}%"),
-                  //             //status
-                  //             Text((rawData.isActive ?? false)
-                  //                 ? 'Active'
-                  //                 : "InActive"),
-                  //           ],
-                  //         ),
-                  //         trailing: Row(
-                  //           mainAxisSize: MainAxisSize.min,
-                  //           children: [
-                  //             IconButton(
-                  //               onPressed: () => context.push(
-                  //                 AppScreen.editCustomerCategory.path,
-                  //                 //passing data to edit screen
-                  //                 extra: data[index],
-                  //               ),
-                  //               icon: const Icon(
-                  //                 Icons.edit,
-                  //                 size: 30,
-                  //               ),
-                  //             ),
-                  //             SizedBox(width: 2.w),
-                  //             IconButton(
-                  //               onPressed: () => deleteFn(rawData.id),
-                  //               icon: const Icon(
-                  //                 Icons.delete,
-                  //                 size: 30,
-                  //               ),
-                  //             ),
-                  //             SizedBox(width: 2.w),
-                  //             Switch.adaptive(
-                  //               value: rawData.isActive ?? false,
-                  //               onChanged: (value) => toggleFn(rawData.id, value),
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       );
-                  //     });
-                }
-              },
-            ),
-          ],
+                    // const DataColumn(
+                    //   label: Text('Role'),
+                    // ),
+                    const DataColumn(
+                      label: Text('Active'),
+                    ),
+                    DataColumn(
+                      label: Padding(
+                        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                        child: const Text('Actions'),
+                      ),
+                    ),
+                  ],
+                  rows: data
+                      .map(
+                        (e) => DataRow(
+                          cells: [
+                            DataCell(Text(
+                              e.custCategoryName.toString(),
+                              style: KTextStyles.kSubtitle,
+                            )),
+                            DataCell(
+                              Switch.adaptive(
+                                value: e.isActive as bool,
+                                onChanged: (va) =>
+                                    activeDeactivateCusCat(e.id, va),
+                              ),
+                            ),
+                            DataCell(
+                              Container(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => editCusCatFn(model: e),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    IconButton(
+                                      onPressed: () => deleteCusCat(e),
+                                      icon: const Icon(CupertinoIcons.delete),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                      .toList(),
+                ),
+              );
+            }
+          }),
         ),
       ),
     );
+    // Column(
+    //   children: [
+    //     //search
+    //     Padding(
+    //       padding: const EdgeInsets.all(8),
+    //       child: PrimaryTextField(
+    //         controller: _searchController,
+    //         onChanged: (value) {
+    //           setState(() {});
+    //         },
+    //         hintText: "Search by name",
+    //         prefixIcon: const Icon(Icons.search),
+    //       ),
+    //     ),
+    //     //stream
+    //     StreamBuilder<List<CustomerCategoryModel>>(
+    //       stream: custCatStream(),
+    //       builder: (context, snapshot) {
+    //         final data = snapshot.data;
+    //         final filteredList = _searchController.text.isEmpty
+    //             ? data
+    //             : data!.where((card) {
+    //                 final name = card.custCategoryName ?? '';
+    //                 return name.toLowerCase().contains(
+    //                       _searchController.text.toLowerCase(),
+    //                     );
+    //               }).toList();
+
+    //         if (filteredList == null || filteredList.isEmpty) {
+    //           return const Center(
+    //             child: Text('No customer category found'),
+    //           );
+    //         }
+    //         if (data == null || data.isEmpty) {
+    //           return const Center(
+    //             child: Text('No customer categorues available'),
+    //           );
+    //         } else {
+
+    //         }
+    //       },
+    //     ),
+    //   ],
+    // ),
+    // ),
+    // );
   }
 }

@@ -18,6 +18,7 @@ import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 
+import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
 import 'constants/kcolors.dart';
 
 Future<void> main() async {
@@ -78,7 +79,11 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                   BlocProvider(
-                      create: (context) => CategoryScreenCubit()..init())
+                    create: (context) => CategoryScreenCubit()..init(),
+                  ),
+                  BlocProvider(
+                    create: (context) => CustomerCategoryScreenCubit()..init(),
+                  ),
                 ],
                 child: BlocBuilder<DatabaseCubit, IsarService?>(
                   builder: (context, state) {

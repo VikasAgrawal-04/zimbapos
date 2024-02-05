@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:zimbapos/global/error/failures.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
+import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
@@ -15,6 +16,8 @@ import 'package:zimbapos/repository/api_repository/bills/bill_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/bills/bill_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/category/category_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/category/category_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/customer_category/customer_category_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/customer_category/customer_category_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
@@ -35,6 +38,7 @@ class ApiRepoImpl implements ApiRepo {
   final ItemApiRepo _itemApiRepo;
   final WorkerApiRepo _workerApiRepo;
   final BillApiRepo _billApiRepo;
+  final CustomerCategoryApiRepo _customerCategoryApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -44,7 +48,8 @@ class ApiRepoImpl implements ApiRepo {
         _mainGroupApiRepo = MainGroupApiRepoImpl(),
         _itemGroupApiRepo = ItemGroupApiRepoImpl(),
         _itemApiRepo = ItemApiRepoImpl(),
-        _billApiRepo = BillApiRepoImpl();
+        _billApiRepo = BillApiRepoImpl(),
+        _customerCategoryApiRepo = CustomerCategoryApiRepoImpl();
 
   @override
   Future<Either<Failure, List<AreasModel>>> getAreas() {
@@ -113,5 +118,16 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createKot(
       TempBillRequestModel data) {
     return _billApiRepo.createKot(data);
+  }
+
+  @override
+  Future<Either<Failure, List<CustomerCategoryModel>>> getCustomerCategories() {
+    return _customerCategoryApiRepo.getCustomerCategories();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createCustomerCategories(
+      CustomerCategoryModel item) {
+    return _customerCategoryApiRepo.createCustomerCategories(item);
   }
 }

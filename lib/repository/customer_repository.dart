@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
 import '../models/global_models/customer_model.dart';
@@ -6,29 +8,33 @@ class CustomerRepository {
   Isar db;
   CustomerRepository(this.db);
 
-  Stream<List<CustomerModel>> streamCustomers() {
-    return db.customerModels
-        .filter()
-        .isDeletedEqualTo(false)
-        .watch(fireImmediately: true);
-  }
-
   Future<List<CustomerModel>> getAllCustomers() async {
-    return await db.customerModels.filter().isDeletedEqualTo(false).findAll();
-  }
-
-  Future<void> changeActive(int id, bool isActive) async {
-    CustomerModel? model = await db.customerModels.get(id);
-    if (model != null) {
-      model.isActive = isActive;
-      db.writeTxnSync(() {
-        db.customerModels.putSync(model);
-      });
+    try {
+      return await db.customerModels.filter().isDeletedEqualTo(false).findAll();
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return [];
     }
   }
 
-  void createCustomer({required CustomerModel data}) {
-    db.writeTxnSync(() => db.customerModels.putSync(data));
+  Future<Tuple2<bool, String>> createCustomer(CustomerModel data) async {
+    try {
+      final dbItem = db.customerModels
+          .filter()
+          .customerIdEqualTo(data.customerId)
+          .and()
+          .mobileEqualTo(data.mobile)
+          .findFirstSync();
+      if (dbItem == null) {
+        db.writeTxnSync(() => db.customerModels.putSync(data));
+        return const Tuple2(true, 'Customer Created Succesfully!');
+      } else {
+        throw IsarError('Customer Already Exists');
+      }
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return Tuple2(false, error.message);
+    }
   }
 
   Future<void> updateCustomer({required CustomerModel data}) async {

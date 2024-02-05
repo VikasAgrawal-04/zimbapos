@@ -70,6 +70,11 @@ enum AppScreen {
   createDiscountScreen,
   editDiscountScreen,
   settingsOverviewScreen,
+  //CRUD screens @ Cards
+  cardListScreen,
+  createCardScreen,
+  editCardScreen,
+  cardActionScreen,
   itemsSelectionScreen
 }
 
@@ -179,6 +184,14 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Discount Screen';
       case AppScreen.settingsOverviewScreen:
         return 'Settings Overview Screen';
+      case AppScreen.cardListScreen:
+        return 'Cards Screen';
+      case AppScreen.createCardScreen:
+        return 'Create Card Screen';
+      case AppScreen.editCardScreen:
+        return 'Edit Card Screen';
+      case AppScreen.cardActionScreen:
+        return 'Card Action Screen';
       case AppScreen.itemsSelectionScreen:
         return 'Items Selection Screen';
     }
@@ -289,6 +302,14 @@ extension AppScreenExtension on AppScreen {
         return '/edit-discount-screen';
       case AppScreen.settingsOverviewScreen:
         return '/settings-overview-screen';
+      case AppScreen.cardListScreen:
+        return '/cards-screen';
+      case AppScreen.createCardScreen:
+        return '/create-card-screen';
+      case AppScreen.editCardScreen:
+        return '/edit-card-screen';
+      case AppScreen.cardActionScreen:
+        return '/card-action-screen';
       case AppScreen.itemsSelectionScreen:
         return '/items-selection-screen';
     }

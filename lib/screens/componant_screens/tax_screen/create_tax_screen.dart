@@ -57,7 +57,7 @@ class _CreateTaxScreenState extends State<CreateTaxScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit tax'),
+          title: const Text('Create tax'),
         ),
         body: SingleChildScrollView(
           child: Padding(

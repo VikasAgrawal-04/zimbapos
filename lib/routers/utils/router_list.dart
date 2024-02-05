@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
+import 'package:zimbapos/models/global_models/card_model.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/discount_single_model.dart';
@@ -21,6 +22,9 @@ import 'package:zimbapos/screens/componant_screens/Items_screen/items_list_scree
 import 'package:zimbapos/screens/componant_screens/area_screen/areas_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/create_area_screen.dart';
 import 'package:zimbapos/screens/componant_screens/area_screen/edit_area_screen.dart';
+import 'package:zimbapos/screens/componant_screens/card_screens/card_action_screen.dart';
+import 'package:zimbapos/screens/componant_screens/card_screens/card_list_screen.dart';
+import 'package:zimbapos/screens/componant_screens/card_screens/edit_card_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
@@ -60,11 +64,11 @@ import 'package:zimbapos/screens/componant_screens/worker_management_screens/cre
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/edit_worker_screen.dart';
 import 'package:zimbapos/screens/componant_screens/worker_management_screens/worker_overview_screen.dart';
 import 'package:zimbapos/screens/home_screen.dart';
-import 'package:zimbapos/screens/login/login_view.dart';
 import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 
+import '../../screens/componant_screens/card_screens/create_card_screen.dart';
 import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
@@ -127,13 +131,6 @@ final List<GoRoute> routerList = [
             item: TableModel.fromJson(state.extra as String));
       }
     },
-  ),
-
-  //login
-  GoRoute(
-    name: AppScreen.loginScreen.name,
-    path: AppScreen.loginScreen.path,
-    builder: (context, state) => const LoginScreen(),
   ),
 
   //areas list
@@ -516,6 +513,47 @@ final List<GoRoute> routerList = [
     name: AppScreen.settingsOverviewScreen.name,
     path: AppScreen.settingsOverviewScreen.path,
     builder: (context, state) => const SettingsOverviewScreen(),
+  ),
+
+  //card list
+  GoRoute(
+    name: AppScreen.cardListScreen.name,
+    path: AppScreen.cardListScreen.path,
+    builder: (context, state) => const CardListScreen(),
+  ),
+  // create card
+  GoRoute(
+    name: AppScreen.createCardScreen.name,
+    path: AppScreen.createCardScreen.path,
+    builder: (context, state) => const CreateCardScreen(),
+  ),
+  //edit card
+  GoRoute(
+    name: AppScreen.editCardScreen.name,
+    path: AppScreen.editCardScreen.path,
+    builder: (context, state) {
+      if (state.extra is CardModel) {
+        return EditCardScreen(item: state.extra as CardModel);
+      } else {
+        return EditCardScreen(
+          item: CardModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+  //card action
+  GoRoute(
+    name: AppScreen.cardActionScreen.name,
+    path: AppScreen.cardActionScreen.path,
+    builder: (context, state) {
+      if (state.extra is CardModel) {
+        return CardActionScreen(item: state.extra as CardModel);
+      } else {
+        return CardActionScreen(
+          item: CardModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
   ),
 
   GoRoute(

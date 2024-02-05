@@ -7,7 +7,7 @@ part 'tables_model.g.dart';
 @collection
 class TableModel {
   Id id = Isar.autoIncrement;
-  int? outletId;
+  String? outletId;
   String? tableId;
   String? tableName;
   String? areaId;
@@ -37,7 +37,7 @@ class TableModel {
 
   TableModel copyWith({
     Id? id,
-    int? outletId,
+    String? outletId,
     String? tableId,
     String? tableName,
     String? areaId,
@@ -88,7 +88,7 @@ class TableModel {
   factory TableModel.fromMap(Map<String, dynamic> map) {
     return TableModel(
       id: map['id'] ?? Isar.autoIncrement,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       tableId: map['tableId'] != null ? map['tableId'] as String : null,
       tableName: map['tableName'] != null ? map['tableName'] as String : null,
       areaId: map['areaId'] != null ? map['areaId'] as String? : null,

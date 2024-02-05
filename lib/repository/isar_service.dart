@@ -19,6 +19,7 @@ import 'package:zimbapos/models/user_models/system_config_model.dart';
 import 'package:zimbapos/models/user_models/user_model.dart';
 import 'package:zimbapos/repository/areas_repository.dart';
 import 'package:zimbapos/repository/bill_repository.dart';
+import 'package:zimbapos/repository/card_log_repository.dart';
 import 'package:zimbapos/repository/category_repository.dart';
 import 'package:zimbapos/repository/customer_repository.dart';
 import 'package:zimbapos/repository/discount_single_repo.dart';
@@ -39,6 +40,8 @@ import 'package:zimbapos/repository/user_repository/user_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
 import 'package:zimbapos/repository/workers_repository.dart';
 
+import '../models/global_models/card_log_model.dart';
+import '../models/global_models/card_model.dart';
 import '../models/global_models/discount_single_model.dart';
 import '../models/global_models/expense_category_model.dart';
 import '../models/global_models/expenses_model.dart';
@@ -46,6 +49,7 @@ import '../models/global_models/items_model.dart';
 import '../models/global_models/payments_model.dart';
 import '../models/global_models/tax_model.dart';
 import '../models/global_models/vendor_model.dart';
+import 'card_repository.dart';
 
 class IsarService {
   late Isar db;
@@ -78,7 +82,9 @@ class IsarService {
           ItemGroupModelSchema,
           TempBillHeaderModelSchema,
           TempBillLinesSchema,
-          TerminalModelSchema
+          TerminalModelSchema,
+          CardModelSchema,
+          CardLogModelSchema,
         ],
         name: dbName,
         directory: directory.path,
@@ -129,14 +135,18 @@ class IsarService {
   ItemsRepository get itemsRepository => ItemsRepository(db);
   //for payments
   PaymentsRepository get paymentsRepository => PaymentsRepository(db);
-  //for single discount
+  //for discounts
   DiscountRepository get discountRepository => DiscountRepository(db);
-
+  //for main group
   MainGroupRepository get mainGroupRepository => MainGroupRepository(db);
-
+  //for item group
   ItemGroupRepository get itemGroupReposiory => ItemGroupRepository(db);
-
+  //for bill repo
   BillRepository get billRepository => BillRepository(db);
 
   TerminalRepository get terminalRepository => TerminalRepository(db);
+  //for cards
+  CardRepository get cardRepository => CardRepository(db);
+  //for card logs
+  CardLogRepository get cardLogRepository => CardLogRepository(db);
 }

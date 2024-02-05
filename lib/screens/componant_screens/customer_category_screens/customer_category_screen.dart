@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
@@ -13,7 +11,6 @@ import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_cate
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
-import '../../../widgets/my_alert_widget.dart';
 
 class CustomerCategoryScreen extends StatefulWidget {
   const CustomerCategoryScreen({super.key});
@@ -30,43 +27,6 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
   void initState() {
     super.initState();
     _searchController = TextEditingController();
-  }
-
-  Stream<List<CustomerCategoryModel>> custCatStream() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.customerCategoryRepository.streamCustCat();
-  }
-
-  // toggleFn(int id, bool value) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.customerRepository.changeActive(id, value);
-  // }
-
-  // deleteFn(int id) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.customerRepository.deleteCusCat(id);
-  // }
-
-  deleteCusCat(CustomerCategoryModel e) {
-    UtilDialog.showMyDialog(
-      context,
-      "Alert",
-      "Do you want to delete '${e.custCategoryName}'?",
-      //this is for ok button
-      () {
-        final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.customerCategoryRepository.deleteCusCat(e.custCategoryId);
-        EasyLoading.showToast('Customer category deleted');
-        context.pop();
-      },
-      // this is for cancel button sending null will perform default pop() action
-      null,
-    );
-  }
-
-  activeDeactivateCusCat(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.customerCategoryRepository.changeActive(id, value);
   }
 
   editCusCatFn({required CustomerCategoryModel model}) {
@@ -125,9 +85,6 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                     const DataColumn(
                       label: Text('Name'),
                     ),
-                    // const DataColumn(
-                    //   label: Text('Role'),
-                    // ),
                     const DataColumn(
                       label: Text('Active'),
                     ),

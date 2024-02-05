@@ -5,6 +5,7 @@ import 'package:server/apis/routes/area_routes.dart';
 import 'package:server/apis/routes/bill_routes.dart';
 import 'package:server/apis/routes/category_routes.dart';
 import 'package:server/apis/routes/customer_category_routes.dart';
+import 'package:server/apis/routes/customer_routes.dart';
 import 'package:server/apis/routes/item_group_routes.dart';
 import 'package:server/apis/routes/item_routes.dart';
 import 'package:server/apis/routes/main_group_routes.dart';
@@ -39,6 +40,7 @@ class Server {
     TaxRoutes(context, router);
     BillRoutes(context, router);
     TerminalRoutes(context, router);
+    CustomerRoutes(context,router);
   }
 
   Future<void> runServer() async {

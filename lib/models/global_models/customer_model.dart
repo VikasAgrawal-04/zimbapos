@@ -50,8 +50,8 @@ class CustomerModel {
     this.creditLimitAmount,
     this.gender,
     this.balanceBonusPoints,
-    this.isActive,
-    this.isDeleted,
+    this.isActive = true,
+    this.isDeleted = false,
   });
 
   CustomerModel copyWith(
@@ -107,6 +107,7 @@ class CustomerModel {
   factory CustomerModel.fromJson(Map<String, dynamic> json) {
     return CustomerModel(
       id: json['id'] ?? Isar.autoIncrement,
+      customerId: json['customer_id'],
       outletId: json['outlet_id'],
       customerName: json['customer_name'],
       email: json['email'],
@@ -128,34 +129,36 @@ class CustomerModel {
       creditLimitAmount: json['credit_limit_amount'],
       gender: json['gender'],
       balanceBonusPoints: json['balance_bonus_points'],
-      isActive: json['is_active'],
-      isDeleted: json['is_deleted'],
+      isActive: json['is_active'] ?? true,
+      isDeleted: json['is_deleted'] ?? false,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'Outletid': outletId,
-      'Customer name': customerName,
-      'Email': email,
-      'Mobile': mobile,
-      'Createdate': createDate?.toIso8601String(),
-      'Address1': address1,
-      'Address2': address2,
-      'Address3': address3,
-      'City': city,
-      'State': state,
-      'Country': country,
-      'Pincode': pincode,
-      'GSTnumber': gstNumber,
-      'customerCategoryID': customerCategoryID,
-      'DateOfbirth': dateOfBirth?.toIso8601String(),
-      'anniversaryDate': anniversaryDate,
-      'creditLimitAmount': creditLimitAmount,
+      'id': id,
+      'customer_id': customerId,
+      'outlet_id': outletId,
+      'customer_name': customerName,
+      'email': email,
+      'mobile': mobile,
+      'created_date': createDate,
+      'address1': address1,
+      'address2': address2,
+      'address3': address3,
+      'city': city,
+      'state': state,
+      'country': country,
+      'pincode': pincode,
+      'gst_number': gstNumber,
+      'customer_category_id': customerCategoryID,
+      'dob': dateOfBirth,
+      'anniversary_date': anniversaryDate,
+      'credit_limit_amount': creditLimitAmount,
       'gender': gender,
-      'balanceBonuspoints': balanceBonusPoints,
-      'Isactive': isActive,
-      'Isdeleted': isDeleted,
+      'balance_bonus_points': balanceBonusPoints,
+      'is_active': isActive,
+      'is_deleted': isDeleted,
     };
   }
 }

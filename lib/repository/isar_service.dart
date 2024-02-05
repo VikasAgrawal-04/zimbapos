@@ -22,6 +22,7 @@ import 'package:zimbapos/repository/bill_repository.dart';
 import 'package:zimbapos/repository/card_log_repository.dart';
 import 'package:zimbapos/repository/category_repository.dart';
 import 'package:zimbapos/repository/customer_category_repository.dart';
+import 'package:zimbapos/repository/customer_repository.dart';
 import 'package:zimbapos/repository/discount_single_repo.dart';
 import 'package:zimbapos/repository/expense_category_repository.dart';
 import 'package:zimbapos/repository/expenses_repository.dart';
@@ -152,4 +153,6 @@ class IsarService {
   CardRepository get cardRepository => CardRepository(db);
   //for card logs
   CardLogRepository get cardLogRepository => CardLogRepository(db);
+
+  CustomerRepository get customerRepository=> CustomerRepository(db);
 }

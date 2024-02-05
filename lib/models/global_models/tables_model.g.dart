@@ -55,7 +55,7 @@ const TableModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 7,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'persons': PropertySchema(
       id: 8,
@@ -122,6 +122,12 @@ int _tableModelEstimateSize(
     }
   }
   {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.tableId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -155,7 +161,7 @@ void _tableModelSerialize(
   writer.writeBool(offsets[4], object.isActive);
   writer.writeBool(offsets[5], object.isDeleted);
   writer.writeBool(offsets[6], object.isSplit);
-  writer.writeLong(offsets[7], object.outletId);
+  writer.writeString(offsets[7], object.outletId);
   writer.writeLong(offsets[8], object.persons);
   writer.writeString(offsets[9], object.tableId);
   writer.writeString(offsets[10], object.tableName);
@@ -177,7 +183,7 @@ TableModel _tableModelDeserialize(
     isActive: reader.readBoolOrNull(offsets[4]),
     isDeleted: reader.readBoolOrNull(offsets[5]),
     isSplit: reader.readBoolOrNull(offsets[6]),
-    outletId: reader.readLongOrNull(offsets[7]),
+    outletId: reader.readStringOrNull(offsets[7]),
     persons: reader.readLongOrNull(offsets[8]),
     tableId: reader.readStringOrNull(offsets[9]),
     tableName: reader.readStringOrNull(offsets[10]),
@@ -209,7 +215,7 @@ P _tableModelDeserializeProp<P>(
     case 6:
       return (reader.readBoolOrNull(offset)) as P;
     case 7:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readLongOrNull(offset)) as P;
     case 9:
@@ -978,47 +984,55 @@ extension TableModelQueryFilter
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> outletIdEqualTo(
-      int? value) {
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1027,6 +1041,78 @@ extension TableModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> outletIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition> outletIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -2017,9 +2103,10 @@ extension TableModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<TableModel, TableModel, QDistinct> distinctByOutletId() {
+  QueryBuilder<TableModel, TableModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
@@ -2107,7 +2194,7 @@ extension TableModelQueryProperty
     });
   }
 
-  QueryBuilder<TableModel, int?, QQueryOperations> outletIdProperty() {
+  QueryBuilder<TableModel, String?, QQueryOperations> outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });

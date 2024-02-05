@@ -103,7 +103,7 @@ class BillHeader {
 class BillLine {
   String itemId;
   String itemName;
-  int quanitity;
+  int quantity;
   double priceExTax;
   String taxId;
   String taxType;
@@ -116,7 +116,7 @@ class BillLine {
   BillLine({
     required this.itemId,
     required this.itemName,
-    required this.quanitity,
+    required this.quantity,
     required this.priceExTax,
     required this.taxId,
     required this.taxType,
@@ -130,7 +130,7 @@ class BillLine {
   factory BillLine.fromJson(Map<String, dynamic> json) => BillLine(
         itemId: json["itemId"],
         itemName: json["itemName"],
-        quanitity: json["quanitity"],
+        quantity: json["quantity"],
         priceExTax: json["priceExTax"]?.toDouble(),
         taxId: json["taxId"],
         taxType: json["taxType"],
@@ -144,7 +144,7 @@ class BillLine {
   Map<String, dynamic> toJson() => {
         "itemId": itemId,
         "itemName": itemName,
-        "quanitity": quanitity,
+        "quantity": quantity,
         "priceExTax": priceExTax,
         "taxId": taxId,
         "taxType": taxType,

@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
@@ -129,7 +131,91 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   }
 
   Future<void> placeKot(String tableId) async {
-    try {} catch (e, s) {
+    try {
+      //Function Value Calculation
+
+      //Headers
+      final totalExTax = state.addedItems.fold(
+          0.0,
+          (previousValue, element) =>
+              previousValue + (element.itemRate * element.quantity));
+
+      final totalAmount = state.addedItems.fold(
+          0.0,
+          (previousValue, element) =>
+              previousValue + (element.quantity * element.rateWithTax));
+
+      final totalTaxAmount = totalAmount - totalExTax;
+      final serviceChargeAmount = totalExTax * 5 / 100;
+      final totalGstAmount =
+          state.addedItems.fold(0.0, (previousValue, element) {
+        if (element.tax.taxType == "G") {
+          return previousValue +
+              ((element.quantity * element.rateWithTax) -
+                  (element.quantity * element.itemRate));
+        } else {
+          return previousValue;
+        }
+      });
+      final totalVatAmount =
+          state.addedItems.fold(0.0, (previousValue, element) {
+        if (element.tax.taxType == "V") {
+          return previousValue +
+              ((element.quantity * element.rateWithTax) -
+                  (element.quantity * element.itemRate));
+        } else {
+          return previousValue;
+        }
+      });
+
+      //Lines
+      List<BillLine> billLines = [];
+      for (final item in state.addedItems) {
+        print(item.toJson());
+        billLines.add(BillLine(
+            itemId: item.itemId,
+            itemName: item.itemName,
+            quantity: item.quantity,
+            priceExTax: item.itemRate,
+            taxId: item.taxId,
+            taxType: item.tax.taxType,
+            taxPercent: item.tax.taxPercent,
+            priceWithTax: item.rateWithTax,
+            lineTotal: (item.quantity * item.itemRate),
+            itemGroupId: item.itemGroupId,
+            mainGroupId: item.mainGroupDetails.mainGroupId));
+      }
+
+      const customerId = "123132";
+      const waiterId = "123123";
+      const roundOffAmount = 0.0;
+      const pax = 5;
+
+      //API Call
+      final success = await _repo.createKot(TempBillRequestModel(
+          billHeader: BillHeader(
+              tableId: tableId,
+              totalExTax: totalExTax,
+              totalTaxAmount: totalTaxAmount,
+              serviceChargeAmount: serviceChargeAmount,
+              totalGstAmount: totalGstAmount,
+              totalVatAmount: totalVatAmount,
+              roundOffAmount: roundOffAmount,
+              totalAmount: totalAmount,
+              customerId: customerId,
+              pax: pax,
+              waiterId: waiterId,
+              isBillPrinted: false),
+          billLines: billLines));
+      success.fold((failure) {
+        debugPrint("Failure ${failure.toString()}");
+      }, (success) {
+        debugPrint("Success $success");
+        EasyLoading.showSuccess(success['data'].toString());
+        addedItems=[];
+        emit(state.copyWith(addedItems: []));
+      });
+    } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }

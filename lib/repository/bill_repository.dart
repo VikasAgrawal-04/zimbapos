@@ -69,11 +69,12 @@ class BillRepository {
       header.billStartDateTime = DateTime.now().toIso8601String();
 
       //Bill Lines
-      lines.map((e) => e.billId = billGenId);
-      lines.fold(
-          1,
-          (previousValue, element) =>
-              previousValue + (element.linePosition ?? 0));
+      int i=1;
+      for(final item in lines){
+        item.billId=billGenId;
+        item.linePosition=i++;
+      }
+     
 
       db.writeTxnSync(() {
         db.tempBillHeaderModels.putSync(header);
@@ -92,7 +93,8 @@ class BillRepository {
       required TempBillHeaderModel existingBillHeader,
       required List<TempBillLines> existingBillLines}) async {
     try {
-      final lastLinePos = existingBillLines.last.linePosition ?? 1;
+      print("UPdating bill ");
+      int lastLinePos = existingBillLines.last.linePosition ?? 1;
       existingBillHeader.totalExTax =
           (existingBillHeader.totalExTax ?? 0.0) + (header.totalExTax ?? 0.0);
 
@@ -121,10 +123,10 @@ class BillRepository {
 
       existingBillHeader.pax = header.pax;
 
-      lines.fold(
-          lastLinePos,
-          (previousValue, element) =>
-              previousValue + (element.linePosition ?? 0));
+      for(final line in lines){
+        line.billId = existingBillHeader.billId;
+        line.linePosition = ++lastLinePos;
+      }
 
       db.writeTxnSync(() {
         db.tempBillHeaderModels.putSync(existingBillHeader);

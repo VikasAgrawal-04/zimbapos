@@ -130,4 +130,16 @@ class ApiRepoImpl implements ApiRepo {
       CustomerCategoryModel item) {
     return _customerCategoryApiRepo.createCustomerCategories(item);
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCustomerCategory(
+      CustomerCategoryModel item) {
+    return _customerCategoryApiRepo.updateCustomerCategory(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCustomerCategory(
+      String customerCategoryId) {
+    return _customerCategoryApiRepo.deleteCustomerCategory(customerCategoryId);
+  }
 }

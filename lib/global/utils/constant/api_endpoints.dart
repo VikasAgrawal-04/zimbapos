@@ -40,7 +40,7 @@ class EndPoints {
   static const String getCustomerCategories = '/get-customer-categories';
   static const String updateCustomerCategory = '/update-customer-category';
   static const String createCustomerCategory = '/create-customer-category';
-  static const String deleteCustomerCategories = '/delete-customer-category';
+  static const String deleteCustomerCategory = '/delete-customer-category';
 
   //Bill
   static const String createKot = '/action-temp-bill';

@@ -98,7 +98,7 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
                         .read<CustomerCategoryScreenCubit>()
                         .createCustomerCategories(
                           CustomerCategoryModel(
-                            // outletId: outletId,
+                            outletId: outletId,
                             custCategoryName: custCatName.text,
                             custCategoryDiscount: double.parse(discount.text),
                           ),

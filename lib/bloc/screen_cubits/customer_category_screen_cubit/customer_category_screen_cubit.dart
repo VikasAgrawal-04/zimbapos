@@ -49,4 +49,52 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
       debugPrintStack(stackTrace: s);
     }
   }
+
+  Future<void> updateCustomerCategory(CustomerCategoryModel item,
+      {bool? val}) async {
+    //For State Management & Instant Reflection
+    if (val != null) {
+      List<CustomerCategoryModel> updatedList =
+          List.from(state.customerCategories);
+      final index = updatedList.indexWhere(
+          (element) => element.custCategoryId == item.custCategoryId);
+      updatedList[index] = updatedList[index].copyWith(isActive: val);
+      emit(state.copyWith(customerCategories: updatedList));
+      item.isActive = val;
+    }
+
+    try {
+      final data = await _repo.updateCustomerCategory(item);
+      data.fold((failure) {
+        debugPrint(failure.toString());
+        EasyLoading.showError(failure.toString());
+      }, (success) {
+        if (val == false) {
+          init();
+        }
+        EasyLoading.showSuccess(success["data"]);
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  Future<void> deleteCustomerCategory(String id) async {
+    try {
+      EasyLoading.show();
+      final res = await _repo.deleteCustomerCategory(id);
+      res.fold((failure) {
+        debugPrint(failure.toString());
+        EasyLoading.showError(failure.toString());
+      }, (success) {
+        init();
+        EasyLoading.showSuccess(success['data']);
+        debugPrint(success.toString());
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
 }

@@ -148,10 +148,12 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                             )),
                             DataCell(
                               Switch.adaptive(
-                                value: e.isActive as bool,
-                                onChanged: (va) =>
-                                    activeDeactivateCusCat(e.id, va),
-                              ),
+                                  value: e.isActive as bool,
+                                  onChanged: (va) {
+                                    context
+                                        .read<CustomerCategoryScreenCubit>()
+                                        .updateCustomerCategory(e, val: va);
+                                  }),
                             ),
                             DataCell(
                               Container(
@@ -167,7 +169,10 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                                     ),
                                     SizedBox(width: 2.w),
                                     IconButton(
-                                      onPressed: () => deleteCusCat(e),
+                                      onPressed: () => context
+                                          .read<CustomerCategoryScreenCubit>()
+                                          .deleteCustomerCategory(
+                                              e.custCategoryId.toString()),
                                       icon: const Icon(CupertinoIcons.delete),
                                     )
                                   ],

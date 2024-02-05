@@ -48,4 +48,42 @@ class CustomerCategoryApiRepoImpl implements CustomerCategoryApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCustomerCategory(
+      CustomerCategoryModel item) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.updateCustomerCategory,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCustomerCategory(
+      String customerCategoryId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.delete, EndPoints.deleteCustomerCategory,
+          queryParams: {
+            "cusCatId": customerCategoryId,
+          });
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

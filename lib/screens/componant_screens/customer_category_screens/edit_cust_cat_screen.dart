@@ -46,9 +46,10 @@ class _UpdateCustomerCategoryScreenState
   //update function
   updateCustomerCat(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
-    db.customerRepository.updateCusCat(
+    db.customerCategoryRepository.updateCusCat(
       data: CustomerCategoryModel(
         id: widget.item.id,
+        custCategoryId: widget.item.custCategoryId,
         custCategoryName: custCatName.text,
         custCategoryDiscount: double.parse(
           discount.text.isEmpty ? '0.0' : discount.text,

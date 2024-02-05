@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/intro_cubits/cubit/outlet_register_cubit.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/widgets/textfield/primary_textfield.dart';

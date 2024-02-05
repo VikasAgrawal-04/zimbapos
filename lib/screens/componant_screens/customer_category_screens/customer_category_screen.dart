@@ -30,7 +30,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
 
   Stream<List<CustomerCategoryModel>> custCatStream() {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.customerRepository.streamCustCat();
+    return dbCubit.customerCategoryRepository.streamCustCat();
   }
 
   // toggleFn(int id, bool value) {
@@ -43,7 +43,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
   //   datatbaseCubit.customerRepository.deleteCusCat(id);
   // }
 
-  deleteWorker(CustomerCategoryModel e) {
+  deleteCusCat(CustomerCategoryModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
@@ -51,7 +51,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
       //this is for ok button
       () {
         final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.customerRepository.deleteCusCat(e.custCategoryId);
+        dbCubit.customerCategoryRepository.deleteCusCat(e.custCategoryId);
         EasyLoading.showToast('Customer category deleted');
         context.pop();
       },
@@ -60,9 +60,9 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
     );
   }
 
-  activeDeactivateWorkers(int id, bool value) {
+  activeDeactivateCusCat(int id, bool value) {
     final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.customerRepository.changeActive(id, value);
+    dbCubit.customerCategoryRepository.changeActive(id, value);
   }
 
   editWorkerFn({required CustomerCategoryModel model}) {
@@ -172,7 +172,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                                   Switch.adaptive(
                                     value: e.isActive as bool,
                                     onChanged: (va) =>
-                                        activeDeactivateWorkers(e.id, va),
+                                        activeDeactivateCusCat(e.id, va),
                                   ),
                                 ),
                                 DataCell(
@@ -192,7 +192,7 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                                         ),
                                         SizedBox(width: 2.w),
                                         IconButton(
-                                          onPressed: () => deleteWorker(e),
+                                          onPressed: () => deleteCusCat(e),
                                           icon:
                                               const Icon(CupertinoIcons.delete),
                                         )

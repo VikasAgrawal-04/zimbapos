@@ -15,7 +15,7 @@ class CustCatController {
 
   Future<Response> fetchCustCategory(Request request) async {
     try {
-      final cusCat = await dbCubit.customerRepository.getAllCusCat();
+      final cusCat = await dbCubit.customerCategoryRepository.getAllCusCat();
       return okResponse(cusCat.map((e) => e.toMap()).toList());
     } catch (e) {
       return invalidResponse();
@@ -39,7 +39,7 @@ class CustCatController {
         return badArguments(missingFieldsMessage);
       }
       decodedData['custCategoryId'] = Helpers.generateUuId();
-      dbCubit.customerRepository.createCusCat(
+      dbCubit.customerCategoryRepository.createCusCat(
           data: CustomerCategoryModel.fromJson(jsonEncode(decodedData)));
       return okResponse('Customer Category Created Successfully');
     } catch (e, s) {
@@ -60,7 +60,7 @@ class CustCatController {
         return badArguments(
             'Please Enter Customer Category Id as a key cusCatId');
       }
-      dbCubit.customerRepository.deleteCusCat(cusCatId);
+      dbCubit.customerCategoryRepository.deleteCusCat(cusCatId);
       return okResponse('Customer Category Deleted!');
     } catch (e) {
       return invalidResponse();
@@ -89,7 +89,7 @@ class CustCatController {
             'Missing fields: ${missingFields.join(', ')}';
         return badArguments(missingFieldsMessage);
       }
-      await dbCubit.customerRepository.updateCusCat(
+      await dbCubit.customerCategoryRepository.updateCusCat(
           data: CustomerCategoryModel.fromJson(jsonEncode(decodedData)));
       return okResponse('Customer Category Updated!');
     } catch (e) {

@@ -75,7 +75,12 @@ enum AppScreen {
   createCardScreen,
   editCardScreen,
   cardActionScreen,
-  itemsSelectionScreen
+  //item selection
+  itemsSelectionScreen,
+  //CRUD screens @ Customer
+  customerScreen,
+  createCustomerScreen,
+  editCustomerScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -194,6 +199,12 @@ extension AppScreenExtension on AppScreen {
         return 'Card Action Screen';
       case AppScreen.itemsSelectionScreen:
         return 'Items Selection Screen';
+      case AppScreen.customerScreen:
+        return 'Customer Screen';
+      case AppScreen.createCustomerScreen:
+        return 'Create Customer Screen';
+      case AppScreen.editCustomerScreen:
+        return 'Edit Customer Screen';
     }
   }
 
@@ -312,6 +323,12 @@ extension AppScreenExtension on AppScreen {
         return '/card-action-screen';
       case AppScreen.itemsSelectionScreen:
         return '/items-selection-screen';
+      case AppScreen.customerScreen:
+        return '/customer-screen';
+      case AppScreen.createCustomerScreen:
+        return '/create-customer-screen';
+      case AppScreen.editCustomerScreen:
+        return '/edit-customer-screen';
     }
   }
 }

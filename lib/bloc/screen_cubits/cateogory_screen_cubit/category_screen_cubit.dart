@@ -33,6 +33,23 @@ class CategoryScreenCubit extends Cubit<CategoryScreenState> {
     }
   }
 
+  Future<void> createCategory(CategoryModel data) async {
+    try {
+      final success = await _repo.createCategory(data);
+      success.fold((failure) {
+        debugPrint(failure.toString());
+        EasyLoading.showError(failure.toString());
+      }, (success) {
+        init();
+        EasyLoading.showSuccess(success['data']);
+        debugPrint(success.toString());
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
   Future<void> deleteCategory(String id) async {
     try {
       EasyLoading.show();

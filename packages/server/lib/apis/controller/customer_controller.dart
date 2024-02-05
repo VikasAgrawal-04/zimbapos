@@ -14,7 +14,7 @@ class CustomerController {
   Future<Response> fetchCustomer(Request request) async {
     try {
       final customers = await db.customerRepository.getAllCustomers();
-      return okResponse(customers.map((e) => e.toJson()));
+      return okResponse(customers.map((e) => e.toJson()).toList());
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

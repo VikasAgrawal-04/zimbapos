@@ -110,7 +110,7 @@ const CustomerModelSchema = CollectionSchema(
     r'mobile': PropertySchema(
       id: 18,
       name: r'mobile',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'outletId': PropertySchema(
       id: 19,
@@ -233,6 +233,12 @@ int _customerModelEstimateSize(
     }
   }
   {
+    final value = object.mobile;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.outletId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -277,7 +283,7 @@ void _customerModelSerialize(
   writer.writeString(offsets[15], object.gstNumber);
   writer.writeBool(offsets[16], object.isActive);
   writer.writeBool(offsets[17], object.isDeleted);
-  writer.writeLong(offsets[18], object.mobile);
+  writer.writeString(offsets[18], object.mobile);
   writer.writeString(offsets[19], object.outletId);
   writer.writeString(offsets[20], object.pincode);
   writer.writeString(offsets[21], object.state);
@@ -309,7 +315,7 @@ CustomerModel _customerModelDeserialize(
     id: id,
     isActive: reader.readBoolOrNull(offsets[16]),
     isDeleted: reader.readBoolOrNull(offsets[17]),
-    mobile: reader.readLongOrNull(offsets[18]),
+    mobile: reader.readStringOrNull(offsets[18]),
     outletId: reader.readStringOrNull(offsets[19]),
     pincode: reader.readStringOrNull(offsets[20]),
     state: reader.readStringOrNull(offsets[21]),
@@ -361,7 +367,7 @@ P _customerModelDeserializeProp<P>(
     case 17:
       return (reader.readBoolOrNull(offset)) as P;
     case 18:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 19:
       return (reader.readStringOrNull(offset)) as P;
     case 20:
@@ -2901,49 +2907,58 @@ extension CustomerModelQueryFilter
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      mobileEqualTo(int? value) {
+      mobileEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'mobile',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       mobileGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'mobile',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       mobileLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'mobile',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       mobileBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -2952,6 +2967,77 @@ extension CustomerModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      mobileStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'mobile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      mobileEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'mobile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      mobileContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'mobile',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      mobileMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'mobile',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      mobileIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'mobile',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      mobileIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'mobile',
+        value: '',
       ));
     });
   }
@@ -4140,9 +4226,10 @@ extension CustomerModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CustomerModel, CustomerModel, QDistinct> distinctByMobile() {
+  QueryBuilder<CustomerModel, CustomerModel, QDistinct> distinctByMobile(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'mobile');
+      return query.addDistinctBy(r'mobile', caseSensitive: caseSensitive);
     });
   }
 
@@ -4291,7 +4378,7 @@ extension CustomerModelQueryProperty
     });
   }
 
-  QueryBuilder<CustomerModel, int?, QQueryOperations> mobileProperty() {
+  QueryBuilder<CustomerModel, String?, QQueryOperations> mobileProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'mobile');
     });

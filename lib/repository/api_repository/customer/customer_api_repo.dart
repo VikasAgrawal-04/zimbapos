@@ -5,12 +5,9 @@ import '../../../models/global_models/customer_model.dart';
 abstract class CustomerApiRepo {
   Future<Either<Failure, List<CustomerModel>>> getCustomerList();
   Future<Either<Failure, Map<String, dynamic>>> createCustomer(
-    CustomerModel item,
-  );
+      CustomerModel item);
   Future<Either<Failure, Map<String, dynamic>>> updateCustomer(
-    CustomerModel item,
-  );
+      CustomerModel item);
   Future<Either<Failure, Map<String, dynamic>>> deleteCustomer(
-    String customerId,
-  );
+      String customerId);
 }

@@ -9,7 +9,7 @@ class CustomerModel {
   String? outletId;
   String? customerName;
   String? email;
-  int? mobile;
+  String? mobile;
   DateTime? createDate;
   String? address1;
   String? address2;
@@ -60,7 +60,7 @@ class CustomerModel {
       String? customerId,
       String? customerName,
       String? email,
-      int? mobile,
+      String? mobile,
       DateTime? createDate,
       String? address1,
       String? address2,
@@ -142,7 +142,7 @@ class CustomerModel {
       'customer_name': customerName,
       'email': email,
       'mobile': mobile,
-      'created_date': createDate,
+      'created_date': createDate?.toIso8601String(),
       'address1': address1,
       'address2': address2,
       'address3': address3,

@@ -20,7 +20,6 @@ class CustomerListScreen extends StatefulWidget {
 }
 
 class _CustomerListScreenState extends State<CustomerListScreen> {
-  //
   late TextEditingController _searchController;
 
   @override
@@ -52,11 +51,6 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () =>
-            //       context.push(AppScreen.createCustomerCategory.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
               onPressed: () =>
                   context.push(AppScreen.createCustomerCategory.path),

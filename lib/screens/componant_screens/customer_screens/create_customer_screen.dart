@@ -113,7 +113,7 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                           CustomerModel(
                             outletId: outletId,
                             customerName: customerName.text,
-                            mobile: int.parse(customerMobile.text),
+                            mobile: customerMobile.text,
                           ),
                         );
 

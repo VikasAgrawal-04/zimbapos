@@ -21,13 +21,12 @@ class CustomerRepository {
     try {
       final dbItem = db.customerModels
           .filter()
-          .customerIdEqualTo(data.customerId)
-          .and()
           .outletIdEqualTo(data.outletId)
           .and()
           .mobileEqualTo(data.mobile)
           .findFirstSync();
       if (dbItem == null) {
+        data.createDate = DateTime.now();
         db.writeTxnSync(() => db.customerModels.putSync(data));
         return const Tuple2(true, 'Customer Created Succesfully!');
       } else {

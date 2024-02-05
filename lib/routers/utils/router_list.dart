@@ -31,6 +31,8 @@ import 'package:zimbapos/screens/componant_screens/category_screens/edit_categor
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_screens/create_customer_screen.dart';
+import 'package:zimbapos/screens/componant_screens/customer_screens/edit_customer_screen.dart';
 import 'package:zimbapos/screens/componant_screens/discounts_screens/create_discount.dart';
 import 'package:zimbapos/screens/componant_screens/discounts_screens/discount_list.dart';
 import 'package:zimbapos/screens/componant_screens/discounts_screens/edit_discount.dart';
@@ -68,7 +70,9 @@ import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 
+import '../../models/global_models/customer_model.dart';
 import '../../screens/componant_screens/card_screens/create_card_screen.dart';
+import '../../screens/componant_screens/customer_screens/customer_list_screen.dart';
 import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
@@ -556,10 +560,41 @@ final List<GoRoute> routerList = [
     },
   ),
 
+  //item selection
   GoRoute(
-      name: AppScreen.itemsSelectionScreen.name,
-      path: AppScreen.itemsSelectionScreen.path,
-      builder: (context, state) => ItemSelectionScreen(
-            tableId: state.extra as String,
-          ))
+    name: AppScreen.itemsSelectionScreen.name,
+    path: AppScreen.itemsSelectionScreen.path,
+    builder: (context, state) => ItemSelectionScreen(
+      tableId: state.extra as String,
+    ),
+  ),
+
+  //customer Screen
+  GoRoute(
+    name: AppScreen.customerScreen.name,
+    path: AppScreen.customerScreen.path,
+    builder: (context, state) => const CustomerListScreen(),
+  ),
+  // create customer category
+  GoRoute(
+    name: AppScreen.createCustomerScreen.name,
+    path: AppScreen.createCustomerScreen.path,
+    builder: (context, state) => const CreateCustomerScreen(),
+  ),
+  // edit customer screen
+  GoRoute(
+    name: AppScreen.editCustomerScreen.name,
+    path: AppScreen.editCustomerScreen.path,
+    builder: (context, state) {
+      if (state.extra is CustomerModel) {
+        return EditCustomerScreen(
+          item: state.extra as CustomerModel,
+        );
+      } else {
+        return EditCustomerScreen(
+          item: CustomerModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
 ];

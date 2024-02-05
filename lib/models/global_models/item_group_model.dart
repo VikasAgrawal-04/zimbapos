@@ -7,7 +7,7 @@ part 'item_group_model.g.dart';
 @collection
 class ItemGroupModel {
   Id id = Isar.autoIncrement;
-  int? outletId;
+  String? outletId;
   String? itemGroupId;
   String? mainGroupId;
   String? itemGroupName;
@@ -27,7 +27,7 @@ class ItemGroupModel {
 
   ItemGroupModel copyWith({
     Id? id,
-    int? outletId,
+    String? outletId,
     String? itemGroupId,
     String? mainGroupId,
     String? itemGroupName,
@@ -63,7 +63,7 @@ class ItemGroupModel {
   factory ItemGroupModel.fromMap(Map<String, dynamic> map) {
     return ItemGroupModel(
       id: map['id'] ?? Isar.autoIncrement,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       itemGroupId:
           map['itemGroupId'] != null ? map['itemGroupId'] as String : null,
       mainGroupId:

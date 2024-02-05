@@ -50,7 +50,7 @@ const MainGroupModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 6,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     )
   },
   estimateSize: _mainGroupModelEstimateSize,
@@ -91,6 +91,12 @@ int _mainGroupModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -106,7 +112,7 @@ void _mainGroupModelSerialize(
   writer.writeBool(offsets[3], object.isDeleted);
   writer.writeString(offsets[4], object.mainGroupId);
   writer.writeString(offsets[5], object.mainGroupName);
-  writer.writeLong(offsets[6], object.outletId);
+  writer.writeString(offsets[6], object.outletId);
 }
 
 MainGroupModel _mainGroupModelDeserialize(
@@ -122,7 +128,7 @@ MainGroupModel _mainGroupModelDeserialize(
     isDeleted: reader.readBoolOrNull(offsets[3]),
     mainGroupId: reader.readStringOrNull(offsets[4]),
     mainGroupName: reader.readStringOrNull(offsets[5]),
-    outletId: reader.readLongOrNull(offsets[6]),
+    outletId: reader.readStringOrNull(offsets[6]),
   );
   return object;
 }
@@ -147,7 +153,7 @@ P _mainGroupModelDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -897,49 +903,58 @@ extension MainGroupModelQueryFilter
   }
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
-      outletIdEqualTo(int? value) {
+      outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
       outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -948,6 +963,77 @@ extension MainGroupModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<MainGroupModel, MainGroupModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -1208,9 +1294,10 @@ extension MainGroupModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<MainGroupModel, MainGroupModel, QDistinct> distinctByOutletId() {
+  QueryBuilder<MainGroupModel, MainGroupModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1261,7 +1348,7 @@ extension MainGroupModelQueryProperty
     });
   }
 
-  QueryBuilder<MainGroupModel, int?, QQueryOperations> outletIdProperty() {
+  QueryBuilder<MainGroupModel, String?, QQueryOperations> outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });

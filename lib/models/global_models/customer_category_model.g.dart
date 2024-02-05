@@ -51,7 +51,7 @@ const CustomerCategoryModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 6,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     )
   },
   estimateSize: _customerCategoryModelEstimateSize,
@@ -86,6 +86,12 @@ int _customerCategoryModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -101,7 +107,7 @@ void _customerCategoryModelSerialize(
   writer.writeLong(offsets[3], object.hashCode);
   writer.writeBool(offsets[4], object.isActive);
   writer.writeBool(offsets[5], object.isDeleted);
-  writer.writeLong(offsets[6], object.outletId);
+  writer.writeString(offsets[6], object.outletId);
 }
 
 CustomerCategoryModel _customerCategoryModelDeserialize(
@@ -117,7 +123,7 @@ CustomerCategoryModel _customerCategoryModelDeserialize(
     id: id,
     isActive: reader.readBoolOrNull(offsets[4]),
     isDeleted: reader.readBoolOrNull(offsets[5]),
-    outletId: reader.readLongOrNull(offsets[6]),
+    outletId: reader.readStringOrNull(offsets[6]),
   );
   return object;
 }
@@ -142,7 +148,7 @@ P _customerCategoryModelDeserializeProp<P>(
     case 5:
       return (reader.readBoolOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -828,49 +834,58 @@ extension CustomerCategoryModelQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
-      QAfterFilterCondition> outletIdEqualTo(int? value) {
+      QAfterFilterCondition> outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
       QAfterFilterCondition> outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -879,6 +894,79 @@ extension CustomerCategoryModelQueryFilter on QueryBuilder<
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+      QAfterFilterCondition> outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+      QAfterFilterCondition> outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+          QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+          QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+      QAfterFilterCondition> outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerCategoryModel, CustomerCategoryModel,
+      QAfterFilterCondition> outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -1153,9 +1241,9 @@ extension CustomerCategoryModelQueryWhereDistinct
   }
 
   QueryBuilder<CustomerCategoryModel, CustomerCategoryModel, QDistinct>
-      distinctByOutletId() {
+      distinctByOutletId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1210,7 +1298,7 @@ extension CustomerCategoryModelQueryProperty on QueryBuilder<
     });
   }
 
-  QueryBuilder<CustomerCategoryModel, int?, QQueryOperations>
+  QueryBuilder<CustomerCategoryModel, String?, QQueryOperations>
       outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');

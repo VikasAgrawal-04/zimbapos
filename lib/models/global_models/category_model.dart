@@ -7,7 +7,7 @@ part 'category_model.g.dart';
 @collection
 class CategoryModel {
   Id id = Isar.autoIncrement;
-  int? outletId;
+  String? outletId;
   String? categoryid;
   String? categoryName;
   bool? isActive;
@@ -23,7 +23,7 @@ class CategoryModel {
 
   CategoryModel copyWith({
     Id? id,
-    int? outletId,
+    String? outletId,
     String? categoryid,
     String? categoryName,
     bool? isActive,
@@ -53,7 +53,7 @@ class CategoryModel {
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
       id: map['id'] ?? Isar.autoIncrement,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       categoryid:
           map['categoryid'] != null ? map['categoryid'] as String : null,
       categoryName:

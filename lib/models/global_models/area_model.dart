@@ -8,7 +8,7 @@ part 'area_model.g.dart';
 @collection
 class AreasModel {
   Id id = Isar.autoIncrement;
-  int? outletId;
+  String? outletId;
   String? areaId;
   String? areaName;
   String? rateSetId;
@@ -29,7 +29,7 @@ class AreasModel {
 
   AreasModel copyWith({
     Id? id,
-    int? outletId,
+    String? outletId,
     String? areaId,
     String? areaName,
     String? rateSetId,
@@ -65,7 +65,7 @@ class AreasModel {
   factory AreasModel.fromMap(Map<String, dynamic> map) {
     return AreasModel(
       id: map['id'] ?? Isar.autoIncrement,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       areaId: map['areaId'] != null ? map['areaId'] as String : null,
       areaName: map['areaName'] != null ? map['areaName'] as String : null,
       rateSetId: map['rateSetId'] != null ? map['rateSetId'] as String : null,

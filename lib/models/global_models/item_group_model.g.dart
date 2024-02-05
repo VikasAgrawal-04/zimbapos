@@ -50,7 +50,7 @@ const ItemGroupModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 6,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'printerId': PropertySchema(
       id: 7,
@@ -97,6 +97,12 @@ int _itemGroupModelEstimateSize(
     }
   }
   {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.printerId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -117,7 +123,7 @@ void _itemGroupModelSerialize(
   writer.writeString(offsets[3], object.itemGroupId);
   writer.writeString(offsets[4], object.itemGroupName);
   writer.writeString(offsets[5], object.mainGroupId);
-  writer.writeLong(offsets[6], object.outletId);
+  writer.writeString(offsets[6], object.outletId);
   writer.writeString(offsets[7], object.printerId);
 }
 
@@ -134,7 +140,7 @@ ItemGroupModel _itemGroupModelDeserialize(
     itemGroupId: reader.readStringOrNull(offsets[3]),
     itemGroupName: reader.readStringOrNull(offsets[4]),
     mainGroupId: reader.readStringOrNull(offsets[5]),
-    outletId: reader.readLongOrNull(offsets[6]),
+    outletId: reader.readStringOrNull(offsets[6]),
     printerId: reader.readStringOrNull(offsets[7]),
   );
   return object;
@@ -160,7 +166,7 @@ P _itemGroupModelDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
@@ -912,49 +918,58 @@ extension ItemGroupModelQueryFilter
   }
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
-      outletIdEqualTo(int? value) {
+      outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
       outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -963,6 +978,77 @@ extension ItemGroupModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -1403,9 +1489,10 @@ extension ItemGroupModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<ItemGroupModel, ItemGroupModel, QDistinct> distinctByOutletId() {
+  QueryBuilder<ItemGroupModel, ItemGroupModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
@@ -1464,7 +1551,7 @@ extension ItemGroupModelQueryProperty
     });
   }
 
-  QueryBuilder<ItemGroupModel, int?, QQueryOperations> outletIdProperty() {
+  QueryBuilder<ItemGroupModel, String?, QQueryOperations> outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });

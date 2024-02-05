@@ -45,7 +45,7 @@ const CategoryModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 5,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     )
   },
   estimateSize: _categoryModelEstimateSize,
@@ -80,6 +80,12 @@ int _categoryModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -94,7 +100,7 @@ void _categoryModelSerialize(
   writer.writeLong(offsets[2], object.hashCode);
   writer.writeBool(offsets[3], object.isActive);
   writer.writeBool(offsets[4], object.isDeleted);
-  writer.writeLong(offsets[5], object.outletId);
+  writer.writeString(offsets[5], object.outletId);
 }
 
 CategoryModel _categoryModelDeserialize(
@@ -109,7 +115,7 @@ CategoryModel _categoryModelDeserialize(
     id: id,
     isActive: reader.readBoolOrNull(offsets[3]),
     isDeleted: reader.readBoolOrNull(offsets[4]),
-    outletId: reader.readLongOrNull(offsets[5]),
+    outletId: reader.readStringOrNull(offsets[5]),
   );
   return object;
 }
@@ -132,7 +138,7 @@ P _categoryModelDeserializeProp<P>(
     case 4:
       return (reader.readBoolOrNull(offset)) as P;
     case 5:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -727,49 +733,58 @@ extension CategoryModelQueryFilter
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
-      outletIdEqualTo(int? value) {
+      outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -778,6 +793,77 @@ extension CategoryModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -999,9 +1085,10 @@ extension CategoryModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByOutletId() {
+  QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1045,7 +1132,7 @@ extension CategoryModelQueryProperty
     });
   }
 
-  QueryBuilder<CategoryModel, int?, QQueryOperations> outletIdProperty() {
+  QueryBuilder<CategoryModel, String?, QQueryOperations> outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });

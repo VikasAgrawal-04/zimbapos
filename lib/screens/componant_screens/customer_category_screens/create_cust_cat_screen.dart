@@ -31,7 +31,7 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
 
   createCustCat(BuildContext context) {
     final db = DatabaseCubit.dbFrom(context);
-    db.customerRepository.createCusCat(
+    db.customerCategoryRepository.createCusCat(
         data: CustomerCategoryModel(
             custCategoryName: custCatName.text,
             custCategoryDiscount:

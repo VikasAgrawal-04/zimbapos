@@ -27,7 +27,7 @@ import 'package:zimbapos/screens/componant_screens/card_screens/card_list_screen
 import 'package:zimbapos/screens/componant_screens/card_screens/edit_card_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/category_screens/create_category_screen.dart';
-import 'package:zimbapos/screens/componant_screens/category_screens/edit_cat_screen.dart';
+import 'package:zimbapos/screens/componant_screens/category_screens/edit_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/create_cust_cat_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/customer_category_screen.dart';
 import 'package:zimbapos/screens/componant_screens/customer_category_screens/edit_cust_cat_screen.dart';

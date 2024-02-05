@@ -21,7 +21,7 @@ import 'package:zimbapos/repository/areas_repository.dart';
 import 'package:zimbapos/repository/bill_repository.dart';
 import 'package:zimbapos/repository/card_log_repository.dart';
 import 'package:zimbapos/repository/category_repository.dart';
-import 'package:zimbapos/repository/customer_repository.dart';
+import 'package:zimbapos/repository/customer_category_repository.dart';
 import 'package:zimbapos/repository/discount_single_repo.dart';
 import 'package:zimbapos/repository/expense_category_repository.dart';
 import 'package:zimbapos/repository/expenses_repository.dart';
@@ -42,6 +42,7 @@ import 'package:zimbapos/repository/workers_repository.dart';
 
 import '../models/global_models/card_log_model.dart';
 import '../models/global_models/card_model.dart';
+import '../models/global_models/customer_model.dart';
 import '../models/global_models/discount_single_model.dart';
 import '../models/global_models/expense_category_model.dart';
 import '../models/global_models/expenses_model.dart';
@@ -85,6 +86,7 @@ class IsarService {
           TerminalModelSchema,
           CardModelSchema,
           CardLogModelSchema,
+          CustomerModelSchema,
         ],
         name: dbName,
         directory: directory.path,
@@ -111,7 +113,8 @@ class IsarService {
   //for workers
   WorkerRepository get workerRepository => WorkerRepository(db);
   //for customer
-  CustomerRepository get customerRepository => CustomerRepository(db);
+  CustomerCategoryRepository get customerCategoryRepository =>
+      CustomerCategoryRepository(db);
   //for category
   CategoryRepository get categoryRepository => CategoryRepository(db);
 

@@ -1,9 +1,9 @@
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 
-class CustomerRepository {
+class CustomerCategoryRepository {
   Isar db;
-  CustomerRepository(this.db);
+  CustomerCategoryRepository(this.db);
 
   Stream<List<CustomerCategoryModel>> streamCustCat() {
     return db.customerCategoryModels

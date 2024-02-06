@@ -39,7 +39,7 @@ class CustomerController {
         return badArguments(missingFieldsMessage);
       }
       decodedData["customer_id"] = Helpers.generateUuId();
-      if((decodedData['mobile'] as String).length<10){
+      if ((decodedData['mobile'] as String).length != 10) {
         return badArguments("Enter Valid Number");
       }
       final success = await db.customerRepository
@@ -75,6 +75,9 @@ class CustomerController {
         final missingFieldsMessage =
             'Missing fields: ${missingFields.join(', ')}';
         return badArguments(missingFieldsMessage);
+      }
+      if ((decodedData['mobile'] as String).length != 10) {
+        return badArguments("Enter Valid Number");
       }
       final success = await db.customerRepository
           .updateCustomer(data: CustomerModel.fromJson(decodedData));

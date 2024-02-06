@@ -7,6 +7,8 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/permanent_bill_header_model.dart';
+import 'package:zimbapos/models/global_models/permanent_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
@@ -88,6 +90,8 @@ class IsarService {
           CardModelSchema,
           CardLogModelSchema,
           CustomerModelSchema,
+          PermanentBillHeaderModelSchema,
+          PermanentBillLinesModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -154,5 +158,5 @@ class IsarService {
   //for card logs
   CardLogRepository get cardLogRepository => CardLogRepository(db);
 
-  CustomerRepository get customerRepository=> CustomerRepository(db);
+  CustomerRepository get customerRepository => CustomerRepository(db);
 }

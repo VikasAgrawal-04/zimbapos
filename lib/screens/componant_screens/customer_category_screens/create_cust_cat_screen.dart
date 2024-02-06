@@ -59,12 +59,6 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
                   controller: custCatName,
                   onChanged: (value) {},
                 ),
-                // TextField(
-                //   controller: custCatName,
-                //   decoration: const InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       hintText: 'Enter Customer Category'),
-                // ),
                 SizedBox(height: 2.h),
                 //discount
                 PrimaryTextField(
@@ -73,16 +67,6 @@ class _CreateCusCatScreenState extends State<CreateCusCatScreen> {
                   controller: discount,
                   onChanged: (value) {},
                 ),
-                // TextField(
-                //   controller: discount,
-                //   decoration: const InputDecoration(
-                //       border: OutlineInputBorder(),
-                //       hintText: 'Enter Discount'),
-                // ),
-                // ElevatedButton(
-                //   onPressed: () => createCustCat(context),
-                //   child: const Text('Create Customer Category'),
-                // )
               ],
             ),
           ),

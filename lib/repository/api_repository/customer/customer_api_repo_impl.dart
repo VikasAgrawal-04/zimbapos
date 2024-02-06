@@ -71,10 +71,12 @@ class CustomerApiRepoImpl implements CustomerApiRepo {
       String customerId) async {
     try {
       final response = await Helpers.sendRequest(
-          RequestType.delete, EndPoints.deleteCustomerCategory,
-          queryParams: {
-            "customer_id": customerId,
-          });
+        RequestType.delete,
+        EndPoints.deleteCustomer,
+        queryParams: {
+          "customer_id": customerId,
+        },
+      );
       return Right(response ?? {});
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

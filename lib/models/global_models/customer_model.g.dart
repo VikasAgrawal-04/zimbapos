@@ -35,7 +35,7 @@ const CustomerModelSchema = CollectionSchema(
     r'anniversaryDate': PropertySchema(
       id: 3,
       name: r'anniversaryDate',
-      type: IsarType.dateTime,
+      type: IsarType.string,
     ),
     r'balanceBonusPoints': PropertySchema(
       id: 4,
@@ -80,7 +80,7 @@ const CustomerModelSchema = CollectionSchema(
     r'dateOfBirth': PropertySchema(
       id: 12,
       name: r'dateOfBirth',
-      type: IsarType.dateTime,
+      type: IsarType.string,
     ),
     r'email': PropertySchema(
       id: 13,
@@ -167,6 +167,12 @@ int _customerModelEstimateSize(
     }
   }
   {
+    final value = object.anniversaryDate;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.balanceBonusPoints;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -204,6 +210,12 @@ int _customerModelEstimateSize(
   }
   {
     final value = object.customerName;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.dateOfBirth;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -262,7 +274,7 @@ void _customerModelSerialize(
   writer.writeString(offsets[0], object.address1);
   writer.writeString(offsets[1], object.address2);
   writer.writeString(offsets[2], object.address3);
-  writer.writeDateTime(offsets[3], object.anniversaryDate);
+  writer.writeString(offsets[3], object.anniversaryDate);
   writer.writeString(offsets[4], object.balanceBonusPoints);
   writer.writeString(offsets[5], object.city);
   writer.writeString(offsets[6], object.country);
@@ -271,7 +283,7 @@ void _customerModelSerialize(
   writer.writeString(offsets[9], object.customerCategoryID);
   writer.writeString(offsets[10], object.customerId);
   writer.writeString(offsets[11], object.customerName);
-  writer.writeDateTime(offsets[12], object.dateOfBirth);
+  writer.writeString(offsets[12], object.dateOfBirth);
   writer.writeString(offsets[13], object.email);
   writer.writeString(offsets[14], object.gender);
   writer.writeString(offsets[15], object.gstNumber);
@@ -293,7 +305,7 @@ CustomerModel _customerModelDeserialize(
     address1: reader.readStringOrNull(offsets[0]),
     address2: reader.readStringOrNull(offsets[1]),
     address3: reader.readStringOrNull(offsets[2]),
-    anniversaryDate: reader.readDateTimeOrNull(offsets[3]),
+    anniversaryDate: reader.readStringOrNull(offsets[3]),
     balanceBonusPoints: reader.readStringOrNull(offsets[4]),
     city: reader.readStringOrNull(offsets[5]),
     country: reader.readStringOrNull(offsets[6]),
@@ -302,7 +314,7 @@ CustomerModel _customerModelDeserialize(
     customerCategoryID: reader.readStringOrNull(offsets[9]),
     customerId: reader.readStringOrNull(offsets[10]),
     customerName: reader.readStringOrNull(offsets[11]),
-    dateOfBirth: reader.readDateTimeOrNull(offsets[12]),
+    dateOfBirth: reader.readStringOrNull(offsets[12]),
     email: reader.readStringOrNull(offsets[13]),
     gender: reader.readStringOrNull(offsets[14]),
     gstNumber: reader.readStringOrNull(offsets[15]),
@@ -331,7 +343,7 @@ P _customerModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -349,7 +361,7 @@ P _customerModelDeserializeProp<P>(
     case 11:
       return (reader.readStringOrNull(offset)) as P;
     case 12:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 13:
       return (reader.readStringOrNull(offset)) as P;
     case 14:
@@ -950,49 +962,58 @@ extension CustomerModelQueryFilter
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateEqualTo(DateTime? value) {
+      anniversaryDateEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'anniversaryDate',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       anniversaryDateGreaterThan(
-    DateTime? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'anniversaryDate',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       anniversaryDateLessThan(
-    DateTime? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'anniversaryDate',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       anniversaryDateBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1001,6 +1022,77 @@ extension CustomerModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      anniversaryDateStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'anniversaryDate',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      anniversaryDateEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'anniversaryDate',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      anniversaryDateContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'anniversaryDate',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      anniversaryDateMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'anniversaryDate',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      anniversaryDateIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'anniversaryDate',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      anniversaryDateIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'anniversaryDate',
+        value: '',
       ));
     });
   }
@@ -2175,49 +2267,58 @@ extension CustomerModelQueryFilter
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      dateOfBirthEqualTo(DateTime? value) {
+      dateOfBirthEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'dateOfBirth',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       dateOfBirthGreaterThan(
-    DateTime? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'dateOfBirth',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       dateOfBirthLessThan(
-    DateTime? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'dateOfBirth',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       dateOfBirthBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -2226,6 +2327,77 @@ extension CustomerModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      dateOfBirthStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'dateOfBirth',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      dateOfBirthEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'dateOfBirth',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      dateOfBirthContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'dateOfBirth',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      dateOfBirthMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'dateOfBirth',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      dateOfBirthIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dateOfBirth',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
+      dateOfBirthIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'dateOfBirth',
+        value: '',
       ));
     });
   }
@@ -4035,9 +4207,10 @@ extension CustomerModelQueryWhereDistinct
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QDistinct>
-      distinctByAnniversaryDate() {
+      distinctByAnniversaryDate({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'anniversaryDate');
+      return query.addDistinctBy(r'anniversaryDate',
+          caseSensitive: caseSensitive);
     });
   }
 
@@ -4099,10 +4272,10 @@ extension CustomerModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<CustomerModel, CustomerModel, QDistinct>
-      distinctByDateOfBirth() {
+  QueryBuilder<CustomerModel, CustomerModel, QDistinct> distinctByDateOfBirth(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'dateOfBirth');
+      return query.addDistinctBy(r'dateOfBirth', caseSensitive: caseSensitive);
     });
   }
 
@@ -4194,7 +4367,7 @@ extension CustomerModelQueryProperty
     });
   }
 
-  QueryBuilder<CustomerModel, DateTime?, QQueryOperations>
+  QueryBuilder<CustomerModel, String?, QQueryOperations>
       anniversaryDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'anniversaryDate');
@@ -4254,8 +4427,7 @@ extension CustomerModelQueryProperty
     });
   }
 
-  QueryBuilder<CustomerModel, DateTime?, QQueryOperations>
-      dateOfBirthProperty() {
+  QueryBuilder<CustomerModel, String?, QQueryOperations> dateOfBirthProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dateOfBirth');
     });

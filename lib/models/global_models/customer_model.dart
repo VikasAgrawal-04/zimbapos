@@ -20,8 +20,8 @@ class CustomerModel {
   String? pincode;
   String? gstNumber;
   String? customerCategoryID;
-  DateTime? dateOfBirth;
-  DateTime? anniversaryDate;
+  String? dateOfBirth;
+  String? anniversaryDate;
   String? creditLimitAmount;
   String? gender;
   String? balanceBonusPoints;
@@ -71,8 +71,8 @@ class CustomerModel {
       String? pincode,
       String? gstNumber,
       String? customerCategoryID,
-      DateTime? dateOfBirth,
-      DateTime? anniversaryDate,
+      String? dateOfBirth,
+      String? anniversaryDate,
       String? creditLimitAmount,
       String? gender,
       String? balanceBonusPoints,
@@ -124,10 +124,8 @@ class CustomerModel {
       pincode: json['pincode'],
       gstNumber: json['gst_number'],
       customerCategoryID: json['customer_category_id'],
-      dateOfBirth: json['dob'] != null ? DateTime.parse(json['dob']) : null,
-      anniversaryDate: json['anniversary_date'] != null
-          ? DateTime.parse(json['anniversary_date'])
-          : null,
+      dateOfBirth: json['dob'],
+      anniversaryDate: json['anniversary_date'],
       creditLimitAmount: json['credit_limit_amount'],
       gender: json['gender'],
       balanceBonusPoints: json['balance_bonus_points'],

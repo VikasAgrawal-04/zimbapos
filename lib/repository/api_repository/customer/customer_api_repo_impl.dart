@@ -32,6 +32,7 @@ class CustomerApiRepoImpl implements CustomerApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createCustomer(
       CustomerModel item) async {
     try {
+      item.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
         RequestType.post,
         EndPoints.createCustomer,
@@ -51,6 +52,7 @@ class CustomerApiRepoImpl implements CustomerApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updateCustomer(
       CustomerModel item) async {
     try {
+      item.outletId = await Helpers.getOutletId();
       final response = await Helpers.sendRequest(
         RequestType.post,
         EndPoints.updateCustomer,

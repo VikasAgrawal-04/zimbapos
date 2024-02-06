@@ -45,8 +45,8 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
   String? outletId;
   String? selectedCusCatId;
   DateTime? createDate;
-  DateTime? dateOfBirth;
-  DateTime? anniversaryDate;
+  String? dateOfBirth;
+  String? anniversaryDate;
   String? gender;
 
   @override
@@ -113,25 +113,13 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
         if (num == 1) {
           createDate = pickedDate;
         } else if (num == 2) {
-          dateOfBirth = pickedDate;
+          dateOfBirth = pickedDate.toIso8601String();
         } else if (num == 3) {
-          anniversaryDate = pickedDate;
+          anniversaryDate = pickedDate.toIso8601String();
         }
       });
     }
   }
-
-  // Future<List<CustomerCategoryModel>> getAllCustomerCategories() async {
-  // final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  // final customerCategories =
-  //     await datatbaseCubit.customerCategoryRepository.getAllCusCat();
-  //   var customerCategories = await context.read<CustomerCategoryScreenCubit>().getCustomerCategories();
-  //   // log(rateSets.toString());
-  //   for (var cusCat in customerCategories) {
-  //     log(cusCat.custCategoryName.toString());
-  //   }
-  //   return customerCategories;
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -399,8 +387,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                                             style: KTextStyles.kSubtitle,
                                           )
                                         : Text(
-                                            DateFormat('dd/MM/yyyy')
-                                                .format(dateOfBirth!),
+                                            dateOfBirth.toString(),
                                             style: KTextStyles.kSubtitle,
                                           ),
                                   ),
@@ -451,8 +438,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                                             style: KTextStyles.kSubtitle,
                                           )
                                         : Text(
-                                            DateFormat('dd/MM/yyyy')
-                                                .format(anniversaryDate!),
+                                            anniversaryDate.toString(),
                                             style: KTextStyles.kSubtitle,
                                           ),
                                   ),
@@ -545,7 +531,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                 text: "Save",
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    await context.read<CustomerScreenCubit>().createCustomer(
+                    await context.read<CustomerScreenCubit>().updateCustomer(
                           CustomerModel(
                             outletId: outletId,
                             customerName: customerName.text,

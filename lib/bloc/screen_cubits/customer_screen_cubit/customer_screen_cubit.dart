@@ -34,9 +34,14 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
     }
   }
 
-  Future<void> createCustomer(CustomerModel item) async {
+  Future<void> createCustomer() async {
     try {
-      final data = await _repo.createCustomer(item);
+      final data = await _repo.createCustomer(CustomerModel(
+          customerName: state.customerName.text,
+          mobile: state.customerMobile.text,
+          customerCategoryID: state.selectedCusCatId,
+          anniversaryDate: state.anniversaryDate,
+          dateOfBirth: state.dateOfBirth));
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
@@ -94,5 +99,23 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  //Functions for Customer Screens.
+
+  void onCusCatChange(String? val) {
+    emit(state.copyWith(selectedCusCatId: val));
+  }
+
+  void onGenderChange(String? val) {
+    emit(state.copyWith(gender: val));
+  }
+
+  void onBirthChange(String? val) {
+    emit(state.copyWith(dateOfBirth: val));
+  }
+
+  void onAnnivChange(String? val) {
+    emit(state.copyWith(anniversaryDate: val));
   }
 }

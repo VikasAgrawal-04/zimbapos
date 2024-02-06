@@ -13,6 +13,12 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
 
   CustomerCategoryScreenCubit() : super(CustomerCategoryScreenState.initial());
 
+  @override
+  Future<void> close() {
+    state.props.clear();
+    return super.close();
+  }
+
   Future<void> init() async {
     emit(state.copyWith(status: Status.loading));
     await getCustomerCategories();

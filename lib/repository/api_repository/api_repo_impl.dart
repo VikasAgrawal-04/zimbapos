@@ -173,6 +173,11 @@ class ApiRepoImpl implements ApiRepo {
   }
 
   @override
+  Future<Either<Failure, TempBillRequestModel>> getTempBill(String tableId) {
+    return _billApiRepo.getTempBill(tableId);
+  }
+
+  @override
   Future<Either<Failure, Map<String, dynamic>>> createMainGroup(
       MainGroupModel item) {
     return _mainGroupApiRepo.createMainGroup(item);

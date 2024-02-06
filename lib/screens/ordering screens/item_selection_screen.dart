@@ -19,7 +19,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ItemSelectionCubit>(
-      create: (context) => ItemSelectionCubit(),
+      create: (context) => ItemSelectionCubit()..getTempBill(widget.tableId),
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -281,6 +281,62 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                                   child: Text(
                                       (addedItem.quantity * addedItem.itemRate)
                                           .toString()),
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              height: 25.h,
+              decoration: BoxDecoration(border: Border.all()),
+              child: Column(
+                children: [
+                  Container(
+                    width: 100.w,
+                    decoration: BoxDecoration(border: Border.all()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'KOTs',
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: state.tableBill.billLines?.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final billItem = state.tableBill.billLines?[index];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Center(
+                                      child: Text(billItem?.itemName ?? "--",maxLines: 1,overflow: TextOverflow.ellipsis,))),
+                              Expanded(
+                                  child: Center(
+                                      child: Text(
+                                          billItem?.priceExTax.toString() ??
+                                              "--"))),
+                              Expanded(
+                                  child: Center(
+                                      child: Text(
+                                          billItem?.quantity.toString() ??
+                                              "--"))),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                      billItem?.lineTotal.toString() ?? "--"),
                                 ),
                               ),
                             ],

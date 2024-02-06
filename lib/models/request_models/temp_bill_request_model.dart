@@ -11,12 +11,12 @@ String tempBillRequestModelToJson(TempBillRequestModel data) =>
     json.encode(data.toJson());
 
 class TempBillRequestModel {
-  BillHeader billHeader;
-  List<BillLine> billLines;
+  BillHeader? billHeader;
+  List<BillLine>? billLines;
 
   TempBillRequestModel({
-    required this.billHeader,
-    required this.billLines,
+    this.billHeader,
+    this.billLines,
   });
 
   factory TempBillRequestModel.fromJson(Map<String, dynamic> json) =>
@@ -27,8 +27,8 @@ class TempBillRequestModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "bill_header": billHeader.toJson(),
-        "bill_lines": List<dynamic>.from(billLines.map((x) => x.toJson())),
+        "bill_header": billHeader?.toJson(),
+        "bill_lines": List<dynamic>.from(billLines!.map((x) => x.toJson())),
       };
 }
 

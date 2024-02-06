@@ -35,7 +35,7 @@ const CustomerModelSchema = CollectionSchema(
     r'anniversaryDate': PropertySchema(
       id: 3,
       name: r'anniversaryDate',
-      type: IsarType.string,
+      type: IsarType.dateTime,
     ),
     r'balanceBonusPoints': PropertySchema(
       id: 4,
@@ -167,12 +167,6 @@ int _customerModelEstimateSize(
     }
   }
   {
-    final value = object.anniversaryDate;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.balanceBonusPoints;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -268,7 +262,7 @@ void _customerModelSerialize(
   writer.writeString(offsets[0], object.address1);
   writer.writeString(offsets[1], object.address2);
   writer.writeString(offsets[2], object.address3);
-  writer.writeString(offsets[3], object.anniversaryDate);
+  writer.writeDateTime(offsets[3], object.anniversaryDate);
   writer.writeString(offsets[4], object.balanceBonusPoints);
   writer.writeString(offsets[5], object.city);
   writer.writeString(offsets[6], object.country);
@@ -299,7 +293,7 @@ CustomerModel _customerModelDeserialize(
     address1: reader.readStringOrNull(offsets[0]),
     address2: reader.readStringOrNull(offsets[1]),
     address3: reader.readStringOrNull(offsets[2]),
-    anniversaryDate: reader.readStringOrNull(offsets[3]),
+    anniversaryDate: reader.readDateTimeOrNull(offsets[3]),
     balanceBonusPoints: reader.readStringOrNull(offsets[4]),
     city: reader.readStringOrNull(offsets[5]),
     country: reader.readStringOrNull(offsets[6]),
@@ -337,7 +331,7 @@ P _customerModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -956,58 +950,49 @@ extension CustomerModelQueryFilter
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      anniversaryDateEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'anniversaryDate',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       anniversaryDateGreaterThan(
-    String? value, {
+    DateTime? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'anniversaryDate',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       anniversaryDateLessThan(
-    String? value, {
+    DateTime? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'anniversaryDate',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
       anniversaryDateBetween(
-    String? lower,
-    String? upper, {
+    DateTime? lower,
+    DateTime? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -1016,77 +1001,6 @@ extension CustomerModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'anniversaryDate',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'anniversaryDate',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'anniversaryDate',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'anniversaryDate',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'anniversaryDate',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<CustomerModel, CustomerModel, QAfterFilterCondition>
-      anniversaryDateIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'anniversaryDate',
-        value: '',
       ));
     });
   }
@@ -4121,10 +4035,9 @@ extension CustomerModelQueryWhereDistinct
   }
 
   QueryBuilder<CustomerModel, CustomerModel, QDistinct>
-      distinctByAnniversaryDate({bool caseSensitive = true}) {
+      distinctByAnniversaryDate() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'anniversaryDate',
-          caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'anniversaryDate');
     });
   }
 
@@ -4281,7 +4194,7 @@ extension CustomerModelQueryProperty
     });
   }
 
-  QueryBuilder<CustomerModel, String?, QQueryOperations>
+  QueryBuilder<CustomerModel, DateTime?, QQueryOperations>
       anniversaryDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'anniversaryDate');

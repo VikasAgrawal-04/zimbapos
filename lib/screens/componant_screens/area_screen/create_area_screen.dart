@@ -106,14 +106,6 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
                   controller: exchangePercentController,
                   onChanged: (value) {},
                 ),
-                // TextField(
-                //   controller: exchangePercentController,
-                //   keyboardType: TextInputType.number,
-                //   decoration: const InputDecoration(
-                //     label: Text('Exchange percent'),
-                //     border: OutlineInputBorder(),
-                //   ),
-                // ),
                 SizedBox(height: screenSize.height * 0.02),
                 //dropdown for ratesets
                 SizedBox(

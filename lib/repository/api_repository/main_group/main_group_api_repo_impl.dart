@@ -25,4 +25,63 @@ class MainGroupApiRepoImpl implements MainGroupApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createMainGroup(
+      MainGroupModel item) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.createMainGroup,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteMainGroup(
+      String mainGroupId) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.delete,
+        EndPoints.deleteMainGroup,
+        queryParams: {
+          "mainGroupId": mainGroupId,
+        },
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateMainGroup(
+      MainGroupModel item) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.updateMainGroup,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

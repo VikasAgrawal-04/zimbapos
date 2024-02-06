@@ -171,4 +171,22 @@ class ApiRepoImpl implements ApiRepo {
       CustomerModel item) {
     return _customerApiRepo.updateCustomer(item);
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createMainGroup(
+      MainGroupModel item) {
+    return _mainGroupApiRepo.createMainGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteMainGroup(
+      String mainGroupId) {
+    return _mainGroupApiRepo.deleteMainGroup(mainGroupId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateMainGroup(
+      MainGroupModel item) {
+    return _mainGroupApiRepo.updateMainGroup(item);
+  }
 }

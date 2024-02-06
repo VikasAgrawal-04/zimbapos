@@ -24,4 +24,22 @@ class BillApiRepoImpl implements BillApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, TempBillRequestModel>> getTempBill(
+      String tableId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.get, EndPoints.getTempBill,
+          queryParams: {"tableId": tableId});
+      final data = response?['data'];
+      return Right(TempBillRequestModel.fromJson(data));
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

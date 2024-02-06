@@ -50,4 +50,5 @@ class EndPoints {
 
   //Bill
   static const String createKot = '/action-temp-bill';
+  static const String getTempBill = '/get-temp-bill';
 }

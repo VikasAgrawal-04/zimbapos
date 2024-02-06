@@ -40,7 +40,9 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   }
 
   Future<void> init() async {
+    EasyLoading.show(maskType: EasyLoadingMaskType.black);
     await Future.wait([getCategories(), getMainGroups(), getAllItems()]);
+    EasyLoading.dismiss();
   }
 
   Future<void> getCategories() async {
@@ -130,6 +132,21 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     }
   }
 
+  Future<void> getTempBill(String tableId) async {
+    try {
+      final data = await _repo.getTempBill(tableId);
+      data.fold((failure) {
+        debugPrint("Failure in Get Temp Bill ${failure.toString()}");
+      }, (success) {
+        debugPrint("Success In Getting Temp Bill ${success.toJson()}");
+        emit(state.copyWith(tableBill: success));
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
   Future<void> placeKot(String tableId) async {
     try {
       //Function Value Calculation
@@ -171,7 +188,6 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       //Lines
       List<BillLine> billLines = [];
       for (final item in state.addedItems) {
-        print(item.toJson());
         billLines.add(BillLine(
             itemId: item.itemId,
             itemName: item.itemName,
@@ -210,9 +226,10 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       success.fold((failure) {
         debugPrint("Failure ${failure.toString()}");
       }, (success) {
+        getTempBill(tableId);
         debugPrint("Success $success");
         EasyLoading.showSuccess(success['data'].toString());
-        addedItems=[];
+        addedItems = [];
         emit(state.copyWith(addedItems: []));
       });
     } catch (e, s) {

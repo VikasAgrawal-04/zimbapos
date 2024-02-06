@@ -171,4 +171,9 @@ class ApiRepoImpl implements ApiRepo {
       CustomerModel item) {
     return _customerApiRepo.updateCustomer(item);
   }
+
+  @override
+  Future<Either<Failure, TempBillRequestModel>> getTempBill(String tableId) {
+    return _billApiRepo.getTempBill(tableId);
+  }
 }

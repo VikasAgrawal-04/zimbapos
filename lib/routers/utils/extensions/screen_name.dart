@@ -71,6 +71,7 @@ enum AppScreen {
   editDiscountScreen,
   settingsOverviewScreen,
   terminalSetUpScreen,
+  terminalIdSetUpScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -181,6 +182,8 @@ extension AppScreenExtension on AppScreen {
         return 'Settings Overview Screen';
       case AppScreen.terminalSetUpScreen:
         return 'Terminal SetUp Screen';
+      case AppScreen.terminalIdSetUpScreen:
+        return 'Terminal ID Set up Screen';
     }
   }
 
@@ -291,6 +294,8 @@ extension AppScreenExtension on AppScreen {
         return '/settings-overview-screen';
       case AppScreen.terminalSetUpScreen:
         return '/terminal-setup-screen';
+      case AppScreen.terminalIdSetUpScreen:
+        return '/terminal-id-setup-screen';
     }
   }
 }

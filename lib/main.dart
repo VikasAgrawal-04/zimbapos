@@ -10,7 +10,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:server/server_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
-import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_state.dart';
 import 'package:zimbapos/global/utils/environment.dart';
@@ -18,7 +17,6 @@ import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
-
 import 'constants/kcolors.dart';
 
 Future<void> main() async {
@@ -83,26 +81,27 @@ class MyApp extends StatelessWidget {
                     useMaterial3: true,
                   ),
                   home: Scaffold(
-                      body: Center(
-                    child: (state is IncompleteInformation)
-                        ? Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(state.message),
-                              ElevatedButton(
-                                onPressed: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        const InitialSetUpScreen(),
+                    body: Center(
+                      child: (state is IncompleteInformation)
+                          ? Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(state.message),
+                                ElevatedButton(
+                                  onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const InitialSetUpScreen(),
+                                    ),
                                   ),
-                                ),
-                                child: const Text('Go to Outlet Setup'),
-                              )
-                            ],
-                          )
-                        : const CircularProgressIndicator.adaptive(),
-                  )),
+                                  child: const Text('Go to Outlet Setup'),
+                                )
+                              ],
+                            )
+                          : const CircularProgressIndicator.adaptive(),
+                    ),
+                  ),
                 );
               }
             },

@@ -14,7 +14,7 @@ class AppRouter {
       if (outletcheck) {
         return AppScreen.outletDataRegisterScreen.path;
       }
-      return AppScreen.terminalSetUpScreen.path;
+      return AppScreen.terminalIdSetUpScreen.path;
     },
   );
 }

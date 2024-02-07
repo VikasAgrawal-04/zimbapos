@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zimbapos/global/error/exception.dart';
-
 import 'package:zimbapos/global/error/failures.dart';
 
 import '../../../global/utils/constant/api_endpoints.dart';
@@ -52,7 +51,7 @@ class CustomerApiRepoImpl implements CustomerApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updateCustomer(
       CustomerModel item) async {
     try {
-      item.outletId = await Helpers.getOutletId();
+      item.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
         RequestType.post,
         EndPoints.updateCustomer,

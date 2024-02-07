@@ -52,8 +52,10 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
           ),
           actions: [
             TextButton.icon(
-              onPressed: () =>
-                  context.push(AppScreen.createCustomerScreen.path),
+              onPressed: () {
+                context.read<CustomerScreenCubit>().clearControllers();
+                context.push(AppScreen.createCustomerScreen.path);
+              },
               label: const Text('Add Customer'),
               icon: const Icon(Icons.add),
             ),

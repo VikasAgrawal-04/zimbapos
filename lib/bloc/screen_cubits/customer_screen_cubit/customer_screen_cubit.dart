@@ -39,6 +39,7 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
       final data = await _repo.createCustomer(CustomerModel(
           customerName: state.customerName.text,
           mobile: state.customerMobile.text,
+          gender: state.gender,
           customerCategoryID: state.selectedCusCatId,
           anniversaryDate: state.anniversaryDate,
           dateOfBirth: state.dateOfBirth));
@@ -72,7 +73,7 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        if (val == false) {
+        if (val == null) {
           init();
         }
         EasyLoading.showSuccess(success["data"]);
@@ -122,5 +123,27 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
   void clearControllers() {
     emit(CustomerScreenState.initial());
     init();
+  }
+
+  void fillControllers(CustomerModel item) {
+    emit(state.copyWith(
+        customerName: TextEditingController(text: item.customerName),
+        customerEmail: TextEditingController(text: item.email),
+        customerMobile: TextEditingController(text: item.mobile),
+        customerAddr1: TextEditingController(text: item.address1),
+        customerAddr2: TextEditingController(text: item.address2),
+        customerAddr3: TextEditingController(text: item.address3),
+        customerCity: TextEditingController(text: item.city),
+        customerState: TextEditingController(text: item.state),
+        customerCountry: TextEditingController(text: item.country),
+        customerPinCode: TextEditingController(text: item.pincode),
+        customerGstNum: TextEditingController(text: item.gstNumber),
+        creditLimitAmount: TextEditingController(text: item.creditLimitAmount),
+        balanceBonuspoints:
+            TextEditingController(text: item.balanceBonusPoints),
+        selectedCusCatId: item.customerCategoryID,
+        dateOfBirth: item.dateOfBirth,
+        anniversaryDate: item.anniversaryDate,
+        gender: item.gender));
   }
 }

@@ -6,7 +6,7 @@ class DateTextField extends StatefulWidget {
   final String? hintText;
   final DateTime? initDate;
   final DateTime? firstDate;
-
+  final String? value;
   final DateTime? lasDate;
 
   final ValueChanged<String>? onChanged;
@@ -14,6 +14,7 @@ class DateTextField extends StatefulWidget {
       {this.initDate,
       this.firstDate,
       this.lasDate,
+      this.value,
       this.hintText,
       this.onChanged,
       super.key});
@@ -24,6 +25,17 @@ class DateTextField extends StatefulWidget {
 
 class _DateTextFieldState extends State<DateTextField> {
   TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.value != null) {
+        controller.text = widget.value.toString();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomTextFieldNew(

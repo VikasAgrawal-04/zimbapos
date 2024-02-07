@@ -21,7 +21,9 @@ class TempBillRequestModel {
 
   factory TempBillRequestModel.fromJson(Map<String, dynamic> json) =>
       TempBillRequestModel(
-        billHeader: BillHeader.fromJson(json["bill_header"]),
+        billHeader: json["bill_header"] == null
+            ? null
+            : BillHeader.fromJson(json["bill_header"]),
         billLines: List<BillLine>.from(
             json["bill_lines"].map((x) => BillLine.fromJson(x))),
       );

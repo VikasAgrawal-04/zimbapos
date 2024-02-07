@@ -313,7 +313,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                        itemCount: state.tableBill.billLines?.length,
+                        itemCount: (state.tableBill.billLines ?? []).length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           final billItem = state.tableBill.billLines?[index];
@@ -322,7 +322,11 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                             children: [
                               Expanded(
                                   child: Center(
-                                      child: Text(billItem?.itemName ?? "--",maxLines: 1,overflow: TextOverflow.ellipsis,))),
+                                      child: Text(
+                                billItem?.itemName ?? "--",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ))),
                               Expanded(
                                   child: Center(
                                       child: Text(

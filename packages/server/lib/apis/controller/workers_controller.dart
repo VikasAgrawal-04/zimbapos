@@ -22,6 +22,17 @@ class WorkerController {
     }
   }
 
+  Future<Response> getAllWaiters(Request request) async {
+    try {
+      final waiters = await dbCubit.workerRepository.getAllWaiters();
+      return okResponse(waiters.map((e) => e.toMap()).toList());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
+    }
+  }
+
   Future<Response> createWorker(Request request) async {
     try {
       final requiredFields = [
@@ -62,7 +73,7 @@ class WorkerController {
         }
       }
       decodedData['workerId'] = Helpers.generateUuId();
-      final workerCreated = dbCubit.workerRepository
+      final workerCreated = await dbCubit.workerRepository
           .createWorker(model: WorkersModel.fromJson(jsonEncode(decodedData)));
       if (workerCreated) {
         return Response(200,

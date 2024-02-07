@@ -18,6 +18,7 @@ class ItemSelectionScreen extends StatefulWidget {
 class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
     return BlocProvider<ItemSelectionCubit>(
       create: (context) => ItemSelectionCubit()..getTempBill(widget.tableId),
       child: Scaffold(
@@ -29,9 +30,9 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
           builder: (context, state) {
             return Row(
               children: [
-                groupTab(context, state),
-                searchAndItemTab(context, state),
-                detailsTab(context, state)
+                groupTab(context, state,theme),
+                searchAndItemTab(context, state,theme),
+                detailsTab(context, state,theme)
               ],
             );
           },
@@ -40,7 +41,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget groupTab(BuildContext context, ItemSelectionState state) {
+  Widget groupTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(border: Border.all()),
@@ -100,7 +101,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget searchAndItemTab(BuildContext context, ItemSelectionState state) {
+  Widget searchAndItemTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
     return Expanded(
       flex: 2,
       child: Padding(
@@ -151,7 +152,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                               child: Container(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: .5.w),
-                                  child: Center(child: Text(item.itemName))))
+                                  child: Center(child: Text(item.itemName,style: theme.displayMedium,))))
                         ],
                       ),
                     ),
@@ -165,7 +166,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget detailsTab(BuildContext context, ItemSelectionState state) {
+  Widget detailsTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
     return Expanded(
       flex: 2,
       child: Container(

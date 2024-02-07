@@ -14,6 +14,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/customer_screen_cubit/customer_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
+import 'package:zimbapos/global/theme/theme.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
@@ -23,7 +24,6 @@ import 'package:zimbapos/routers/app_router.dart';
 import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
 import 'bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
-import 'constants/kcolors.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,12 +62,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
-                theme: ThemeData(
-                  colorScheme:
-                      ColorScheme.fromSeed(seedColor: KColors.buttonColor),
-                  fontFamily: 'PJS',
-                  useMaterial3: true,
-                ),
+                theme: ApplicationTheme.lightTheme,
                 home: const Scaffold(
                     body: Center(
                   child: CircularProgressIndicator.adaptive(),
@@ -106,6 +101,7 @@ class MyApp extends StatelessWidget {
                     Server(context: context);
                     if (state != null) {}
                     return MaterialApp.router(
+                      theme: ApplicationTheme.lightTheme,
                       debugShowCheckedModeBanner: false,
                       routerConfig: AppRouter.router,
                       builder: EasyLoading.init(),

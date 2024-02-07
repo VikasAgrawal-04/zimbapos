@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/main_group_screen_cubits/mian_group_state.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/kcolors.dart';
@@ -155,50 +157,62 @@ class _CreateMainGroupScreenState extends State<CreateMainGroupScreen> {
                   ),
 
                   SizedBox(height: screenSize.height * 0.02),
-                  // ElevatedButton(
-                  //   onPressed: () => updateAreaFn(context, widget.item.id),
-                  //   child: const Text('Update area'),
-                  // )
                 ],
               ),
             ),
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (catId != null) {
-                  createMainGroupFn(context);
-                  // if (itemGroupId != null) {
-                  //   if (taxId != null) {
-                  //     createItemFn(context);
-                  //   } else {
-                  //     UtillSnackbar.showSnackBar(
-                  //       context,
-                  //       title: "Alert",
-                  //       body: "Please choose a tax type",
-                  //       isSuccess: false,
-                  //     );
-                  //   }
-                  // } else {
-                  //   UtillSnackbar.showSnackBar(
-                  //     context,
-                  //     title: "Alert",
-                  //     body: "Please choose a item group",
-                  //     isSuccess: false,
-                  //   );
-                  // }
-                } else {
-                  UtillSnackbar.showSnackBar(
-                    context,
-                    title: "Alert",
-                    body: "Please choose a category",
-                    isSuccess: false,
-                  );
-                }
-              }
-            }),
+        bottomNavigationBar:
+            BlocBuilder<MainGroupScreenCubit, MainGroupScreenState>(
+          builder: (context, state) {
+            return CustomButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    if (catId != null) {
+                      // createMainGroupFn(context);
+                      await context
+                          .read<MainGroupScreenCubit>()
+                          .createMainGroup(
+                            MainGroupModel(
+                              outletId: outletId,
+                              categoryId: catId,
+                              mainGroupName: mainGroupNameController.text,
+                            ),
+                          );
+
+                      context.pop();
+                      // if (itemGroupId != null) {
+                      //   if (taxId != null) {
+                      //     createItemFn(context);
+                      //   } else {
+                      //     UtillSnackbar.showSnackBar(
+                      //       context,
+                      //       title: "Alert",
+                      //       body: "Please choose a tax type",
+                      //       isSuccess: false,
+                      //     );
+                      //   }
+                      // } else {
+                      //   UtillSnackbar.showSnackBar(
+                      //     context,
+                      //     title: "Alert",
+                      //     body: "Please choose a item group",
+                      //     isSuccess: false,
+                      //   );
+                      // }
+                    } else {
+                      UtillSnackbar.showSnackBar(
+                        context,
+                        title: "Alert",
+                        body: "Please choose a category",
+                        isSuccess: false,
+                      );
+                    }
+                  }
+                });
+          },
+        ),
       ),
     );
   }

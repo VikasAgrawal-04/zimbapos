@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
@@ -116,8 +118,11 @@ class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
                             DataCell(
                               Switch.adaptive(
                                 value: e.isActive as bool,
-                                onChanged: (va) =>
-                                    activeDeactivateItemGroup(e.id, va),
+                                onChanged: (va) {
+                                  context
+                                      .read<ItemGroupScreenCubit>()
+                                      .updateItemGroup(e, val: va);
+                                },
                               ),
                             ),
                             DataCell(
@@ -135,7 +140,10 @@ class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
                                     ),
                                     SizedBox(width: 2.w),
                                     IconButton(
-                                      onPressed: () => deleteItemGroup(e),
+                                      onPressed: () => context
+                                          .read<ItemGroupScreenCubit>()
+                                          .deleteItemGroup(
+                                              e.itemGroupId.toString()),
                                       icon: const Icon(CupertinoIcons.delete),
                                     )
                                   ],

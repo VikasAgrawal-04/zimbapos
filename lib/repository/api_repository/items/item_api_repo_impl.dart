@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:zimbapos/global/error/exception.dart';
@@ -86,7 +84,6 @@ class ItemApiRepoImpl implements ItemApiRepo {
   @override
   Future<Either<Failure, Map<String, dynamic>>> updateItem(
       ItemsModel item) async {
-    log("updating item");
     try {
       final response = await Helpers.sendRequest(
         RequestType.post,

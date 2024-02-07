@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
@@ -25,7 +24,6 @@ class CreateItemScreen extends StatefulWidget {
 }
 
 class _CreateItemScreenState extends State<CreateItemScreen> {
-  //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late final TextEditingController itemNameController;
   String? itemGroupId;
@@ -65,29 +63,6 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
     hsnController.dispose();
     imgLinkController.dispose();
     super.dispose();
-  }
-
-  createItemFn(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.itemsRepository.createItem(
-      model: ItemsModel(
-        itemName: itemNameController.text,
-        itemGroupId: itemGroupId,
-        foodType: foodType,
-        isAlcohol: isAlcoholic,
-        itemRate: enableTF ? double.parse(itemRateController.text) : null,
-        taxId: taxId,
-        rateWithTax: double.parse(itemRateWithTaxController.text),
-        isOpenItem: isOpenItem,
-        barcode: barcodeController.text,
-        shortcode: shortcodeController.text,
-        isWeightItem: isWeightItem,
-        hsnCode: hsnController.text,
-        imgLink: imgLinkController.text,
-      ),
-    );
-    EasyLoading.showToast('Item Created');
-    context.pop();
   }
 
   //
@@ -447,10 +422,6 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                   ),
 
                   SizedBox(height: screenSize.height * 0.02),
-                  // ElevatedButton(
-                  //   onPressed: () => updateAreaFn(context, widget.item.id),
-                  //   child: const Text('Update area'),
-                  // )
                 ],
               ),
             ),
@@ -462,7 +433,6 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
               if (_formKey.currentState!.validate()) {
                 if (foodType != null) {
                   if (taxId != null) {
-                    // createItemFn(context);
                     await context.read<ItemScreenCubit>().createItem(
                           ItemsModel(
                             itemName: itemNameController.text,
@@ -485,16 +455,6 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                         );
 
                     context.pop();
-                    // if (itemGroupId != null) {
-                    // createItemFn(context);
-                    // } else {
-                    //   UtillSnackbar.showSnackBar(
-                    //     context,
-                    //     title: "Alert",
-                    //     body: "Please choose a item group",
-                    //     isSuccess: false,
-                    //   );
-                    // }
                   } else {
                     UtillSnackbar.showSnackBar(
                       context,

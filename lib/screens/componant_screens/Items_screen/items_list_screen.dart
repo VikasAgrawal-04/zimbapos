@@ -1,20 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_state.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../models/response_models/item_response_model.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
-import '../../../widgets/my_alert_widget.dart';
 
 class ItemsListScreen extends StatefulWidget {
   const ItemsListScreen({super.key});
@@ -24,54 +21,11 @@ class ItemsListScreen extends StatefulWidget {
 }
 
 class _ItemsListScreenState extends State<ItemsListScreen> {
-  //
-  late TextEditingController _searchController;
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController = TextEditingController();
-  }
-
-  Stream<List<ItemsModel>> streamForItems() {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
-    return datatbaseCubit.itemsRepository.streamItemsList();
-  }
-
-  deleteItem(ItemList e) {
-    UtilDialog.showMyDialog(
-      context,
-      "Alert",
-      "Do you want to delete '${e.itemName}'?",
-      //this is for ok button
-      () {
-        final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.itemsRepository.deleteItem(e.id);
-        EasyLoading.showToast('Item deleted');
-        context.pop();
-      },
-      // this is for cancel button sending null will perform default pop() action
-      null,
-    );
-  }
-
-  activeDeactivateItem(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.itemsRepository.changeActive(id, value);
-  }
-
-  editItemFn({required ItemList model}) {
+  void editItemFn({required ItemList model}) {
     context.push(
       AppScreen.editItemScreen.path,
       extra: model,
     );
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
 
   @override
@@ -84,10 +38,6 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
               onPressed: () => context.push(AppScreen.createItemScreen.path),
               label: const Text('Add item'),
@@ -106,99 +56,103 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                 child: Text('No Main Groups'),
               );
             } else {
-              return SizedBox(
-                width: 100.w,
-                child: DataTable(
-                  headingTextStyle: KTextStyles.kTitle,
-                  columns: [
-                    const DataColumn(
-                      label: Text('Name'),
-                    ),
-                    const DataColumn(
-                      label: Text('Type'),
-                    ),
-                    const DataColumn(
-                      label: Text('Price'),
-                    ),
-                    const DataColumn(
-                      label: Text('Active'),
-                    ),
-                    DataColumn(
-                      label: Padding(
-                        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                        child: const Text('Actions'),
+              return SingleChildScrollView(
+                child: SizedBox(
+                  width: 100.w,
+                  child: DataTable(
+                    headingTextStyle: KTextStyles.kTitle,
+                    columns: [
+                      const DataColumn(
+                        label: Text('Name'),
                       ),
-                    ),
-                  ],
-                  rows: list
-                      .map(
-                        (e) => DataRow(
-                          cells: [
-                            DataCell(Text(
-                              e.itemName.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(Text(
-                              e.foodType.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(Text(
-                              e.rateWithTax.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(
-                              Switch.adaptive(
-                                value: e.isActive,
-                                onChanged: (va) {
-                                  context.read<ItemScreenCubit>().updateItem(
-                                      ItemsModel(
-                                        id: e.id,
-                                        itemId: e.itemId,
-                                        itemName: e.itemName,
-                                        itemGroupId: e.itemGroupId,
-                                        foodType: e.foodType,
-                                        isAlcohol: e.isAlcohol,
-                                        itemRate: e.itemRate,
-                                        taxId: e.taxId,
-                                        rateWithTax: e.rateWithTax,
-                                        isOpenItem: e.isOpenItem,
-                                        barcode: e.barcode,
-                                        shortcode: e.shortcode,
-                                        isWeightItem: e.isWeightItem,
-                                        hsnCode: e.hsnCode,
-                                        imgLink: e.imgLink,
-                                      ),
-                                      val: va);
-                                },
-                              ),
-                            ),
-                            DataCell(
-                              Container(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => editItemFn(model: e),
-                                      icon: const Icon(Icons.edit),
-                                    ),
-                                    SizedBox(width: 2.w),
-                                    IconButton(
-                                      onPressed: () => context
-                                          .read<ItemScreenCubit>()
-                                          .deleteItem(e.itemGroupId.toString()),
-                                      icon: const Icon(CupertinoIcons.delete),
-                                    )
-                                  ],
+                      const DataColumn(
+                        label: Text('Type'),
+                      ),
+                      const DataColumn(
+                        label: Text('Price'),
+                      ),
+                      const DataColumn(
+                        label: Text('Active'),
+                      ),
+                      DataColumn(
+                        label: Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                          child: const Text('Actions'),
+                        ),
+                      ),
+                    ],
+                    rows: list
+                        .map(
+                          (e) => DataRow(
+                            cells: [
+                              DataCell(Text(
+                                e.itemName.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(Text(
+                                e.foodType.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(Text(
+                                e.itemRate.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(
+                                Switch.adaptive(
+                                  value: e.isActive,
+                                  onChanged: (va) {
+                                    context.read<ItemScreenCubit>().updateItem(
+                                        ItemsModel(
+                                          id: e.id,
+                                          itemId: e.itemId,
+                                          itemName: e.itemName,
+                                          itemGroupId: e.itemGroupId,
+                                          foodType: e.foodType,
+                                          isAlcohol: e.isAlcohol,
+                                          itemRate: e.itemRate,
+                                          taxId: e.taxId,
+                                          rateWithTax: e.rateWithTax,
+                                          isOpenItem: e.isOpenItem,
+                                          barcode: e.barcode,
+                                          shortcode: e.shortcode,
+                                          isWeightItem: e.isWeightItem,
+                                          hsnCode: e.hsnCode,
+                                          imgLink: e.imgLink,
+                                        ),
+                                        val: va);
+                                  },
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                              DataCell(
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () => editItemFn(model: e),
+                                        icon: const Icon(Icons.edit),
+                                      ),
+                                      SizedBox(width: 2.w),
+                                      IconButton(
+                                        onPressed: () => context
+                                            .read<ItemScreenCubit>()
+                                            .deleteItem(
+                                                e.itemGroupId.toString()),
+                                        icon: const Icon(CupertinoIcons.delete),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
               );
             }

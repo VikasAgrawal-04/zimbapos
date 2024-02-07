@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
@@ -85,30 +84,6 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
     hsnController.dispose();
     imgLinkController.dispose();
     super.dispose();
-  }
-
-  updateItemFn(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.itemsRepository.editItem(
-      model: ItemsModel(
-        id: widget.item.id,
-        itemName: itemNameController.text,
-        itemGroupId: itemGroupId,
-        foodType: foodType,
-        isAlcohol: isAlcoholic,
-        itemRate: double.parse(itemRateController.text),
-        taxId: taxId,
-        rateWithTax: double.parse(itemRateWithTaxController.text),
-        isOpenItem: isOpenItem,
-        barcode: barcodeController.text,
-        shortcode: shortcodeController.text,
-        isWeightItem: isWeightItem,
-        hsnCode: hsnController.text,
-        imgLink: imgLinkController.text,
-      ),
-    );
-    EasyLoading.showToast('Tax updated');
-    context.pop();
   }
 
   //get taxes

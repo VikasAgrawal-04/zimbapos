@@ -1,12 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import '../../../constants/kcolors.dart';
 import '../../../helpers/validators.dart';
 import '../../../models/global_models/item_group_model.dart';
@@ -456,11 +458,33 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
         ),
         bottomNavigationBar: CustomButton(
             text: "Save",
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 if (foodType != null) {
                   if (taxId != null) {
-                    createItemFn(context);
+                    // createItemFn(context);
+                    await context.read<ItemScreenCubit>().createItem(
+                          ItemsModel(
+                            itemName: itemNameController.text,
+                            itemGroupId: itemGroupId,
+                            foodType: foodType,
+                            isAlcohol: isAlcoholic,
+                            itemRate: enableTF
+                                ? double.parse(itemRateController.text)
+                                : null,
+                            taxId: taxId,
+                            rateWithTax:
+                                double.parse(itemRateWithTaxController.text),
+                            isOpenItem: isOpenItem,
+                            barcode: barcodeController.text,
+                            shortcode: shortcodeController.text,
+                            isWeightItem: isWeightItem,
+                            hsnCode: hsnController.text,
+                            imgLink: imgLinkController.text,
+                          ),
+                        );
+
+                    context.pop();
                     // if (itemGroupId != null) {
                     // createItemFn(context);
                     // } else {

@@ -25,4 +25,55 @@ class AreaApiRepoImpl implements AreaApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createArea(
+      AreasModel data) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.createArea,
+          queryParams: data.toMap());
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteArea(
+      String areaId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.delete, EndPoints.deleteArea,
+          queryParams: {"areaId": areaId});
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateArea(
+      AreasModel data) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.updateArea,
+          queryParams: data.toMap());
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

@@ -5,6 +5,7 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/customer_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
+import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
@@ -193,5 +194,78 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updateMainGroup(
       MainGroupModel item) {
     return _mainGroupApiRepo.updateMainGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createItemGroup(
+      ItemGroupModel item) {
+    return _itemGroupApiRepo.createItemGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteItemGroup(
+      String itemGroupId) {
+    return _itemGroupApiRepo.deleteItemGroup(itemGroupId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateItemGroup(
+      ItemGroupModel item) {
+    return _itemGroupApiRepo.updateItemGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, List<ItemGroupModel>>> getItemGroupList() {
+    return _itemGroupApiRepo.getItemGroupList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createItem(ItemsModel item) {
+    return _itemApiRepo.createItem(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteItem(String itemId) {
+    return _itemApiRepo.deleteItem(itemId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateItem(ItemsModel item) {
+    return _itemApiRepo.updateItem(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createArea(AreasModel data) {
+    return _areaApiRepo.createArea(data);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteArea(String areaId) {
+    return _areaApiRepo.deleteArea(areaId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateArea(AreasModel data) {
+    return _areaApiRepo.updateArea(data);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createTable(TableModel item) {
+    return _tableApiRepo.createTable(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteTable(String tableId) {
+    return _tableApiRepo.deleteTable(tableId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateTable(TableModel item) {
+    return _tableApiRepo.updateTable(item);
+  }
+
+  @override
+  Future<Either<Failure, List<TableModel>>> fetchTableList() {
+    return _tableApiRepo.fetchTableList();
   }
 }

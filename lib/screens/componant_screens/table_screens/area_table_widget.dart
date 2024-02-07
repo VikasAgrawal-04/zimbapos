@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_cubit.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 
 import '../../../models/global_models/tables_model.dart';
@@ -9,16 +11,16 @@ class AreaTablesWidget extends StatelessWidget {
   final String areaName;
   final List<TableModel> tables;
   final void Function(TableModel) editTableFn;
-  final Function(TableModel) deleteTable;
-  final Function(int, bool) activeDeactivateTable;
+  // final Function(TableModel) deleteTable;
+  // final Function(int, bool) activeDeactivateTable;
 
   const AreaTablesWidget({
     super.key,
     required this.areaName,
     required this.tables,
     required this.editTableFn,
-    required this.deleteTable,
-    required this.activeDeactivateTable,
+    // required this.deleteTable,
+    // required this.activeDeactivateTable,
   });
 
   @override
@@ -63,7 +65,11 @@ class AreaTablesWidget extends StatelessWidget {
                       DataCell(
                         Switch.adaptive(
                           value: e.isActive as bool,
-                          onChanged: (va) => activeDeactivateTable(e.id, va),
+                          onChanged: (va) {
+                            context
+                                .read<TableScreenCubit>()
+                                .updateTable(e, val: va);
+                          },
                         ),
                       ),
                       DataCell(
@@ -80,7 +86,9 @@ class AreaTablesWidget extends StatelessWidget {
                               ),
                               SizedBox(width: 2.w),
                               IconButton(
-                                onPressed: () => deleteTable(e),
+                                onPressed: () => context
+                                    .read<TableScreenCubit>()
+                                    .deleteTable(e.tableId.toString()),
                                 icon: const Icon(CupertinoIcons.delete),
                               )
                             ],

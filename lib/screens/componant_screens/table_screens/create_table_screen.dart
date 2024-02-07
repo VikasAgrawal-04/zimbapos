@@ -1,10 +1,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_state.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/widgets/custom_button.dart';
@@ -24,11 +27,18 @@ class CreateTableScreen extends StatefulWidget {
 class _CreateTableScreenState extends State<CreateTableScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final tableName = TextEditingController();
+  // final customerName = TextEditingController();
+  // final persons = TextEditingController();
   String? selectedAreaId;
+// =  String? customerId;
+  // bool? isSplit;
+  // DateTime? tableStartedAt;
+  // String? tableStatus;
 
   @override
   void dispose() {
     tableName.dispose();
+    // customerName.dispose();
     super.dispose();
   }
 
@@ -79,12 +89,6 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
                     tableName.text = value.toUpperCase();
                   },
                 ),
-                // TextField(
-                //   controller: tableName,
-                //   decoration: const InputDecoration(
-                //     border: OutlineInputBorder(),
-                //   ),
-                // ),
                 SizedBox(height: 2.h),
                 //dropdown for ratesets
                 SizedBox(
@@ -139,26 +143,54 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
                     },
                   ),
                 ),
+                // PrimaryTextField(
+                //   validator: nullCheckValidator,
+                //   hintText: 'Customer name',
+                //   controller: customerName,
+                //   onChanged: (value) {
+                //     tableName.text = value.toUpperCase();
+                //   },
+                // ),
+                // PrimaryTextField(
+                //   validator: nullCheckValidator,
+                //   hintText: 'Persons',
+                //   controller: persons,
+                //   onChanged: (value) {
+                //     tableName.text = value.toUpperCase();
+                //   },
+                // ),
               ],
             ),
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (selectedAreaId != null) {
-                  createTable(context);
-                } else {
-                  UtillSnackbar.showSnackBar(
-                    context,
-                    title: "Alert",
-                    body: "Please choose a area",
-                    isSuccess: false,
-                  );
-                }
-              }
-            }),
+        bottomNavigationBar: BlocBuilder<TableScreenCubit, TableScreenState>(
+          builder: (context, state) {
+            return CustomButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    if (selectedAreaId != null) {
+                      // createTable(context);
+                      await context.read<TableScreenCubit>().updateTable(
+                            TableModel(
+                              tableName: tableName.text,
+                              areaId: selectedAreaId,
+                            ),
+                          );
+
+                      context.pop();
+                    } else {
+                      UtillSnackbar.showSnackBar(
+                        context,
+                        title: "Alert",
+                        body: "Please choose a area",
+                        isSuccess: false,
+                      );
+                    }
+                  }
+                });
+          },
+        ),
       ),
     );
   }

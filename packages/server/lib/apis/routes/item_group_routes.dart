@@ -15,6 +15,7 @@ class ItemGroupRoutes {
     initialiseApi();
   }
   void initialiseApi() {
+    locRoute.get('/get-item-group-list', controller.fetchAllItemGroup);
     locRoute.get('/get-item-group', controller.fetchItemGroup);
     locRoute.post('/create-item-group', controller.createItemGroup);
     locRoute.post('/update-item-group', controller.updateItemGroup);

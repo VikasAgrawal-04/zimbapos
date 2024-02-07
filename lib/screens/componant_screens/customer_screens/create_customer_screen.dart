@@ -156,7 +156,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //city
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer city',
                         controller: state.customerCity,
                         onChanged: (value) {},
@@ -165,7 +164,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //state
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer state',
                         controller: state.customerState,
                         onChanged: (value) {},
@@ -174,7 +172,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //country
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer country',
                         controller: state.customerCountry,
                         onChanged: (value) {},
@@ -183,7 +180,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //pin code
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer pincode',
                         controller: state.customerPinCode,
                         keyboard: TextInputType.number,
@@ -193,7 +189,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //gst
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer GST number',
                         controller: state.customerGstNum,
                         onChanged: (value) {},
@@ -202,7 +197,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //credit limit
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer credit limit',
                         controller: state.creditLimitAmount,
                         onChanged: (value) {},
@@ -211,7 +205,6 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
 
                       //balance bonus points
                       PrimaryTextField(
-                        // validator: nullCheckValidator,
                         hintText: 'Customer balance bonus points',
                         controller: state.balanceBonuspoints,
                         onChanged: (value) {},

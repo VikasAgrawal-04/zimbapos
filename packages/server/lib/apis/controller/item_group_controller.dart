@@ -11,6 +11,17 @@ class ItemGroupController {
   IsarService dbCubit;
   ItemGroupController(this.dbCubit);
 
+  Future<Response> fetchAllItemGroup(Request request) async {
+    try {
+      final allItemGrp = await dbCubit.itemGroupReposiory.getItemGroups();
+      return okResponse(allItemGrp.map((e) => e.toMap()).toList());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
+    }
+  }
+
   Future<Response> fetchItemGroup(Request request) async {
     try {
       if (request.url.queryParameters.isEmpty) {

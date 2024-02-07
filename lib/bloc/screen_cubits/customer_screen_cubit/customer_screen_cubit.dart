@@ -46,7 +46,7 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        init();
+        clearControllers();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -117,5 +117,10 @@ class CustomerScreenCubit extends Cubit<CustomerScreenState> {
 
   void onAnnivChange(String? val) {
     emit(state.copyWith(anniversaryDate: val));
+  }
+
+  void clearControllers() {
+    emit(CustomerScreenState.initial());
+    init();
   }
 }

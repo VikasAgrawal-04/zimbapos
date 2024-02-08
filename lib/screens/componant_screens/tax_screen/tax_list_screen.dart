@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/tax_screen_cubits/tax_state.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
+import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
+import '../../../widgets/indicators/loading_indicator.dart';
 import '../../../widgets/my_alert_widget.dart';
 
 class TaxListScreen extends StatefulWidget {
@@ -65,92 +70,99 @@ class _TaxListScreenState extends State<TaxListScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createTaxScreen.path),
+              onPressed: () {
+                context.push(AppScreen.createTaxScreen.path);
+                context.read<TaxScreenCubit>().clearControllers();
+              },
               label: const Text('Add Tax'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: StreamBuilder<List<TaxModel>>(
-          stream: streamForTaxes(),
-          builder: (context, snapshot) {
-            final list = snapshot.data;
-            if (list == null || list.isEmpty) {
-              return const Center(
-                child: Text('No taxes available,create one.'),
-              );
+        body: BlocBuilder<TaxScreenCubit, TaxScreenState>(
+          builder: (context, state) {
+            final list = state.taxList;
+            if (state.status == Status.loading) {
+              return const MyLoadingIndicator();
             }
-            return SizedBox(
-              width: 100.w,
-              child: DataTable(
-                headingTextStyle: KTextStyles.kTitle,
-                columns: [
-                  const DataColumn(
-                    label: Text('Name'),
-                  ),
-                  const DataColumn(
-                    label: Text('Percent'),
-                  ),
-                  const DataColumn(
-                    label: Text('Active'),
-                  ),
-                  DataColumn(
-                    label: Padding(
-                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                      child: const Text('Actions'),
+            if (list.isEmpty) {
+              return const Center(
+                child: Text('No Taxes'),
+              );
+            } else {
+              return SizedBox(
+                width: 100.w,
+                child: DataTable(
+                  headingTextStyle: KTextStyles.kTitle,
+                  columns: [
+                    const DataColumn(
+                      label: Text('Name'),
                     ),
-                  ),
-                ],
-                rows: list
-                    .map(
-                      (e) => DataRow(
-                        cells: [
-                          DataCell(Text(
-                            e.taxName.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(Text(
-                            "${e.taxPercent.toString()}%",
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(
-                            Switch.adaptive(
-                              value: e.isActive as bool,
-                              onChanged: (va) => activeDeactivateTax(e.id, va),
+                    const DataColumn(
+                      label: Text('Percent'),
+                    ),
+                    const DataColumn(
+                      label: Text('Active'),
+                    ),
+                    DataColumn(
+                      label: Padding(
+                        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                        child: const Text('Actions'),
+                      ),
+                    ),
+                  ],
+                  rows: list
+                      .map(
+                        (e) => DataRow(
+                          cells: [
+                            DataCell(Text(
+                              e.taxName.toString(),
+                              style: KTextStyles.kSubtitle,
+                            )),
+                            DataCell(Text(
+                              "${e.taxPercent.toString()}%",
+                              style: KTextStyles.kSubtitle,
+                            )),
+                            DataCell(
+                              Switch.adaptive(
+                                  value: e.isActive as bool,
+                                  onChanged: (va) {
+                                    context
+                                        .read<TaxScreenCubit>()
+                                        .updateTax(e, val: va);
+                                  }),
                             ),
-                          ),
-                          DataCell(
-                            Container(
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editTaxFn(model: e),
-                                    icon: const Icon(Icons.edit),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  IconButton(
-                                    onPressed: () => deleteTax(e),
-                                    icon: const Icon(CupertinoIcons.delete),
-                                  )
-                                ],
+                            DataCell(
+                              Container(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => editTaxFn(model: e),
+                                      icon: const Icon(Icons.edit),
+                                    ),
+                                    SizedBox(width: 2.w),
+                                    IconButton(
+                                      onPressed: () => context
+                                          .read<TaxScreenCubit>()
+                                          .deleteTax(e.taxId.toString()),
+                                      icon: const Icon(CupertinoIcons.delete),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
-                    .toList(),
-              ),
-            );
+                          ],
+                        ),
+                      )
+                      .toList(),
+                ),
+              );
+            }
           },
         ),
       ),

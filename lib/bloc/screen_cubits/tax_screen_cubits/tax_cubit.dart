@@ -1,38 +1,32 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:zimbapos/models/global_models/item_group_model.dart';
+import 'package:zimbapos/bloc/screen_cubits/tax_screen_cubits/tax_state.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
 import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../models/global_models/tax_model.dart';
 import '../../../repository/api_repository/api_repo.dart';
-import 'item_group_state.dart';
 
-class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
+class TaxScreenCubit extends Cubit<TaxScreenState> {
   final ApiRepo _repo = ApiRepoImpl();
 
-  ItemGroupScreenCubit() : super(ItemGroupScreenState.initial());
-
-  @override
-  Future<void> close() {
-    state.props.clear();
-    return super.close();
-  }
+  TaxScreenCubit() : super(TaxScreenState.initial());
 
   Future<void> init() async {
     emit(state.copyWith(status: Status.loading));
-    await getItemGroupList();
+    await getTaxList();
     emit(state.copyWith(status: Status.success));
   }
 
-  Future<void> getItemGroupList() async {
+  Future<void> getTaxList() async {
     try {
-      final data = await _repo.getItemGroupList();
+      final data = await _repo.fetchTaxList();
       data.fold((failure) {
         debugPrint(failure.toString());
-        emit(state.copyWith(itemGroupList: []));
+        emit(state.copyWith(taxList: []));
       }, (success) {
-        emit(state.copyWith(itemGroupList: success));
+        emit(state.copyWith(taxList: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -40,14 +34,20 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
     }
   }
 
-  Future<void> createItemGroup(ItemGroupModel item) async {
+  Future<void> createTax() async {
     try {
-      final data = await _repo.createItemGroup(item);
+      final data = await _repo.createTax(
+        TaxModel(
+          taxName: state.taxNameController.text,
+          taxPercent: double.parse(state.taxPercentController.text),
+          taxType: state.taxType,
+        ),
+      );
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        init();
+        clearControllers();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -56,24 +56,24 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
     }
   }
 
-  Future<void> updateItemGroup(ItemGroupModel item, {bool? val}) async {
+  Future<void> updateTax(TaxModel item, {bool? val}) async {
     //For State Management & Instant Reflection
     if (val != null) {
-      List<ItemGroupModel> updatedList = List.from(state.itemGroupList);
-      final index = updatedList
-          .indexWhere((element) => element.itemGroupId == item.itemGroupId);
+      List<TaxModel> updatedList = List.from(state.taxList);
+      final index =
+          updatedList.indexWhere((element) => element.taxId == item.taxId);
       updatedList[index] = updatedList[index].copyWith(isActive: val);
-      emit(state.copyWith(itemGroupList: updatedList));
+      emit(state.copyWith(taxList: updatedList));
       item.isActive = val;
     }
 
     try {
-      final data = await _repo.updateItemGroup(item);
+      final data = await _repo.updateTax(item);
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        if (val == false) {
+        if (val == null) {
           init();
         }
         EasyLoading.showSuccess(success["data"]);
@@ -84,10 +84,10 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
     }
   }
 
-  Future<void> deleteItemGroup(String id) async {
+  Future<void> deleteTax(String id) async {
     try {
       EasyLoading.show();
-      final res = await _repo.deleteItemGroup(id);
+      final res = await _repo.deleteTax(id);
       res.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
@@ -102,24 +102,23 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
     }
   }
 
-  void onMainGroupChange(String? val) {
-    emit(state.copyWith(mainGroupId: val));
-  }
-
-  void onPrinterChange(String? val) {
-    emit(state.copyWith(printerId: val));
+  void onTaxTypeChange(String? val) {
+    emit(state.copyWith(taxType: val));
   }
 
   void clearControllers() {
-    emit(ItemGroupScreenState.initial());
+    emit(TaxScreenState.initial());
     init();
   }
 
-  void fillControllers(ItemGroupModel item) {
-    emit(state.copyWith(
-      itemGroupNameController: TextEditingController(text: item.itemGroupName),
-      mainGroupId: item.mainGroupId,
-      printerId: item.printerId,
-    ));
+  void fillControllers(TaxModel item) {
+    emit(
+      state.copyWith(
+        taxNameController: TextEditingController(text: item.taxName),
+        taxPercentController:
+            TextEditingController(text: item.taxPercent.toString()),
+        taxType: item.taxType,
+      ),
+    );
   }
 }

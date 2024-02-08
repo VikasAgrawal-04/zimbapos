@@ -41,7 +41,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create Customer'),
+          title: const Text('Edit Customer'),
         ),
         body: BlocBuilder<CustomerScreenCubit, CustomerScreenState>(
           builder: (context, state) {
@@ -253,13 +253,12 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                   if (_formKey.currentState!.validate()) {
                     await context.read<CustomerScreenCubit>().updateCustomer(
                           CustomerModel(
-                            customerId: widget.item.customerId,
-                            customerName: state.customerName.text,
-                            mobile: state.customerMobile.text,
-                            dateOfBirth: state.dateOfBirth,
-                            customerCategoryID: state.selectedCusCatId,
-                            anniversaryDate: state.anniversaryDate
-                          ),
+                              customerId: widget.item.customerId,
+                              customerName: state.customerName.text,
+                              mobile: state.customerMobile.text,
+                              dateOfBirth: state.dateOfBirth,
+                              customerCategoryID: state.selectedCusCatId,
+                              anniversaryDate: state.anniversaryDate),
                         );
 
                     context.pop();

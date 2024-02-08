@@ -14,6 +14,7 @@ import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/customer_screen_cubit/customer_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
@@ -99,6 +100,9 @@ class MyApp extends StatelessWidget {
                   ),
                   BlocProvider(
                     create: (context) => CustomerScreenCubit()..init(),
+                  ),
+                  BlocProvider(
+                    create: (context) => TaxScreenCubit()..init(),
                   ),
                 ],
                 child: BlocBuilder<DatabaseCubit, IsarService?>(

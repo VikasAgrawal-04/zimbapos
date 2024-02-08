@@ -4,22 +4,20 @@ import 'package:zimbapos/global/error/exception.dart';
 import 'package:zimbapos/global/error/failures.dart';
 import 'package:zimbapos/global/utils/constant/api_endpoints.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
-import 'package:zimbapos/models/global_models/item_group_model.dart';
-import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 
-class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
+import 'tax_api_repo.dart';
+
+class TaxApiRepoImpl implements TaxApiRepo {
   @override
-  Future<Either<Failure, List<ItemGroupModel>>> fetchItemGroup(
-      String id) async {
+  Future<Either<Failure, List<TaxModel>>> fetchTaxList() async {
     try {
-      final response = await Helpers.sendRequest(
-          RequestType.get, EndPoints.getItemGroup,
-          queryParams: {"mainGroupId": id});
+      final response =
+          await Helpers.sendRequest(RequestType.get, EndPoints.getTaxList);
       final List<dynamic> data = response?['data'];
-
-      final List<ItemGroupModel> itemGrp =
-          data.map((e) => ItemGroupModel.fromMap(e)).toList();
-      return Right(itemGrp);
+      final List<TaxModel> taxList =
+          data.map((e) => TaxModel.fromMap(e)).toList();
+      return Right(taxList);
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);
       return Left(ServerFailure(message: error.message.toString()));
@@ -30,13 +28,12 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> createItemGroup(
-      ItemGroupModel item) async {
+  Future<Either<Failure, Map<String, dynamic>>> createTax(TaxModel item) async {
     try {
-      item.outletId = await Helpers.getOutletId() ?? "123123";
+      // item.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
         RequestType.post,
-        EndPoints.createItemGroup,
+        EndPoints.createTax,
         queryParams: item.toMap(),
       );
       return Right(response ?? {});
@@ -50,32 +47,14 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> deleteItemGroup(
-      String itemGroupId) async {
+  Future<Either<Failure, Map<String, dynamic>>> deleteTax(String taxId) async {
     try {
       final response = await Helpers.sendRequest(
-          RequestType.delete, EndPoints.deleteCustomerCategory,
-          queryParams: {
-            "itemGroupId": itemGroupId,
-          });
-      return Right(response ?? {});
-    } on ServerException catch (error, s) {
-      debugPrintStack(stackTrace: s);
-      return Left(ServerFailure(message: error.message.toString()));
-    } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      return Left(ServerFailure(message: e.toString()));
-    }
-  }
-
-  @override
-  Future<Either<Failure, Map<String, dynamic>>> updateItemGroup(
-      ItemGroupModel item) async {
-    try {
-      final response = await Helpers.sendRequest(
-        RequestType.post,
-        EndPoints.updateItemGroup,
-        queryParams: item.toMap(),
+        RequestType.delete,
+        EndPoints.deleteTax,
+        queryParams: {
+          "taxId": taxId,
+        },
       );
       return Right(response ?? {});
     } on ServerException catch (error, s) {
@@ -88,14 +67,14 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
   }
 
   @override
-  Future<Either<Failure, List<ItemGroupModel>>> getItemGroupList() async {
+  Future<Either<Failure, Map<String, dynamic>>> updateTax(TaxModel item) async {
     try {
       final response = await Helpers.sendRequest(
-          RequestType.get, EndPoints.getItemGroupList);
-      final List<dynamic> data = response?['data'];
-      final List<ItemGroupModel> itemGroupList =
-          data.map((item) => ItemGroupModel.fromMap(item)).toList();
-      return Right(itemGroupList);
+        RequestType.post,
+        EndPoints.updateTax,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);
       return Left(ServerFailure(message: error.message.toString()));

@@ -38,6 +38,12 @@ class EndPoints {
   static const String updateItem = '/update-item';
   static const String deleteItem = '/delete-item';
 
+  //Categories (done)
+  static const String getTaxList = '/get-taxes';
+  static const String createTax = '/create-tax';
+  static const String updateTax = '/update-tax';
+  static const String deleteTax = '/delete-tax';
+
   //Workers
   static const String getWorkers = '/get-workers';
   static const String createWorker = '/create-worker';

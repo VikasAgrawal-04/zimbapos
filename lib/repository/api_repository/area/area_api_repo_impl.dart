@@ -30,6 +30,7 @@ class AreaApiRepoImpl implements AreaApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createArea(
       AreasModel data) async {
     try {
+      data.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
           RequestType.post, EndPoints.createArea,
           queryParams: data.toMap());

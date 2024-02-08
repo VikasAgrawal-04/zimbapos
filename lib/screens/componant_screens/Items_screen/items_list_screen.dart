@@ -61,7 +61,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
     dbCubit.itemsRepository.changeActive(id, value);
   }
 
-  editItemFn({required ItemList model}) {
+  editItemFn({required ItemsModel model}) {
     context.push(
       AppScreen.editItemScreen.path,
       extra: model,
@@ -84,10 +84,6 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
               onPressed: () => context.push(AppScreen.createItemScreen.path),
               label: const Text('Add item'),
@@ -95,114 +91,136 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
             ),
           ],
         ),
-        body: BlocBuilder<ItemScreenCubit, ItemScreenState>(
-          builder: (context, state) {
-            final list = state.itemList;
-            if (state.status == Status.loading) {
-              return const MyLoadingIndicator();
-            }
-            if (list.isEmpty) {
-              return const Center(
-                child: Text('No Main Groups'),
-              );
-            } else {
-              return SizedBox(
-                width: 100.w,
-                child: DataTable(
-                  headingTextStyle: KTextStyles.kTitle,
-                  columns: [
-                    const DataColumn(
-                      label: Text('Name'),
-                    ),
-                    const DataColumn(
-                      label: Text('Type'),
-                    ),
-                    const DataColumn(
-                      label: Text('Price'),
-                    ),
-                    const DataColumn(
-                      label: Text('Active'),
-                    ),
-                    DataColumn(
-                      label: Padding(
-                        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                        child: const Text('Actions'),
+        body: SingleChildScrollView(
+          child: BlocBuilder<ItemScreenCubit, ItemScreenState>(
+            builder: (context, state) {
+              final list = state.itemList;
+              if (state.status == Status.loading) {
+                return const MyLoadingIndicator();
+              }
+              if (list.isEmpty) {
+                return const Center(
+                  child: Text('No Items'),
+                );
+              } else {
+                return SizedBox(
+                  width: 100.w,
+                  child: DataTable(
+                    headingTextStyle: KTextStyles.kTitle,
+                    columns: [
+                      const DataColumn(
+                        label: Text('Name'),
                       ),
-                    ),
-                  ],
-                  rows: list
-                      .map(
-                        (e) => DataRow(
-                          cells: [
-                            DataCell(Text(
-                              e.itemName.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(Text(
-                              e.foodType.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(Text(
-                              e.rateWithTax.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(
-                              Switch.adaptive(
-                                value: e.isActive,
-                                onChanged: (va) {
-                                  context.read<ItemScreenCubit>().updateItem(
-                                      ItemsModel(
-                                        id: e.id,
-                                        itemId: e.itemId,
-                                        itemName: e.itemName,
-                                        itemGroupId: e.itemGroupId,
-                                        foodType: e.foodType,
-                                        isAlcohol: e.isAlcohol,
-                                        itemRate: e.itemRate,
-                                        taxId: e.taxId,
-                                        rateWithTax: e.rateWithTax,
-                                        isOpenItem: e.isOpenItem,
-                                        barcode: e.barcode,
-                                        shortcode: e.shortcode,
-                                        isWeightItem: e.isWeightItem,
-                                        hsnCode: e.hsnCode,
-                                        imgLink: e.imgLink,
-                                      ),
-                                      val: va);
-                                },
-                              ),
-                            ),
-                            DataCell(
-                              Container(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => editItemFn(model: e),
-                                      icon: const Icon(Icons.edit),
-                                    ),
-                                    SizedBox(width: 2.w),
-                                    IconButton(
-                                      onPressed: () => context
-                                          .read<ItemScreenCubit>()
-                                          .deleteItem(e.itemGroupId.toString()),
-                                      icon: const Icon(CupertinoIcons.delete),
-                                    )
-                                  ],
+                      const DataColumn(
+                        label: Text('Type'),
+                      ),
+                      const DataColumn(
+                        label: Text('Price'),
+                      ),
+                      const DataColumn(
+                        label: Text('Active'),
+                      ),
+                      DataColumn(
+                        label: Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                          child: const Text('Actions'),
+                        ),
+                      ),
+                    ],
+                    rows: list
+                        .map(
+                          (e) => DataRow(
+                            cells: [
+                              DataCell(Text(
+                                e.itemName.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(Text(
+                                e.foodType.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(Text(
+                                e.rateWithTax.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(
+                                Switch.adaptive(
+                                  value: e.isActive,
+                                  onChanged: (va) {
+                                    context.read<ItemScreenCubit>().updateItem(
+                                        ItemsModel(
+                                          id: e.id,
+                                          itemId: e.itemId,
+                                          itemName: e.itemName,
+                                          itemGroupId: e.itemGroupId,
+                                          foodType: e.foodType,
+                                          isAlcohol: e.isAlcohol,
+                                          itemRate: e.itemRate,
+                                          taxId: e.taxId,
+                                          rateWithTax: e.rateWithTax,
+                                          isOpenItem: e.isOpenItem,
+                                          barcode: e.barcode,
+                                          shortcode: e.shortcode,
+                                          isWeightItem: e.isWeightItem,
+                                          hsnCode: e.hsnCode,
+                                          imgLink: e.imgLink,
+                                        ),
+                                        val: va);
+                                  },
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
-                ),
-              );
-            }
-          },
+                              DataCell(
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () => editItemFn(
+                                          model: ItemsModel(
+                                            id: e.id,
+                                            itemId: e.itemId,
+                                            itemName: e.itemName,
+                                            itemGroupId: e.itemGroupId,
+                                            foodType: e.foodType,
+                                            isAlcohol: e.isAlcohol,
+                                            itemRate: e.itemRate,
+                                            taxId: e.taxId,
+                                            rateWithTax: e.rateWithTax,
+                                            isOpenItem: e.isOpenItem,
+                                            barcode: e.barcode,
+                                            shortcode: e.shortcode,
+                                            isWeightItem: e.isWeightItem,
+                                            hsnCode: e.hsnCode,
+                                            imgLink: e.imgLink,
+                                          ),
+                                        ),
+                                        icon: const Icon(Icons.edit),
+                                      ),
+                                      SizedBox(width: 2.w),
+                                      IconButton(
+                                        onPressed: () => context
+                                            .read<ItemScreenCubit>()
+                                            .deleteItem(
+                                                e.itemGroupId.toString()),
+                                        icon: const Icon(CupertinoIcons.delete),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
+                );
+              }
+            },
+          ),
         ),
       ),
     );

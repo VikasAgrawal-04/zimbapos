@@ -108,7 +108,7 @@ class ItemsModel {
       'imgLink': imgLink,
       'isActive': isActive,
       'isDeleted': isDeleted,
-      'tax': jsonDecode(taxDetails.value!.toJson().toString()),
+      // 'tax': jsonDecode(taxDetails.value!.toJson().toString()),
       'main_group_details': mainGroupDetails.value != null
           ? jsonDecode(mainGroupDetails.value!.toJson().toString())
           : null

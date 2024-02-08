@@ -5,11 +5,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_state.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
+import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
+import '../../../widgets/indicators/loading_indicator.dart';
 import '../../../widgets/my_alert_widget.dart';
 
 class ItemGroupListScreen extends StatefulWidget {
@@ -65,25 +68,25 @@ class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () => context.push(AppScreen.createCategory.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
-              onPressed: () =>
-                  context.push(AppScreen.createItemGroupScreen.path),
+              onPressed: () {
+                context.read<ItemGroupScreenCubit>().clearControllers();
+                context.push(AppScreen.createItemGroupScreen.path);
+              },
               label: const Text('Add item group'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: StreamBuilder<List<ItemGroupModel>>(
-          stream: itemGroupStream(),
-          builder: (context, snapshot) {
-            final data = snapshot.data;
-            if (data == null || data.isEmpty) {
+        body: BlocBuilder<ItemGroupScreenCubit, ItemGroupScreenState>(
+          builder: (context, state) {
+            final data = state.itemGroupList;
+            if (state.status == Status.loading) {
+              return const MyLoadingIndicator();
+            }
+            if (data.isEmpty) {
               return const Center(
-                child: Text('No Categories'),
+                child: Text('No Item groups'),
               );
             } else {
               return SizedBox(

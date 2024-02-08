@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -42,6 +44,7 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
   }
 
   Future<void> createItem(ItemsModel item) async {
+    log(item.toJson());
     try {
       final data = await _repo.createItem(item);
       data.fold((failure) {
@@ -101,5 +104,53 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void onIsAlcoholicChange(bool? val) {
+    emit(state.copyWith(isAlcoholic: val));
+  }
+
+  void onIsWeightItemChange(bool? val) {
+    emit(state.copyWith(isWeightItem: val));
+  }
+
+  void onIsOpenItemChange(bool? val) {
+    emit(state.copyWith(isOpenItem: val));
+  }
+
+  void onTaxIdChange(String? val) {
+    emit(state.copyWith(taxId: val));
+  }
+
+  void onItemgroupChange(String? val) {
+    emit(state.copyWith(itemGroupId: val));
+  }
+
+  void onFoodTypeChange(String? val) {
+    emit(state.copyWith(foodType: val));
+  }
+
+  void clearControllers() {
+    emit(ItemScreenState.initial());
+    init();
+  }
+
+  void fillControllers(ItemsModel item) {
+    emit(state.copyWith(
+      itemNameController: TextEditingController(text: item.itemName),
+      itemRateController: TextEditingController(text: item.itemRate.toString()),
+      itemRateWithTaxController:
+          TextEditingController(text: item.rateWithTax.toString()),
+      barcodeController: TextEditingController(text: item.barcode),
+      shortcodeController: TextEditingController(text: item.shortcode),
+      hsnController: TextEditingController(text: item.hsnCode),
+      imgLinkController: TextEditingController(text: item.imgLink),
+      isAlcoholic: item.isAlcohol,
+      isOpenItem: item.isOpenItem,
+      isWeightItem: item.isWeightItem,
+      foodType: item.foodType,
+      itemGroupId: item.itemGroupId,
+      taxId: item.taxId,
+    ));
   }
 }

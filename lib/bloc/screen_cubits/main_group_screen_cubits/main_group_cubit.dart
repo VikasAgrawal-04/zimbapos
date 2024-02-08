@@ -34,14 +34,19 @@ class MainGroupScreenCubit extends Cubit<MainGroupScreenState> {
     }
   }
 
-  Future<void> createMainGroup(MainGroupModel item) async {
+  Future<void> createMainGroup() async {
     try {
-      final data = await _repo.createMainGroup(item);
+      final data = await _repo.createMainGroup(
+        MainGroupModel(
+          mainGroupName: state.mainGroupNameController.text,
+          categoryId: state.catId,
+        ),
+      );
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        init();
+        clearControllers();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -67,7 +72,7 @@ class MainGroupScreenCubit extends Cubit<MainGroupScreenState> {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        if (val == false) {
+        if (val == null) {
           init();
         }
         EasyLoading.showSuccess(success["data"]);
@@ -94,5 +99,24 @@ class MainGroupScreenCubit extends Cubit<MainGroupScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void onCategoryChange(String? val) {
+    emit(state.copyWith(catId: val));
+  }
+
+  void clearControllers() {
+    emit(MainGroupScreenState.initial());
+    init();
+  }
+
+  void fillControllers(MainGroupModel item) {
+    emit(
+      state.copyWith(
+        mainGroupNameController:
+            TextEditingController(text: item.mainGroupName),
+        catId: item.categoryId,
+      ),
+    );
   }
 }

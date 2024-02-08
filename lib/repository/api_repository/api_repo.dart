@@ -7,6 +7,7 @@ import 'package:zimbapos/repository/api_repository/item_group/item_group_api_rep
 import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/tax/tax_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
 abstract class ApiRepo
@@ -20,4 +21,5 @@ abstract class ApiRepo
         ItemApiRepo,
         CustomerCategoryApiRepo,
         BillApiRepo,
+        TaxApiRepo,
         CustomerApiRepo {}

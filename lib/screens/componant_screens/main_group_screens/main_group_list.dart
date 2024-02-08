@@ -8,6 +8,7 @@ import 'package:zimbapos/bloc/screen_cubits/main_group_screen_cubits/main_group_
 import 'package:zimbapos/bloc/screen_cubits/main_group_screen_cubits/mian_group_state.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../bloc/screen_cubits/customer_screen_cubit/customer_screen_cubit.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../models/global_models/main_group_model.dart';
@@ -68,13 +69,11 @@ class _MainGroupListScreenState extends State<MainGroupListScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
-              onPressed: () =>
-                  context.push(AppScreen.createMainGroupScreen.path),
+              onPressed: () {
+                context.read<CustomerScreenCubit>().clearControllers();
+                context.push(AppScreen.createMainGroupScreen.path);
+              },
               label: const Text('Add main group'),
               icon: const Icon(Icons.add),
             ),

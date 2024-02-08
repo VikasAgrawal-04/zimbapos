@@ -8,7 +8,7 @@ class TerminalSetupCubit extends Cubit<TerminalSetupState> {
     init();
   }
   late bool? terminalType;
-  String? terminalID;
+  int? terminalID;
 
   init() async {
     emit(TerminalSetupInit());

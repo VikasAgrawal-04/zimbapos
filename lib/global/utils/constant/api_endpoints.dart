@@ -35,4 +35,8 @@ class EndPoints {
   static const String createWorker = '/create-worker';
   static const String deleteWorker = '/delete-worker';
   static const String updateWorker = '/update-worker';
+
+  //Terminal Configuration End Points
+  static const String getAllTerminals = '/get-all-terminals';
+  static const String getTerminalId = 'get-terminal-id';
 }

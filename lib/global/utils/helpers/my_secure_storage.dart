@@ -39,8 +39,11 @@ class MySecureStorage {
     return null;
   }
 
-  Future<String?> getTerminalID() async {
-    return await storage.read(key: _terminalID);
+  Future<int?> getTerminalID() async {
+    final data = await storage.read(key: _terminalID);
+    if (data != null) {
+      return int.parse(data);
+    }
   }
 
   Future<String?> getDeviceConfig() async {

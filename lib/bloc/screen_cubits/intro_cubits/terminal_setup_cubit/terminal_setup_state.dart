@@ -34,7 +34,7 @@ final class NoTerminalID extends TerminalSetupState {
 
 final class TerminalsettingsLoaded extends TerminalSetupState {
   final bool? mainTerminalType;
-  final String? terminalId;
+  final int? terminalId;
 
   const TerminalsettingsLoaded({
     required this.mainTerminalType,
@@ -43,7 +43,7 @@ final class TerminalsettingsLoaded extends TerminalSetupState {
 
   TerminalsettingsLoaded copyWith({
     bool? mainTerminalType,
-    String? terminalId,
+    int? terminalId,
   }) {
     return TerminalsettingsLoaded(
       mainTerminalType: mainTerminalType ?? this.mainTerminalType,

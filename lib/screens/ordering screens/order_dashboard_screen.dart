@@ -75,7 +75,10 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                                   onTap: () {
                                     context.push(
                                         AppScreen.itemsSelectionScreen.path,
-                                        extra: table.tableId);
+                                        extra: [
+                                          table.tableId,
+                                          table.tableName
+                                        ]);
                                   },
                                   child: Card(
                                     elevation: 5,

@@ -1,15 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
+import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
   final String tableId;
-  const ItemSelectionScreen({required this.tableId, super.key});
+  final String tableName;
+  const ItemSelectionScreen(
+      {required this.tableId, required this.tableName, super.key});
 
   @override
   State<ItemSelectionScreen> createState() => _ItemSelectionScreenState();
@@ -18,21 +23,25 @@ class ItemSelectionScreen extends StatefulWidget {
 class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
     return BlocProvider<ItemSelectionCubit>(
       create: (context) => ItemSelectionCubit()..getTempBill(widget.tableId),
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          title: const Text('Billing Screen'),
-        ),
+        appBar: appBar(theme),
         body: BlocBuilder<ItemSelectionCubit, ItemSelectionState>(
           builder: (context, state) {
-            return Row(
+            return Column(
               children: [
-                groupTab(context, state,theme),
-                searchAndItemTab(context, state,theme),
-                detailsTab(context, state,theme)
+                secondaryAppBar(theme.textTheme),
+                Expanded(
+                  child: Row(
+                    children: [
+                      groupTab(context, state, theme.textTheme),
+                      searchAndItemTab(context, state, theme.textTheme),
+                      detailsTab(context, state, theme.textTheme)
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -41,10 +50,77 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget groupTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
+  Widget secondaryAppBar(TextTheme theme) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: Image.asset(
+                      "assets/icons/back.png",
+                      height: 5.h,
+                    )),
+                SizedBox(width: 2.w),
+                RichText(
+                    text: TextSpan(
+                        text: "Table no : ",
+                        style: theme.headlineLarge,
+                        children: [
+                      TextSpan(
+                          text: widget.tableName, style: theme.displayLarge)
+                    ]))
+              ],
+            ),
+            SizedBox(
+              width: 30.w,
+              child: Padding(
+                padding: EdgeInsets.only(right: 1.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: CustomButtonNew(
+                      onTap: () {},
+                      color: KColors.whiteColor,
+                    )),
+                    SizedBox(width: 1.w),
+                    Expanded(
+                        child: CustomButtonNew(
+                      onTap: () {},
+                      color: KColors.whiteColor,
+                    )),
+                    SizedBox(width: 1.w),
+                    Expanded(
+                        child: CustomButtonNew(
+                      onTap: () {},
+                      color: KColors.whiteColor,
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+        Divider(endIndent: 1.w, indent: 1.w)
+      ],
+    );
+  }
+
+  Widget groupTab(
+      BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(border: Border.all()),
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
+        decoration: BoxDecoration(
+            color: KColors.greyContainer,
+            borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(12.0),
+                bottomRight: Radius.circular(12.0))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(state.mainGroups.length, (index) {
@@ -56,14 +132,8 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                 initiallyExpanded: state.selectedTile == index,
                 title: Text(
                   mainGroup.mainGroupName ?? "--",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
+                  style: theme.headlineMedium,
                 ),
-                backgroundColor: Colors.yellow.shade600,
-                collapsedBackgroundColor: Colors.white,
                 onExpansionChanged: (value) async {
                   if (value) {
                     context
@@ -83,12 +153,17 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                     splashColor: Colors.transparent,
                     child: Container(
                       width: 100.w,
-                      decoration: const BoxDecoration(
-                          border: Border(bottom: BorderSide())),
+                      margin: EdgeInsets.only(bottom: .5.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
+                      decoration: BoxDecoration(
+                          color: KColors.greyItems,
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              bottomRight: Radius.circular(12))),
                       child: Text(
                         itemGroup.itemGroupName.toString(),
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.center,
+                        style: theme.bodyLarge,
                       ),
                     ),
                   );
@@ -101,22 +176,26 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget searchAndItemTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
+  Widget searchAndItemTab(
+      BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
-      flex: 2,
+      flex: 4,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: .5.h),
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
         child: Column(children: [
           CustomTextFieldNew(
             hint: 'Search Items',
-            hintStyle: Theme.of(context).textTheme.headlineSmall,
-            style: Theme.of(context).textTheme.headlineSmall,
+            hintStyle: theme.bodyLarge,
+            style: theme.bodyLarge,
             isRequired: false,
+            prefIcon: Icons.search,
             keyboardType: TextInputType.text,
             isNumber: false,
             textInputAction: TextInputAction.search,
             control: state.searchController,
             onChanged: context.read<ItemSelectionCubit>().searchItems,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
           ),
           SizedBox(height: 4.h),
           Expanded(
@@ -127,33 +206,64 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                 runSpacing: 2.h,
                 children: List.generate(state.filteredItems.length, (index) {
                   final item = state.filteredItems[index];
-                  return GestureDetector(
-                    onTap: () {
-                      context
-                          .read<ItemSelectionCubit>()
-                          .onItemClick(action: OnClick.add, item: item);
-                    },
-                    child: Container(
-                      width: 10.w,
-                      height: 12.h,
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Container(
-                            color: item.foodType == "V"
-                                ? Colors.green[600]
-                                : item.foodType == "E"
-                                    ? Colors.yellow.shade600
-                                    : Colors.red.shade700,
-                          )),
-                          Expanded(
-                              flex: 20,
-                              child: Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: .5.w),
-                                  child: Center(child: Text(item.itemName,style: theme.displayMedium,))))
-                        ],
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 1.w,vertical: .5.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        context
+                            .read<ItemSelectionCubit>()
+                            .onItemClick(action: OnClick.add, item: item);
+                      },
+                      child: Container(
+                        width: 15.w,
+                        height: 12.h,
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 15.w,
+                              height: 12.h,
+                              decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                                        offset: Offset(0, 4),
+                                        blurRadius: 4.0,
+                                        spreadRadius: 0.0)
+                                  ],
+                                  color: item.foodType == "V"
+                                      ? KColors.greenColor
+                                      : item.foodType == "E"
+                                          ? KColors.yellowColor
+                                          : KColors.redColor,
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.elliptical(40, 25),
+                                      bottomRight: Radius.elliptical(40, 25))),
+                            ),
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 4,
+                              top: 0,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                    color: KColors.whiteColor,
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.elliptical(40, 25),
+                                        bottomRight:
+                                            Radius.elliptical(40, 25))),
+                                child: Center(
+                                  child: Text(
+                                    item.itemName,
+                                    style: theme.displayMedium,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -166,7 +276,8 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget detailsTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
+  Widget detailsTab(
+      BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
       flex: 2,
       child: Container(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/constants/kcolors.dart';
 
 class CustomButtonNew extends StatelessWidget {
   final String? text;
@@ -43,7 +44,7 @@ class CustomButtonNew extends StatelessWidget {
       onTap: onTap,
       splashColor: Colors.transparent,
       child: Container(
-        height: height ?? 5.5.h,
+        height: height ?? 5.h,
         width: width ?? 100.w,
         alignment: Alignment.center,
         padding: padding,
@@ -52,10 +53,10 @@ class CustomButtonNew extends StatelessWidget {
           boxShadow: shadows ??
               [
                 const BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.08),
-                  offset: Offset(0, 0),
-                  blurRadius: 19.0,
-                )
+                    color: Color.fromRGBO(0, 0, 0, 0.25),
+                    offset: Offset(0, 4),
+                    blurRadius: 4.0,
+                    spreadRadius: 0.0)
               ],
           color: color ??
               (text == 'Cancel'
@@ -63,8 +64,12 @@ class CustomButtonNew extends StatelessWidget {
                   : text == 'Confirm'
                       ? Colors.green
                       : Theme.of(context).primaryColor),
-          border: Border.all(color: Colors.transparent, width: 1),
-          borderRadius: BorderRadius.circular(borderRadius ?? 2.0),
+          border: Border.all(
+              color: color == KColors.whiteColor
+                  ? KColors.blackColor
+                  : Colors.transparent,
+              width: color == KColors.whiteColor ? .3 : 1),
+          borderRadius: BorderRadius.circular(borderRadius ?? 14.0),
         ),
         child: child ??
             Center(
@@ -72,7 +77,12 @@ class CustomButtonNew extends StatelessWidget {
                 text ?? "View",
                 style: style ??
                     theme.labelLarge?.copyWith(
-                        fontWeight: FontWeight.w500, color: Colors.white),
+                        fontWeight: FontWeight.w600,
+                        color: color == null
+                            ? KColors.blackColor
+                            : color == KColors.blackColor
+                                ? KColors.whiteColor
+                                : KColors.blackColor),
                 textAlign: TextAlign.center,
               ),
             ),

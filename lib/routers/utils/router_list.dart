@@ -565,7 +565,8 @@ final List<GoRoute> routerList = [
     name: AppScreen.itemsSelectionScreen.name,
     path: AppScreen.itemsSelectionScreen.path,
     builder: (context, state) => ItemSelectionScreen(
-      tableId: state.extra as String,
+      tableId: (state.extra as List)[0] as String,
+      tableName: (state.extra as List)[1] as String,
     ),
   ),
 

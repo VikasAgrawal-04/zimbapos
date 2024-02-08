@@ -38,5 +38,8 @@ class EndPoints {
 
   //Terminal Configuration End Points
   static const String getAllTerminals = '/get-all-terminals';
-  static const String getTerminalId = 'get-terminal-id';
+  static const String getTerminalId = '/get-terminal-id';
+  static const String updateTerminalDevice = '/update-terminal-deviceId';
+  static const String createTerminal = '/create-terminal';
+  static const String deleteTerminal = '/delete-terminal';
 }

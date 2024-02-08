@@ -4,7 +4,7 @@ class MySecureStorage {
   final storage = const FlutterSecureStorage();
   // Keys setup
   final String _outletStorageKey = 'outletStorageKey';
-  final String _deviceConfig = 'DeviceConfigKey';
+  final String _serverIP = 'serverIP';
   final String _mainTerminal = 'MainTermmial';
   final String _terminalID = 'TerminalID';
   final String _loginCred = 'loginCred';
@@ -13,8 +13,8 @@ class MySecureStorage {
     return await storage.write(key: _outletStorageKey, value: outletID);
   }
 
-  setDeviceConfig({required String deviceConfig}) async {
-    return await storage.write(key: _deviceConfig, value: deviceConfig);
+  setServerIP({required String deviceConfig}) async {
+    return await storage.write(key: _serverIP, value: deviceConfig);
   }
 
   setLoginCred({required String logInCred}) async {
@@ -44,10 +44,11 @@ class MySecureStorage {
     if (data != null) {
       return int.parse(data);
     }
+    return null;
   }
 
-  Future<String?> getDeviceConfig() async {
-    return await storage.read(key: _deviceConfig);
+  Future<String?> getServerIP() async {
+    return await storage.read(key: _serverIP);
   }
 
   Future<String?> getOutletID() async {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +15,7 @@ import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
+import 'package:zimbapos/screens/system_settings_screens/system_check_screen.dart';
 import 'constants/kcolors.dart';
 
 Future<void> main() async {
@@ -32,7 +31,6 @@ Future<void> main() async {
       requestHeader: true,
     ));
     Helpers.dio = dio;
-
     runApp(const MyApp());
   });
 }
@@ -80,28 +78,7 @@ class MyApp extends StatelessWidget {
                     fontFamily: 'PJS',
                     useMaterial3: true,
                   ),
-                  home: Scaffold(
-                    body: Center(
-                      child: (state is IncompleteInformation)
-                          ? Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(state.message),
-                                ElevatedButton(
-                                  onPressed: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const InitialSetUpScreen(),
-                                    ),
-                                  ),
-                                  child: const Text('Go to Outlet Setup'),
-                                )
-                              ],
-                            )
-                          : const CircularProgressIndicator.adaptive(),
-                    ),
-                  ),
+                  home: const SystemCheckScreen(),
                 );
               }
             },

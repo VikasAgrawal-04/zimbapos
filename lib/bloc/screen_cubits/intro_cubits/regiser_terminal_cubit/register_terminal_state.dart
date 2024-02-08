@@ -1,24 +1,38 @@
 part of 'register_terminal_cubit.dart';
 
-sealed class RegisterTerminalState extends Equatable {
-  const RegisterTerminalState();
+class RegiState {
+  ScreenState screenState;
+  RegistrationState state;
 
-  @override
-  List<Object> get props => [];
+  RegiState({
+    required this.screenState,
+    required this.state,
+  });
+
+  RegiState copyWith({
+    ScreenState? screenState,
+    RegistrationState? state,
+  }) {
+    return RegiState(
+      screenState: screenState ?? this.screenState,
+      state: state ?? this.state,
+    );
+  }
 }
 
-final class RegisterTerminalInitial extends RegisterTerminalState {}
-
-final class RegisterTerminalLoading extends RegisterTerminalState {}
-
-final class PreloadedTerminalID extends RegisterTerminalState {}
-
-final class ListofAvailableTerminals extends RegisterTerminalState {
-  final List<TerminalModel> terminalList;
-  const ListofAvailableTerminals({required this.terminalList});
+enum ScreenState {
+  initial,
+  screenLoading,
+  loading,
+  idFound,
+  listRecieved,
+  error,
+  completed,
 }
 
-final class ErrorRegister extends RegisterTerminalState {
-  final String errorMessage;
-  const ErrorRegister({required this.errorMessage});
+enum RegistrationState {
+  initial,
+  loading,
+  completed,
+  error,
 }

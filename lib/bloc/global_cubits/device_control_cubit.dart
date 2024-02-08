@@ -14,6 +14,10 @@ class DeviceControlCubit extends Cubit<DeviceState> {
   bool _rateIncludeTax = false;
   bool _resetKOT = false;
 
+  String? outletId;
+  bool? mainTerminal;
+  String? serverIP;
+
   bool get rateIncludeTax => _rateIncludeTax;
   bool get resetKOT => _resetKOT;
 
@@ -27,14 +31,16 @@ class DeviceControlCubit extends Cubit<DeviceState> {
     final MySecureStorage storage = MySecureStorage();
     Directory dir = await getApplicationCacheDirectory();
     String? outletId = await storage.getOutletID();
-    if (outletId == null) {
-      emit(IncompleteInformation(message: 'Not able to detect Outlet id'));
-      return;
-    }
-    final ip = await Helpers.getWifiIPAddress();
+    bool? mainTerminal = await storage.getmainTerminal();
+    String? serverIP = await storage.getServerIP();
+
+    // if (outletId == null) {
+    //   emit(IncompleteInformation(message: 'Not able to detect Outlet id'));
+    //   return;
+    // }
     emit(FinalDeviceState(
-      ipAddress: ip,
-      mainTerminal: true,
+      ipAddress: serverIP,
+      mainTerminal: mainTerminal,
       directory: dir,
       outletId: outletId,
     ));

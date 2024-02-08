@@ -1,32 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:equatable/equatable.dart';
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/models/global_models/terminal_model.dart';
-import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/services/terminal_config_service/terminal_config_service.dart';
 import 'package:zimbapos/services/terminal_config_service/terminal_congfig_service_impl.dart';
-
 part 'register_terminal_state.dart';
-
-enum ScreenState {
-  initial,
-  screenLoading,
-  loading,
-  idFound,
-  listRecieved,
-  error,
-  completed,
-}
-
-enum RegistrationState {
-  initial,
-  loading,
-  completed,
-  error,
-}
 
 class RegisterTerminalCubit extends Cubit<RegiState> {
   RegisterTerminalCubit()
@@ -76,28 +58,31 @@ class RegisterTerminalCubit extends Cubit<RegiState> {
     emit(state.copyWith());
   }
 
-  registerTerminal() async {}
-
   saveTerminalID() async {
     emit(state.copyWith(state: RegistrationState.loading));
-  }
-}
-
-class RegiState {
-  ScreenState screenState;
-  RegistrationState state;
-  RegiState({
-    required this.screenState,
-    required this.state,
-  });
-
-  RegiState copyWith({
-    ScreenState? screenState,
-    RegistrationState? state,
-  }) {
-    return RegiState(
-      screenState: screenState ?? this.screenState,
-      state: state ?? this.state,
-    );
+    if (terminalId != null && terminalId != -1) {
+      try {
+        final response =
+            await _terminalRepository.updateTerminal(terminalID: terminalId!);
+        response.fold((l) {
+          EasyLoading.showToast(
+            l.toString(),
+            toastPosition: EasyLoadingToastPosition.bottom,
+          );
+          emit(state.copyWith(state: RegistrationState.error));
+        }, (r) {
+          EasyLoading.showToast(r);
+          emit(state.copyWith(state: RegistrationState.completed));
+        });
+      } catch (e) {
+        log(e.toString());
+      }
+    } else {
+      EasyLoading.showToast(
+        'Please Select Terminal',
+        toastPosition: EasyLoadingToastPosition.bottom,
+      );
+      emit(state.copyWith(state: RegistrationState.initial));
+    }
   }
 }

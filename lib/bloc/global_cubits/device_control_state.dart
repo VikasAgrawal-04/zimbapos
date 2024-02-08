@@ -13,8 +13,8 @@ class IncompleteInformation extends DeviceState {
 }
 
 class FinalDeviceState extends DeviceState {
-  final String ipAddress;
-  final bool mainTerminal;
+  final String? ipAddress;
+  final bool? mainTerminal;
   final Directory directory;
   final String? outletId;
 
@@ -30,6 +30,7 @@ class FinalDeviceState extends DeviceState {
     bool? mainTerminal,
     Directory? directory,
     String? outletId,
+    String? serverIP,
   }) {
     return FinalDeviceState(
       ipAddress: ipAddress ?? this.ipAddress,

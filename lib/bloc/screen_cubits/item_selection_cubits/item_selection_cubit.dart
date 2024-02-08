@@ -306,4 +306,12 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     addedItems = updatedAddedItems;
     emit(state.copyWith(addedItems: addedItems));
   }
+
+  void removeServiceAmount() {
+    emit(state.copyWith(
+        tableBill: TempBillRequestModel(
+            billHeader:
+                state.tableBill.billHeader?.copyWith(serviceChargeAmount: 0.0),
+            billLines: state.tableBill.billLines)));
+  }
 }

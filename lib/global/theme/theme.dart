@@ -25,7 +25,7 @@ class ApplicationTheme {
         displayLarge: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
         displayMedium: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700),
         displaySmall: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700),
-        titleLarge: TextStyle(fontSize: 16.px, fontWeight: FontWeight.w700),
+        titleLarge: TextStyle(fontSize: 13.px, fontWeight: FontWeight.w700),
         titleMedium: TextStyle(fontSize: 14.px, fontWeight: FontWeight.w700),
         titleSmall: TextStyle(fontSize: 12.px, fontWeight: FontWeight.w700),
         headlineLarge: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w600),

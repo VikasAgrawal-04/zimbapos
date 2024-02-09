@@ -99,6 +99,10 @@ class MyApp extends StatelessWidget {
                       },
                     ),
                   );
+                } else {
+                  return const MaterialApp(
+                    home: SystemCheckScreen(),
+                  );
                 }
               },
             ));

@@ -35,7 +35,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
           builder: (context, state) {
             return Column(
               children: [
-                secondaryAppBar(theme.textTheme),
+                secondaryAppBar(theme.textTheme, state, context),
                 Expanded(
                   child: Row(
                     children: [
@@ -53,7 +53,8 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget secondaryAppBar(TextTheme theme) {
+  Widget secondaryAppBar(
+      TextTheme theme, ItemSelectionState state, BuildContext mainContext) {
     return Column(
       children: [
         Row(
@@ -81,13 +82,14 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
               ],
             ),
             SizedBox(
-              width: 30.w,
+              width: 32.w,
               child: Padding(
                 padding: EdgeInsets.only(right: 1.w),
                 child: Row(
                   children: [
                     Expanded(
                         child: CustomButtonNew(
+                      height: 6.h,
                       text: "Customer",
                       onTap: () {},
                       color: KColors.whiteColor,
@@ -95,15 +97,116 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                     SizedBox(width: 1.w),
                     Expanded(
                         child: CustomButtonNew(
-                      text: "Pax",
-                      onTap: () {},
+                      height: 6.h,
+                      text: "Pax\n${state.pax ?? 0}",
+                      onTap: () {
+                        showDialog(
+                            context: mainContext,
+                            builder: (BuildContext secondContext) {
+                              final controller = TextEditingController();
+                              // final key = GlobalKey<FormState>();
+                              return AlertDialog(
+                                backgroundColor: KColors.greyContainer,
+                                title: Text(
+                                  "PAX",
+                                  style: theme.displayMedium,
+                                ),
+                                content: SizedBox(
+                                  width: 30.w,
+                                  child: Form(
+                                      // key: key,
+                                      child: Column(
+                                    children: [
+                                      CustomTextFieldNew(
+                                          isRequired: true,
+                                          keyboardType: const TextInputType
+                                              .numberWithOptions(),
+                                          isNumber: true,
+                                          control: controller,
+                                          onEditingComplete: () {
+                                            mainContext
+                                                .read<ItemSelectionCubit>()
+                                                .enterPax(controller.text);
+                                            context.pop();
+                                          },
+                                          textInputAction:
+                                              TextInputAction.done),
+                                      SizedBox(height: 1.h),
+                                      CustomButtonNew(
+                                        onTap: () {
+                                          mainContext
+                                              .read<ItemSelectionCubit>()
+                                              .enterPax(controller.text);
+                                          context.pop();
+                                        },
+                                        text: "Done",
+                                      )
+                                    ],
+                                  )),
+                                ),
+                              );
+                            });
+                      },
                       color: KColors.whiteColor,
                     )),
                     SizedBox(width: 1.w),
                     Expanded(
                         child: CustomButtonNew(
-                      text: "Waiter",
-                      onTap: () {},
+                      height: 6.h,
+                      text: "Waiter\n${state.waiterName ?? "Name"}",
+                      onTap: () {
+                        showDialog(
+                            context: mainContext,
+                            builder: (BuildContext secondContext) {
+                              return AlertDialog(
+                                backgroundColor: KColors.greyContainer,
+                                title: Text(
+                                  "Waiters",
+                                  style: theme.displayMedium,
+                                ),
+                                content: SizedBox(
+                                  width: 30.w,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: List.generate(
+                                          state.waiters.length, (index) {
+                                        final waiter = state.waiters[index];
+                                        return InkWell(
+                                          splashColor: Colors.transparent,
+                                          onTap: () {
+                                            mainContext
+                                                .read<ItemSelectionCubit>()
+                                                .selectWaiter(
+                                                    waiter.workerId.toString(),
+                                                    waiter.workerName
+                                                        .toString());
+                                            context.pop();
+                                          },
+                                          child: Container(
+                                            width: 100.w,
+                                            decoration: BoxDecoration(
+                                                color: KColors.greyItems,
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(12),
+                                                        bottomRight:
+                                                            Radius.circular(
+                                                                12))),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 1.w,
+                                                vertical: .5.h),
+                                            child: Text(waiter.workerName,
+                                                style: theme.bodyLarge),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
                       color: KColors.whiteColor,
                     ))
                   ],

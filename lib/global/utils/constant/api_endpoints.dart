@@ -43,6 +43,7 @@ class EndPoints {
   static const String createWorker = '/create-worker';
   static const String deleteWorker = '/delete-worker';
   static const String updateWorker = '/update-worker';
+  static const String getWaiters = '/get-waiters';
 
   //Customer category (done)
   static const String getCustomerCategories = '/get-customer-categories';

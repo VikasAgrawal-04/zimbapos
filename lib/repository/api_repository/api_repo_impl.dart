@@ -274,4 +274,9 @@ class ApiRepoImpl implements ApiRepo {
       String tableId, String itemId) {
     return _billApiRepo.deleteKotItem(tableId, itemId);
   }
+
+  @override
+  Future<Either<Failure, List<WorkersModel>>> getWaiters() {
+    return _workerApiRepo.getWaiters();
+  }
 }

@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
+import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/routers/utils/go_router_functions.dart';
-
 import '../../../../models/user_models/subscriber_model.dart';
 part 'outlet_register_state.dart';
 
@@ -28,14 +28,16 @@ class OutletRegisterCubit extends Cubit<OutletRegisterState> {
   saveFn() async {
     if (formKey.currentState!.validate()) {
       emit(SubscriptionInfoLoading());
-
-      databaseCubit.state!.subsscriberRepo.createSubScription(
-        model: SubscriberModel(
-            email: emailController.text,
-            mobile: mobileController.text,
-            name: nameController.text),
+      final SubscriberModel model = SubscriberModel(
+          email: emailController.text,
+          mobile: mobileController.text,
+          name: nameController.text);
+      databaseCubit.state!.subsscriberRepo.createSubScription(model: model);
+      emit(SubscriptionInfoModel(model: model));
+      pageController.nextPage(
+        duration: const Duration(milliseconds: 200),
+        curve: Easing.linear,
       );
-      await Future.delayed(const Duration(seconds: 2));
     }
   }
 
@@ -68,6 +70,7 @@ class OutletRegisterCubit extends Cubit<OutletRegisterState> {
   saveOutletIdFn(BuildContext context) async {
     MySecureStorage secureStorage = MySecureStorage();
     secureStorage.setOutletId(outletID: outletIdController.text);
-    removeAllAndPush(context, AppScreen.homeScreen.path);
+    // removeAllAndPush(context, AppScreen.homeScreen.path);
+    BlocProvider.of<DeviceControlCubit>(context).getObject();
   }
 }

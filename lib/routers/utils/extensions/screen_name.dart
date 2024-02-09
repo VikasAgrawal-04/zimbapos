@@ -70,6 +70,8 @@ enum AppScreen {
   createDiscountScreen,
   editDiscountScreen,
   settingsOverviewScreen,
+  terminalSetUpScreen,
+  terminalIdSetUpScreen,
   //CRUD screens @ Cards
   cardListScreen,
   createCardScreen,
@@ -189,6 +191,10 @@ extension AppScreenExtension on AppScreen {
         return 'Edit Discount Screen';
       case AppScreen.settingsOverviewScreen:
         return 'Settings Overview Screen';
+      case AppScreen.terminalSetUpScreen:
+        return 'Terminal SetUp Screen';
+      case AppScreen.terminalIdSetUpScreen:
+        return 'Terminal ID Set up Screen';
       case AppScreen.cardListScreen:
         return 'Cards Screen';
       case AppScreen.createCardScreen:
@@ -313,6 +319,10 @@ extension AppScreenExtension on AppScreen {
         return '/edit-discount-screen';
       case AppScreen.settingsOverviewScreen:
         return '/settings-overview-screen';
+      case AppScreen.terminalSetUpScreen:
+        return '/terminal-setup-screen';
+      case AppScreen.terminalIdSetUpScreen:
+        return '/terminal-id-setup-screen';
       case AppScreen.cardListScreen:
         return '/cards-screen';
       case AppScreen.createCardScreen:

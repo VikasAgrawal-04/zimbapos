@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_state.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 
+// import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../models/response_models/item_response_model.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
+import '../../../widgets/my_alert_widget.dart';
 
 class ItemsListScreen extends StatefulWidget {
   const ItemsListScreen({super.key});
@@ -22,12 +25,12 @@ class ItemsListScreen extends StatefulWidget {
 
 class _ItemsListScreenState extends State<ItemsListScreen> {
   //
-  late TextEditingController _searchController;
+  // late TextEditingController _searchController;
 
   @override
   void initState() {
     super.initState();
-    _searchController = TextEditingController();
+    // _searchController = TextEditingController();
   }
 
   deleteItem(ItemList e) {
@@ -37,19 +40,14 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
       "Do you want to delete '${e.itemName}'?",
       //this is for ok button
       () {
-        final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.itemsRepository.deleteItem(e.id);
+        // final dbCubit = DatabaseCubit.dbFrom(context);
+        // dbCubit.itemsRepository.deleteItemApi(e.id);
         EasyLoading.showToast('Item deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
       null,
     );
-  }
-
-  activeDeactivateItem(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.itemsRepository.changeActive(id, value);
   }
 
   editItemFn({required ItemsModel model}) {

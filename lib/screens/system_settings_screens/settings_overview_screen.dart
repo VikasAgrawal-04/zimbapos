@@ -115,6 +115,17 @@ class _SettingsOverviewScreenState extends State<SettingsOverviewScreen> {
                     ],
                   ),
                 ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final cubit =
+                          BlocProvider.of<DeviceControlCubit>(context);
+                      cubit.softReset();
+                    },
+                    child: const Text('Clear Outlet information'),
+                  ),
+                )
               ],
             ),
           );

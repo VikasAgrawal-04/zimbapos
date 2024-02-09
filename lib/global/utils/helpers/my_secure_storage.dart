@@ -13,8 +13,8 @@ class MySecureStorage {
     return await storage.write(key: _outletStorageKey, value: outletID);
   }
 
-  setServerIP({required String deviceConfig}) async {
-    return await storage.write(key: _serverIP, value: deviceConfig);
+  setServerIP({required String serverIP}) async {
+    return await storage.write(key: _serverIP, value: serverIP);
   }
 
   setLoginCred({required String logInCred}) async {
@@ -22,6 +22,7 @@ class MySecureStorage {
   }
 
   setTerminalType({required bool terminalType}) async {
+    print(terminalType);
     return await storage.write(
         key: _mainTerminal, value: terminalType.toString());
   }
@@ -30,10 +31,18 @@ class MySecureStorage {
     return await storage.write(key: _terminalID, value: terminalID);
   }
 
+  softDelete() async {
+    await storage.delete(key: _outletStorageKey);
+    await storage.delete(key: _serverIP);
+    await storage.delete(key: _loginCred);
+    await storage.delete(key: _mainTerminal);
+    await storage.delete(key: _terminalID);
+  }
+
   Future<bool?> getmainTerminal() async {
     final String? data = await storage.read(key: _mainTerminal);
     if (data != null) {
-      final bool mainTerminal = bool.fromEnvironment(data);
+      final bool mainTerminal = data.toLowerCase() == 'true';
       return mainTerminal;
     }
     return null;

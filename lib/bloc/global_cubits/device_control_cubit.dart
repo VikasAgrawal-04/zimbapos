@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_state.dart';
-import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 
 class DeviceControlCubit extends Cubit<DeviceState> {
@@ -26,18 +25,33 @@ class DeviceControlCubit extends Cubit<DeviceState> {
     emit(InitialDeviceState());
   }
 
+  softReset() async {
+    emit(LoadingDeviceState());
+    final MySecureStorage storage = MySecureStorage();
+    await storage.softDelete();
+    _clearValues();
+    Directory dir = await getApplicationCacheDirectory();
+    emit(FinalDeviceState(
+      ipAddress: outletId,
+      mainTerminal: mainTerminal,
+      directory: dir,
+      outletId: outletId,
+    ));
+  }
+
+  _clearValues() {
+    outletId = null;
+    mainTerminal = null;
+    serverIP = null;
+  }
+
   Future<void> getObject() async {
     emit(LoadingDeviceState());
     final MySecureStorage storage = MySecureStorage();
     Directory dir = await getApplicationCacheDirectory();
-    String? outletId = await storage.getOutletID();
-    bool? mainTerminal = await storage.getmainTerminal();
-    String? serverIP = await storage.getServerIP();
-
-    // if (outletId == null) {
-    //   emit(IncompleteInformation(message: 'Not able to detect Outlet id'));
-    //   return;
-    // }
+    outletId = await storage.getOutletID();
+    mainTerminal = await storage.getmainTerminal();
+    serverIP = await storage.getServerIP();
     emit(FinalDeviceState(
       ipAddress: serverIP,
       mainTerminal: mainTerminal,

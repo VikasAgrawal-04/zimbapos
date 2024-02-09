@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
+    debugLogDiagnostics: true,
     initialLocation: AppScreen.homeScreen.path,
     routes: routerList,
     redirect: (context, state) {
@@ -14,11 +15,12 @@ class AppRouter {
       final deviceControl = context.read<DeviceControlCubit>();
 
       bool outletcheck = databaseCubit.outletId == null;
-      if (deviceControl.mainTerminal == null) {
-        return AppScreen.terminalSetUpScreen.path;
-      }
+      bool terminalTypecheck = deviceControl.mainTerminal == null;
       if (outletcheck) {
         return AppScreen.outletDataRegisterScreen.path;
+      }
+      if (terminalTypecheck) {
+        return AppScreen.terminalSetUpScreen.path;
       }
       return null;
     },

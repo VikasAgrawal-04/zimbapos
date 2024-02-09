@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/widgets/containers/bill_detail_row.dart';
 import 'package:zimbapos/widgets/containers/dotter_container.dart';
+import 'package:zimbapos/widgets/containers/title_container.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
@@ -86,18 +88,21 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                   children: [
                     Expanded(
                         child: CustomButtonNew(
+                      text: "Customer",
                       onTap: () {},
                       color: KColors.whiteColor,
                     )),
                     SizedBox(width: 1.w),
                     Expanded(
                         child: CustomButtonNew(
+                      text: "Pax",
                       onTap: () {},
                       color: KColors.whiteColor,
                     )),
                     SizedBox(width: 1.w),
                     Expanded(
                         child: CustomButtonNew(
+                      text: "Waiter",
                       onTap: () {},
                       color: KColors.whiteColor,
                     ))
@@ -311,7 +316,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(
-                      left: 2.w, right: 2.w, top: 1.h, bottom: 2.5.h),
+                      left: 1.2.w, right: 1.2.w, top: 1.h, bottom: 2.5.h),
                   width: 100.w,
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -322,7 +327,239 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                       border: Border.all(
                           color: const Color.fromRGBO(0, 0, 0, 0.2))),
                   child: Column(
-                    children: [],
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Items',
+                                style: theme.displayMedium,
+                              )),
+                            ),
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Price',
+                                style: theme.displayMedium,
+                              )),
+                            ),
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Qty',
+                                style: theme.displayMedium,
+                              )),
+                            ),
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Total',
+                                style: theme.displayMedium,
+                              )),
+                            )
+                          ],
+                        ),
+                      ),
+                      titleContainer(title: "Current KoT", theme: theme),
+                      Expanded(
+                        flex: 2,
+                        child: ListView.builder(
+                            itemCount: state.addedItems.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final addedItem = state.addedItems[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: .5.h),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                        child: Center(
+                                            child: Text(
+                                      addedItem.itemName,
+                                      style: theme.titleMedium?.copyWith(
+                                          fontWeight: FontWeight.w500),
+                                    ))),
+                                    Expanded(
+                                        child: Center(
+                                            child: Text(
+                                      addedItem.itemRate.toString(),
+                                      style: theme.titleMedium?.copyWith(
+                                          fontWeight: FontWeight.w500),
+                                    ))),
+                                    Expanded(
+                                      child: Row(children: [
+                                        Expanded(
+                                          child: InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<ItemSelectionCubit>()
+                                                    .onItemClick(
+                                                        action:
+                                                            OnClick.subtract,
+                                                        item: addedItem);
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: .7.w,
+                                                    vertical: .3.h),
+                                                decoration: BoxDecoration(
+                                                    color: KColors.whiteColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                                child: Icon(
+                                                    CupertinoIcons.minus,
+                                                    size: 11.sp),
+                                              )),
+                                        ),
+                                        Expanded(
+                                            child: Center(
+                                                child: Text(
+                                          addedItem.quantity.toString(),
+                                          style: theme.titleMedium?.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                        ))),
+                                        Expanded(
+                                            child: InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .read<
+                                                          ItemSelectionCubit>()
+                                                      .onItemClick(
+                                                          action: OnClick.add,
+                                                          item: addedItem);
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: .7.w,
+                                                      vertical: .3.h),
+                                                  decoration: BoxDecoration(
+                                                      color: KColors.whiteColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12)),
+                                                  child: Icon(
+                                                      CupertinoIcons.add,
+                                                      size: 11.sp),
+                                                ))),
+                                      ]),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            (addedItem.quantity *
+                                                    addedItem.itemRate)
+                                                .toString(),
+                                            style: theme.titleMedium?.copyWith(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(width: .6.w),
+                                          IconButton(
+                                              onPressed: () {
+                                                context
+                                                    .read<ItemSelectionCubit>()
+                                                    .deleteProduct(addedItem);
+                                              },
+                                              icon: Image.asset(
+                                                  'assets/icons/delete.png'))
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: .5.h, horizontal: 1.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            CustomButtonNew(
+                              shadows: const [],
+                              height: 3.5.h,
+                              width: 6.w,
+                              text: 'Save KoT',
+                              onTap: () async {
+                                await context
+                                    .read<ItemSelectionCubit>()
+                                    .placeKot(widget.tableId);
+                              },
+                            ),
+                            SizedBox(width: 1.w),
+                            CustomButtonNew(
+                              height: 3.5.h,
+                              width: 6.w,
+                              onTap: context.read<ItemSelectionCubit>().clearKot,
+                              color: KColors.blackColor,
+                              text: 'Clear KoT',
+                              shadows: const [],
+                            )
+                          ],
+                        ),
+                      ),
+                      titleContainer(title: "KoT", theme: theme),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: (state.tableBill.billLines ?? []).length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final billItem =
+                                  state.tableBill.billLines?[index];
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                    billItem?.itemName ?? "--",
+                                    maxLines: 1,
+                                    style: theme.titleMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ))),
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                              billItem?.priceExTax.toString() ??
+                                                  "--",
+                                              style: theme.titleMedium))),
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                              billItem?.quantity.toString() ??
+                                                  "--",
+                                              style: theme.titleMedium))),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                            billItem?.lineTotal.toString() ??
+                                                "--",
+                                            style: theme.titleMedium),
+                                        SizedBox(width: .6.w),
+                                        IconButton(
+                                            onPressed: () {},
+                                            icon: Image.asset(
+                                                'assets/icons/delete.png'))
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }),
+                      )
+                    ],
                   ),
                 ),
               ),

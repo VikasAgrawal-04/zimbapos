@@ -252,7 +252,9 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     } else {
       allItems.clear();
       for (final item in items) {
-        if (item.itemName.toLowerCase().contains(query.toLowerCase())) {
+        if (item.itemName.toLowerCase().contains(query.toLowerCase()) ||
+            (item.shortcode != null &&
+                item.shortcode.toLowerCase().contains(query.toLowerCase()))) {
           allItems.add(item);
         }
       }
@@ -304,6 +306,23 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       }
     }
     addedItems = updatedAddedItems;
+    emit(state.copyWith(addedItems: addedItems));
+  }
+
+  void deleteProduct(ItemList item) {
+    List<ItemList> updatedAddedItems = List.from(addedItems);
+
+    int index = updatedAddedItems
+        .indexWhere((element) => element.itemId == item.itemId);
+    if (index != -1) {
+      updatedAddedItems.removeAt(index);
+    }
+    addedItems = updatedAddedItems;
+    emit(state.copyWith(addedItems: addedItems));
+  }
+
+  void clearKot() {
+    addedItems = [];
     emit(state.copyWith(addedItems: addedItems));
   }
 

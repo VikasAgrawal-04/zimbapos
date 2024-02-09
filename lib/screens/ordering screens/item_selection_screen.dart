@@ -923,7 +923,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                                     (state.tableBill.billHeader
                                             ?.serviceChargeAmount ??
                                         0.0))
-                                .toString(),
+                                .toStringAsFixed(2),
                         grandTotal: true,
                         theme: theme),
                     billDetailRow(
@@ -949,7 +949,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                         Expanded(
                             child: CustomButtonNew(
                           color: KColors.blackColor,
-                          text: "Print Discount",
+                          text: "Print Bill",
                           onTap: () {},
                         )),
                         SizedBox(width: 1.w),

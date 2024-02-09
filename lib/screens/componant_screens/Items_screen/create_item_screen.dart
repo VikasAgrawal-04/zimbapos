@@ -34,6 +34,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
   void initState() {
     super.initState();
     //fetch global var from dbcubit
+    context.read<ItemScreenCubit>().clearControllers;
     enableTF = false;
   }
 
@@ -41,13 +42,13 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create item'),
-        ),
-        body: BlocBuilder<ItemScreenCubit, ItemScreenState>(
-          builder: (context, state) {
-            return SingleChildScrollView(
+      child: BlocBuilder<ItemScreenCubit, ItemScreenState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Create item'),
+            ),
+            body: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Form(
@@ -177,9 +178,9 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
 
                       //Item rate
                       PrimaryTextField(
-                        validator: enableTF! ? nullCheckValidator : null,
-                        enable: enableTF,
-                        // validator: nullCheckValidator,
+                        // validator: enableTF! ? nullCheckValidator : null,
+                        // enable: enableTF,
+                        validator: nullCheckValidator,
                         hintText: 'Item rate',
                         controller: state.itemRateController,
                         onChanged: (value) {},
@@ -189,9 +190,9 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
 
                       // rate with tax
                       PrimaryTextField(
-                        validator: nullCheckValidator,
-                        // validator: enableTF ? nullCheckValidator : null,
-                        // enable: enableTF,
+                        // validator: nullCheckValidator,
+                        validator: enableTF! ? nullCheckValidator : null,
+                        enable: enableTF,
                         hintText: 'Item rate with tax',
                         controller: state.itemRateWithTaxController,
                         onChanged: (value) {},
@@ -261,55 +262,44 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                   ),
                 ),
               ),
-            );
-          },
-        ),
-        bottomNavigationBar: BlocBuilder<ItemScreenCubit, ItemScreenState>(
-          builder: (context, state) {
-            return CustomButton(
-                text: "Save",
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    log(state.taxId.toString());
-                    if (state.foodType != null) {
-                      if (state.taxId != null) {
-                        if (state.itemGroupId != null) {
-                          final cubitTee =
-                              BlocProvider.of<ItemScreenCubit>(context);
-                          await cubitTee.createItem(
-                            ItemsModel(
-                              itemName: state.itemNameController.text,
-                              itemGroupId: state.itemGroupId,
-                              foodType: state.foodType,
-                              isAlcohol: state.isAlcoholic ?? false,
-                              itemRate: enableTF!
-                                  ? double.parse(state.itemRateController.text)
-                                  : 0.0,
-                              taxId: state.taxId,
-                              rateWithTax: double.parse(
-                                  state.itemRateWithTaxController.text),
-                              isOpenItem: state.isOpenItem ?? false,
-                              barcode: state.barcodeController.text,
-                              shortcode: state.shortcodeController.text,
-                              isWeightItem: state.isWeightItem ?? false,
-                              hsnCode: state.hsnController.text,
-                              imgLink: state.imgLinkController.text,
-                            ),
-                          );
-                          context.pop();
-                        } else {
-                          UtillSnackbar.showSnackBar(
-                            context,
-                            title: "Alert",
-                            body: "Please choose a item group",
-                            isSuccess: false,
-                          );
-                        }
+            ),
+            bottomNavigationBar: CustomButton(
+              text: "Save",
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  log(state.taxId.toString());
+                  if (state.foodType != null) {
+                    if (state.taxId != null) {
+                      if (state.itemGroupId != null) {
+                        // final cubitTee =
+                        //     BlocProvider.of<ItemScreenCubit>(context);
+                        await context.read<ItemScreenCubit>().createItem(
+                              ItemsModel(
+                                itemName: state.itemNameController.text,
+                                itemGroupId: state.itemGroupId,
+                                foodType: state.foodType,
+                                isAlcohol: state.isAlcoholic ?? false,
+                                rateWithTax: enableTF!
+                                    ? double.parse(
+                                        state.itemRateWithTaxController.text)
+                                    : 0.0,
+                                taxId: state.taxId,
+                                itemRate:
+                                    double.parse(state.itemRateController.text),
+                                isOpenItem: state.isOpenItem ?? false,
+                                barcode: state.barcodeController.text,
+                                shortcode: state.shortcodeController.text,
+                                isWeightItem: state.isWeightItem ?? false,
+                                hsnCode: state.hsnController.text,
+                                imgLink: state.imgLinkController.text,
+                              ),
+                            );
+                        context.pop();
                       } else {
                         UtillSnackbar.showSnackBar(
                           context,
                           title: "Alert",
-                          body: "Please choose a tax type",
+                          body: "Please choose a item group",
                           isSuccess: false,
                         );
                       }
@@ -317,14 +307,23 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                       UtillSnackbar.showSnackBar(
                         context,
                         title: "Alert",
-                        body: "Please choose a Food type",
+                        body: "Please choose a tax type",
                         isSuccess: false,
                       );
                     }
+                  } else {
+                    UtillSnackbar.showSnackBar(
+                      context,
+                      title: "Alert",
+                      body: "Please choose a Food type",
+                      isSuccess: false,
+                    );
                   }
-                });
-          },
-        ),
+                }
+              },
+            ),
+          );
+        },
       ),
     );
   }

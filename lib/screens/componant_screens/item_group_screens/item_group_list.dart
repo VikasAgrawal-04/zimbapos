@@ -9,6 +9,7 @@ import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_state.d
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
@@ -24,10 +25,6 @@ class ItemGroupListScreen extends StatefulWidget {
 
 class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
   //
-  Stream<List<ItemGroupModel>> itemGroupStream() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.itemGroupReposiory.streamItemGroups();
-  }
 
   deleteItemGroup(ItemGroupModel e) {
     UtilDialog.showMyDialog(
@@ -44,11 +41,6 @@ class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
       // this is for cancel button sending null will perform default pop() action
       null,
     );
-  }
-
-  activeDeactivateItemGroup(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.itemGroupReposiory.changeActive(id, value);
   }
 
   editItemGroupFn({required ItemGroupModel model}) {
@@ -70,7 +62,7 @@ class _ItemGroupListScreenState extends State<ItemGroupListScreen> {
           actions: [
             TextButton.icon(
               onPressed: () {
-                context.read<ItemGroupScreenCubit>().clearControllers();
+                context.read<ItemScreenCubit>().clearControllers();
                 context.push(AppScreen.createItemGroupScreen.path);
               },
               label: const Text('Add item group'),

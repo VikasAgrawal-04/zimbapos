@@ -1,15 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_state.dart';
-import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
-import 'package:zimbapos/models/global_models/tax_model.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
 import '../../../bloc/screen_cubits/item_group_cubits/item_group_state.dart';
 import '../../../bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
@@ -36,89 +30,14 @@ class EditItemsScreen extends StatefulWidget {
 class _EditItemsScreenState extends State<EditItemsScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final TextEditingController itemNameController;
-  String? itemGroupId;
-  String? foodType;
-  bool? isAlcoholic;
-  late final TextEditingController itemRateController;
-  String? taxId;
-  late final TextEditingController itemRateWithTaxController;
-  bool? isOpenItem;
-  late final TextEditingController barcodeController;
-  late final TextEditingController shortcodeController;
-  bool? isWeightItem;
-  late final TextEditingController hsnController;
-  late final TextEditingController imgLinkController;
 
-  bool enableTF = false;
+  bool? enableTF;
 
   @override
   void initState() {
     super.initState();
+    enableTF = false;
     context.read<ItemScreenCubit>().fillControllers(widget.item);
-
-    //init with vals
-    itemNameController.text = widget.item.itemName.toString();
-    itemRateController.text = widget.item.itemRate.toString();
-    itemRateWithTaxController.text = widget.item.rateWithTax.toString();
-    barcodeController.text = widget.item.barcode.toString();
-    shortcodeController.text = widget.item.shortcode.toString();
-    hsnController.text = widget.item.hsnCode.toString();
-    imgLinkController.text = widget.item.imgLink.toString();
-    itemGroupId = widget.item.itemGroupId;
-    foodType = widget.item.foodType;
-    isAlcoholic = widget.item.isAlcohol;
-    taxId = widget.item.taxId;
-    isOpenItem = widget.item.isOpenItem;
-    isWeightItem = widget.item.isWeightItem;
-  }
-
-  updateItemFn(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.itemsRepository.editItem(
-      model: ItemsModel(
-        id: widget.item.id,
-        itemName: itemNameController.text,
-        itemGroupId: itemGroupId,
-        foodType: foodType,
-        isAlcohol: isAlcoholic,
-        itemRate: double.parse(itemRateController.text),
-        taxId: taxId,
-        rateWithTax: double.parse(itemRateWithTaxController.text),
-        isOpenItem: isOpenItem,
-        barcode: barcodeController.text,
-        shortcode: shortcodeController.text,
-        isWeightItem: isWeightItem,
-        hsnCode: hsnController.text,
-        imgLink: imgLinkController.text,
-      ),
-    );
-    EasyLoading.showToast('Tax updated');
-    context.pop();
-  }
-
-  //get taxes
-  Future<List<TaxModel?>> getAllTaxes() async {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    final taxList = await datatbaseCubit.taxesRepository.getAllTaxes();
-    // log(rateSets.toString());
-    for (var tax in taxList) {
-      log(tax!.taxName.toString());
-    }
-    return taxList;
-  }
-
-  //get items
-  Future<List<ItemGroupModel?>> getAllItemGroups() async {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    final itemGroupList =
-        await datatbaseCubit.itemGroupReposiory.getItemGroups();
-    // log(rateSets.toString());
-    for (var item in itemGroupList) {
-      log(item.itemGroupName.toString());
-      log(item.id.toString());
-    }
-    return itemGroupList;
   }
 
   @override
@@ -127,7 +46,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create item'),
+          title: const Text('Edit item'),
         ),
         body: BlocBuilder<ItemScreenCubit, ItemScreenState>(
           builder: (context, state) {
@@ -261,9 +180,9 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
 
                       //Item rate
                       PrimaryTextField(
-                        validator: enableTF ? nullCheckValidator : null,
-                        enable: enableTF,
-                        // validator: nullCheckValidator,
+                        // validator: enableTF ? nullCheckValidator : null,
+                        // enable: enableTF,
+                        validator: nullCheckValidator,
                         hintText: 'Item rate',
                         controller: state.itemRateController,
                         onChanged: (value) {},
@@ -273,9 +192,9 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
 
                       // rate with tax
                       PrimaryTextField(
-                        validator: nullCheckValidator,
-                        // validator: enableTF ? nullCheckValidator : null,
-                        // enable: enableTF,
+                        // validator: nullCheckValidator,
+                        validator: enableTF! ? nullCheckValidator : null,
+                        enable: enableTF,
                         hintText: 'Item rate with tax',
                         controller: state.itemRateWithTaxController,
                         onChanged: (value) {},
@@ -305,7 +224,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                       SizedBox(height: screenSize.height * 0.02),
 
                       PrimaryTextField(
-                        validator: nullCheckValidator,
+                        // validator: nullCheckValidator,
                         hintText: 'Barcode',
                         controller: state.barcodeController,
                         onChanged: (value) {},
@@ -314,7 +233,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                       SizedBox(height: screenSize.height * 0.02),
 
                       PrimaryTextField(
-                        validator: nullCheckValidator,
+                        // validator: nullCheckValidator,
                         hintText: 'Shortcode',
                         controller: state.shortcodeController,
                         onChanged: (value) {},
@@ -323,7 +242,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                       SizedBox(height: screenSize.height * 0.02),
 
                       PrimaryTextField(
-                        validator: nullCheckValidator,
+                        // validator: nullCheckValidator,
                         hintText: 'HSN code',
                         controller: state.hsnController,
                         onChanged: (value) {},
@@ -332,7 +251,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                       SizedBox(height: screenSize.height * 0.02),
 
                       PrimaryTextField(
-                        validator: nullCheckValidator,
+                        // validator: nullCheckValidator,
                         hintText: 'Image link',
                         controller: state.imgLinkController,
                         onChanged: (value) {},
@@ -362,13 +281,13 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                 itemGroupId: state.itemGroupId,
                                 foodType: state.foodType,
                                 isAlcohol: state.isAlcoholic,
-                                itemRate: enableTF
+                                rateWithTax: enableTF!
                                     ? double.parse(
-                                        state.itemRateController.text)
+                                        state.itemRateWithTaxController.text)
                                     : 0.0,
                                 taxId: state.taxId,
-                                rateWithTax: double.parse(
-                                    state.itemRateWithTaxController.text),
+                                itemRate:
+                                    double.parse(state.itemRateController.text),
                                 isOpenItem: state.isOpenItem,
                                 barcode: state.barcodeController.text,
                                 shortcode: state.shortcodeController.text,

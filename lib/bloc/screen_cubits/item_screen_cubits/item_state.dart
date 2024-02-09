@@ -32,7 +32,7 @@ class ItemScreenState extends Equatable {
     required this.hsnController,
     required this.imgLinkController,
     this.itemGroupId,
-    this.foodType,
+    this.foodType = "V",
     this.isAlcoholic,
     this.taxId,
     this.isOpenItem,

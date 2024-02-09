@@ -33,12 +33,6 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
     _searchController = TextEditingController();
   }
 
-  Stream<List<ItemsModel>> streamForItems() {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
-    return datatbaseCubit.itemsRepository.streamItemsList();
-  }
-
   deleteItem(ItemList e) {
     UtilDialog.showMyDialog(
       context,
@@ -85,7 +79,10 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
           ),
           actions: [
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createItemScreen.path),
+              onPressed: () {
+                context.read<ItemScreenCubit>().clearControllers;
+                context.push(AppScreen.createItemScreen.path);
+              },
               label: const Text('Add item'),
               icon: const Icon(Icons.add),
             ),
@@ -204,8 +201,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                                       IconButton(
                                         onPressed: () => context
                                             .read<ItemScreenCubit>()
-                                            .deleteItem(
-                                                e.itemGroupId.toString()),
+                                            .deleteItem(e.itemId.toString()),
                                         icon: const Icon(CupertinoIcons.delete),
                                       )
                                     ],

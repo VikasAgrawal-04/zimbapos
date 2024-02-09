@@ -455,7 +455,7 @@ final List<GoRoute> routerList = [
         return EditItemsScreen(item: state.extra as ItemsModel);
       } else {
         return EditItemsScreen(
-          item: ItemsModel.fromMap(state.extra as Map<String, dynamic>),
+          item: state.extra as ItemsModel,
         );
       }
     },

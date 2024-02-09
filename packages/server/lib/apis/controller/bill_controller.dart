@@ -66,6 +66,34 @@ class BillController {
     }
   }
 
+  Future<Response> deleteItemFromKot(Request request) async {
+    try {
+      if (request.url.queryParameters.isEmpty) {
+        return badArguments(
+            'Please Enter Table Id as a key table_id and Item Id as item_id');
+      }
+      final tableId = request.url.queryParameters['table_id'];
+      final itemId = request.url.queryParameters['item_id'];
+      if (tableId == null) {
+        return badArguments('Please Enter Table Id as a key table_id');
+      } else if (itemId == null) {
+        return badArguments('Please Enter Item Id as a key item_id');
+      } else {
+        final success = await db.billRepository
+            .deleteTempBillLine(tableId: tableId, itemId: itemId);
+        if (success.value1) {
+          return okResponse(success.value2);
+        } else {
+          return badArguments(success.value2);
+        }
+      }
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
+    }
+  }
+
   Future<Response> createPermanentBill(Request request) async {
     try {
       final decodedData = await utf8

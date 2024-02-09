@@ -499,7 +499,8 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                             CustomButtonNew(
                               height: 3.5.h,
                               width: 6.w,
-                              onTap: context.read<ItemSelectionCubit>().clearKot,
+                              onTap:
+                                  context.read<ItemSelectionCubit>().clearKot,
                               color: KColors.blackColor,
                               text: 'Clear KoT',
                               shadows: const [],
@@ -549,7 +550,12 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                                             style: theme.titleMedium),
                                         SizedBox(width: .6.w),
                                         IconButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              context
+                                                  .read<ItemSelectionCubit>()
+                                                  .deleteKotItem(widget.tableId,
+                                                      billItem!.itemId);
+                                            },
                                             icon: Image.asset(
                                                 'assets/icons/delete.png'))
                                       ],
@@ -584,7 +590,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                       child: billDetailRow(
                           title: "Service Charge",
                           value: state.tableBill.billHeader?.serviceChargeAmount
-                              .toString(),
+                              .toStringAsFixed(2),
                           serviceCharge: true,
                           theme: theme),
                     ),

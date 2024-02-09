@@ -268,4 +268,10 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, List<TableModel>>> fetchTableList() {
     return _tableApiRepo.fetchTableList();
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteKotItem(
+      String tableId, String itemId) {
+    return _billApiRepo.deleteKotItem(tableId, itemId);
+  }
 }

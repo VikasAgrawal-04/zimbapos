@@ -94,7 +94,9 @@ class BillRepository {
       required TempBillHeaderModel existingBillHeader,
       required List<TempBillLines> existingBillLines}) async {
     try {
-      int lastLinePos = existingBillLines.last.linePosition ?? 1;
+      int lastLinePos = existingBillLines.isNotEmpty
+          ? (existingBillLines.last.linePosition ?? 1)
+          : 1;
       existingBillHeader.totalExTax =
           (existingBillHeader.totalExTax ?? 0.0) + (header.totalExTax ?? 0.0);
 
@@ -134,6 +136,69 @@ class BillRepository {
       });
 
       return const Tuple2(true, 'Bill Updated');
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return Tuple2(false, error.message);
+    }
+  }
+
+  Future<Tuple2<bool, String>> deleteTempBillLine(
+      {required String tableId, required String itemId}) async {
+    try {
+      TempBillHeaderModel? billHeader = db.tempBillHeaderModels
+          .filter()
+          .tableIdEqualTo(tableId)
+          .findFirstSync();
+      if (billHeader == null) {
+        throw IsarError("No Bill Found");
+      } else {
+        List<TempBillLines> billLines = db.tempBillLines
+            .filter()
+            .billIdEqualTo(billHeader.billId)
+            .findAllSync();
+
+        final itemIndexInBill =
+            billLines.indexWhere((element) => element.itemId == itemId);
+
+        if (itemIndexInBill == -1) {
+          throw IsarError("Item Not Found");
+        } else {
+          TempBillLines item = billLines[itemIndexInBill];
+          final servicePercent = Helpers.calculateServicePercent(
+              billHeader.totalExTax!, billHeader.serviceChargeAmount!);
+          print(
+              "servicePercentservicePercentservicePercentservicePercent$servicePercent");
+          //Header Modification
+          billHeader.totalExTax = billHeader.totalExTax! - item.lineTotal!;
+          billHeader.totalTaxAmount = billHeader.totalTaxAmount! -
+              ((item.quantity! * item.priceWithTax!) - item.lineTotal!);
+          if (item.taxType == "G") {
+            billHeader.totalGstAmount = billHeader.totalGstAmount! -
+                ((item.quantity! * item.priceWithTax!) - item.lineTotal!);
+          } else {
+            billHeader.totalVatAmount = billHeader.totalVatAmount! -
+                ((item.quantity! * item.priceWithTax!) - item.lineTotal!);
+          }
+          billHeader.totalAmount =
+              billHeader.totalExTax! + billHeader.totalTaxAmount!;
+          billHeader.serviceChargeAmount =
+              (billHeader.totalExTax! * servicePercent) / 100;
+
+          //BillLines Modification
+          int linePos = item.linePosition!;
+          for (linePos; linePos < billLines.length; linePos++) {
+            billLines[linePos].linePosition = linePos;
+          }
+          billLines.removeAt(itemIndexInBill);
+
+          db.writeTxnSync(() {
+            db.tempBillHeaderModels.putSync(billHeader);
+            db.tempBillLines.deleteSync(item.id);
+            db.tempBillLines.putAllSync(billLines);
+          });
+          return const Tuple2(true, "Item Deleted");
+        }
+      }
     } on IsarError catch (error) {
       debugPrint(error.message);
       return Tuple2(false, error.message);

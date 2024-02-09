@@ -1,16 +1,22 @@
 class EndPoints {
-  //Areas
+  //Areas (done)
   static const String getAreas = '/get-area';
   static const String createArea = '/create-area';
   static const String updateArea = '/update-area';
   static const String deleteArea = '/delete-area';
 
-  //Tables
+  //Tables (done)
   static const String getTableByArea = '/fetch-tables-id';
   static const String getTableList = '/get-tables';
   static const String createTable = '/create-table';
   static const String updateTable = '/update-table';
   static const String deleteTable = '/delete-table';
+
+  //rate sets (done)
+  static const String getRateSetList = '/get-ratesets';
+  static const String createRateSet = '/create-ratesets';
+  static const String updateRateSet = '/update-ratesets';
+  static const String deleteRateSet = '/delete-ratesets';
 
   //Categories (done)
   static const String getCategories = '/get-category';
@@ -38,7 +44,7 @@ class EndPoints {
   static const String updateItem = '/update-item';
   static const String deleteItem = '/delete-item';
 
-  //Categories (done)
+  //Taxes (done)
   static const String getTaxList = '/get-taxes';
   static const String createTax = '/create-tax';
   static const String updateTax = '/update-tax';

@@ -89,16 +89,15 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Areas',
+            'Area List',
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () => context.push(AppScreen.createAreasScreen.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createAreasScreen.path),
+              onPressed: () {
+                context.read<AreasScreenCubit>().clearControllers();
+                context.push(AppScreen.createAreasScreen.path);
+              },
               label: const Text('Add Area'),
               icon: const Icon(Icons.add),
             ),

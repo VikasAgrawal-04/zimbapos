@@ -153,6 +153,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                         children: [
                           Expanded(
                             child: DateTextField(
+                              isRequired: false,
                               value: state.dateOfBirth,
                               hintText: "Select Birth Date",
                               onChanged: context
@@ -163,6 +164,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                           SizedBox(width: 4.w),
                           Expanded(
                             child: DateTextField(
+                              isRequired: false,
                               value: state.anniversaryDate,
                               hintText: "Select Anniversary Date",
                               onChanged: context
@@ -253,12 +255,13 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                   if (_formKey.currentState!.validate()) {
                     await context.read<CustomerScreenCubit>().updateCustomer(
                           CustomerModel(
-                              customerId: widget.item.customerId,
-                              customerName: state.customerName.text,
-                              mobile: state.customerMobile.text,
-                              dateOfBirth: state.dateOfBirth,
-                              customerCategoryID: state.selectedCusCatId,
-                              anniversaryDate: state.anniversaryDate),
+                            customerId: widget.item.customerId,
+                            customerName: state.customerName.text,
+                            mobile: state.customerMobile.text,
+                            dateOfBirth: state.dateOfBirth,
+                            customerCategoryID: state.selectedCusCatId,
+                            anniversaryDate: state.anniversaryDate,
+                          ),
                         );
 
                     context.pop();

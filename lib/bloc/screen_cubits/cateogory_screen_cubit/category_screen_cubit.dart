@@ -95,4 +95,17 @@ class CategoryScreenCubit extends Cubit<CategoryScreenState> {
       debugPrintStack(stackTrace: s);
     }
   }
+
+  void clearControllers() {
+    emit(CategoryScreenState.initial());
+    init();
+  }
+
+  void fillControllers(CategoryModel item) {
+    emit(
+      state.copyWith(
+        categoryName: TextEditingController(text: item.categoryName),
+      ),
+    );
+  }
 }

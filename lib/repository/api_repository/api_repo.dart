@@ -10,6 +10,8 @@ import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/tax/tax_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
+import 'rateset/rateset_api_repo.dart';
+
 abstract class ApiRepo
     implements
         AreaApiRepo,
@@ -22,4 +24,5 @@ abstract class ApiRepo
         CustomerCategoryApiRepo,
         BillApiRepo,
         TaxApiRepo,
+        RateSetApiRepo,
         CustomerApiRepo {}

@@ -8,7 +8,6 @@ import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_stat
 import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_state.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
-import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/area_table_widget.dart';
@@ -25,17 +24,12 @@ class TableScreen extends StatefulWidget {
 }
 
 class _TableScreenState extends State<TableScreen> {
-  //for tables
-  Stream<List<TableModel>> tableStream() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.tableRepository.streamTables();
-  }
-
-  //for areas
-  Stream<List<AreasModel>> areasStream() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.areasRepository.streamAreas();
-  }
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   context.read<AreasScreenCubit>().init();
+  // }
 
   deleteTable(TableModel table) {
     UtilDialog.showMyDialog(
@@ -52,11 +46,6 @@ class _TableScreenState extends State<TableScreen> {
       // this is for cancel button sending null will perform default pop() action
       null,
     );
-  }
-
-  activeDeactivateTable(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.tableRepository.changeActive(id, value);
   }
 
   editTableFn({required TableModel model}) {
@@ -76,7 +65,10 @@ class _TableScreenState extends State<TableScreen> {
         ),
         actions: [
           TextButton.icon(
-            onPressed: () => context.push(AppScreen.createTableScreen.path),
+            onPressed: () {
+              context.read<TableScreenCubit>().clearControllers();
+              context.push(AppScreen.createTableScreen.path);
+            },
             label: const Text('Add table'),
             icon: const Icon(Icons.add),
           ),
@@ -130,18 +122,6 @@ class _TableScreenState extends State<TableScreen> {
             }
           },
         ),
-        // StreamBuilder<List<TableModel>>(
-        //   stream: tableStream(),
-        //   builder: (context, snapshot) {
-        //     final tablesData = snapshot.data;
-        //     if (tablesData == null || tablesData.isEmpty) {
-        //       return const Center(
-        //         child: Text('No Tables'),
-        //       );
-        //     } else {
-        //     }
-        //   },
-        // ),
       ),
     );
   }

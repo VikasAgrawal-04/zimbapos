@@ -1,32 +1,32 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_state.dart';
-import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
 import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../models/global_models/rate_sets_model.dart';
 import '../../../repository/api_repository/api_repo.dart';
+import 'rateset_state.dart';
 
-class TableScreenCubit extends Cubit<TableScreenState> {
+class RateSetScreenCubit extends Cubit<RateSetScreenState> {
   final ApiRepo _repo = ApiRepoImpl();
 
-  TableScreenCubit() : super(TableScreenState.initial());
+  RateSetScreenCubit() : super(RateSetScreenState.initial());
 
   Future<void> init() async {
     emit(state.copyWith(status: Status.loading));
-    await getTableList();
+    await getRateSetList();
     emit(state.copyWith(status: Status.success));
   }
 
-  Future<void> getTableList() async {
+  Future<void> getRateSetList() async {
     try {
-      final data = await _repo.fetchTableList();
+      final data = await _repo.fetchRateSetList();
       data.fold((failure) {
         debugPrint(failure.toString());
-        emit(state.copyWith(tableList: []));
+        emit(state.copyWith(rateSetList: []));
       }, (success) {
-        emit(state.copyWith(tableList: success));
+        emit(state.copyWith(rateSetList: success));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -34,14 +34,18 @@ class TableScreenCubit extends Cubit<TableScreenState> {
     }
   }
 
-  Future<void> createTable(TableModel item) async {
+  Future<void> createRateSet() async {
     try {
-      final data = await _repo.createTable(item);
+      final data = await _repo.createRateSet(
+        RateSetsModel(
+          ratesetName: state.rateSetNameController.text,
+        ),
+      );
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        init();
+        clearControllers();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -50,24 +54,24 @@ class TableScreenCubit extends Cubit<TableScreenState> {
     }
   }
 
-  Future<void> updateTable(TableModel item, {bool? val}) async {
+  Future<void> updateRateSet(RateSetsModel item, {bool? val}) async {
     //For State Management & Instant Reflection
     if (val != null) {
-      List<TableModel> updatedList = List.from(state.tableList);
-      final index =
-          updatedList.indexWhere((element) => element.tableId == item.tableId);
+      List<RateSetsModel> updatedList = List.from(state.rateSetList);
+      final index = updatedList
+          .indexWhere((element) => element.ratesetId == item.ratesetId);
       updatedList[index] = updatedList[index].copyWith(isActive: val);
-      emit(state.copyWith(tableList: updatedList));
+      emit(state.copyWith(rateSetList: updatedList));
       item.isActive = val;
     }
 
     try {
-      final data = await _repo.updateTable(item);
+      final data = await _repo.updateRateSet(item);
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
-        if (val == false) {
+        if (val == null) {
           init();
         }
         EasyLoading.showSuccess(success["data"]);
@@ -78,10 +82,10 @@ class TableScreenCubit extends Cubit<TableScreenState> {
     }
   }
 
-  Future<void> deleteTable(String id) async {
+  Future<void> deleteRateSet(String id) async {
     try {
       EasyLoading.show();
-      final res = await _repo.deleteTable(id);
+      final res = await _repo.deleteRateSet(id);
       res.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
@@ -96,20 +100,15 @@ class TableScreenCubit extends Cubit<TableScreenState> {
     }
   }
 
-  void onAreaChange(String? val) {
-    emit(state.copyWith(selectedAreaId: val));
-  }
-
   void clearControllers() {
-    emit(TableScreenState.initial());
+    emit(RateSetScreenState.initial());
     init();
   }
 
-  void fillControllers(TableModel item) {
+  void fillControllers(RateSetsModel item) {
     emit(
       state.copyWith(
-        tableNameController: TextEditingController(text: item.tableName),
-        selectedAreaId: item.areaId,
+        rateSetNameController: TextEditingController(text: item.ratesetName),
       ),
     );
   }

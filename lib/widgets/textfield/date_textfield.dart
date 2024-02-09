@@ -47,6 +47,7 @@ class _DateTextFieldState extends State<DateTextField> {
       isReadOnly: true,
       icon: Icons.calendar_today,
       hint: widget.hintText,
+      prefIcon: Icons.date_range,
       textFieldTap: () async {
         final date = await showDatePicker(
             context: context,

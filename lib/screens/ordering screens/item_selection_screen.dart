@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_state.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
@@ -10,8 +12,10 @@ import 'package:zimbapos/widgets/containers/bill_detail_row.dart';
 import 'package:zimbapos/widgets/containers/dotter_container.dart';
 import 'package:zimbapos/widgets/containers/title_container.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/dropdown/custom_dropdown.dart';
 import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
+import 'package:zimbapos/widgets/textfield/date_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
   final String tableId;
@@ -23,7 +27,8 @@ class ItemSelectionScreen extends StatefulWidget {
   State<ItemSelectionScreen> createState() => _ItemSelectionScreenState();
 }
 
-class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
+class _ItemSelectionScreenState extends State<ItemSelectionScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -91,7 +96,208 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                         child: CustomButtonNew(
                       height: 6.h,
                       text: "Customer",
-                      onTap: () {},
+                      onTap: () {
+                        TabController tabController =
+                            TabController(length: 2, vsync: this);
+                        final key = GlobalKey<FormState>();
+                        final name = TextEditingController();
+                        final mobile = TextEditingController();
+                        final email = TextEditingController();
+                        final gstNo = TextEditingController();
+                        final dob = TextEditingController();
+                        final ad = TextEditingController();
+                        String? cusCatId;
+                        showDialog(
+                            context: mainContext,
+                            builder: (BuildContext secondContext) {
+                              return AlertDialog(
+                                title: Text(
+                                  "Customer Details",
+                                  style: theme.displayMedium,
+                                ),
+                                content: SingleChildScrollView(
+                                  child: SizedBox(
+                                    width: 25.w,
+                                    height: 38.h,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TabBar(
+                                          controller: tabController,
+                                          tabs: [
+                                            Tab(
+                                                child: Text('Personal Info',
+                                                    style:
+                                                        theme.displayMedium)),
+                                            Tab(
+                                                child: Text('Additional Info',
+                                                    style:
+                                                        theme.displayMedium)),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: TabBarView(
+                                            controller: tabController,
+                                            children: [
+                                              Form(
+                                                key: key,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 2.h),
+                                                    CustomTextFieldNew(
+                                                        prefIcon: Icons.person,
+                                                        control: name,
+                                                        hint:
+                                                            "Enter Customer Name",
+                                                        isRequired: true,
+                                                        keyboardType:
+                                                            TextInputType.name,
+                                                        isNumber: false,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next),
+                                                    SizedBox(height: 2.h),
+                                                    CustomTextFieldNew(
+                                                        control: mobile,
+                                                        prefIcon: Icons.phone,
+                                                        hint:
+                                                            "Enter Customer Mobile Number",
+                                                        isRequired: true,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        isNumber: true,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next),
+                                                    SizedBox(height: 2.h),
+                                                    CustomTextFieldNew(
+                                                        control: email,
+                                                        prefIcon: Icons.email,
+                                                        hint:
+                                                            "Enter Customer Email",
+                                                        isRequired: false,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        isNumber: true,
+                                                        onEditingComplete: () {
+                                                          if (key.currentState!
+                                                              .validate()) {
+                                                            tabController
+                                                                .animateTo(1);
+                                                          }
+                                                        },
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next),
+                                                    const Spacer(),
+                                                    CustomButtonNew(
+                                                      width: 20.w,
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 1.h),
+                                                      height: 4.5.h,
+                                                      onTap: () {
+                                                        if (key.currentState!
+                                                            .validate()) {
+                                                          tabController
+                                                              .animateTo(1);
+                                                        }
+                                                      },
+                                                      text: "Next",
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(height: 1.h),
+                                                  CustomTextFieldNew(
+                                                      prefIcon: Icons.numbers,
+                                                      control: gstNo,
+                                                      hint: "GST Number",
+                                                      isRequired: false,
+                                                      keyboardType:
+                                                          TextInputType.name,
+                                                      isNumber: false,
+                                                      textInputAction:
+                                                          TextInputAction.next),
+                                                  SizedBox(height: 1.h),
+                                                  DateTextField(
+                                                    value: dob.text,
+                                                    hintText: "Customer DOB",
+                                                    lasDate: DateTime.now(),
+                                                    onChanged: (value) {
+                                                      dob.text = value;
+                                                    },
+                                                  ),
+                                                  SizedBox(height: 1.h),
+                                                  DateTextField(
+                                                    value: ad.text,
+                                                    hintText:
+                                                        "Customer Anniversay Date",
+                                                    lasDate: DateTime.now(),
+                                                    onChanged: (value) {
+                                                      ad.text = value;
+                                                    },
+                                                  ),
+                                                  SizedBox(height: 1.h),
+                                                  BlocBuilder<
+                                                      CustomerCategoryScreenCubit,
+                                                      CustomerCategoryScreenState>(
+                                                    builder: (context, state) {
+                                                      return CustomDropDown<
+                                                          String>(
+                                                        title:
+                                                            "Customer Category",
+                                                        items: state
+                                                            .customerCategories
+                                                            .map((cusCat) =>
+                                                                cusCat
+                                                                    .custCategoryName ??
+                                                                'error')
+                                                            .toList(),
+                                                        itemValues: state
+                                                            .customerCategories
+                                                            .map((e) =>
+                                                                e.custCategoryId ??
+                                                                "null")
+                                                            .toList(),
+                                                        value: cusCatId,
+                                                        hint:
+                                                            "Choose a customer category",
+                                                        onChanged: (value) {
+                                                          if (value != null) {
+                                                            cusCatId = value;
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                  const Spacer(),
+                                                  CustomButtonNew(
+                                                    width: 20.w,
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 1.h),
+                                                    height: 4.5.h,
+                                                    onTap: () {
+                                                      context.pop();
+                                                    },
+                                                    text: "Done",
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
                       color: KColors.whiteColor,
                     )),
                     SizedBox(width: 1.w),
@@ -104,45 +310,52 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                             context: mainContext,
                             builder: (BuildContext secondContext) {
                               final controller = TextEditingController();
-                              // final key = GlobalKey<FormState>();
+                              final key = GlobalKey<FormState>();
                               return AlertDialog(
                                 backgroundColor: KColors.greyContainer,
                                 title: Text(
                                   "PAX",
                                   style: theme.displayMedium,
                                 ),
-                                content: SizedBox(
-                                  width: 30.w,
-                                  child: Form(
-                                      // key: key,
-                                      child: Column(
-                                    children: [
-                                      CustomTextFieldNew(
-                                          isRequired: true,
-                                          keyboardType: const TextInputType
-                                              .numberWithOptions(),
-                                          isNumber: true,
-                                          control: controller,
-                                          onEditingComplete: () {
-                                            mainContext
-                                                .read<ItemSelectionCubit>()
-                                                .enterPax(controller.text);
-                                            context.pop();
-                                          },
-                                          textInputAction:
-                                              TextInputAction.done),
-                                      SizedBox(height: 1.h),
-                                      CustomButtonNew(
-                                        onTap: () {
-                                          mainContext
-                                              .read<ItemSelectionCubit>()
-                                              .enterPax(controller.text);
-                                          context.pop();
-                                        },
-                                        text: "Done",
-                                      )
-                                    ],
-                                  )),
+                                content: SingleChildScrollView(
+                                  child: SizedBox(
+                                    width: 30.w,
+                                    child: Form(
+                                        key: key,
+                                        child: Column(
+                                          children: [
+                                            CustomTextFieldNew(
+                                                hint:
+                                                    "Total Customer At This Table",
+                                                isRequired: true,
+                                                keyboardType:
+                                                    const TextInputType
+                                                        .numberWithOptions(),
+                                                isNumber: true,
+                                                control: controller,
+                                                onEditingComplete: () {
+                                                  mainContext
+                                                      .read<
+                                                          ItemSelectionCubit>()
+                                                      .enterPax(
+                                                          controller.text);
+                                                  context.pop();
+                                                },
+                                                textInputAction:
+                                                    TextInputAction.done),
+                                            SizedBox(height: 1.h),
+                                            CustomButtonNew(
+                                              onTap: () {
+                                                mainContext
+                                                    .read<ItemSelectionCubit>()
+                                                    .enterPax(controller.text);
+                                                context.pop();
+                                              },
+                                              text: "Done",
+                                            )
+                                          ],
+                                        )),
+                                  ),
                                 ),
                               );
                             });

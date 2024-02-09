@@ -22,6 +22,7 @@ class ItemSelectionState extends Equatable {
   final String? waiterId;
   final String? waiterName;
   final String? pax;
+  final String? customerId;
   const ItemSelectionState(
       {required this.searchController,
       required this.selectedTile,
@@ -36,7 +37,8 @@ class ItemSelectionState extends Equatable {
       required this.waiters,
       this.waiterId,
       this.waiterName,
-      this.pax});
+      this.pax,
+      this.customerId});
 
   @override
   List<Object?> get props => [
@@ -53,7 +55,8 @@ class ItemSelectionState extends Equatable {
         waiters,
         waiterId,
         pax,
-        waiterName
+        waiterName,
+        customerId
       ];
 
   factory ItemSelectionState.initial() {
@@ -85,7 +88,8 @@ class ItemSelectionState extends Equatable {
       List<WorkersModel>? waiters,
       String? waiterId,
       String? pax,
-      String? waiterName}) {
+      String? waiterName,
+      String? customerId}) {
     return ItemSelectionState(
         searchController: searchController ?? this.searchController,
         selectedTile: selectedTile ?? this.selectedTile,
@@ -100,6 +104,7 @@ class ItemSelectionState extends Equatable {
         waiters: waiters ?? this.waiters,
         waiterId: waiterId ?? this.waiterId,
         pax: pax ?? this.pax,
-        waiterName: waiterName ?? this.waiterName);
+        waiterName: waiterName ?? this.waiterName,
+        customerId: customerId ?? this.customerId);
   }
 }

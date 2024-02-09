@@ -52,11 +52,6 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () =>
-            //       context.push(AppScreen.createCustomerCategory.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
               onPressed: () =>
                   context.push(AppScreen.createCustomerCategory.path),

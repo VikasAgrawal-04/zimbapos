@@ -66,10 +66,8 @@ class TableScreenCubit extends Cubit<TableScreenState> {
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
-      }, (success) {
-        if (val == false) {
-          init();
-        }
+      }, (success) async {
+        if (val == null) await init();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {

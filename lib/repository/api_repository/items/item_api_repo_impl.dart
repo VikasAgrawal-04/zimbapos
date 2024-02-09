@@ -70,7 +70,7 @@ class ItemApiRepoImpl implements ItemApiRepo {
         RequestType.post,
         EndPoints.deleteItem,
         queryParams: {
-          "itemId": itemId,
+          "item_id": itemId,
         },
       );
       return Right(response ?? {});

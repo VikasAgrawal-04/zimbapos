@@ -107,7 +107,7 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
                             // tableStatus: widget.item.tableStatus,
                           ),
                         );
-                    await context.read<AreasScreenCubit>().init();
+                    // await context.read<AreasScreenCubit>().init();
                     context.pop();
                   } else {
                     UtillSnackbar.showSnackBar(

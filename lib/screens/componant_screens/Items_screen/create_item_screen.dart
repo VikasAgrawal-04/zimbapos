@@ -34,7 +34,6 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
   void initState() {
     super.initState();
     //fetch global var from dbcubit
-    context.read<ItemScreenCubit>().clearControllers;
     enableTF = false;
   }
 

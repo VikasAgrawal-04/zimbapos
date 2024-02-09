@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_state.dart';
 import 'package:zimbapos/bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
@@ -136,6 +137,7 @@ class _CreateItemGroupScreenState extends State<CreateItemGroupScreen> {
                                 printerId: state.printerId,
                               ),
                             );
+                        context.pop();
                       } else {
                         UtillSnackbar.showSnackBar(
                           context,

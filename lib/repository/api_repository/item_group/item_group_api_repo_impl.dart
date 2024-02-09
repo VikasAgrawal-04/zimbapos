@@ -54,7 +54,7 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
       String itemGroupId) async {
     try {
       final response = await Helpers.sendRequest(
-          RequestType.delete, EndPoints.deleteCustomerCategory,
+          RequestType.delete, EndPoints.deleteItemGroup,
           queryParams: {
             "itemGroupId": itemGroupId,
           });

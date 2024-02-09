@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -25,11 +27,13 @@ class TableScreen extends StatefulWidget {
 
 class _TableScreenState extends State<TableScreen> {
   //
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   context.read<AreasScreenCubit>().init();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    log("ini executed");
+    context.read<AreasScreenCubit>().init();
+    context.read<TableScreenCubit>().init();
+  }
 
   deleteTable(TableModel table) {
     UtilDialog.showMyDialog(

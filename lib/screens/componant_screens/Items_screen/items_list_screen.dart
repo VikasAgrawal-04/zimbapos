@@ -80,7 +80,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
           actions: [
             TextButton.icon(
               onPressed: () {
-                context.read<ItemScreenCubit>().clearControllers;
+                context.read<ItemScreenCubit>().clearControllers();
                 context.push(AppScreen.createItemScreen.path);
               },
               label: const Text('Add item'),

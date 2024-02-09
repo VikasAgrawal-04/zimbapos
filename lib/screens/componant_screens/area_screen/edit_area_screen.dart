@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_state.dart';
 import 'package:zimbapos/helpers/validators.dart';
 
@@ -113,6 +114,7 @@ class _EditAreaScreenState extends State<EditAreaScreen> {
                               rateSetId: state.selectedRateSetId,
                             ),
                           );
+                      context.pop();
                     } else {
                       UtillSnackbar.showSnackBar(
                         context,

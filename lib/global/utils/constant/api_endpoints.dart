@@ -55,6 +55,14 @@ class EndPoints {
   static const String createWorker = '/create-worker';
   static const String deleteWorker = '/delete-worker';
   static const String updateWorker = '/update-worker';
+  static const String getWaiters = '/get-waiters';
+
+  //Terminal Configuration End Points
+  static const String getAllTerminals = '/get-all-terminals';
+  static const String getTerminalId = '/get-terminal-id';
+  static const String updateTerminalDevice = '/update-terminal-deviceId';
+  static const String createTerminal = '/create-terminal';
+  static const String deleteTerminal = '/delete-terminal';
 
   //Customer category (done)
   static const String getCustomerCategories = '/get-customer-categories';
@@ -71,4 +79,5 @@ class EndPoints {
   //Bill
   static const String createKot = '/action-temp-bill';
   static const String getTempBill = '/get-temp-bill';
+  static const String deleteKotItem = '/delete-kot-item';
 }

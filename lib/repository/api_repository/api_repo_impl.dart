@@ -280,6 +280,17 @@ class ApiRepoImpl implements ApiRepo {
   }
 
   @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteKotItem(
+      String tableId, String itemId) {
+    return _billApiRepo.deleteKotItem(tableId, itemId);
+  }
+
+  @override
+  Future<Either<Failure, List<WorkersModel>>> getWaiters() {
+    return _workerApiRepo.getWaiters();
+  }
+
+  @override
   Future<Either<Failure, Map<String, dynamic>>> createTax(TaxModel item) {
     return _taxApiRepo.createTax(item);
   }

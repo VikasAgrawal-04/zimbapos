@@ -11,7 +11,7 @@ class TerminalRepository {
 
   Future<List<TerminalModel>> getAllTerminals() async {
     try {
-      return db.terminalModels.filter().deviceIdIsNotNull().findAllSync();
+      return db.terminalModels.where().findAllSync();
     } on IsarError catch (error) {
       debugPrint(error.message);
       return [];

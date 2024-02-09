@@ -8,7 +8,7 @@ import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/tax/tax_api_repo.dart';
-import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 
 import 'rateset/rateset_api_repo.dart';
 

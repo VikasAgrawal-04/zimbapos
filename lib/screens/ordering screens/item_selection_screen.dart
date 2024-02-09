@@ -1,37 +1,55 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_state.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
+import 'package:zimbapos/constants/kcolors.dart';
+import 'package:zimbapos/widgets/containers/bill_detail_row.dart';
+import 'package:zimbapos/widgets/containers/dotter_container.dart';
+import 'package:zimbapos/widgets/containers/title_container.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/dropdown/custom_dropdown.dart';
+import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
+import 'package:zimbapos/widgets/textfield/date_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
   final String tableId;
-  const ItemSelectionScreen({required this.tableId, super.key});
+  final String tableName;
+  const ItemSelectionScreen(
+      {required this.tableId, required this.tableName, super.key});
 
   @override
   State<ItemSelectionScreen> createState() => _ItemSelectionScreenState();
 }
 
-class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
+class _ItemSelectionScreenState extends State<ItemSelectionScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return BlocProvider<ItemSelectionCubit>(
       create: (context) => ItemSelectionCubit()..getTempBill(widget.tableId),
       child: Scaffold(
-        appBar: AppBar(
-          elevation: 1,
-          title: const Text('Billing Screen'),
-        ),
+        appBar: appBar(theme),
         body: BlocBuilder<ItemSelectionCubit, ItemSelectionState>(
           builder: (context, state) {
-            return Row(
+            return Column(
               children: [
-                groupTab(context, state),
-                searchAndItemTab(context, state),
-                detailsTab(context, state)
+                secondaryAppBar(theme.textTheme, state, context),
+                Expanded(
+                  child: Row(
+                    children: [
+                      groupTab(context, state, theme.textTheme),
+                      searchAndItemTab(context, state, theme.textTheme),
+                      detailsTab(context, state, theme.textTheme)
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -40,10 +58,391 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget groupTab(BuildContext context, ItemSelectionState state) {
+  Widget secondaryAppBar(
+      TextTheme theme, ItemSelectionState state, BuildContext mainContext) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: Image.asset(
+                      "assets/icons/back.png",
+                      height: 5.h,
+                    )),
+                SizedBox(width: 2.w),
+                RichText(
+                    text: TextSpan(
+                        text: "Table no : ",
+                        style: theme.headlineLarge,
+                        children: [
+                      TextSpan(
+                          text: widget.tableName, style: theme.displayLarge)
+                    ]))
+              ],
+            ),
+            SizedBox(
+              width: 32.w,
+              child: Padding(
+                padding: EdgeInsets.only(right: 1.w),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: CustomButtonNew(
+                      height: 6.h,
+                      text: "Customer",
+                      onTap: () {
+                        TabController tabController =
+                            TabController(length: 2, vsync: this);
+                        final key = GlobalKey<FormState>();
+                        final name = TextEditingController();
+                        final mobile = TextEditingController();
+                        final email = TextEditingController();
+                        final gstNo = TextEditingController();
+                        final dob = TextEditingController();
+                        final ad = TextEditingController();
+                        String? cusCatId;
+                        showDialog(
+                            context: mainContext,
+                            builder: (BuildContext secondContext) {
+                              return AlertDialog(
+                                title: Text(
+                                  "Customer Details",
+                                  style: theme.displayMedium,
+                                ),
+                                content: SingleChildScrollView(
+                                  child: SizedBox(
+                                    width: 25.w,
+                                    height: 38.h,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        TabBar(
+                                          controller: tabController,
+                                          tabs: [
+                                            Tab(
+                                                child: Text('Personal Info',
+                                                    style:
+                                                        theme.displayMedium)),
+                                            Tab(
+                                                child: Text('Additional Info',
+                                                    style:
+                                                        theme.displayMedium)),
+                                          ],
+                                        ),
+                                        Expanded(
+                                          child: TabBarView(
+                                            controller: tabController,
+                                            children: [
+                                              Form(
+                                                key: key,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 2.h),
+                                                    CustomTextFieldNew(
+                                                        prefIcon: Icons.person,
+                                                        control: name,
+                                                        hint:
+                                                            "Enter Customer Name",
+                                                        isRequired: true,
+                                                        keyboardType:
+                                                            TextInputType.name,
+                                                        isNumber: false,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next),
+                                                    SizedBox(height: 2.h),
+                                                    CustomTextFieldNew(
+                                                        control: mobile,
+                                                        prefIcon: Icons.phone,
+                                                        hint:
+                                                            "Enter Customer Mobile Number",
+                                                        isRequired: true,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        isNumber: true,
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next),
+                                                    SizedBox(height: 2.h),
+                                                    CustomTextFieldNew(
+                                                        control: email,
+                                                        prefIcon: Icons.email,
+                                                        hint:
+                                                            "Enter Customer Email",
+                                                        isRequired: false,
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        isNumber: true,
+                                                        onEditingComplete: () {
+                                                          if (key.currentState!
+                                                              .validate()) {
+                                                            tabController
+                                                                .animateTo(1);
+                                                          }
+                                                        },
+                                                        textInputAction:
+                                                            TextInputAction
+                                                                .next),
+                                                    const Spacer(),
+                                                    CustomButtonNew(
+                                                      width: 20.w,
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 1.h),
+                                                      height: 4.5.h,
+                                                      onTap: () {
+                                                        if (key.currentState!
+                                                            .validate()) {
+                                                          tabController
+                                                              .animateTo(1);
+                                                        }
+                                                      },
+                                                      text: "Next",
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Column(
+                                                children: [
+                                                  SizedBox(height: 1.h),
+                                                  CustomTextFieldNew(
+                                                      prefIcon: Icons.numbers,
+                                                      control: gstNo,
+                                                      hint: "GST Number",
+                                                      isRequired: false,
+                                                      keyboardType:
+                                                          TextInputType.name,
+                                                      isNumber: false,
+                                                      textInputAction:
+                                                          TextInputAction.next),
+                                                  SizedBox(height: 1.h),
+                                                  DateTextField(
+                                                    value: dob.text,
+                                                    hintText: "Customer DOB",
+                                                    lasDate: DateTime.now(),
+                                                    onChanged: (value) {
+                                                      dob.text = value;
+                                                    },
+                                                  ),
+                                                  SizedBox(height: 1.h),
+                                                  DateTextField(
+                                                    value: ad.text,
+                                                    hintText:
+                                                        "Customer Anniversay Date",
+                                                    lasDate: DateTime.now(),
+                                                    onChanged: (value) {
+                                                      ad.text = value;
+                                                    },
+                                                  ),
+                                                  SizedBox(height: 1.h),
+                                                  BlocBuilder<
+                                                      CustomerCategoryScreenCubit,
+                                                      CustomerCategoryScreenState>(
+                                                    builder: (context, state) {
+                                                      return CustomDropDown<
+                                                          String>(
+                                                        title:
+                                                            "Customer Category",
+                                                        items: state
+                                                            .customerCategories
+                                                            .map((cusCat) =>
+                                                                cusCat
+                                                                    .custCategoryName ??
+                                                                'error')
+                                                            .toList(),
+                                                        itemValues: state
+                                                            .customerCategories
+                                                            .map((e) =>
+                                                                e.custCategoryId ??
+                                                                "null")
+                                                            .toList(),
+                                                        value: cusCatId,
+                                                        hint:
+                                                            "Choose a customer category",
+                                                        onChanged: (value) {
+                                                          if (value != null) {
+                                                            cusCatId = value;
+                                                          }
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                  const Spacer(),
+                                                  CustomButtonNew(
+                                                    width: 20.w,
+                                                    margin: EdgeInsets.only(
+                                                        bottom: 1.h),
+                                                    height: 4.5.h,
+                                                    onTap: () {
+                                                      context.pop();
+                                                    },
+                                                    text: "Done",
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      color: KColors.whiteColor,
+                    )),
+                    SizedBox(width: 1.w),
+                    Expanded(
+                        child: CustomButtonNew(
+                      height: 6.h,
+                      text: "Pax\n${state.pax ?? 0}",
+                      onTap: () {
+                        showDialog(
+                            context: mainContext,
+                            builder: (BuildContext secondContext) {
+                              final controller = TextEditingController();
+                              final key = GlobalKey<FormState>();
+                              return AlertDialog(
+                                backgroundColor: KColors.greyContainer,
+                                title: Text(
+                                  "PAX",
+                                  style: theme.displayMedium,
+                                ),
+                                content: SingleChildScrollView(
+                                  child: SizedBox(
+                                    width: 30.w,
+                                    child: Form(
+                                        key: key,
+                                        child: Column(
+                                          children: [
+                                            CustomTextFieldNew(
+                                                hint:
+                                                    "Total Customer At This Table",
+                                                isRequired: true,
+                                                keyboardType:
+                                                    const TextInputType
+                                                        .numberWithOptions(),
+                                                isNumber: true,
+                                                control: controller,
+                                                onEditingComplete: () {
+                                                  mainContext
+                                                      .read<
+                                                          ItemSelectionCubit>()
+                                                      .enterPax(
+                                                          controller.text);
+                                                  context.pop();
+                                                },
+                                                textInputAction:
+                                                    TextInputAction.done),
+                                            SizedBox(height: 1.h),
+                                            CustomButtonNew(
+                                              onTap: () {
+                                                mainContext
+                                                    .read<ItemSelectionCubit>()
+                                                    .enterPax(controller.text);
+                                                context.pop();
+                                              },
+                                              text: "Done",
+                                            )
+                                          ],
+                                        )),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      color: KColors.whiteColor,
+                    )),
+                    SizedBox(width: 1.w),
+                    Expanded(
+                        child: CustomButtonNew(
+                      height: 6.h,
+                      text: "Waiter\n${state.waiterName ?? "Name"}",
+                      onTap: () {
+                        showDialog(
+                            context: mainContext,
+                            builder: (BuildContext secondContext) {
+                              return AlertDialog(
+                                backgroundColor: KColors.greyContainer,
+                                title: Text(
+                                  "Waiters",
+                                  style: theme.displayMedium,
+                                ),
+                                content: SizedBox(
+                                  width: 30.w,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: List.generate(
+                                          state.waiters.length, (index) {
+                                        final waiter = state.waiters[index];
+                                        return InkWell(
+                                          splashColor: Colors.transparent,
+                                          onTap: () {
+                                            mainContext
+                                                .read<ItemSelectionCubit>()
+                                                .selectWaiter(
+                                                    waiter.workerId.toString(),
+                                                    waiter.workerName
+                                                        .toString());
+                                            context.pop();
+                                          },
+                                          child: Container(
+                                            width: 100.w,
+                                            decoration: BoxDecoration(
+                                                color: KColors.greyItems,
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                        topRight:
+                                                            Radius.circular(12),
+                                                        bottomRight:
+                                                            Radius.circular(
+                                                                12))),
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 1.w,
+                                                vertical: .5.h),
+                                            child: Text(waiter.workerName,
+                                                style: theme.bodyLarge),
+                                          ),
+                                        );
+                                      }),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      color: KColors.whiteColor,
+                    ))
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+        Divider(endIndent: 1.w, indent: 1.w)
+      ],
+    );
+  }
+
+  Widget groupTab(
+      BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(border: Border.all()),
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
+        decoration: BoxDecoration(
+            color: KColors.greyContainer,
+            borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(12.0),
+                bottomRight: Radius.circular(12.0))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(state.mainGroups.length, (index) {
@@ -55,14 +454,8 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                 initiallyExpanded: state.selectedTile == index,
                 title: Text(
                   mainGroup.mainGroupName ?? "--",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.w500),
-                  textAlign: TextAlign.center,
+                  style: theme.headlineMedium,
                 ),
-                backgroundColor: Colors.yellow.shade600,
-                collapsedBackgroundColor: Colors.white,
                 onExpansionChanged: (value) async {
                   if (value) {
                     context
@@ -82,12 +475,17 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                     splashColor: Colors.transparent,
                     child: Container(
                       width: 100.w,
-                      decoration: const BoxDecoration(
-                          border: Border(bottom: BorderSide())),
+                      margin: EdgeInsets.only(bottom: .5.h),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
+                      decoration: BoxDecoration(
+                          color: KColors.greyItems,
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(12),
+                              bottomRight: Radius.circular(12))),
                       child: Text(
                         itemGroup.itemGroupName.toString(),
-                        style: Theme.of(context).textTheme.titleLarge,
-                        textAlign: TextAlign.center,
+                        style: theme.bodyLarge,
                       ),
                     ),
                   );
@@ -100,22 +498,26 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget searchAndItemTab(BuildContext context, ItemSelectionState state) {
+  Widget searchAndItemTab(
+      BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
-      flex: 2,
+      flex: 4,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: .5.h),
+        padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
         child: Column(children: [
           CustomTextFieldNew(
             hint: 'Search Items',
-            hintStyle: Theme.of(context).textTheme.headlineSmall,
-            style: Theme.of(context).textTheme.headlineSmall,
+            hintStyle: theme.bodyLarge,
+            style: theme.bodyLarge,
             isRequired: false,
+            prefIcon: Icons.search,
             keyboardType: TextInputType.text,
             isNumber: false,
             textInputAction: TextInputAction.search,
             control: state.searchController,
             onChanged: context.read<ItemSelectionCubit>().searchItems,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
           ),
           SizedBox(height: 4.h),
           Expanded(
@@ -126,33 +528,75 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                 runSpacing: 2.h,
                 children: List.generate(state.filteredItems.length, (index) {
                   final item = state.filteredItems[index];
-                  return GestureDetector(
-                    onTap: () {
-                      context
-                          .read<ItemSelectionCubit>()
-                          .onItemClick(action: OnClick.add, item: item);
-                    },
-                    child: Container(
-                      width: 10.w,
-                      height: 12.h,
-                      decoration: BoxDecoration(border: Border.all()),
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: Container(
-                            color: item.foodType == "V"
-                                ? Colors.green[600]
-                                : item.foodType == "E"
-                                    ? Colors.yellow.shade600
-                                    : Colors.red.shade700,
-                          )),
-                          Expanded(
-                              flex: 20,
-                              child: Container(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: .5.w),
-                                  child: Center(child: Text(item.itemName))))
-                        ],
+                  return Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
+                    child: GestureDetector(
+                      onTap: () {
+                        context
+                            .read<ItemSelectionCubit>()
+                            .onItemClick(action: OnClick.add, item: item);
+                      },
+                      child: Container(
+                        width: 15.w,
+                        height: 12.h,
+                        decoration: const BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: 15.w,
+                              height: 12.h,
+                              decoration: BoxDecoration(
+                                  boxShadow: const [
+                                    BoxShadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                                        offset: Offset(0, 4),
+                                        blurRadius: 4.0,
+                                        spreadRadius: 0.0)
+                                  ],
+                                  color: item.foodType == "V"
+                                      ? KColors.greenColor
+                                      : item.foodType == "E"
+                                          ? KColors.yellowColor
+                                          : KColors.redColor,
+                                  borderRadius: const BorderRadius.only(
+                                      bottomLeft: Radius.elliptical(40, 25),
+                                      bottomRight: Radius.elliptical(40, 25))),
+                            ),
+                            Positioned(
+                              left: 0,
+                              right: 0,
+                              bottom: 4,
+                              top: 0,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                    color: KColors.whiteColor,
+                                    borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.elliptical(40, 25),
+                                        bottomRight:
+                                            Radius.elliptical(40, 25))),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        item.itemName,
+                                        style: theme.displayMedium,
+                                      ),
+                                      SizedBox(height: .2.h),
+                                      Text(
+                                        "₹ ${item.itemRate}",
+                                        style: theme.bodyMedium,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -165,194 +609,376 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget detailsTab(BuildContext context, ItemSelectionState state) {
+  Widget detailsTab(
+      BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
-      flex: 2,
-      child: Container(
-        decoration: BoxDecoration(border: Border.all()),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                    child: CustomButtonNew(text: 'Customer', onTap: () {})),
-                Expanded(child: CustomButtonNew(text: 'Pax', onTap: () {})),
-                Expanded(child: CustomButtonNew(text: 'Waiter', onTap: () {}))
+        flex: 2,
+        child: Container(
+          decoration: BoxDecoration(
+              color: KColors.greyContainer,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromRGBO(0, 0, 0, 0.2),
+                  offset: Offset(-4, 3),
+                  blurRadius: 10,
+                  spreadRadius: -2,
+                ),
               ],
-            ),
-            SizedBox(height: 1.h),
-            Container(
-              height: 25.h,
-              decoration: BoxDecoration(border: Border.all()),
-              child: Column(
-                children: [
-                  Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(border: Border.all()),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Current KOT',
-                          style: TextStyle(
-                              color: Colors.purple,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        ),
-                        CustomButtonNew(
-                          margin: EdgeInsets.symmetric(
-                              vertical: .5.h, horizontal: 1.w),
-                          width: 12.w,
-                          text: 'Save KOT',
-                          onTap: () async {
-                            await context
-                                .read<ItemSelectionCubit>()
-                                .placeKot(widget.tableId);
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                  const Row(
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12))),
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(
+                      left: 1.2.w, right: 1.2.w, top: 1.h, bottom: 2.5.h),
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(14),
+                          topRight: Radius.circular(14),
+                          bottomLeft: Radius.circular(12),
+                          bottomRight: Radius.circular(12)),
+                      border: Border.all(
+                          color: const Color.fromRGBO(0, 0, 0, 0.2))),
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Center(child: Text('Item')),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 1.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Items',
+                                style: theme.displayMedium,
+                              )),
+                            ),
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Price',
+                                style: theme.displayMedium,
+                              )),
+                            ),
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Qty',
+                                style: theme.displayMedium,
+                              )),
+                            ),
+                            Expanded(
+                              child: Center(
+                                  child: Text(
+                                'Total',
+                                style: theme.displayMedium,
+                              )),
+                            )
+                          ],
+                        ),
                       ),
+                      titleContainer(title: "Current KoT", theme: theme),
                       Expanded(
-                        child: Center(child: Text('Price')),
+                        flex: 2,
+                        child: ListView.builder(
+                            itemCount: state.addedItems.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final addedItem = state.addedItems[index];
+                              return Padding(
+                                padding: EdgeInsets.symmetric(vertical: .5.h),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                        child: Center(
+                                            child: Text(
+                                      addedItem.itemName,
+                                      style: theme.titleMedium?.copyWith(
+                                          fontWeight: FontWeight.w500),
+                                    ))),
+                                    Expanded(
+                                        child: Center(
+                                            child: Text(
+                                      addedItem.itemRate.toString(),
+                                      style: theme.titleMedium?.copyWith(
+                                          fontWeight: FontWeight.w500),
+                                    ))),
+                                    Expanded(
+                                      child: Row(children: [
+                                        Expanded(
+                                          child: InkWell(
+                                              onTap: () {
+                                                context
+                                                    .read<ItemSelectionCubit>()
+                                                    .onItemClick(
+                                                        action:
+                                                            OnClick.subtract,
+                                                        item: addedItem);
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: .7.w,
+                                                    vertical: .3.h),
+                                                decoration: BoxDecoration(
+                                                    color: KColors.whiteColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12)),
+                                                child: Icon(
+                                                    CupertinoIcons.minus,
+                                                    size: 11.sp),
+                                              )),
+                                        ),
+                                        Expanded(
+                                            child: Center(
+                                                child: Text(
+                                          addedItem.quantity.toString(),
+                                          style: theme.titleMedium?.copyWith(
+                                              fontWeight: FontWeight.w500),
+                                        ))),
+                                        Expanded(
+                                            child: InkWell(
+                                                onTap: () {
+                                                  context
+                                                      .read<
+                                                          ItemSelectionCubit>()
+                                                      .onItemClick(
+                                                          action: OnClick.add,
+                                                          item: addedItem);
+                                                },
+                                                child: Container(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: .7.w,
+                                                      vertical: .3.h),
+                                                  decoration: BoxDecoration(
+                                                      color: KColors.whiteColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12)),
+                                                  child: Icon(
+                                                      CupertinoIcons.add,
+                                                      size: 11.sp),
+                                                ))),
+                                      ]),
+                                    ),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            (addedItem.quantity *
+                                                    addedItem.itemRate)
+                                                .toString(),
+                                            style: theme.titleMedium?.copyWith(
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(width: .6.w),
+                                          IconButton(
+                                              onPressed: () {
+                                                context
+                                                    .read<ItemSelectionCubit>()
+                                                    .deleteProduct(addedItem);
+                                              },
+                                              icon: Image.asset(
+                                                  'assets/icons/delete.png'))
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
                       ),
-                      Expanded(
-                        child: Center(child: Text('Qty')),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: .5.h, horizontal: 1.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            CustomButtonNew(
+                              shadows: const [],
+                              height: 3.5.h,
+                              width: 6.w,
+                              text: 'Save KoT',
+                              onTap: () async {
+                                await context
+                                    .read<ItemSelectionCubit>()
+                                    .placeKot(widget.tableId);
+                              },
+                            ),
+                            SizedBox(width: 1.w),
+                            CustomButtonNew(
+                              height: 3.5.h,
+                              width: 6.w,
+                              onTap:
+                                  context.read<ItemSelectionCubit>().clearKot,
+                              color: KColors.blackColor,
+                              text: 'Clear KoT',
+                              shadows: const [],
+                            )
+                          ],
+                        ),
                       ),
+                      titleContainer(title: "KoT", theme: theme),
                       Expanded(
-                        child: Center(child: Text('Total')),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 1.h),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: state.addedItems.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final addedItem = state.addedItems[index];
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child:
-                                      Center(child: Text(addedItem.itemName))),
-                              Expanded(
-                                  child: Center(
-                                      child:
-                                          Text(addedItem.itemRate.toString()))),
-                              Expanded(
-                                child: Row(children: [
-                                  Expanded(
-                                    child: IconButton(
-                                        onPressed: () {
-                                          context
-                                              .read<ItemSelectionCubit>()
-                                              .onItemClick(
-                                                  action: OnClick.subtract,
-                                                  item: addedItem);
-                                        },
-                                        icon: const Icon(CupertinoIcons.minus)),
-                                  ),
+                        child: ListView.builder(
+                            itemCount: (state.tableBill.billLines ?? []).length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final billItem =
+                                  state.tableBill.billLines?[index];
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
                                   Expanded(
                                       child: Center(
                                           child: Text(
-                                              addedItem.quantity.toString()))),
+                                    billItem?.itemName ?? "--",
+                                    maxLines: 1,
+                                    style: theme.titleMedium,
+                                    overflow: TextOverflow.ellipsis,
+                                  ))),
                                   Expanded(
-                                    child: IconButton(
-                                        onPressed: () {
-                                          context
-                                              .read<ItemSelectionCubit>()
-                                              .onItemClick(
-                                                  action: OnClick.add,
-                                                  item: addedItem);
-                                        },
-                                        icon: const Icon(CupertinoIcons.add)),
+                                      child: Center(
+                                          child: Text(
+                                              billItem?.priceExTax.toString() ??
+                                                  "--",
+                                              style: theme.titleMedium))),
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                              billItem?.quantity.toString() ??
+                                                  "--",
+                                              style: theme.titleMedium))),
+                                  Expanded(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                            billItem?.lineTotal.toString() ??
+                                                "--",
+                                            style: theme.titleMedium),
+                                        SizedBox(width: .6.w),
+                                        IconButton(
+                                            onPressed: () {
+                                              context
+                                                  .read<ItemSelectionCubit>()
+                                                  .deleteKotItem(widget.tableId,
+                                                      billItem!.itemId);
+                                            },
+                                            icon: Image.asset(
+                                                'assets/icons/delete.png'))
+                                      ],
+                                    ),
                                   ),
-                                ]),
-                              ),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                      (addedItem.quantity * addedItem.itemRate)
-                                          .toString()),
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                  )
-                ],
+                                ],
+                              );
+                            }),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Container(
-              height: 25.h,
-              decoration: BoxDecoration(border: Border.all()),
-              child: Column(
-                children: [
-                  Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(border: Border.all()),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              const DottedLine(),
+              Container(
+                width: 100.w,
+                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: .5.h),
+                color: KColors.whiteColor,
+                child: Column(
+                  children: [
+                    billDetailRow(
+                        title: "Sub Total",
+                        value:
+                            state.tableBill.billHeader?.totalExTax.toString(),
+                        theme: theme),
+                    billDetailRow(
+                        title: "Total Discount", value: "0.0", theme: theme),
+                    GestureDetector(
+                      onTap: context
+                          .read<ItemSelectionCubit>()
+                          .removeServiceAmount,
+                      child: billDetailRow(
+                          title: "Service Charge",
+                          value: state.tableBill.billHeader?.serviceChargeAmount
+                              .toStringAsFixed(2),
+                          serviceCharge: true,
+                          theme: theme),
+                    ),
+                    billDetailRow(
+                        title: "Tax",
+                        value: state.tableBill.billHeader?.totalTaxAmount
+                            .toStringAsFixed(2),
+                        theme: theme),
+                    const DottedLine(color: Color.fromRGBO(0, 0, 0, 0.2)),
+                    billDetailRow(
+                        title: "Grand Total",
+                        value:
+                            ((state.tableBill.billHeader?.totalAmount ?? 0.0) +
+                                    (state.tableBill.billHeader
+                                            ?.serviceChargeAmount ??
+                                        0.0))
+                                .toString(),
+                        grandTotal: true,
+                        theme: theme),
+                    billDetailRow(
+                        title: "Balance", value: "600.0", theme: theme),
+                    const DottedLine(color: Color.fromRGBO(0, 0, 0, 0.2)),
+                    billDetailRow(
+                        title: "Total Count",
+                        totalQuantity: true,
+                        value: state.tableBill.billLines?.length.toString(),
+                        theme: theme)
+                  ],
+                ),
+              ),
+              const DottedLine(),
+              Container(
+                width: 100.w,
+                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: .5.h),
+                color: KColors.whiteColor,
+                child: Column(
+                  children: [
+                    Row(
                       children: [
-                        Text(
-                          'KOTs',
-                          style: TextStyle(
-                              color: Colors.purple,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.sp),
-                        ),
+                        Expanded(
+                            child: CustomButtonNew(
+                          color: KColors.blackColor,
+                          text: "Print Discount",
+                          onTap: () {},
+                        )),
+                        SizedBox(width: 1.w),
+                        Expanded(
+                            child: CustomButtonNew(
+                          color: KColors.blackColor,
+                          text: "Bill Discount",
+                          onTap: () {},
+                        )),
+                        SizedBox(width: 1.w),
+                        Expanded(
+                            child: CustomButtonNew(
+                          color: KColors.blackColor,
+                          text: "Clear",
+                          onTap: () {},
+                        ))
                       ],
                     ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                        itemCount: (state.tableBill.billLines ?? []).length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final billItem = state.tableBill.billLines?[index];
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: Center(
-                                      child: Text(
-                                billItem?.itemName ?? "--",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ))),
-                              Expanded(
-                                  child: Center(
-                                      child: Text(
-                                          billItem?.priceExTax.toString() ??
-                                              "--"))),
-                              Expanded(
-                                  child: Center(
-                                      child: Text(
-                                          billItem?.quantity.toString() ??
-                                              "--"))),
-                              Expanded(
-                                child: Center(
-                                  child: Text(
-                                      billItem?.lineTotal.toString() ?? "--"),
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+                    SizedBox(height: 1.h),
+                    CustomButtonNew(
+                      text: "Proceed To Pay",
+                      onTap: () {},
+                    ),
+                    SizedBox(height: .5.h),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ));
   }
 }

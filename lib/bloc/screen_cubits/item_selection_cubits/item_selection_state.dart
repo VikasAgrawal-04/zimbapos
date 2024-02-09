@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
 
@@ -17,6 +18,11 @@ class ItemSelectionState extends Equatable {
   final List<ItemList> addedItems;
   final List<ItemList> itemsById;
   final TempBillRequestModel tableBill;
+  final List<WorkersModel> waiters;
+  final String? waiterId;
+  final String? waiterName;
+  final String? pax;
+  final String? customerId;
   const ItemSelectionState(
       {required this.searchController,
       required this.selectedTile,
@@ -27,7 +33,12 @@ class ItemSelectionState extends Equatable {
       required this.filteredItems,
       required this.addedItems,
       required this.itemsById,
-      required this.tableBill});
+      required this.tableBill,
+      required this.waiters,
+      this.waiterId,
+      this.waiterName,
+      this.pax,
+      this.customerId});
 
   @override
   List<Object?> get props => [
@@ -40,7 +51,12 @@ class ItemSelectionState extends Equatable {
         filteredItems,
         addedItems,
         itemsById,
-        tableBill
+        tableBill,
+        waiters,
+        waiterId,
+        pax,
+        waiterName,
+        customerId
       ];
 
   factory ItemSelectionState.initial() {
@@ -54,7 +70,8 @@ class ItemSelectionState extends Equatable {
         filteredItems: const [],
         addedItems: const [],
         itemsById: const [],
-        tableBill: TempBillRequestModel());
+        tableBill: TempBillRequestModel(),
+        waiters: const []);
   }
 
   ItemSelectionState copyWith(
@@ -67,7 +84,12 @@ class ItemSelectionState extends Equatable {
       List<ItemList>? filteredItems,
       List<ItemList>? itemsById,
       List<ItemList>? addedItems,
-      final TempBillRequestModel? tableBill}) {
+      TempBillRequestModel? tableBill,
+      List<WorkersModel>? waiters,
+      String? waiterId,
+      String? pax,
+      String? waiterName,
+      String? customerId}) {
     return ItemSelectionState(
         searchController: searchController ?? this.searchController,
         selectedTile: selectedTile ?? this.selectedTile,
@@ -78,6 +100,11 @@ class ItemSelectionState extends Equatable {
         filteredItems: filteredItems ?? this.filteredItems,
         addedItems: addedItems ?? this.addedItems,
         itemsById: itemsById ?? this.itemsById,
-        tableBill: tableBill ?? this.tableBill);
+        tableBill: tableBill ?? this.tableBill,
+        waiters: waiters ?? this.waiters,
+        waiterId: waiterId ?? this.waiterId,
+        pax: pax ?? this.pax,
+        waiterName: waiterName ?? this.waiterName,
+        customerId: customerId ?? this.customerId);
   }
 }

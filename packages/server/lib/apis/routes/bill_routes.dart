@@ -18,6 +18,6 @@ class BillRoutes {
     locRoute.get('/get-temp-bill', controller.getBillDetails);
     locRoute.post('/action-temp-bill', controller.createOrUpdateBill);
     locRoute.post('/final-bill', controller.createPermanentBill);
-
+    locRoute.delete('/delete-kot-item', controller.deleteItemFromKot);
   }
 }

@@ -21,6 +21,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
   late List<ItemList> itemsById;
   late List<ItemList> filteredItems;
   late List<ItemList> addedItems;
+
   ItemSelectionCubit()
       : categories = [],
         mainGroups = [],
@@ -41,7 +42,8 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
 
   Future<void> init() async {
     EasyLoading.show(maskType: EasyLoadingMaskType.black);
-    await Future.wait([getCategories(), getMainGroups(), getAllItems()]);
+    await Future.wait(
+        [getCategories(), getMainGroups(), getAllItems(), getWaiters()]);
     EasyLoading.dismiss();
   }
 
@@ -147,6 +149,16 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     }
   }
 
+  Future<void> getWaiters() async {
+    final data = await _repo.getWaiters();
+    data.fold((failure) {
+      debugPrint("Failure in getWaiters ${failure.toString()}");
+    }, (success) {
+      debugPrint("Success In getWaiters $success");
+      emit(state.copyWith(waiters: success));
+    });
+  }
+
   Future<void> placeKot(String tableId) async {
     try {
       //Function Value Calculation
@@ -203,7 +215,7 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       }
 
       const customerId = "123132";
-      const waiterId = "123123";
+      final waiterId = state.waiterId ?? "123123";
       const roundOffAmount = 0.0;
       const pax = 5;
 
@@ -238,6 +250,17 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     }
   }
 
+  Future<void> deleteKotItem(String tableId, String itemId) async {
+    final data = await _repo.deleteKotItem(tableId, itemId);
+    data.fold((failure) {
+      debugPrint("Failure in deleteKotItem ${failure.toString()}");
+    }, (success) {
+      getTempBill(tableId);
+      debugPrint("Success In deleteKotItem $success");
+      EasyLoading.showSuccess(success['data'].toString());
+    });
+  }
+
   //Functions For Item Screen
 
   void changeTile(int index) {
@@ -252,7 +275,9 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     } else {
       allItems.clear();
       for (final item in items) {
-        if (item.itemName.toLowerCase().contains(query.toLowerCase())) {
+        if (item.itemName.toLowerCase().contains(query.toLowerCase()) ||
+            (item.shortcode != null &&
+                item.shortcode.toLowerCase().contains(query.toLowerCase()))) {
           allItems.add(item);
         }
       }
@@ -305,5 +330,38 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     }
     addedItems = updatedAddedItems;
     emit(state.copyWith(addedItems: addedItems));
+  }
+
+  void deleteProduct(ItemList item) {
+    List<ItemList> updatedAddedItems = List.from(addedItems);
+
+    int index = updatedAddedItems
+        .indexWhere((element) => element.itemId == item.itemId);
+    if (index != -1) {
+      updatedAddedItems.removeAt(index);
+    }
+    addedItems = updatedAddedItems;
+    emit(state.copyWith(addedItems: addedItems));
+  }
+
+  void clearKot() {
+    addedItems = [];
+    emit(state.copyWith(addedItems: addedItems));
+  }
+
+  void removeServiceAmount() {
+    emit(state.copyWith(
+        tableBill: TempBillRequestModel(
+            billHeader:
+                state.tableBill.billHeader?.copyWith(serviceChargeAmount: 0.0),
+            billLines: state.tableBill.billLines)));
+  }
+
+  void selectWaiter(String waiterId, String waiterName) {
+    emit(state.copyWith(waiterId: waiterId, waiterName: waiterName));
+  }
+
+  void enterPax(String pax) {
+    emit(state.copyWith(pax: pax));
   }
 }

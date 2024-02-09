@@ -76,8 +76,10 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
-      }, (success) async {
-        if (val == null) await init();
+      }, (success) {
+        if (val == null) {
+          init();
+        }
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {

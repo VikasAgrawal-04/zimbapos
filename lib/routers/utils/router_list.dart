@@ -52,6 +52,8 @@ import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/outlet_setup_screens/outlet_data_setup_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/terminal_set_up_screen.dart';
+import 'package:zimbapos/screens/componant_screens/set_up_screens/config_screens/terminal_set_up_screen/terminal_configure_screen.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/create_table_screen.dart';
 import 'package:zimbapos/screens/componant_screens/table_screens/edit_table_screen.dart';
@@ -519,6 +521,16 @@ final List<GoRoute> routerList = [
     path: AppScreen.settingsOverviewScreen.path,
     builder: (context, state) => const SettingsOverviewScreen(),
   ),
+  GoRoute(
+    name: AppScreen.terminalSetUpScreen.name,
+    path: AppScreen.terminalSetUpScreen.path,
+    builder: (context, state) => const TerminalSetupScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.terminalIdSetUpScreen.name,
+    path: AppScreen.terminalIdSetUpScreen.path,
+    builder: (context, state) => const TerminalConfigureScreen(),
+  ),
 
   //card list
   GoRoute(
@@ -566,7 +578,8 @@ final List<GoRoute> routerList = [
     name: AppScreen.itemsSelectionScreen.name,
     path: AppScreen.itemsSelectionScreen.path,
     builder: (context, state) => ItemSelectionScreen(
-      tableId: state.extra as String,
+      tableId: (state.extra as List)[0] as String,
+      tableName: (state.extra as List)[1] as String,
     ),
   ),
 

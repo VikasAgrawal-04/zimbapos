@@ -42,4 +42,21 @@ class BillApiRepoImpl implements BillApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteKotItem(
+      String tableId, String itemId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.delete, EndPoints.deleteKotItem,
+          queryParams: {"table_id": tableId, "item_id": itemId});
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

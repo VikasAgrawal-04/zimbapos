@@ -7,4 +7,7 @@ abstract class BillApiRepo {
       TempBillRequestModel data);
 
   Future<Either<Failure, TempBillRequestModel>> getTempBill(String tableId);
+
+  Future<Either<Failure, Map<String, dynamic>>> deleteKotItem(
+      String tableId, String itemId);
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
-import 'package:zimbapos/repository/api_repository/api_repo.dart';
-import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
@@ -19,17 +18,10 @@ class CreateCategoryScreen extends StatefulWidget {
 class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final categoryName = TextEditingController();
-  final ApiRepo _repo = ApiRepoImpl();
   @override
   void dispose() {
     categoryName.dispose();
     super.dispose();
-  }
-
-  void createCategory(BuildContext context) {
-    _repo.createCategory(CategoryModel(categoryName: categoryName.text));
-    EasyLoading.showToast('Category Created');
-    context.pop();
   }
 
   @override
@@ -58,9 +50,11 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
         ),
         bottomNavigationBar: CustomButton(
             text: "Save",
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                createCategory(context);
+                await context.read<CategoryScreenCubit>().createCategory(
+                    (CategoryModel(categoryName: categoryName.text)));
+                context.pop();
               }
             }),
       ),

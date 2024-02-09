@@ -72,6 +72,17 @@ enum AppScreen {
   settingsOverviewScreen,
   terminalSetUpScreen,
   terminalIdSetUpScreen,
+  //CRUD screens @ Cards
+  cardListScreen,
+  createCardScreen,
+  editCardScreen,
+  cardActionScreen,
+  //item selection
+  itemsSelectionScreen,
+  //CRUD screens @ Customer
+  customerScreen,
+  createCustomerScreen,
+  editCustomerScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -184,6 +195,22 @@ extension AppScreenExtension on AppScreen {
         return 'Terminal SetUp Screen';
       case AppScreen.terminalIdSetUpScreen:
         return 'Terminal ID Set up Screen';
+      case AppScreen.cardListScreen:
+        return 'Cards Screen';
+      case AppScreen.createCardScreen:
+        return 'Create Card Screen';
+      case AppScreen.editCardScreen:
+        return 'Edit Card Screen';
+      case AppScreen.cardActionScreen:
+        return 'Card Action Screen';
+      case AppScreen.itemsSelectionScreen:
+        return 'Items Selection Screen';
+      case AppScreen.customerScreen:
+        return 'Customer Screen';
+      case AppScreen.createCustomerScreen:
+        return 'Create Customer Screen';
+      case AppScreen.editCustomerScreen:
+        return 'Edit Customer Screen';
     }
   }
 
@@ -296,6 +323,22 @@ extension AppScreenExtension on AppScreen {
         return '/terminal-setup-screen';
       case AppScreen.terminalIdSetUpScreen:
         return '/terminal-id-setup-screen';
+      case AppScreen.cardListScreen:
+        return '/cards-screen';
+      case AppScreen.createCardScreen:
+        return '/create-card-screen';
+      case AppScreen.editCardScreen:
+        return '/edit-card-screen';
+      case AppScreen.cardActionScreen:
+        return '/card-action-screen';
+      case AppScreen.itemsSelectionScreen:
+        return '/items-selection-screen';
+      case AppScreen.customerScreen:
+        return '/customer-screen';
+      case AppScreen.createCustomerScreen:
+        return '/create-customer-screen';
+      case AppScreen.editCustomerScreen:
+        return '/edit-customer-screen';
     }
   }
 }

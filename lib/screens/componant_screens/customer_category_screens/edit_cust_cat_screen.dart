@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/helpers/validators.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_state.dart';
 import '../../../models/global_models/customer_category_model.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
@@ -27,6 +29,7 @@ class _UpdateCustomerCategoryScreenState
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final custCatName = TextEditingController();
   final discount = TextEditingController();
+  String? outletId;
 
   @override
   void initState() {
@@ -34,6 +37,7 @@ class _UpdateCustomerCategoryScreenState
 
     custCatName.text = widget.item.custCategoryName.toString();
     discount.text = widget.item.custCategoryDiscount.toString();
+    outletId = BlocProvider.of<DatabaseCubit>(context).outletId;
   }
 
   @override
@@ -41,23 +45,6 @@ class _UpdateCustomerCategoryScreenState
     custCatName.dispose();
     discount.dispose();
     super.dispose();
-  }
-
-  //update function
-  updateCustomerCat(BuildContext context) {
-    final db = DatabaseCubit.dbFrom(context);
-    db.customerRepository.updateCusCat(
-      data: CustomerCategoryModel(
-        id: widget.item.id,
-        custCategoryName: custCatName.text,
-        custCategoryDiscount: double.parse(
-          discount.text.isEmpty ? '0.0' : discount.text,
-        ),
-      ),
-    );
-
-    EasyLoading.showToast('Customer category Updated');
-    context.pop();
   }
 
   @override
@@ -108,13 +95,30 @@ class _UpdateCustomerCategoryScreenState
             ),
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                updateCustomerCat(context);
-              }
-            }),
+        bottomNavigationBar: BlocBuilder<CustomerCategoryScreenCubit,
+            CustomerCategoryScreenState>(
+          builder: (context, state) {
+            return CustomButton(
+              text: "Save",
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  await context
+                      .read<CustomerCategoryScreenCubit>()
+                      .updateCustomerCategory(
+                        CustomerCategoryModel(
+                          outletId: outletId,
+                          custCategoryId: widget.item.custCategoryId,
+                          custCategoryName: custCatName.text,
+                          custCategoryDiscount: double.parse(discount.text),
+                        ),
+                      );
+
+                  context.pop();
+                }
+              },
+            );
+          },
+        ),
       ),
     );
   }

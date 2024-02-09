@@ -77,6 +77,20 @@ class TableRepository {
     });
   }
 
+  Future<bool>deleteTableApi(String? tableId)async{
+    try{
+      final dbItem = db.tableModels.filter().tableIdEqualTo(tableId).and().isDeletedEqualTo(false).findFirstSync();
+      if(dbItem!=null){
+        dbItem.isDeleted=true;
+        db.writeTxnSync(() => db.tableModels.putSync(dbItem));
+        return true;
+      }else{throw IsarError("Table Does Not Exists");}
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return false;
+    }
+  }
+
   Future<List<TableModel>> fetchTableById(String? id) async {
     try {
       final tables = db.tableModels

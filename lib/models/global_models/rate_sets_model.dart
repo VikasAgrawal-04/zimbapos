@@ -8,7 +8,7 @@ part 'rate_sets_model.g.dart';
 @collection
 class RateSetsModel {
   Id id = Isar.autoIncrement;
-  int? outletId;
+  String? outletId;
   String? ratesetId;
   String? ratesetName;
   bool? isActive;
@@ -25,7 +25,7 @@ class RateSetsModel {
 
   RateSetsModel copyWith({
     Id? id,
-    int? outletId,
+    String? outletId,
     String? ratesetId,
     String? ratesetName,
     bool? isActive,
@@ -55,7 +55,7 @@ class RateSetsModel {
   factory RateSetsModel.fromMap(Map<String, dynamic> map) {
     return RateSetsModel(
       id: map['id'] ?? Isar.autoIncrement,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       ratesetId: map['ratesetId'] != null ? map['ratesetId'] as String : null,
       ratesetName:
           map['ratesetName'] != null ? map['ratesetName'] as String : null,

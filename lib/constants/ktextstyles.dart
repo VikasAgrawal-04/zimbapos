@@ -9,14 +9,14 @@ class KTextStyles {
     fontSize: 24.sp,
     fontWeight: FontWeight.bold,
     color: KColors.white,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
   static TextStyle kBlackAppBarHeader = TextStyle(
     fontSize: 18.sp,
     fontWeight: FontWeight.bold,
     color: KColors.textColor,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
 
@@ -25,7 +25,7 @@ class KTextStyles {
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
     color: KColors.textColor,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
 
@@ -33,7 +33,7 @@ class KTextStyles {
     fontSize: 18.sp,
     fontWeight: FontWeight.w600,
     color: KColors.textColor,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
 
@@ -42,7 +42,7 @@ class KTextStyles {
     fontSize: 16.sp,
     fontWeight: FontWeight.w600,
     color: KColors.textColor,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
   //for subtitles
@@ -50,7 +50,7 @@ class KTextStyles {
     fontSize: 16.sp,
     color: KColors.textColor,
     fontWeight: FontWeight.normal,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
 
@@ -59,7 +59,7 @@ class KTextStyles {
     color: KColors.white,
     fontWeight: FontWeight.w600,
     fontSize: 16.sp,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
 
   //for custom snackbar
@@ -68,14 +68,14 @@ class KTextStyles {
     fontSize: 16.sp,
     color: Colors.white,
     fontWeight: FontWeight.w500,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
   //for snackbar title
   static TextStyle kSnackTitle = TextStyle(
     fontSize: 18.sp,
     color: Colors.white,
     fontWeight: FontWeight.w700,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
   //for custom alert dialog box
   //title
@@ -83,28 +83,28 @@ class KTextStyles {
     fontSize: 18.sp,
     color: Colors.black87,
     fontWeight: FontWeight.w700,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
   //subtitle
   static TextStyle kAlertSubtitle = TextStyle(
     fontSize: 16.sp,
     color: Colors.black87,
     fontWeight: FontWeight.w500,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
   //ok button in alert
   static TextStyle kAlertOkButton = TextStyle(
     fontSize: 16.sp,
     color: Colors.white,
     fontWeight: FontWeight.w700,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
   //cancel button in alert
   static TextStyle kAlertCancelButton = TextStyle(
     fontSize: 16.sp,
     color: KColors.textColor,
     fontWeight: FontWeight.w700,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
 
   //for carousel slider
@@ -113,14 +113,14 @@ class KTextStyles {
     fontSize: 28.sp,
     color: KColors.textColor,
     fontWeight: FontWeight.bold,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
   //sub title
   static TextStyle kCarrTitle = TextStyle(
     fontSize: 22.sp,
     color: KColors.textColor,
     fontWeight: FontWeight.w600,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
   );
 
   //for Nav bar
@@ -129,7 +129,7 @@ class KTextStyles {
     fontSize: 14.sp,
     fontWeight: FontWeight.bold,
     color: KColors.white,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
   //In-active nav text
@@ -137,7 +137,7 @@ class KTextStyles {
     fontSize: 12.sp,
     fontWeight: FontWeight.bold,
     color: KColors.white,
-    fontFamily: "PJS",
+    fontFamily: "DM Sans",
     // Add other properties as needed
   );
 }

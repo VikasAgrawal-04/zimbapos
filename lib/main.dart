@@ -10,13 +10,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_state.dart';
+import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/customer_screen_cubit/customer_screen_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
+import 'package:zimbapos/global/theme/theme.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/system_check_screen.dart';
-import 'constants/kcolors.dart';
+import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import 'bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
+import 'bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,49 +49,59 @@ class MyApp extends StatelessWidget {
     return ResponsiveSizer(
       builder: (context, orientation, screenType) {
         return BlocProvider(
-          create: (context) => DeviceControlCubit(),
-          child: BlocConsumer<DeviceControlCubit, DeviceState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is FinalDeviceState) {
-                print(
-                    'State Main Terminal ${state.mainTerminal}   IP Address ${state.ipAddress}');
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider(
-                      create: (context) => DatabaseCubit(
-                        state.directory,
-                        state.outletId,
+            create: (context) => DeviceControlCubit(),
+            child: BlocConsumer<DeviceControlCubit, DeviceState>(
+              listener: (context, state) {},
+              builder: (context, state) {
+                if (state is FinalDeviceState) {
+                  print(
+                      'State Main Terminal ${state.mainTerminal}   IP Address ${state.ipAddress}');
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => DatabaseCubit(
+                          state.directory,
+                          state.outletId,
+                        ),
                       ),
+                      BlocProvider(
+                          create: (context) => CategoryScreenCubit()..init()),
+                      BlocProvider(
+                        create: (context) => CategoryScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => MainGroupScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => ItemGroupScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => ItemScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) =>
+                            CustomerCategoryScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => CustomerScreenCubit()..init(),
+                      ),
+                    ],
+                    child: BlocBuilder<DatabaseCubit, IsarService?>(
+                      builder: (context, state) {
+                        Server(context: context);
+                        if (state != null) {}
+                        return MaterialApp.router(
+                          theme: ApplicationTheme.lightTheme,
+                          debugShowCheckedModeBanner: false,
+                          routerConfig: AppRouter.router,
+                          builder: EasyLoading.init(),
+                        );
+                      },
                     ),
-                  ],
-                  child: BlocBuilder<DatabaseCubit, IsarService?>(
-                    builder: (context, state) {
-                      Server(context: context);
-                      if (state != null) {}
-                      return MaterialApp.router(
-                        debugShowCheckedModeBanner: false,
-                        routerConfig: AppRouter.router,
-                        builder: EasyLoading.init(),
-                      );
-                    },
-                  ),
-                );
-              } else {
-                return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  theme: ThemeData(
-                    colorScheme:
-                        ColorScheme.fromSeed(seedColor: KColors.buttonColor),
-                    fontFamily: 'PJS',
-                    useMaterial3: true,
-                  ),
-                  home: const SystemCheckScreen(),
-                );
-              }
-            },
-          ),
-        );
+                  );
+                }
+              },
+            ));
       },
     );
   }

@@ -10,7 +10,7 @@ class MainGroupModel {
   String? mainGroupId;
   String? categoryId;
   String? mainGroupName;
-  int? outletId;
+  String? outletId;
   bool? isActive;
   bool? isDeleted;
   MainGroupModel({
@@ -28,7 +28,7 @@ class MainGroupModel {
     String? mainGroupId,
     String? categoryId,
     String? mainGroupName,
-    int? outletId,
+    String? outletId,
     bool? isActive,
     bool? isDeleted,
   }) {
@@ -64,7 +64,7 @@ class MainGroupModel {
           map['categoryId'] != null ? map['categoryId'] as String : null,
       mainGroupName:
           map['mainGroupName'] != null ? map['mainGroupName'] as String : null,
-      outletId: map['outletId'] != null ? map['outletId'] as int : null,
+      outletId: map['outletId'] != null ? map['outletId'] as String : null,
       isActive: map['isActive'] != null ? map['isActive'] as bool : true,
       isDeleted: map['isDeleted'] != null ? map['isDeleted'] as bool : false,
     );

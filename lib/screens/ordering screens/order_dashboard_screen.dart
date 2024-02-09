@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/order_dashboard_cubits/order_dashboard_state.dart';
-import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
+import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
 import '../../constants/ktextstyles.dart';
 
@@ -72,10 +73,9 @@ class _OrderDashboardScreenState extends State<OrderDashboardScreen> {
                                 height: 20.h,
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return const ItemSelectionScreen();
-                                    }));
+                                    context.push(
+                                        AppScreen.itemsSelectionScreen.path,
+                                        extra: table.tableId);
                                   },
                                   child: Card(
                                     elevation: 5,

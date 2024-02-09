@@ -1,8 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_state.dart';
 import 'package:zimbapos/helpers/validators.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 
@@ -50,7 +53,6 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
     final db = DatabaseCubit.dbFrom(context);
     db.tableRepository.updateTable(
       data: TableModel(
-        id: widget.item.id,
         tableName: tableName.text,
         areaId: selectedAreaId,
       ),
@@ -162,22 +164,42 @@ class _UpdateTableScreenState extends State<UpdateTableScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (selectedAreaId != null) {
-                  updateTable(context);
-                } else {
-                  UtillSnackbar.showSnackBar(
-                    context,
-                    title: "Alert",
-                    body: "Please choose a area",
-                    isSuccess: false,
-                  );
-                }
-              }
-            }),
+        bottomNavigationBar: BlocBuilder<TableScreenCubit, TableScreenState>(
+          builder: (context, state) {
+            return CustomButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    if (selectedAreaId != null) {
+                      // updateTable(context);
+                      await context.read<TableScreenCubit>().updateTable(
+                            TableModel(
+                              outletId: widget.item.outletId,
+                              tableId: widget.item.tableId,
+                              tableName: tableName.text,
+                              areaId: selectedAreaId,
+                              customerId: widget.item.customerId,
+                              customerName: widget.item.customerName,
+                              isSplit: widget.item.isSplit,
+                              persons: widget.item.persons,
+                              tableStartedAt: widget.item.tableStartedAt,
+                              tableStatus: widget.item.tableStatus,
+                            ),
+                          );
+
+                      context.pop();
+                    } else {
+                      UtillSnackbar.showSnackBar(
+                        context,
+                        title: "Alert",
+                        body: "Please choose a area",
+                        isSuccess: false,
+                      );
+                    }
+                  }
+                });
+          },
+        ),
       ),
     );
   }

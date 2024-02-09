@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
 
 class ItemSelectionState extends Equatable {
@@ -15,6 +16,7 @@ class ItemSelectionState extends Equatable {
   final List<ItemList> filteredItems;
   final List<ItemList> addedItems;
   final List<ItemList> itemsById;
+  final TempBillRequestModel tableBill;
   const ItemSelectionState(
       {required this.searchController,
       required this.selectedTile,
@@ -24,7 +26,8 @@ class ItemSelectionState extends Equatable {
       required this.items,
       required this.filteredItems,
       required this.addedItems,
-      required this.itemsById});
+      required this.itemsById,
+      required this.tableBill});
 
   @override
   List<Object?> get props => [
@@ -36,7 +39,8 @@ class ItemSelectionState extends Equatable {
         items,
         filteredItems,
         addedItems,
-        itemsById
+        itemsById,
+        tableBill
       ];
 
   factory ItemSelectionState.initial() {
@@ -49,7 +53,8 @@ class ItemSelectionState extends Equatable {
         items: const [],
         filteredItems: const [],
         addedItems: const [],
-        itemsById: const []);
+        itemsById: const [],
+        tableBill: TempBillRequestModel());
   }
 
   ItemSelectionState copyWith(
@@ -61,7 +66,8 @@ class ItemSelectionState extends Equatable {
       List<ItemGroupModel>? itemGroups,
       List<ItemList>? filteredItems,
       List<ItemList>? itemsById,
-      List<ItemList>? addedItems}) {
+      List<ItemList>? addedItems,
+      final TempBillRequestModel? tableBill}) {
     return ItemSelectionState(
         searchController: searchController ?? this.searchController,
         selectedTile: selectedTile ?? this.selectedTile,
@@ -71,6 +77,7 @@ class ItemSelectionState extends Equatable {
         items: items ?? this.items,
         filteredItems: filteredItems ?? this.filteredItems,
         addedItems: addedItems ?? this.addedItems,
-        itemsById: itemsById ?? this.itemsById);
+        itemsById: itemsById ?? this.itemsById,
+        tableBill: tableBill ?? this.tableBill);
   }
 }

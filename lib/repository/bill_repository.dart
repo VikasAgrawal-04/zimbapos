@@ -2,6 +2,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
+import 'package:zimbapos/models/global_models/permanent_bill_header_model.dart';
+import 'package:zimbapos/models/global_models/permanent_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_lines_model.dart';
 
@@ -9,7 +11,7 @@ class BillRepository {
   Isar db;
   BillRepository(this.db);
 
-  Future<Tuple2<TempBillHeaderModel?, List<TempBillLines>>> getBill(
+  Future<Tuple2<TempBillHeaderModel?, List<TempBillLines>>> getTempBill(
       {required String tableId}) async {
     try {
       final billHeader = db.tempBillHeaderModels
@@ -32,7 +34,7 @@ class BillRepository {
     }
   }
 
-  Future<Tuple2<bool, String>> createOrUpdateBill(
+  Future<Tuple2<bool, String>> createOrUpdateTempBill(
       {required TempBillHeaderModel header,
       required List<TempBillLines> lines}) async {
     try {
@@ -45,13 +47,13 @@ class BillRepository {
             .filter()
             .billIdEqualTo(billExists.billId)
             .findAllSync();
-        return updateNewBill(
+        return updateTempBill(
             header: header,
             lines: lines,
             existingBillHeader: billExists,
             existingBillLines: existingLines);
       } else {
-        return createNewBill(header: header, lines: lines);
+        return createNewTempBill(header: header, lines: lines);
       }
     } on IsarError catch (error) {
       debugPrint(error.message);
@@ -59,7 +61,7 @@ class BillRepository {
     }
   }
 
-  Future<Tuple2<bool, String>> createNewBill(
+  Future<Tuple2<bool, String>> createNewTempBill(
       {required TempBillHeaderModel header,
       required List<TempBillLines> lines}) async {
     try {
@@ -69,11 +71,11 @@ class BillRepository {
       header.billStartDateTime = DateTime.now().toIso8601String();
 
       //Bill Lines
-      lines.map((e) => e.billId = billGenId);
-      lines.fold(
-          1,
-          (previousValue, element) =>
-              previousValue + (element.linePosition ?? 0));
+      int i = 1;
+      for (final item in lines) {
+        item.billId = billGenId;
+        item.linePosition = i++;
+      }
 
       db.writeTxnSync(() {
         db.tempBillHeaderModels.putSync(header);
@@ -86,13 +88,13 @@ class BillRepository {
     }
   }
 
-  Future<Tuple2<bool, String>> updateNewBill(
+  Future<Tuple2<bool, String>> updateTempBill(
       {required TempBillHeaderModel header,
       required List<TempBillLines> lines,
       required TempBillHeaderModel existingBillHeader,
       required List<TempBillLines> existingBillLines}) async {
     try {
-      final lastLinePos = existingBillLines.last.linePosition ?? 1;
+      int lastLinePos = existingBillLines.last.linePosition ?? 1;
       existingBillHeader.totalExTax =
           (existingBillHeader.totalExTax ?? 0.0) + (header.totalExTax ?? 0.0);
 
@@ -121,10 +123,10 @@ class BillRepository {
 
       existingBillHeader.pax = header.pax;
 
-      lines.fold(
-          lastLinePos,
-          (previousValue, element) =>
-              previousValue + (element.linePosition ?? 0));
+      for (final line in lines) {
+        line.billId = existingBillHeader.billId;
+        line.linePosition = ++lastLinePos;
+      }
 
       db.writeTxnSync(() {
         db.tempBillHeaderModels.putSync(existingBillHeader);
@@ -134,6 +136,51 @@ class BillRepository {
       return const Tuple2(true, 'Bill Updated');
     } on IsarError catch (error) {
       debugPrint(error.message);
+      return Tuple2(false, error.message);
+    }
+  }
+
+  /// @template app
+  /// This will work only if the payment is done.
+  /// @endtemplate
+  Future<Tuple2<bool, String>> createPermanentBill(
+      {required String tableId}) async {
+    try {
+      final tempBillHeader = db.tempBillHeaderModels
+          .filter()
+          .tableIdEqualTo(tableId)
+          .findFirstSync();
+      if (tempBillHeader == null) {
+        throw IsarError("Bill Not Found!");
+      } else {
+        final existingBill = db.permanentBillHeaderModels
+            .filter()
+            .billIdEqualTo(tempBillHeader.billId)
+            .findFirstSync();
+        if (existingBill == null) {
+          final tempItemLines = db.tempBillLines
+              .filter()
+              .billIdEqualTo(tempBillHeader.billId)
+              .findAllSync();
+
+          // Creating Permanent Bill Headers and Permament Bill Lines
+          db.writeTxnSync(() {
+            db.permanentBillHeaderModels.putSync(
+                PermanentBillHeaderModel.fromJson(tempBillHeader.toMap()));
+            db.permanentBillLinesModels.putAllSync(tempItemLines
+                .map((e) => PermanentBillLinesModel.fromJson(e.toMap()))
+                .toList());
+            db.tempBillHeaderModels.deleteSync(tempBillHeader.id);
+            db.tempBillLines
+                .deleteAllSync(tempItemLines.map((e) => e.id).toList());
+          });
+          return const Tuple2(true, "Permanent Bill Saved");
+        } else {
+          throw IsarError("Bill Already Generated");
+        }
+      }
+    } on IsarError catch (error) {
+      debugPrint(error.toString());
       return Tuple2(false, error.message);
     }
   }

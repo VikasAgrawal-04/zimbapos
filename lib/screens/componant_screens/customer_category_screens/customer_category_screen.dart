@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
+import '../../../bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_state.dart';
 import '../../../constants/ktextstyles.dart';
-import '../../../widgets/my_alert_widget.dart';
+import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../widgets/indicators/loading_indicator.dart';
 
 class CustomerCategoryScreen extends StatefulWidget {
   const CustomerCategoryScreen({super.key});
@@ -18,48 +20,26 @@ class CustomerCategoryScreen extends StatefulWidget {
 }
 
 class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
-  Stream<List<CustomerCategoryModel>> custCatStream() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.customerRepository.streamCustCat();
+  //
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
   }
 
-  // toggleFn(int id, bool value) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.customerRepository.changeActive(id, value);
-  // }
-
-  // deleteFn(int id) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.customerRepository.deleteCusCat(id);
-  // }
-
-  deleteWorker(CustomerCategoryModel e) {
-    UtilDialog.showMyDialog(
-      context,
-      "Alert",
-      "Do you want to delete '${e.custCategoryName}'?",
-      //this is for ok button
-      () {
-        final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.customerRepository.deleteCusCat(e.custCategoryId);
-        EasyLoading.showToast('Customer category deleted');
-        context.pop();
-      },
-      // this is for cancel button sending null will perform default pop() action
-      null,
-    );
-  }
-
-  activeDeactivateWorkers(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.customerRepository.changeActive(id, value);
-  }
-
-  editWorkerFn({required CustomerCategoryModel model}) {
+  editCusCatFn({required CustomerCategoryModel model}) {
     context.push(
       AppScreen.editCustomerCategory.path,
       extra: model,
     );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -85,13 +65,16 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
             ),
           ],
         ),
-        body: StreamBuilder<List<CustomerCategoryModel>>(
-          stream: custCatStream(),
-          builder: (context, snapshot) {
-            final data = snapshot.data;
-            if (data == null || data.isEmpty) {
+        body: BlocBuilder<CustomerCategoryScreenCubit,
+            CustomerCategoryScreenState>(
+          builder: ((context, state) {
+            final data = state.customerCategories;
+            if (state.status == Status.loading) {
+              return const MyLoadingIndicator();
+            }
+            if (data.isEmpty) {
               return const Center(
-                child: Text('No Category'),
+                child: Text('No Customer Categories'),
               );
             } else {
               return SizedBox(
@@ -102,9 +85,6 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                     const DataColumn(
                       label: Text('Name'),
                     ),
-                    // const DataColumn(
-                    //   label: Text('Role'),
-                    // ),
                     const DataColumn(
                       label: Text('Active'),
                     ),
@@ -125,10 +105,12 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                             )),
                             DataCell(
                               Switch.adaptive(
-                                value: e.isActive as bool,
-                                onChanged: (va) =>
-                                    activeDeactivateWorkers(e.id, va),
-                              ),
+                                  value: e.isActive as bool,
+                                  onChanged: (va) {
+                                    context
+                                        .read<CustomerCategoryScreenCubit>()
+                                        .updateCustomerCategory(e, val: va);
+                                  }),
                             ),
                             DataCell(
                               Container(
@@ -139,12 +121,15 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      onPressed: () => editWorkerFn(model: e),
+                                      onPressed: () => editCusCatFn(model: e),
                                       icon: const Icon(Icons.edit),
                                     ),
                                     SizedBox(width: 2.w),
                                     IconButton(
-                                      onPressed: () => deleteWorker(e),
+                                      onPressed: () => context
+                                          .read<CustomerCategoryScreenCubit>()
+                                          .deleteCustomerCategory(
+                                              e.custCategoryId.toString()),
                                       icon: const Icon(CupertinoIcons.delete),
                                     )
                                   ],
@@ -157,60 +142,56 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                       .toList(),
                 ),
               );
-              // ListView.builder(
-              //     itemCount: data.length,
-              //     itemBuilder: (context, index) {
-              //       final rawData = data[index];
-              //       return ListTile(
-              //         title: Text(rawData.custCategoryName ?? "Category Name"),
-              //         subtitle: Column(
-              //           mainAxisAlignment: MainAxisAlignment.start,
-              //           crossAxisAlignment: CrossAxisAlignment.start,
-              //           children: [
-              //             //discount
-              //             Text(
-              //                 "Discount: ${rawData.custCategoryDiscount ?? '0.0'}%"),
-              //             //status
-              //             Text((rawData.isActive ?? false)
-              //                 ? 'Active'
-              //                 : "InActive"),
-              //           ],
-              //         ),
-              //         trailing: Row(
-              //           mainAxisSize: MainAxisSize.min,
-              //           children: [
-              //             IconButton(
-              //               onPressed: () => context.push(
-              //                 AppScreen.editCustomerCategory.path,
-              //                 //passing data to edit screen
-              //                 extra: data[index],
-              //               ),
-              //               icon: const Icon(
-              //                 Icons.edit,
-              //                 size: 30,
-              //               ),
-              //             ),
-              //             SizedBox(width: 2.w),
-              //             IconButton(
-              //               onPressed: () => deleteFn(rawData.id),
-              //               icon: const Icon(
-              //                 Icons.delete,
-              //                 size: 30,
-              //               ),
-              //             ),
-              //             SizedBox(width: 2.w),
-              //             Switch.adaptive(
-              //               value: rawData.isActive ?? false,
-              //               onChanged: (value) => toggleFn(rawData.id, value),
-              //             ),
-              //           ],
-              //         ),
-              //       );
-              //     });
             }
-          },
+          }),
         ),
       ),
     );
+    // Column(
+    //   children: [
+    //     //search
+    //     Padding(
+    //       padding: const EdgeInsets.all(8),
+    //       child: PrimaryTextField(
+    //         controller: _searchController,
+    //         onChanged: (value) {
+    //           setState(() {});
+    //         },
+    //         hintText: "Search by name",
+    //         prefixIcon: const Icon(Icons.search),
+    //       ),
+    //     ),
+    //     //stream
+    //     StreamBuilder<List<CustomerCategoryModel>>(
+    //       stream: custCatStream(),
+    //       builder: (context, snapshot) {
+    //         final data = snapshot.data;
+    //         final filteredList = _searchController.text.isEmpty
+    //             ? data
+    //             : data!.where((card) {
+    //                 final name = card.custCategoryName ?? '';
+    //                 return name.toLowerCase().contains(
+    //                       _searchController.text.toLowerCase(),
+    //                     );
+    //               }).toList();
+
+    //         if (filteredList == null || filteredList.isEmpty) {
+    //           return const Center(
+    //             child: Text('No customer category found'),
+    //           );
+    //         }
+    //         if (data == null || data.isEmpty) {
+    //           return const Center(
+    //             child: Text('No customer categorues available'),
+    //           );
+    //         } else {
+
+    //         }
+    //       },
+    //     ),
+    //   ],
+    // ),
+    // ),
+    // );
   }
 }

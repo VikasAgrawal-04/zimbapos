@@ -1,0 +1,106 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:zimbapos/models/global_models/customer_category_model.dart';
+import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
+
+import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../repository/api_repository/api_repo.dart';
+import 'customer_category_screen_state.dart';
+
+class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
+  final ApiRepo _repo = ApiRepoImpl();
+
+  CustomerCategoryScreenCubit() : super(CustomerCategoryScreenState.initial());
+
+  @override
+  Future<void> close() {
+    state.props.clear();
+    return super.close();
+  }
+
+  Future<void> init() async {
+    emit(state.copyWith(status: Status.loading));
+    await getCustomerCategories();
+    emit(state.copyWith(status: Status.success));
+  }
+
+  Future<void> getCustomerCategories() async {
+    try {
+      final data = await _repo.getCustomerCategories();
+      data.fold((failure) {
+        debugPrint(failure.toString());
+        emit(state.copyWith(customerCategories: []));
+      }, (success) {
+        emit(state.copyWith(customerCategories: success));
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  Future<void> createCustomerCategories(CustomerCategoryModel item) async {
+    try {
+      final data = await _repo.createCustomerCategories(item);
+      data.fold((failure) {
+        debugPrint(failure.toString());
+        EasyLoading.showError(failure.toString());
+      }, (success) {
+        init();
+        EasyLoading.showSuccess(success["data"]);
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  Future<void> updateCustomerCategory(CustomerCategoryModel item,
+      {bool? val}) async {
+    //For State Management & Instant Reflection
+    if (val != null) {
+      List<CustomerCategoryModel> updatedList =
+          List.from(state.customerCategories);
+      final index = updatedList.indexWhere(
+          (element) => element.custCategoryId == item.custCategoryId);
+      updatedList[index] = updatedList[index].copyWith(isActive: val);
+      emit(state.copyWith(customerCategories: updatedList));
+      item.isActive = val;
+    }
+
+    try {
+      final data = await _repo.updateCustomerCategory(item);
+      data.fold((failure) {
+        debugPrint(failure.toString());
+        EasyLoading.showError(failure.toString());
+      }, (success) {
+        if (val == false) {
+          init();
+        }
+        EasyLoading.showSuccess(success["data"]);
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  Future<void> deleteCustomerCategory(String id) async {
+    try {
+      EasyLoading.show();
+      final res = await _repo.deleteCustomerCategory(id);
+      res.fold((failure) {
+        debugPrint(failure.toString());
+        EasyLoading.showError(failure.toString());
+      }, (success) {
+        init();
+        EasyLoading.showSuccess(success['data']);
+        debugPrint(success.toString());
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+}

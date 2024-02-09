@@ -49,7 +49,7 @@ class ItemList {
   bool isDeleted;
   Tax tax;
   int quantity;
-  MainGroupDetails? mainGroupDetails;
+  MainGroupDetails mainGroupDetails;
 
   ItemList({
     required this.id,
@@ -70,7 +70,7 @@ class ItemList {
     required this.isActive,
     required this.isDeleted,
     required this.tax,
-    this.mainGroupDetails,
+    required this.mainGroupDetails,
     this.quantity = 0,
   });
 
@@ -93,9 +93,7 @@ class ItemList {
         isActive: json["isActive"],
         isDeleted: json["isDeleted"],
         tax: Tax.fromJson(json["tax"]),
-        mainGroupDetails: json["main_group_details"] == null
-            ? null
-            : MainGroupDetails.fromJson(json["main_group_details"]),
+        mainGroupDetails: MainGroupDetails.fromJson(json["main_group_details"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -117,30 +115,30 @@ class ItemList {
         "isActive": isActive,
         "isDeleted": isDeleted,
         "tax": tax.toJson(),
-        "main_group_details": mainGroupDetails?.toJson(),
+        "main_group_details": mainGroupDetails.toJson(),
       };
 
-  ItemList copyWith({
-    int? id,
-    String? itemId,
-    String? itemName,
-    String? itemGroupId,
-    String? foodType,
-    bool? isAlcohol,
-    double? itemRate,
-    String? taxId,
-    dynamic rateWithTax,
-    bool? isOpenItem,
-    dynamic barcode,
-    dynamic shortcode,
-    bool? isWeightItem,
-    dynamic hsnCode,
-    dynamic imgLink,
-    bool? isActive,
-    bool? isDeleted,
-    Tax? tax,
-    int? quantity,
-  }) {
+  ItemList copyWith(
+      {int? id,
+      String? itemId,
+      String? itemName,
+      String? itemGroupId,
+      String? foodType,
+      bool? isAlcohol,
+      double? itemRate,
+      String? taxId,
+      dynamic rateWithTax,
+      bool? isOpenItem,
+      dynamic barcode,
+      dynamic shortcode,
+      bool? isWeightItem,
+      dynamic hsnCode,
+      dynamic imgLink,
+      bool? isActive,
+      bool? isDeleted,
+      Tax? tax,
+      int? quantity,
+      MainGroupDetails? mainGroupDetails}) {
     return ItemList(
       id: id ?? this.id,
       itemId: itemId ?? this.itemId,
@@ -161,6 +159,7 @@ class ItemList {
       isDeleted: isDeleted ?? this.isDeleted,
       tax: tax ?? this.tax,
       quantity: quantity ?? this.quantity,
+      mainGroupDetails: mainGroupDetails ?? this.mainGroupDetails,
     );
   }
 }

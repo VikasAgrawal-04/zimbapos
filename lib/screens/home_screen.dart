@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +13,6 @@ import 'package:zimbapos/constants/ktextstyles.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/home_screen_widgets/home_screen_drawer.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
@@ -116,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final deviceId = await Helpers.fetchDeviceId();
-      print("deviceId $deviceId");
+      log("deviceId $deviceId");
     });
   }
 
@@ -269,11 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           margin: EdgeInsets.symmetric(vertical: 1.h),
                           text: 'Ordering Dashboard',
                           onTap: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return const OrderDashboardScreen();
-                            }));
-                            // context.push(AppScreen.orderDashboardScreen.path);
+                            context.push(AppScreen.orderDashboardScreen.path);
                           },
                         )
                       ],
@@ -295,14 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
         style: KTextStyles.kBlackAppBarHeader,
       ),
       actions: [
-        // IconButton(
-        //   onPressed: () {
-        //     // context.push(AppScreen.vendorScreen.path);
-        //     context.push(AppScreen.expenseCategoryScreen.path);
-        //     // context.push(AppScreen.expensesScreen.path);
-        //   },
-        //   icon: const Icon(Icons.open_in_new_outlined),
-        // ),
         BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             return AnimatedOpacity(
@@ -416,55 +405,11 @@ List<HomeShortcutModel> screenList = [
     path: AppScreen.itemGroupScreen.path,
     userId: '123123',
   ),
+  HomeShortcutModel(
+    title: 'Cards Screen',
+    path: AppScreen.cardListScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+      title: 'Customers', path: AppScreen.customerScreen.path, userId: '123123')
 ];
-
-// class Body extends StatelessWidget {
-//   const Body({
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Center(
-//       child: Column(
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.rateSetScreen.path),
-//             child: const Text('Rate Sets'),
-//           ),
-//           SizedBox(height: 2.h),
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.tableScreen.path),
-//             child: const Text('Tables'),
-//           ),
-//           SizedBox(height: 2.h),
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.customerCategory.path),
-//             child: const Text('Customer Category'),
-//           ),
-//           SizedBox(height: 2.h),
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.initialSetUpScreen.path),
-//             child: const Text('Intro Screen'),
-//           ),
-//           SizedBox(height: 2.h),
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.workerOverviewScreen.path),
-//             child: const Text('Worker Screen'),
-//           ),
-//           SizedBox(height: 2.h),
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.category.path),
-//             child: const Text('Category'),
-//           ),
-//           //areas
-//           ElevatedButton(
-//             onPressed: () => context.push(AppScreen.areasScreen.path),
-//             child: const Text('Areas'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

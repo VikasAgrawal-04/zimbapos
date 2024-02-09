@@ -12,7 +12,6 @@ class WorkersModel {
   String createdByUserID;
   String outletId;
 
-  
   String workerRole;
 
   @Index(unique: true)
@@ -75,7 +74,7 @@ class WorkersModel {
   String workerRoleDisplay(String value) {
     switch (value) {
       case 'W':
-        return 'Worker';
+        return 'Waiter';
       case 'C':
         return 'Caption';
       case 'D':
@@ -83,7 +82,7 @@ class WorkersModel {
       case 'S':
         return "Steward";
       default:
-        return 'Worker';
+        return 'Waiter';
     }
   }
 
@@ -94,7 +93,7 @@ class WorkersModel {
       'workerName': workerName,
       'createdByUserID': createdByUserID,
       'outletId': outletId,
-      'workerRole': workerRole,
+      'workerRole': workerRoleDisplay(workerRole),
       'mobile': mobile,
       'canLoginIntoApp': canLoginIntoApp,
       'loginCode': loginCode,

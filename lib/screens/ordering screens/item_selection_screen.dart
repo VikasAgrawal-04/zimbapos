@@ -8,7 +8,8 @@ import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
 
 class ItemSelectionScreen extends StatefulWidget {
-  const ItemSelectionScreen({super.key});
+  final String tableId;
+  const ItemSelectionScreen({required this.tableId, super.key});
 
   @override
   State<ItemSelectionScreen> createState() => _ItemSelectionScreenState();
@@ -17,8 +18,9 @@ class ItemSelectionScreen extends StatefulWidget {
 class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
     return BlocProvider<ItemSelectionCubit>(
-      create: (context) => ItemSelectionCubit(),
+      create: (context) => ItemSelectionCubit()..getTempBill(widget.tableId),
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
@@ -28,9 +30,9 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
           builder: (context, state) {
             return Row(
               children: [
-                groupTab(context, state),
-                searchAndItemTab(context, state),
-                detailsTab(context, state)
+                groupTab(context, state,theme),
+                searchAndItemTab(context, state,theme),
+                detailsTab(context, state,theme)
               ],
             );
           },
@@ -39,7 +41,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget groupTab(BuildContext context, ItemSelectionState state) {
+  Widget groupTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(border: Border.all()),
@@ -99,7 +101,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget searchAndItemTab(BuildContext context, ItemSelectionState state) {
+  Widget searchAndItemTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
     return Expanded(
       flex: 2,
       child: Padding(
@@ -150,7 +152,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                               child: Container(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: .5.w),
-                                  child: Center(child: Text(item.itemName))))
+                                  child: Center(child: Text(item.itemName,style: theme.displayMedium,))))
                         ],
                       ),
                     ),
@@ -164,7 +166,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
     );
   }
 
-  Widget detailsTab(BuildContext context, ItemSelectionState state) {
+  Widget detailsTab(BuildContext context, ItemSelectionState state,TextTheme theme) {
     return Expanded(
       flex: 2,
       child: Container(
@@ -203,7 +205,11 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                               vertical: .5.h, horizontal: 1.w),
                           width: 12.w,
                           text: 'Save KOT',
-                          onTap: () {},
+                          onTap: () async {
+                            await context
+                                .read<ItemSelectionCubit>()
+                                .placeKot(widget.tableId);
+                          },
                         )
                       ],
                     ),
@@ -242,39 +248,100 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen> {
                                       child:
                                           Text(addedItem.itemRate.toString()))),
                               Expanded(
-                                  child: Row(children: [
-                                Expanded(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        context
-                                            .read<ItemSelectionCubit>()
-                                            .onItemClick(
-                                                action: OnClick.subtract,
-                                                item: addedItem);
-                                      },
-                                      icon: const Icon(CupertinoIcons.minus)),
-                                ),
-                                Expanded(
-                                    child: Center(
-                                        child: Text(
-                                            addedItem.quantity.toString()))),
-                                Expanded(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        context
-                                            .read<ItemSelectionCubit>()
-                                            .onItemClick(
-                                                action: OnClick.add,
-                                                item: addedItem);
-                                      },
-                                      icon: const Icon(CupertinoIcons.add)),
-                                ),
-                              ])),
+                                child: Row(children: [
+                                  Expanded(
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ItemSelectionCubit>()
+                                              .onItemClick(
+                                                  action: OnClick.subtract,
+                                                  item: addedItem);
+                                        },
+                                        icon: const Icon(CupertinoIcons.minus)),
+                                  ),
+                                  Expanded(
+                                      child: Center(
+                                          child: Text(
+                                              addedItem.quantity.toString()))),
+                                  Expanded(
+                                    child: IconButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ItemSelectionCubit>()
+                                              .onItemClick(
+                                                  action: OnClick.add,
+                                                  item: addedItem);
+                                        },
+                                        icon: const Icon(CupertinoIcons.add)),
+                                  ),
+                                ]),
+                              ),
                               Expanded(
                                 child: Center(
                                   child: Text(
                                       (addedItem.quantity * addedItem.itemRate)
                                           .toString()),
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
+                  )
+                ],
+              ),
+            ),
+            Container(
+              height: 25.h,
+              decoration: BoxDecoration(border: Border.all()),
+              child: Column(
+                children: [
+                  Container(
+                    width: 100.w,
+                    decoration: BoxDecoration(border: Border.all()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'KOTs',
+                          style: TextStyle(
+                              color: Colors.purple,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.sp),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: (state.tableBill.billLines ?? []).length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final billItem = state.tableBill.billLines?[index];
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                  child: Center(
+                                      child: Text(
+                                billItem?.itemName ?? "--",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ))),
+                              Expanded(
+                                  child: Center(
+                                      child: Text(
+                                          billItem?.priceExTax.toString() ??
+                                              "--"))),
+                              Expanded(
+                                  child: Center(
+                                      child: Text(
+                                          billItem?.quantity.toString() ??
+                                              "--"))),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                      billItem?.lineTotal.toString() ?? "--"),
                                 ),
                               ),
                             ],

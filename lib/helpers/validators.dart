@@ -33,12 +33,24 @@ String? nullCheckValidator(String? text) {
 }
 
 String? integerValidator(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'This field is required';
+  }
   //to check if the entered value contains only numeric characters
   if (!RegExp(r'^[0-9]+$').hasMatch(value.toString())) {
     return 'Must contain only numbers';
   }
-  if (value == null && value!.isEmpty) {
+
+  return null;
+}
+
+String? doubleValidator(String? value) {
+  if (value == null || value.isEmpty) {
     return 'This field is required';
+  }
+  //to check if the entered value contains only numeric characters
+  if (!RegExp(r'^[0-9]+(\.[0-9]+)?$').hasMatch(value.toString())) {
+    return 'Must contain only numbers';
   }
 
   return null;

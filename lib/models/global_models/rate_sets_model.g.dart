@@ -35,7 +35,7 @@ const RateSetsModelSchema = CollectionSchema(
     r'outletId': PropertySchema(
       id: 3,
       name: r'outletId',
-      type: IsarType.long,
+      type: IsarType.string,
     ),
     r'ratesetId': PropertySchema(
       id: 4,
@@ -69,6 +69,12 @@ int _rateSetsModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.ratesetId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -92,7 +98,7 @@ void _rateSetsModelSerialize(
   writer.writeLong(offsets[0], object.hashCode);
   writer.writeBool(offsets[1], object.isActive);
   writer.writeBool(offsets[2], object.isDeleted);
-  writer.writeLong(offsets[3], object.outletId);
+  writer.writeString(offsets[3], object.outletId);
   writer.writeString(offsets[4], object.ratesetId);
   writer.writeString(offsets[5], object.ratesetName);
 }
@@ -107,7 +113,7 @@ RateSetsModel _rateSetsModelDeserialize(
     id: id,
     isActive: reader.readBoolOrNull(offsets[1]),
     isDeleted: reader.readBoolOrNull(offsets[2]),
-    outletId: reader.readLongOrNull(offsets[3]),
+    outletId: reader.readStringOrNull(offsets[3]),
     ratesetId: reader.readStringOrNull(offsets[4]),
     ratesetName: reader.readStringOrNull(offsets[5]),
   );
@@ -128,7 +134,7 @@ P _rateSetsModelDeserializeProp<P>(
     case 2:
       return (reader.readBoolOrNull(offset)) as P;
     case 3:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
@@ -419,49 +425,58 @@ extension RateSetsModelQueryFilter
   }
 
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
-      outletIdEqualTo(int? value) {
+      outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
       outletIdGreaterThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
       outletIdLessThan(
-    int? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'outletId',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
       outletIdBetween(
-    int? lower,
-    int? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -470,6 +485,77 @@ extension RateSetsModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<RateSetsModel, RateSetsModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -983,9 +1069,10 @@ extension RateSetsModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<RateSetsModel, RateSetsModel, QDistinct> distinctByOutletId() {
+  QueryBuilder<RateSetsModel, RateSetsModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'outletId');
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
@@ -1030,7 +1117,7 @@ extension RateSetsModelQueryProperty
     });
   }
 
-  QueryBuilder<RateSetsModel, int?, QQueryOperations> outletIdProperty() {
+  QueryBuilder<RateSetsModel, String?, QQueryOperations> outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });

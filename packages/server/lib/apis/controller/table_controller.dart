@@ -89,9 +89,16 @@ class TableController {
       if (request.url.queryParameters.isEmpty) {
         return badArguments('Please Enter Table Id as a key tableId');
       }
-      final tableId = request.url.queryParameters['id'];
-      dbCubit.tableRepository.deleteTable(int.parse(tableId.toString()));
-      return Response.ok(jsonEncode({'data': 'Table Deleted!'}));
+      final tableId = request.url.queryParameters['tableId'];
+      if (tableId == null) {
+        return badArguments('Please Enter Table Id as a key tableId');
+      }
+      final success =await dbCubit.tableRepository.deleteTableApi(tableId);
+      if(success){
+        return okResponse("Table Deleted");
+      }else{
+        return invalidResponse();
+      }
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

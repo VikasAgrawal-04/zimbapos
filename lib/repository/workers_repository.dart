@@ -15,10 +15,24 @@ class WorkerRepository {
   }
 
   Future<List<WorkersModel>> getWokers() async {
-    return db.workersModels.filter().isDeletedEqualTo(false).findAll();
+    return db.workersModels.filter().isDeletedEqualTo(false).findAllSync();
   }
 
-  createWorker({required WorkersModel model}) {
+  Future<List<WorkersModel>> getAllWaiters() async {
+    try {
+      return db.workersModels
+          .filter()
+          .workerRoleEqualTo("W")
+          .and()
+          .isDeletedEqualTo(false)
+          .findAllSync();
+    } on IsarError catch (error) {
+      debugPrint(error.message);
+      return [];
+    }
+  }
+
+  Future<bool> createWorker({required WorkersModel model}) async {
     try {
       final existingWorkerByMobile =
           db.workersModels.filter().mobileEqualTo(model.mobile).findFirstSync();
@@ -40,7 +54,7 @@ class WorkerRepository {
     }
   }
 
-  editWorker({required WorkersModel model}) async {
+  Future<bool> editWorker({required WorkersModel model}) async {
     try {
       WorkersModel? dbItem = await db.workersModels
           .filter()
@@ -75,21 +89,26 @@ class WorkerRepository {
         }
         dbItem = model;
         db.writeTxnSync(() => db.workersModels.putSync(dbItem!));
+        return true;
+      } else {
+        throw IsarError("Worker Does Not Exist");
       }
-      return true;
     } on IsarError catch (error) {
       debugPrint(error.message);
       return false;
     }
   }
 
-  Future deleteWorker(String? id) async {
+  Future<bool> deleteWorker(String? id) async {
     try {
       final model =
           await db.workersModels.filter().workerIdEqualTo(id).findFirst();
       if (model != null) {
         model.isDeleted = true;
         db.writeTxnSync(() => db.workersModels.putSync(model));
+        return true;
+      } else {
+        throw IsarError("Worker Does Not Exist");
       }
     } on IsarError catch (error) {
       debugPrint(error.message);

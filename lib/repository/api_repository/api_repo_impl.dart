@@ -2,16 +2,25 @@ import 'package:dartz/dartz.dart';
 import 'package:zimbapos/global/error/failures.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/models/global_models/category_model.dart';
+import 'package:zimbapos/models/global_models/customer_category_model.dart';
+import 'package:zimbapos/models/global_models/customer_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
+import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
+import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/bills/bill_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/bills/bill_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/category/category_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/category/category_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/customer/customer_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/customer_category/customer_category_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/customer_category/customer_category_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
@@ -23,6 +32,8 @@ import 'package:zimbapos/repository/api_repository/table/table_api_repo_impl.dar
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
+import 'customer/customer_api_repo.dart';
+
 class ApiRepoImpl implements ApiRepo {
   final AreaApiRepo _areaApiRepo;
   final TableApiRepo _tableApiRepo;
@@ -31,6 +42,9 @@ class ApiRepoImpl implements ApiRepo {
   final ItemGroupApiRepo _itemGroupApiRepo;
   final ItemApiRepo _itemApiRepo;
   final WorkerApiRepo _workerApiRepo;
+  final BillApiRepo _billApiRepo;
+  final CustomerCategoryApiRepo _customerCategoryApiRepo;
+  final CustomerApiRepo _customerApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -39,7 +53,10 @@ class ApiRepoImpl implements ApiRepo {
         _workerApiRepo = WorkerApiRepoImpl(),
         _mainGroupApiRepo = MainGroupApiRepoImpl(),
         _itemGroupApiRepo = ItemGroupApiRepoImpl(),
-        _itemApiRepo = ItemApiRepoImpl();
+        _itemApiRepo = ItemApiRepoImpl(),
+        _billApiRepo = BillApiRepoImpl(),
+        _customerCategoryApiRepo = CustomerCategoryApiRepoImpl(),
+        _customerApiRepo = CustomerApiRepoImpl();
 
   @override
   Future<Either<Failure, List<AreasModel>>> getAreas() {
@@ -102,5 +119,153 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updateCategory(
       CategoryModel data) {
     return _categoryApiRepo.updateCategory(data);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createKot(
+      TempBillRequestModel data) {
+    return _billApiRepo.createKot(data);
+  }
+
+  @override
+  Future<Either<Failure, List<CustomerCategoryModel>>> getCustomerCategories() {
+    return _customerCategoryApiRepo.getCustomerCategories();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createCustomerCategories(
+      CustomerCategoryModel item) {
+    return _customerCategoryApiRepo.createCustomerCategories(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCustomerCategory(
+      CustomerCategoryModel item) {
+    return _customerCategoryApiRepo.updateCustomerCategory(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCustomerCategory(
+      String customerCategoryId) {
+    return _customerCategoryApiRepo.deleteCustomerCategory(customerCategoryId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createCustomer(
+      CustomerModel item) {
+    return _customerApiRepo.createCustomer(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteCustomer(
+      String customerId) {
+    return _customerApiRepo.deleteCustomer(customerId);
+  }
+
+  @override
+  Future<Either<Failure, List<CustomerModel>>> getCustomerList() {
+    return _customerApiRepo.getCustomerList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateCustomer(
+      CustomerModel item) {
+    return _customerApiRepo.updateCustomer(item);
+  }
+
+  @override
+  Future<Either<Failure, TempBillRequestModel>> getTempBill(String tableId) {
+    return _billApiRepo.getTempBill(tableId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createMainGroup(
+      MainGroupModel item) {
+    return _mainGroupApiRepo.createMainGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteMainGroup(
+      String mainGroupId) {
+    return _mainGroupApiRepo.deleteMainGroup(mainGroupId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateMainGroup(
+      MainGroupModel item) {
+    return _mainGroupApiRepo.updateMainGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createItemGroup(
+      ItemGroupModel item) {
+    return _itemGroupApiRepo.createItemGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteItemGroup(
+      String itemGroupId) {
+    return _itemGroupApiRepo.deleteItemGroup(itemGroupId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateItemGroup(
+      ItemGroupModel item) {
+    return _itemGroupApiRepo.updateItemGroup(item);
+  }
+
+  @override
+  Future<Either<Failure, List<ItemGroupModel>>> getItemGroupList() {
+    return _itemGroupApiRepo.getItemGroupList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createItem(ItemsModel item) {
+    return _itemApiRepo.createItem(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteItem(String itemId) {
+    return _itemApiRepo.deleteItem(itemId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateItem(ItemsModel item) {
+    return _itemApiRepo.updateItem(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createArea(AreasModel data) {
+    return _areaApiRepo.createArea(data);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteArea(String areaId) {
+    return _areaApiRepo.deleteArea(areaId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateArea(AreasModel data) {
+    return _areaApiRepo.updateArea(data);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createTable(TableModel item) {
+    return _tableApiRepo.createTable(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteTable(String tableId) {
+    return _tableApiRepo.deleteTable(tableId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateTable(TableModel item) {
+    return _tableApiRepo.updateTable(item);
+  }
+
+  @override
+  Future<Either<Failure, List<TableModel>>> fetchTableList() {
+    return _tableApiRepo.fetchTableList();
   }
 }

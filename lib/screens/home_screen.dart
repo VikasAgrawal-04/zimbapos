@@ -68,8 +68,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                 dbCubit.homeSc.createShortcut(data: model);
                                 context.pop();
                               },
-                              child: Card(
-                                elevation: 3,
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      // blurStyle: BlurStyle.solid,
+                                      color: Colors.grey.shade500,
+                                      offset: const Offset(4.0, 4.0),
+                                      blurRadius: 12,
+                                      spreadRadius: 1.0,
+                                    ),
+                                    const BoxShadow(
+                                      // blurStyle: BlurStyle.outer,
+                                      color: Colors.white,
+                                      offset: Offset(-4.0, -4.0),
+                                      blurRadius: 12,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Center(
@@ -178,90 +201,132 @@ class _HomeScreenState extends State<HomeScreen> {
                                   orElse: () =>
                                       HomeShortcutModel(gridPosition: -1),
                                 );
-                                return ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    elevation: 6,
-                                    shadowColor: Colors.black.withOpacity(0.6),
-                                    padding: EdgeInsets.zero,
-                                  ),
-                                  onPressed: homeShortcut.gridPosition != -1
+                                return InkWell(
+                                  borderRadius: BorderRadius.circular(18),
+                                  onTap: homeShortcut.gridPosition != -1
                                       ? () => context.push(homeShortcut.path!)
                                       : () => openAddScreen(index, context),
-                                  child: homeShortcut.gridPosition != -1
-                                      ? Stack(
-                                          children: [
-                                            Positioned(
-                                              top: 0,
-                                              right: 0,
-                                              child: Container(
-                                                constraints: BoxConstraints(
-                                                  maxWidth:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .width *
-                                                          0.2,
-                                                  maxHeight:
-                                                      MediaQuery.of(context)
-                                                              .size
-                                                              .height *
-                                                          0.5,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  color: Colors.red,
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(12),
-                                                    topRight:
-                                                        Radius.circular(12),
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[50],
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          // blurStyle: BlurStyle.solid,
+                                          color: Colors.grey.shade500,
+                                          offset: const Offset(4.0, 4.0),
+                                          blurRadius: 12,
+                                          spreadRadius: 2.0,
+                                        ),
+                                        const BoxShadow(
+                                          // blurStyle: BlurStyle.outer,
+                                          color: Colors.white,
+                                          offset: Offset(-4.0, -4.0),
+                                          blurRadius: 12,
+                                          spreadRadius: 2.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: homeShortcut.gridPosition != -1
+                                        ? Stack(
+                                            children: [
+                                              Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                child: Container(
+                                                  constraints: BoxConstraints(
+                                                    maxWidth:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.2,
+                                                    maxHeight:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.5,
                                                   ),
-                                                ),
-                                                child: IconButton(
-                                                  onPressed: () {
-                                                    UtilDialog.showMyDialog(
-                                                      context,
-                                                      "Alert",
-                                                      "Do you want to delete '${homeShortcut.title}' shortcut?",
-                                                      () {
-                                                        deleteHomeShortcut(
-                                                            homeShortcut
-                                                                .isarId);
-                                                        context.pop();
-                                                      },
-                                                      null,
-                                                    );
-                                                  },
-                                                  icon: Icon(
-                                                    CupertinoIcons.delete,
-                                                    size: 18.sp,
-                                                    color: KColors.white,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.redAccent,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(12),
+                                                      topRight:
+                                                          Radius.circular(12),
+                                                    ),
+                                                  ),
+                                                  child: IconButton(
+                                                    onPressed: () {
+                                                      UtilDialog.showMyDialog(
+                                                        context,
+                                                        "Alert",
+                                                        "Do you want to delete '${homeShortcut.title}' shortcut?",
+                                                        () {
+                                                          deleteHomeShortcut(
+                                                              homeShortcut
+                                                                  .isarId);
+                                                          context.pop();
+                                                        },
+                                                        null,
+                                                      );
+                                                    },
+                                                    icon: Icon(
+                                                      CupertinoIcons.delete,
+                                                      size: 18.sp,
+                                                      color: KColors.white,
+                                                    ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                            Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  homeShortcut.title ?? '',
-                                                  style: KTextStyles.kTitle,
-                                                )),
-                                          ],
-                                        )
-                                      : const Icon(CupertinoIcons.add),
+                                              Align(
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    homeShortcut.title ?? '',
+                                                    style: KTextStyles.kTitle,
+                                                  )),
+                                            ],
+                                          )
+                                        : const Icon(CupertinoIcons.add),
+                                  ),
                                 );
                               }
 
-                              return ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
+                              return InkWell(
+                                borderRadius: BorderRadius.circular(18),
+                                onTap: () => openAddScreen(index, context),
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
                                   ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[50],
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        // blurStyle: BlurStyle.solid,
+                                        color: Colors.grey.shade500,
+                                        offset: const Offset(4.0, 4.0),
+                                        blurRadius: 12,
+                                        spreadRadius: 2.0,
+                                      ),
+                                      const BoxShadow(
+                                        // blurStyle: BlurStyle.outer,
+                                        color: Colors.white,
+                                        offset: Offset(-4.0, -4.0),
+                                        blurRadius: 12,
+                                        spreadRadius: 2.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(CupertinoIcons.add),
                                 ),
-                                onPressed: () => openAddScreen(index, context),
-                                child: const Icon(CupertinoIcons.add),
                               );
                             },
                           ),

@@ -33,6 +33,7 @@ class OutletRegisterCubit extends Cubit<OutletRegisterState> {
           mobile: mobileController.text,
           name: nameController.text);
       databaseCubit.state!.subsscriberRepo.createSubScription(model: model);
+
       emit(SubscriptionInfoModel(model: model));
       pageController.nextPage(
         duration: const Duration(milliseconds: 200),

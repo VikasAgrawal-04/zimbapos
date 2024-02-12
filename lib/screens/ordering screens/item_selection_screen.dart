@@ -9,7 +9,7 @@ import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/widgets/containers/bill_detail_row.dart';
-import 'package:zimbapos/widgets/containers/dotter_container.dart';
+import 'package:zimbapos/widgets/containers/dotter_line.dart';
 import 'package:zimbapos/widgets/containers/title_container.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/dropdown/custom_dropdown.dart';

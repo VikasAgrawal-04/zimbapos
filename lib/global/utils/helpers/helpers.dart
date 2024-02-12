@@ -117,7 +117,7 @@ class Helpers {
         throw ServerException(
             message: e.error is io.SocketException
                 ? "No Internet"
-                : e.response?.data['message'].toString());
+                : (jsonDecode(e.response?.data))['data'].toString());
       }
     }
     return null;

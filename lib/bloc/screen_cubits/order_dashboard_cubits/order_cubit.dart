@@ -8,13 +8,18 @@ import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
 class OrderDashboardCubit extends Cubit<OrderDashboardState> {
   final ApiRepo _repo = ApiRepoImpl();
+  int selectedTab;
   List<AreasModel> _fetchedAreas = [];
 
-  OrderDashboardCubit() : super(OrderDashboardInitial()) {
+  OrderDashboardCubit()
+      : selectedTab = 0,
+        super(OrderDashboardInitial()) {
     fetchAreas();
   }
 
   void onTabChanged(int index) {
+    EasyLoading.show(maskType: EasyLoadingMaskType.black);
+    selectedTab = index;
     final areas = (state as OrderDashboardLoaded).areas;
     final id = areas[index].areaId;
     fetchTableByArea(id ?? "");
@@ -28,7 +33,7 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
         emit(OrderDashboardError(failure.toString()));
       }, (success) {
         _fetchedAreas = success;
-        emit(OrderDashboardLoaded(_fetchedAreas, const []));
+        emit(OrderDashboardLoaded(_fetchedAreas, const [], selectedTab));
         if (success.isNotEmpty) {
           fetchTableByArea(success.first.areaId ?? "");
         }
@@ -39,14 +44,13 @@ class OrderDashboardCubit extends Cubit<OrderDashboardState> {
   }
 
   Future<void> fetchTableByArea(String id) async {
-    EasyLoading.show(maskType: EasyLoadingMaskType.black);
     try {
       final data = await _repo.getTableByArea(id);
       EasyLoading.dismiss();
       data.fold((failure) {
         emit(OrderDashboardError(failure.toString()));
       }, (success) {
-        emit(OrderDashboardLoaded(_fetchedAreas, success));
+        emit(OrderDashboardLoaded(_fetchedAreas, success, selectedTab));
       });
     } catch (e, s) {
       debugPrintStack(stackTrace: s);

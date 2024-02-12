@@ -17,6 +17,7 @@ class TableModel {
   DateTime? tableStartedAt;
   String? customerName;
   String? customerId;
+  double? tableAmount;
   bool? isActive;
   bool? isDeleted;
   TableModel({
@@ -31,25 +32,26 @@ class TableModel {
     this.tableStartedAt,
     this.customerName,
     this.customerId,
+    this.tableAmount,
     this.isActive = true,
     this.isDeleted = false,
   });
 
-  TableModel copyWith({
-    Id? id,
-    String? outletId,
-    String? tableId,
-    String? tableName,
-    String? areaId,
-    String? tableStatus,
-    bool? isSplit,
-    int? persons,
-    DateTime? tableStartedAt,
-    String? customerName,
-    String? customerId,
-    bool? isActive,
-    bool? isDeleted,
-  }) {
+  TableModel copyWith(
+      {Id? id,
+      String? outletId,
+      String? tableId,
+      String? tableName,
+      String? areaId,
+      String? tableStatus,
+      bool? isSplit,
+      int? persons,
+      DateTime? tableStartedAt,
+      String? customerName,
+      String? customerId,
+      bool? isActive,
+      bool? isDeleted,
+      double? tableAmount}) {
     return TableModel(
       id: id ?? this.id,
       outletId: outletId ?? this.outletId,
@@ -62,6 +64,7 @@ class TableModel {
       tableStartedAt: tableStartedAt ?? this.tableStartedAt,
       customerName: customerName ?? this.customerName,
       customerId: customerId ?? this.customerId,
+      tableAmount: tableAmount ?? this.tableAmount,
       isActive: isActive ?? this.isActive,
       isDeleted: isDeleted ?? this.isDeleted,
     );
@@ -80,6 +83,7 @@ class TableModel {
       'tableStartedAt': tableStartedAt?.millisecondsSinceEpoch,
       'customerName': customerName,
       'customerId': customerId,
+      'tableAmount': tableAmount,
       'isActive': isActive,
       'isDeleted': isDeleted,
     };
@@ -101,6 +105,8 @@ class TableModel {
           : null,
       customerName:
           map['customerName'] != null ? map['customerName'] as String : null,
+      tableAmount:
+          map['tableAmount'] != null ? map['tableAmount'] as double : null,
       customerId:
           map['customerId'] != null ? map['customerId'] as String : null,
       isActive: map['isActive'] != null ? map['isActive'] as bool : true,

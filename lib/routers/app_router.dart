@@ -16,6 +16,7 @@ class AppRouter {
 
       bool outletcheck = databaseCubit.outletId == null;
       bool terminalTypecheck = deviceControl.mainTerminal == null;
+      print('Terminal Check $terminalTypecheck');
       if (outletcheck) {
         return AppScreen.outletDataRegisterScreen.path;
       }

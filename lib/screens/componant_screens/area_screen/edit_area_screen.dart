@@ -1,15 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_state.dart';
 import 'package:zimbapos/helpers/validators.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
-import '../../../constants/kcolors.dart';
+import '../../../bloc/screen_cubits/areas_screen_cubits/area_screen_cubit.dart';
+import '../../../bloc/screen_cubits/rateset_cubits/rateset_cubit.dart';
+import '../../../bloc/screen_cubits/rateset_cubits/rateset_state.dart';
 import '../../../models/global_models/area_model.dart';
-import '../../../models/global_models/rate_sets_model.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/dropdown/custom_dropdown.dart';
 import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
@@ -27,196 +27,106 @@ class EditAreaScreen extends StatefulWidget {
 class _EditAreaScreenState extends State<EditAreaScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final TextEditingController areaNameController;
-  late final TextEditingController exchangePercentController;
-  late String? selectedRateSetId;
 
   @override
   void initState() {
     super.initState();
-    areaNameController = TextEditingController();
-    exchangePercentController = TextEditingController();
-    selectedRateSetId = widget.item.rateSetId ?? '0';
-    areaNameController.text = widget.item.areaName.toString();
-    exchangePercentController.text = widget.item.extraChargePercent.toString();
-    selectedRateSetId = widget.item.rateSetId;
-  }
-
-  @override
-  void dispose() {
-    areaNameController.dispose();
-    exchangePercentController.dispose();
-    super.dispose();
-  }
-
-  //update area
-  updateAreaFn(BuildContext context, int id) {
-    final db = DatabaseCubit.dbFrom(context);
-    log(selectedRateSetId.toString());
-    db.areasRepository.updateArea(
-      id,
-      areaName: areaNameController.text,
-      exchangePercent: double.parse(exchangePercentController.text),
-      rateSetId: selectedRateSetId,
-      isActive: true,
-    );
-
-    EasyLoading.showToast('Area Updated');
-    context.pop();
-  }
-
-  getAreaFn(int id) async {
-    AreasModel? item;
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    item = await datatbaseCubit.areasRepository.getAreabyID(widget.item.id);
-    areaNameController.text = item!.areaName.toString();
-    exchangePercentController.text = item.extraChargePercent.toString();
-    selectedRateSetId = item.rateSetId;
-  }
-
-  Future<List<RateSetsModel?>> getAllRateSets() async {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    final rateSets = await datatbaseCubit.rateSetsRepository.getRateSets();
-    // log(rateSets.toString());
-    for (var rateSet in rateSets) {
-      log(rateSet!.ratesetName.toString());
-      log(rateSet.id.toString());
-    }
-    return rateSets;
+    context.read<AreasScreenCubit>().fillControllers(widget.item);
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Edit area'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: screenSize.height * 0.04),
-                  //area name
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Area name',
-                    controller: areaNameController,
-                    onChanged: (value) {},
-                  ),
-                  // TextField(
-                  //   controller: areaNameController,
-                  //   keyboardType: TextInputType.text,
-                  //   decoration: const InputDecoration(
-                  //     label: Text('Area name'),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-
-                  SizedBox(height: screenSize.height * 0.02),
-                  //extra charge percent
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Extra charge percent',
-                    controller: exchangePercentController,
-                    onChanged: (value) {},
-                  ),
-                  // TextField(
-                  //   controller: exchangePercentController,
-                  //   keyboardType: TextInputType.number,
-                  //   decoration: const InputDecoration(
-                  //     label: Text('Exchange percent'),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  //dropdown for ratesets
-                  SizedBox(
-                    // height: 50,
-                    width: screenSize.width,
-                    child: FutureBuilder<List<RateSetsModel?>>(
-                      future: getAllRateSets(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator.adaptive();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          final rateSets = snapshot.data ?? [];
-
-                          return Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(
-                                    color: KColors.buttonColor,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(14.0),
-                                ),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    isExpanded: true,
-                                    value: selectedRateSetId,
-                                    hint: const Text("Choose a rate"),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        selectedRateSetId = newValue;
-                                      });
-                                    },
-                                    items: rateSets.map((rateSet) {
-                                      return DropdownMenuItem<String>(
-                                        value: rateSet!.ratesetId,
-                                        child: Text(
-                                            rateSet.ratesetName ?? 'error'),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ],
+      child: BlocBuilder<AreasScreenCubit, AreasScreenState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Edit area'),
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: screenSize.height * 0.04),
+                      //area name
+                      PrimaryTextField(
+                        validator: nullCheckValidator,
+                        hintText: 'Area name',
+                        controller: state.areaNameController,
+                        onChanged: (value) {},
+                      ),
+                      SizedBox(height: screenSize.height * 0.02),
+                      //extra charge percent
+                      PrimaryTextField(
+                        validator: nullCheckValidator,
+                        hintText: 'Extra charge percent',
+                        controller: state.extraChargePercentController,
+                        onChanged: (value) {},
+                      ),
+                      SizedBox(height: screenSize.height * 0.02),
+                      //dropdown for ratesets
+                      BlocBuilder<RateSetScreenCubit, RateSetScreenState>(
+                        builder: (context, state) {
+                          return CustomDropDown<String>(
+                            title: "Rate set",
+                            items: state.rateSetList
+                                .map((e) => e.ratesetName ?? 'error')
+                                .toList(),
+                            itemValues: state.rateSetList
+                                .map((e) => e.ratesetId ?? "null")
+                                .toList(),
+                            value: context
+                                .read<AreasScreenCubit>()
+                                .state
+                                .selectedRateSetId,
+                            hint: "Choose a Rate set",
+                            onChanged: (value) {
+                              context
+                                  .read<AreasScreenCubit>()
+                                  .onRateSetChange(value);
+                            },
                           );
-                        }
-                      },
-                    ),
+                        },
+                      ),
+                      SizedBox(height: screenSize.height * 0.2),
+                    ],
                   ),
-                  SizedBox(height: screenSize.height * 0.2),
-                  // ElevatedButton(
-                  //   onPressed: () => updateAreaFn(context, widget.item.id),
-                  //   child: const Text('Update area'),
-                  // )
-                ],
+                ),
               ),
             ),
-          ),
-        ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (selectedRateSetId != null) {
-                  updateAreaFn(context, widget.item.id);
-                } else {
-                  UtillSnackbar.showSnackBar(
-                    context,
-                    title: "Alert",
-                    body: "Please choose a area",
-                    isSuccess: false,
-                  );
-                }
-              }
-            }),
+            bottomNavigationBar: CustomButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    if (state.selectedRateSetId != null) {
+                      await context.read<AreasScreenCubit>().updateArea(
+                            AreasModel(
+                              areaId: widget.item.areaId,
+                              areaName: state.areaNameController.text,
+                              extraChargePercent: double.parse(
+                                  state.extraChargePercentController.text),
+                              rateSetId: state.selectedRateSetId,
+                            ),
+                          );
+                      context.pop();
+                    } else {
+                      UtillSnackbar.showSnackBar(
+                        context,
+                        title: "Alert",
+                        body: "Please choose a area",
+                        isSuccess: false,
+                      );
+                    }
+                  }
+                }),
+          );
+        },
       ),
     );
   }

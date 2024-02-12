@@ -7,7 +7,9 @@ import 'package:zimbapos/models/global_models/customer_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
+import 'package:zimbapos/models/global_models/tax_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
@@ -27,12 +29,16 @@ import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/items/item_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/rateset/rateset_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/tax/tax_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
 import 'customer/customer_api_repo.dart';
+import 'rateset/rateset_api_repo_impl.dart';
+import 'tax/tax_api_repo.dart';
 
 class ApiRepoImpl implements ApiRepo {
   final AreaApiRepo _areaApiRepo;
@@ -45,6 +51,8 @@ class ApiRepoImpl implements ApiRepo {
   final BillApiRepo _billApiRepo;
   final CustomerCategoryApiRepo _customerCategoryApiRepo;
   final CustomerApiRepo _customerApiRepo;
+  final TaxApiRepo _taxApiRepo;
+  final RateSetApiRepo _rateSetApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -56,6 +64,8 @@ class ApiRepoImpl implements ApiRepo {
         _itemApiRepo = ItemApiRepoImpl(),
         _billApiRepo = BillApiRepoImpl(),
         _customerCategoryApiRepo = CustomerCategoryApiRepoImpl(),
+        _taxApiRepo = TaxApiRepoImpl(),
+        _rateSetApiRepo = RateSetApiRepoImpl(),
         _customerApiRepo = CustomerApiRepoImpl();
 
   @override
@@ -267,5 +277,59 @@ class ApiRepoImpl implements ApiRepo {
   @override
   Future<Either<Failure, List<TableModel>>> fetchTableList() {
     return _tableApiRepo.fetchTableList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteKotItem(
+      String tableId, String itemId) {
+    return _billApiRepo.deleteKotItem(tableId, itemId);
+  }
+
+  @override
+  Future<Either<Failure, List<WorkersModel>>> getWaiters() {
+    return _workerApiRepo.getWaiters();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createTax(TaxModel item) {
+    return _taxApiRepo.createTax(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteTax(String taxId) {
+    return _taxApiRepo.deleteTax(taxId);
+  }
+
+  @override
+  Future<Either<Failure, List<TaxModel>>> fetchTaxList() {
+    return _taxApiRepo.fetchTaxList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateTax(TaxModel item) {
+    return _taxApiRepo.updateTax(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createRateSet(
+      RateSetsModel item) {
+    return _rateSetApiRepo.createRateSet(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteRateSet(
+      String rateSetId) {
+    return _rateSetApiRepo.deleteRateSet(rateSetId);
+  }
+
+  @override
+  Future<Either<Failure, List<RateSetsModel>>> fetchRateSetList() {
+    return _rateSetApiRepo.fetchRateSetList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateRateSet(
+      RateSetsModel item) {
+    return _rateSetApiRepo.updateRateSet(item);
   }
 }

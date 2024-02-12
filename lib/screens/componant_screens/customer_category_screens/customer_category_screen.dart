@@ -48,18 +48,15 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Customer Category',
+            'Customer Category List',
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
-            // IconButton(
-            //   onPressed: () =>
-            //       context.push(AppScreen.createCustomerCategory.path),
-            //   icon: const Icon(Icons.add),
-            // ),
             TextButton.icon(
-              onPressed: () =>
-                  context.push(AppScreen.createCustomerCategory.path),
+              onPressed: () {
+                context.read<CustomerCategoryScreenCubit>().clearControllers();
+                context.push(AppScreen.createCustomerCategory.path);
+              },
               label: const Text('Add Customer category'),
               icon: const Icon(Icons.add),
             ),
@@ -147,51 +144,5 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
         ),
       ),
     );
-    // Column(
-    //   children: [
-    //     //search
-    //     Padding(
-    //       padding: const EdgeInsets.all(8),
-    //       child: PrimaryTextField(
-    //         controller: _searchController,
-    //         onChanged: (value) {
-    //           setState(() {});
-    //         },
-    //         hintText: "Search by name",
-    //         prefixIcon: const Icon(Icons.search),
-    //       ),
-    //     ),
-    //     //stream
-    //     StreamBuilder<List<CustomerCategoryModel>>(
-    //       stream: custCatStream(),
-    //       builder: (context, snapshot) {
-    //         final data = snapshot.data;
-    //         final filteredList = _searchController.text.isEmpty
-    //             ? data
-    //             : data!.where((card) {
-    //                 final name = card.custCategoryName ?? '';
-    //                 return name.toLowerCase().contains(
-    //                       _searchController.text.toLowerCase(),
-    //                     );
-    //               }).toList();
-
-    //         if (filteredList == null || filteredList.isEmpty) {
-    //           return const Center(
-    //             child: Text('No customer category found'),
-    //           );
-    //         }
-    //         if (data == null || data.isEmpty) {
-    //           return const Center(
-    //             child: Text('No customer categorues available'),
-    //           );
-    //         } else {
-
-    //         }
-    //       },
-    //     ),
-    //   ],
-    // ),
-    // ),
-    // );
   }
 }

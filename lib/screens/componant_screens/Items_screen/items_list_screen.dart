@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_screen_cubits/item_state.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 
+// import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../models/response_models/item_response_model.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
+import '../../../widgets/my_alert_widget.dart';
 
 class ItemsListScreen extends StatefulWidget {
   const ItemsListScreen({super.key});
@@ -21,7 +24,33 @@ class ItemsListScreen extends StatefulWidget {
 }
 
 class _ItemsListScreenState extends State<ItemsListScreen> {
-  void editItemFn({required ItemList model}) {
+  //
+  // late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    // _searchController = TextEditingController();
+  }
+
+  deleteItem(ItemList e) {
+    UtilDialog.showMyDialog(
+      context,
+      "Alert",
+      "Do you want to delete '${e.itemName}'?",
+      //this is for ok button
+      () {
+        // final dbCubit = DatabaseCubit.dbFrom(context);
+        // dbCubit.itemsRepository.deleteItemApi(e.id);
+        EasyLoading.showToast('Item deleted');
+        context.pop();
+      },
+      // this is for cancel button sending null will perform default pop() action
+      null,
+    );
+  }
+
+  editItemFn({required ItemsModel model}) {
     context.push(
       AppScreen.editItemScreen.path,
       extra: model,
@@ -39,25 +68,28 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
           ),
           actions: [
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createItemScreen.path),
+              onPressed: () {
+                context.read<ItemScreenCubit>().clearControllers();
+                context.push(AppScreen.createItemScreen.path);
+              },
               label: const Text('Add item'),
               icon: const Icon(Icons.add),
             ),
           ],
         ),
-        body: BlocBuilder<ItemScreenCubit, ItemScreenState>(
-          builder: (context, state) {
-            final list = state.itemList;
-            if (state.status == Status.loading) {
-              return const MyLoadingIndicator();
-            }
-            if (list.isEmpty) {
-              return const Center(
-                child: Text('No Main Groups'),
-              );
-            } else {
-              return SingleChildScrollView(
-                child: SizedBox(
+        body: SingleChildScrollView(
+          child: BlocBuilder<ItemScreenCubit, ItemScreenState>(
+            builder: (context, state) {
+              final list = state.itemList;
+              if (state.status == Status.loading) {
+                return const MyLoadingIndicator();
+              }
+              if (list.isEmpty) {
+                return const Center(
+                  child: Text('No Items'),
+                );
+              } else {
+                return SizedBox(
                   width: 100.w,
                   child: DataTable(
                     headingTextStyle: KTextStyles.kTitle,
@@ -94,7 +126,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                                 style: KTextStyles.kSubtitle,
                               )),
                               DataCell(Text(
-                                e.itemRate.toString(),
+                                e.rateWithTax.toString(),
                                 style: KTextStyles.kSubtitle,
                               )),
                               DataCell(
@@ -133,15 +165,32 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        onPressed: () => editItemFn(model: e),
+                                        onPressed: () => editItemFn(
+                                          model: ItemsModel(
+                                            id: e.id,
+                                            itemId: e.itemId,
+                                            itemName: e.itemName,
+                                            itemGroupId: e.itemGroupId,
+                                            foodType: e.foodType,
+                                            isAlcohol: e.isAlcohol,
+                                            itemRate: e.itemRate,
+                                            taxId: e.taxId,
+                                            rateWithTax: e.rateWithTax,
+                                            isOpenItem: e.isOpenItem,
+                                            barcode: e.barcode,
+                                            shortcode: e.shortcode,
+                                            isWeightItem: e.isWeightItem,
+                                            hsnCode: e.hsnCode,
+                                            imgLink: e.imgLink,
+                                          ),
+                                        ),
                                         icon: const Icon(Icons.edit),
                                       ),
                                       SizedBox(width: 2.w),
                                       IconButton(
                                         onPressed: () => context
                                             .read<ItemScreenCubit>()
-                                            .deleteItem(
-                                                e.itemGroupId.toString()),
+                                            .deleteItem(e.itemId.toString()),
                                         icon: const Icon(CupertinoIcons.delete),
                                       )
                                     ],
@@ -153,10 +202,10 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                         )
                         .toList(),
                   ),
-                ),
-              );
-            }
-          },
+                );
+              }
+            },
+          ),
         ),
       ),
     );

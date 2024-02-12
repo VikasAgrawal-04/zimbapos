@@ -21,24 +21,24 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
 
   Future<void> init() async {
     emit(state.copyWith(status: Status.loading));
-    // await getItemGroupList();
+    await getItemGroupList();
     emit(state.copyWith(status: Status.success));
   }
 
-  // Future<void> getItemGroupList() async {
-  //   try {
-  //     final data = await _repo.fetchItemGroup();
-  //     data.fold((failure) {
-  //       debugPrint(failure.toString());
-  //       emit(state.copyWith(itemGroupList: []));
-  //     }, (success) {
-  //       emit(state.copyWith(itemGroupList: success));
-  //     });
-  //   } catch (e, s) {
-  //     debugPrint(e.toString());
-  //     debugPrintStack(stackTrace: s);
-  //   }
-  // }
+  Future<void> getItemGroupList() async {
+    try {
+      final data = await _repo.getItemGroupList();
+      data.fold((failure) {
+        debugPrint(failure.toString());
+        emit(state.copyWith(itemGroupList: []));
+      }, (success) {
+        emit(state.copyWith(itemGroupList: success));
+      });
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
 
   Future<void> createItemGroup(ItemGroupModel item) async {
     try {
@@ -72,10 +72,8 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
-      }, (success) {
-        if (val == false) {
-          init();
-        }
+      }, (success) async {
+        if (val == null) await init();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -100,5 +98,26 @@ class ItemGroupScreenCubit extends Cubit<ItemGroupScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void onMainGroupChange(String? val) {
+    emit(state.copyWith(mainGroupId: val));
+  }
+
+  void onPrinterChange(String? val) {
+    emit(state.copyWith(printerId: val));
+  }
+
+  void clearControllers() {
+    emit(ItemGroupScreenState.initial());
+    init();
+  }
+
+  void fillControllers(ItemGroupModel item) {
+    emit(state.copyWith(
+      itemGroupNameController: TextEditingController(text: item.itemGroupName),
+      mainGroupId: item.mainGroupId,
+      printerId: item.printerId,
+    ));
   }
 }

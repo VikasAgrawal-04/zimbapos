@@ -66,10 +66,8 @@ class TableScreenCubit extends Cubit<TableScreenState> {
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
-      }, (success) {
-        if (val == false) {
-          init();
-        }
+      }, (success) async {
+        if (val == null) await init();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -94,5 +92,23 @@ class TableScreenCubit extends Cubit<TableScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void onAreaChange(String? val) {
+    emit(state.copyWith(selectedAreaId: val));
+  }
+
+  void clearControllers() {
+    emit(TableScreenState.initial());
+    init();
+  }
+
+  void fillControllers(TableModel item) {
+    emit(
+      state.copyWith(
+        tableNameController: TextEditingController(text: item.tableName),
+        selectedAreaId: item.areaId,
+      ),
+    );
   }
 }

@@ -1,16 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
+import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_state.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 
 import '../../../bloc/cubits/database/database_cubit.dart';
-import '../../../constants/kcolors.dart';
+import '../../../bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
+import '../../../bloc/screen_cubits/main_group_screen_cubits/mian_group_state.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../helpers/validators.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/dropdown/custom_dropdown.dart';
 import '../../../widgets/my_snackbar_widget.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
@@ -28,25 +33,11 @@ class EditItemGroupScreen extends StatefulWidget {
 class _EditItemGroupScreenState extends State<EditItemGroupScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final TextEditingController itemGroupNameController;
-  String? mainGroupId;
-  String? printerId;
 
   @override
   void initState() {
     super.initState();
-    itemGroupNameController = TextEditingController();
-
-    //init with vals
-    itemGroupNameController.text = widget.item.itemGroupName.toString();
-    mainGroupId = widget.item.mainGroupId;
-    printerId = widget.item.printerId;
-  }
-
-  @override
-  void dispose() {
-    itemGroupNameController.dispose();
-    super.dispose();
+    context.read<ItemGroupScreenCubit>().fillControllers(widget.item);
   }
 
   updateItemGroupFn(BuildContext context) {
@@ -87,174 +78,132 @@ class _EditItemGroupScreenState extends State<EditItemGroupScreen> {
         appBar: AppBar(
           title: const Text('Edit item group'),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: screenSize.height * 0.04),
-                  //Item name
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Item group name',
-                    controller: itemGroupNameController,
-                    onChanged: (value) {},
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-
-                  //dropdown for main group id
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Main group:",
-                      style: KTextStyles.kTitle,
-                    ),
-                  ),
-                  SizedBox(
-                    // height: 50,
-                    width: screenSize.width,
-                    child: FutureBuilder<List<MainGroupModel?>>(
-                      future: getAllMainGroups(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator.adaptive();
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          final rateSets = snapshot.data ?? [];
-
-                          return Column(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(
-                                    color: KColors.buttonColor,
-                                    width: 1.0,
-                                  ),
-                                  borderRadius: BorderRadius.circular(14.0),
-                                ),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    value: mainGroupId,
-                                    isExpanded: true,
-                                    hint: const Text("Choose a main group"),
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        mainGroupId = newValue;
-                                      });
-                                    },
-                                    items: rateSets.map((item) {
-                                      return DropdownMenuItem<String>(
-                                        value: item?.id.toString(),
-                                        child: Text(
-                                            item?.mainGroupName ?? 'error'),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-
-                  //dropdown for food type
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Printer:",
-                      style: KTextStyles.kTitle,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      border: Border.all(
-                        color: KColors.buttonColor,
-                        width: 1.0,
+        body: BlocBuilder<ItemGroupScreenCubit, ItemGroupScreenState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: screenSize.height * 0.04),
+                      //Item name
+                      PrimaryTextField(
+                        validator: nullCheckValidator,
+                        hintText: 'Item group name',
+                        controller: state.itemGroupNameController,
+                        onChanged: (value) {},
                       ),
-                      borderRadius: BorderRadius.circular(14.0),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        enableFeedback: true,
-                        hint: const Text("Choose a printer"),
-                        value: printerId,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 24,
-                        elevation: 16,
-                        onChanged: (newValue) {
-                          setState(() {
-                            printerId = newValue;
-                          });
+                      SizedBox(height: screenSize.height * 0.02),
+
+                      //dropdown for main group id
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Main group:",
+                          style: KTextStyles.kTitle,
+                        ),
+                      ),
+                      BlocBuilder<MainGroupScreenCubit, MainGroupScreenState>(
+                        builder: (context, state) {
+                          return CustomDropDown<String>(
+                            title: "Main group",
+                            items: state.mainGroupList
+                                .map((e) => e.mainGroupName ?? 'error')
+                                .toList(),
+                            itemValues: state.mainGroupList
+                                .map((e) => e.mainGroupId ?? "null")
+                                .toList(),
+                            value: context
+                                .read<ItemGroupScreenCubit>()
+                                .state
+                                .mainGroupId,
+                            hint: "Choose a main group",
+                            onChanged: (value) {
+                              context
+                                  .read<ItemGroupScreenCubit>()
+                                  .onMainGroupChange(value);
+                            },
+                          );
                         },
-                        items: <String>[
+                      ),
+                      SizedBox(height: screenSize.height * 0.02),
+
+                      //dropdown for printer
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Printer:",
+                          style: KTextStyles.kTitle,
+                        ),
+                      ),
+                      CustomDropDown<String>(
+                        title: "Printer",
+                        hint: "Select a printer",
+                        items: const [
                           '0',
                           'P1',
                           'P2',
                           'P3',
                           'P4',
-                          // Add more options as needed
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                        ],
+                        value: state.printerId,
+                        onChanged: context
+                            .read<ItemGroupScreenCubit>()
+                            .onPrinterChange,
                       ),
-                    ),
+                      SizedBox(height: screenSize.height * 0.02),
+                    ],
                   ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  // ElevatedButton(
-                  //   onPressed: () => updateAreaFn(context, widget.item.id),
-                  //   child: const Text('Update area'),
-                  // )
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (mainGroupId != null) {
-                  if (printerId != null) {
-                    updateItemGroupFn(context);
-                  } else {
-                    UtillSnackbar.showSnackBar(
-                      context,
-                      title: "Alert",
-                      body: "Please choose a printer",
-                      isSuccess: false,
-                    );
+        bottomNavigationBar:
+            BlocBuilder<ItemGroupScreenCubit, ItemGroupScreenState>(
+          builder: (context, state) {
+            return CustomButton(
+                text: "Save",
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    if (state.mainGroupId != null) {
+                      if (state.printerId != null) {
+                        await context
+                            .read<ItemGroupScreenCubit>()
+                            .updateItemGroup(
+                              ItemGroupModel(
+                                itemGroupId: widget.item.itemGroupId,
+                                itemGroupName:
+                                    state.itemGroupNameController.text,
+                                mainGroupId: state.mainGroupId,
+                                printerId: state.printerId,
+                              ),
+                            );
+                        context.pop();
+                      } else {
+                        UtillSnackbar.showSnackBar(
+                          context,
+                          title: "Alert",
+                          body: "Please choose a printer",
+                          isSuccess: false,
+                        );
+                      }
+                    } else {
+                      UtillSnackbar.showSnackBar(
+                        context,
+                        title: "Alert",
+                        body: "Please choose a main group",
+                        isSuccess: false,
+                      );
+                    }
                   }
-                } else {
-                  UtillSnackbar.showSnackBar(
-                    context,
-                    title: "Alert",
-                    body: "Please choose a main group",
-                    isSuccess: false,
-                  );
-                }
-              }
-            }),
+                });
+          },
+        ),
       ),
     );
   }

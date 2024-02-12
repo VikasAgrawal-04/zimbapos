@@ -33,6 +33,7 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createItemGroup(
       ItemGroupModel item) async {
     try {
+      item.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
         RequestType.post,
         EndPoints.createItemGroup,
@@ -53,7 +54,7 @@ class ItemGroupApiRepoImpl implements ItemGroupApiRepo {
       String itemGroupId) async {
     try {
       final response = await Helpers.sendRequest(
-          RequestType.delete, EndPoints.deleteCustomerCategory,
+          RequestType.delete, EndPoints.deleteItemGroup,
           queryParams: {
             "itemGroupId": itemGroupId,
           });

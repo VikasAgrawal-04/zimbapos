@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // To parse this JSON data, do
 //
 //     final tempBillRequestModel = tempBillRequestModelFromJson(jsonString);
@@ -100,6 +101,40 @@ class BillHeader {
         "waiterId": waiterId,
         "isBillPrinted": isBillPrinted,
       };
+
+  BillHeader copyWith({
+    String? outletId,
+    int? terminalId,
+    String? tableId,
+    double? totalExTax,
+    double? totalTaxAmount,
+    double? serviceChargeAmount,
+    double? totalGstAmount,
+    double? totalVatAmount,
+    double? roundOffAmount,
+    double? totalAmount,
+    String? customerId,
+    int? pax,
+    String? waiterId,
+    bool? isBillPrinted,
+  }) {
+    return BillHeader(
+      outletId: outletId ?? this.outletId,
+      terminalId: terminalId ?? this.terminalId,
+      tableId: tableId ?? this.tableId,
+      totalExTax: totalExTax ?? this.totalExTax,
+      totalTaxAmount: totalTaxAmount ?? this.totalTaxAmount,
+      serviceChargeAmount: serviceChargeAmount ?? this.serviceChargeAmount,
+      totalGstAmount: totalGstAmount ?? this.totalGstAmount,
+      totalVatAmount: totalVatAmount ?? this.totalVatAmount,
+      roundOffAmount: roundOffAmount ?? this.roundOffAmount,
+      totalAmount: totalAmount ?? this.totalAmount,
+      customerId: customerId ?? this.customerId,
+      pax: pax ?? this.pax,
+      waiterId: waiterId ?? this.waiterId,
+      isBillPrinted: isBillPrinted ?? this.isBillPrinted,
+    );
+  }
 }
 
 class BillLine {

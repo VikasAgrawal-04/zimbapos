@@ -22,55 +22,58 @@ class UpdateCategoryScreen extends StatefulWidget {
 
 class _UpdateCategoryScreenState extends State<UpdateCategoryScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final categoryName = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    categoryName.text = widget.item.categoryName.toString();
-  }
-
-  @override
-  void dispose() {
-    categoryName.dispose();
-    super.dispose();
+    context.read<CategoryScreenCubit>().fillControllers(widget.item);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit category'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PrimaryTextField(
-                validator: nullCheckValidator,
-                hintText: 'Category name',
-                controller: categoryName,
-                onChanged: (value) {},
-              ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar:
-          BlocBuilder<CategoryScreenCubit, CategoryScreenState>(
+    return SafeArea(
+      child: BlocBuilder<CategoryScreenCubit, CategoryScreenState>(
         builder: (context, state) {
-          return CustomButton(
-              text: "Save",
-              onPressed: () async {
-                if (_formKey.currentState!.validate()) {
-                  await context.read<CategoryScreenCubit>().updateCategory(
-                      widget.item.copyWith(categoryName: categoryName.text));
-                  context.pop();
-                }
-              });
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Edit category'),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    PrimaryTextField(
+                      validator: nullCheckValidator,
+                      hintText: 'Category name',
+                      controller: state.categoryName,
+                      onChanged: (value) {},
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            bottomNavigationBar:
+                BlocBuilder<CategoryScreenCubit, CategoryScreenState>(
+              builder: (context, state) {
+                return CustomButton(
+                    text: "Save",
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        await context
+                            .read<CategoryScreenCubit>()
+                            .updateCategory(
+                              widget.item.copyWith(
+                                  categoryName: state.categoryName.text),
+                            );
+                        context.pop();
+                      }
+                    });
+              },
+            ),
+          );
         },
       ),
     );

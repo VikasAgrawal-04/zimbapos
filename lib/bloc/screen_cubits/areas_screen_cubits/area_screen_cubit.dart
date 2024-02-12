@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_state.dart';
+import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/global/utils/status_handler/status_handler.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
@@ -35,6 +36,7 @@ class AreasScreenCubit extends Cubit<AreasScreenState> {
 
   Future<void> createArea(AreasModel data) async {
     try {
+      data.outletId = await Helpers.getOutletId();
       final success = await _repo.createArea(data);
       success.fold((failure) {
         debugPrint(failure.toString());
@@ -94,5 +96,25 @@ class AreasScreenCubit extends Cubit<AreasScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void onRateSetChange(String? val) {
+    emit(state.copyWith(selectedRateSetId: val));
+  }
+
+  void clearControllers() {
+    emit(AreasScreenState.initial());
+    init();
+  }
+
+  void fillControllers(AreasModel item) {
+    emit(
+      state.copyWith(
+        areaNameController: TextEditingController(text: item.areaName),
+        extraChargePercentController:
+            TextEditingController(text: item.extraChargePercent.toString()),
+        selectedRateSetId: item.rateSetId,
+      ),
+    );
   }
 }

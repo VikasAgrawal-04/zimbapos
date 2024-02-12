@@ -135,6 +135,7 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                         children: [
                           Expanded(
                             child: DateTextField(
+                              isRequired: false,
                               hintText: "Select Birth Date",
                               onChanged: context
                                   .read<CustomerScreenCubit>()
@@ -144,6 +145,7 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                           SizedBox(width: 4.w),
                           Expanded(
                             child: DateTextField(
+                              isRequired: false,
                               hintText: "Select Anniversary Date",
                               onChanged: context
                                   .read<CustomerScreenCubit>()

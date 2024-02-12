@@ -10,19 +10,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_state.dart';
+import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/customer_screen_cubit/customer_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/rateset_cubits/rateset_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_cubit.dart';
 import 'package:zimbapos/global/theme/theme.dart';
 import 'package:zimbapos/global/utils/environment.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
-import 'package:zimbapos/screens/componant_screens/set_up_screens/initial_setup_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/system_check_screen.dart';
 import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
 import 'bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
+import 'bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,7 +70,16 @@ class MyApp extends StatelessWidget {
                       BlocProvider(
                           create: (context) => CategoryScreenCubit()..init()),
                       BlocProvider(
-                        create: (context) => CategoryScreenCubit()..init(),
+                        create: (context) => AreasScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => TableScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => RateSetScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => TaxScreenCubit()..init(),
                       ),
                       BlocProvider(
                         create: (context) => MainGroupScreenCubit()..init(),

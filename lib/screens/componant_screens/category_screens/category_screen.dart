@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/cateogory_screen_cubit/category_screen_state.dart';
 import 'package:zimbapos/global/utils/status_handler/status_handler.dart';
@@ -21,11 +20,6 @@ class CategoryScreen extends StatefulWidget {
 }
 
 class _CategoryScreenState extends State<CategoryScreen> {
-  activeDeactivateCategory(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.categoryRepository.changeActive(id, value);
-  }
-
   editCategoryFn({required CategoryModel model}) {
     context.push(
       AppScreen.editCategory.path,
@@ -38,12 +32,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Categories',
+            'Category List',
             style: KTextStyles.kBlackAppBarHeader,
           ),
           actions: [
             TextButton.icon(
-              onPressed: () => context.push(AppScreen.createCategory.path),
+              onPressed: () {
+                context.read<CategoryScreenCubit>().clearControllers();
+                context.push(AppScreen.createCategory.path);
+              },
               label: const Text('Add Category'),
               icon: const Icon(Icons.add),
             ),
@@ -105,8 +102,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 IconButton(
                                   onPressed: () => context
                                       .read<CategoryScreenCubit>()
-                                      .deleteCategory(
-                                          e.categoryid.toString()),
+                                      .deleteCategory(e.categoryid.toString()),
                                   icon: const Icon(CupertinoIcons.delete),
                                 )
                               ],

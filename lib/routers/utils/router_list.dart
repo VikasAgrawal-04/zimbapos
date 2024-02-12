@@ -7,6 +7,7 @@ import 'package:zimbapos/models/global_models/discount_single_model.dart';
 import 'package:zimbapos/models/global_models/expense_category_model.dart';
 import 'package:zimbapos/models/global_models/expenses_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
+import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/payments_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
@@ -453,10 +454,10 @@ final List<GoRoute> routerList = [
     path: AppScreen.editItemScreen.path,
     builder: (context, state) {
       if (state.extra is ItemList) {
-        return EditItemsScreen(item: state.extra as ItemList);
+        return EditItemsScreen(item: state.extra as ItemsModel);
       } else {
         return EditItemsScreen(
-          item: ItemList.fromJson(state.extra as Map<String, dynamic>),
+          item: state.extra as ItemsModel,
         );
       }
     },
@@ -577,7 +578,8 @@ final List<GoRoute> routerList = [
     name: AppScreen.itemsSelectionScreen.name,
     path: AppScreen.itemsSelectionScreen.path,
     builder: (context, state) => ItemSelectionScreen(
-      tableId: state.extra as String,
+      tableId: (state.extra as List)[0] as String,
+      tableName: (state.extra as List)[1] as String,
     ),
   ),
 

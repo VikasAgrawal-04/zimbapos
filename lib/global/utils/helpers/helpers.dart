@@ -272,6 +272,11 @@ class Helpers {
     }
     return null;
   }
+
+  static double calculateServicePercent(
+      double totalValue, double serviceAmount) {
+    return ((serviceAmount / totalValue) * 100);
+  }
 }
 
 class NumberInputFormat extends TextInputFormatter {

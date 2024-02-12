@@ -41,7 +41,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Create Customer'),
+          title: const Text('Edit Customer'),
         ),
         body: BlocBuilder<CustomerScreenCubit, CustomerScreenState>(
           builder: (context, state) {
@@ -153,6 +153,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                         children: [
                           Expanded(
                             child: DateTextField(
+                              isRequired: false,
                               value: state.dateOfBirth,
                               hintText: "Select Birth Date",
                               onChanged: context
@@ -163,6 +164,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                           SizedBox(width: 4.w),
                           Expanded(
                             child: DateTextField(
+                              isRequired: false,
                               value: state.anniversaryDate,
                               hintText: "Select Anniversary Date",
                               onChanged: context
@@ -258,7 +260,7 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                             mobile: state.customerMobile.text,
                             dateOfBirth: state.dateOfBirth,
                             customerCategoryID: state.selectedCusCatId,
-                            anniversaryDate: state.anniversaryDate
+                            anniversaryDate: state.anniversaryDate,
                           ),
                         );
 

@@ -8,6 +8,7 @@ class DateTextField extends StatefulWidget {
   final DateTime? firstDate;
   final String? value;
   final DateTime? lasDate;
+  final bool? isRequired;
 
   final ValueChanged<String>? onChanged;
   const DateTextField(
@@ -17,6 +18,7 @@ class DateTextField extends StatefulWidget {
       this.value,
       this.hintText,
       this.onChanged,
+      this.isRequired,
       super.key});
 
   @override
@@ -39,7 +41,7 @@ class _DateTextFieldState extends State<DateTextField> {
   @override
   Widget build(BuildContext context) {
     return CustomTextFieldNew(
-      isRequired: true,
+      isRequired: widget.isRequired ?? true,
       control: controller,
       keyboardType: TextInputType.none,
       isNumber: false,
@@ -47,6 +49,7 @@ class _DateTextFieldState extends State<DateTextField> {
       isReadOnly: true,
       icon: Icons.calendar_today,
       hint: widget.hintText,
+      prefIcon: Icons.date_range,
       textFieldTap: () async {
         final date = await showDatePicker(
             context: context,

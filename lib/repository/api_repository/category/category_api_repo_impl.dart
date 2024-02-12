@@ -30,6 +30,7 @@ class CategoryApiRepoImpl implements CategoryApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createCategory(
       CategoryModel data) async {
     try {
+      data.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
           RequestType.post, EndPoints.createCategory,
           queryParams: data.toMap());

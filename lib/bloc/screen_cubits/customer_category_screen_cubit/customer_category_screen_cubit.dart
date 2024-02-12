@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
@@ -42,6 +43,7 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
 
   Future<void> createCustomerCategories(CustomerCategoryModel item) async {
     try {
+      item.outletId = await Helpers.getOutletId();
       final data = await _repo.createCustomerCategories(item);
       data.fold((failure) {
         debugPrint(failure.toString());
@@ -74,10 +76,8 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
       data.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
-      }, (success) {
-        if (val == false) {
-          init();
-        }
+      }, (success) async {
+        if (val == null) await init();
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
@@ -102,5 +102,21 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
+  }
+
+  void clearControllers() {
+    emit(CustomerCategoryScreenState.initial());
+    init();
+  }
+
+  void fillControllers(CustomerCategoryModel item) {
+    emit(
+      state.copyWith(
+        custCatName: TextEditingController(text: item.custCategoryName),
+        discount: TextEditingController(
+          text: item.custCategoryDiscount.toString(),
+        ),
+      ),
+    );
   }
 }

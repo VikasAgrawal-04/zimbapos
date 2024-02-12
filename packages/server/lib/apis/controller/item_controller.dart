@@ -83,14 +83,14 @@ class ItemController {
   Future<Response> deleteItem(Request request) async {
     try {
       if (request.url.queryParameters.isEmpty) {
-        return badArguments('Please Enter Item Group Id as a key itemGroupId');
+        return badArguments('Please Enter Item Id as a key item_id');
       }
-      final itemGroupId = request.url.queryParameters['itemGroupId'];
-      if (itemGroupId == null) {
-        return badArguments('Please Enter Item Group Id as a key itemGroupId');
+      final itemId = request.url.queryParameters['item_id'];
+      if (itemId == null) {
+        return badArguments('Please Enter Item Id as a key item_id');
       }
 
-      final success = await dbCubit.itemsRepository.deleteItemApi(itemGroupId);
+      final success = await dbCubit.itemsRepository.deleteItemApi(itemId);
       if (success) {
         return okResponse('Item Deleted Successfully');
       } else {

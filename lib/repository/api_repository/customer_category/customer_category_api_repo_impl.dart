@@ -34,6 +34,7 @@ class CustomerCategoryApiRepoImpl implements CustomerCategoryApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createCustomerCategories(
       CustomerCategoryModel item) async {
     try {
+      item.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
         RequestType.post,
         EndPoints.createCustomerCategory,

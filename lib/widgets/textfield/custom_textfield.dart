@@ -143,18 +143,18 @@ class _CustomTextFieldState extends State<CustomTextFieldNew> {
             enabledBorder: widget.enabledBorder ??
                 OutlineInputBorder(
                     gapPadding: 0,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none),
             focusedBorder: widget.focusedBorder ??
                 OutlineInputBorder(
                     gapPadding: 0,
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none),
             prefixIcon: widget.prefIcon != null
                 ? Icon(
                     widget.prefIcon,
                     color: Colors.black,
-                    size: 22,
+                    size: 24,
                   )
                 : null,
             suffixIcon: widget.type == "password"

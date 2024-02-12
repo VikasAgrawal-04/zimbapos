@@ -24,6 +24,8 @@ class UserRolesRepository {
           .filter()
           .roleNameEqualTo(data.roleName)
           .and()
+          .outletIdEqualTo(data.outletId)
+          .and()
           .isDeletedEqualTo(false)
           .findFirstSync();
       if (dbItem == null) {
@@ -51,6 +53,8 @@ class UserRolesRepository {
           final existingRole = db.userRolesModels
               .filter()
               .roleNameEqualTo(data.roleName)
+              .and()
+              .outletIdEqualTo(data.outletId)
               .and()
               .isDeletedEqualTo(false)
               .findFirstSync();

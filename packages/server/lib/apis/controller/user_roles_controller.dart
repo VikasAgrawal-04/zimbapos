@@ -24,7 +24,7 @@ class UserRoleController {
 
   Future<Response> createRole(Request request) async {
     try {
-      final requiredFields = ['roleName'];
+      final requiredFields = ['roleName', 'outletId'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return badArguments('Fields Required ${requiredFields.join(',')}');
@@ -57,7 +57,7 @@ class UserRoleController {
 
   Future<Response> updateRole(Request request) async {
     try {
-      final requiredFields = ['id', 'roleId', 'roleName'];
+      final requiredFields = ['id', 'roleId', 'roleName', 'outletId'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return badArguments('Fields Required ${requiredFields.join(',')}');

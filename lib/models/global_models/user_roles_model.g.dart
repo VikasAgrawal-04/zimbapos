@@ -17,20 +17,20 @@ const UserRolesModelSchema = CollectionSchema(
   name: r'UserRolesModel',
   id: 8295107144238600755,
   properties: {
-    r'hashCode': PropertySchema(
-      id: 0,
-      name: r'hashCode',
-      type: IsarType.long,
-    ),
     r'isActive': PropertySchema(
-      id: 1,
+      id: 0,
       name: r'isActive',
       type: IsarType.bool,
     ),
     r'isDeleted': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'isDeleted',
       type: IsarType.bool,
+    ),
+    r'outletId': PropertySchema(
+      id: 2,
+      name: r'outletId',
+      type: IsarType.string,
     ),
     r'roleId': PropertySchema(
       id: 3,
@@ -64,6 +64,12 @@ int _userRolesModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.outletId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.roleId;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -84,9 +90,9 @@ void _userRolesModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeLong(offsets[0], object.hashCode);
-  writer.writeBool(offsets[1], object.isActive);
-  writer.writeBool(offsets[2], object.isDeleted);
+  writer.writeBool(offsets[0], object.isActive);
+  writer.writeBool(offsets[1], object.isDeleted);
+  writer.writeString(offsets[2], object.outletId);
   writer.writeString(offsets[3], object.roleId);
   writer.writeString(offsets[4], object.roleName);
 }
@@ -99,8 +105,9 @@ UserRolesModel _userRolesModelDeserialize(
 ) {
   final object = UserRolesModel(
     id: id,
-    isActive: reader.readBoolOrNull(offsets[1]),
-    isDeleted: reader.readBoolOrNull(offsets[2]),
+    isActive: reader.readBoolOrNull(offsets[0]),
+    isDeleted: reader.readBoolOrNull(offsets[1]),
+    outletId: reader.readStringOrNull(offsets[2]),
     roleId: reader.readStringOrNull(offsets[3]),
     roleName: reader.readStringOrNull(offsets[4]),
   );
@@ -115,11 +122,11 @@ P _userRolesModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readLong(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 1:
       return (reader.readBoolOrNull(offset)) as P;
     case 2:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
@@ -225,62 +232,6 @@ extension UserRolesModelQueryWhere
 
 extension UserRolesModelQueryFilter
     on QueryBuilder<UserRolesModel, UserRolesModel, QFilterCondition> {
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
-      hashCodeEqualTo(int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
-      hashCodeGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
-      hashCodeLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
-      hashCodeBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hashCode',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
   QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -388,6 +339,160 @@ extension UserRolesModelQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isDeleted',
         value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'outletId',
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'outletId',
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'outletId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'outletId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'outletId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'outletId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterFilterCondition>
+      outletIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'outletId',
+        value: '',
       ));
     });
   }
@@ -709,19 +814,6 @@ extension UserRolesModelQueryLinks
 
 extension UserRolesModelQuerySortBy
     on QueryBuilder<UserRolesModel, UserRolesModel, QSortBy> {
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> sortByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy>
-      sortByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> sortByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isActive', Sort.asc);
@@ -745,6 +837,19 @@ extension UserRolesModelQuerySortBy
       sortByIsDeletedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isDeleted', Sort.desc);
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> sortByOutletId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'outletId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy>
+      sortByOutletIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'outletId', Sort.desc);
     });
   }
 
@@ -777,19 +882,6 @@ extension UserRolesModelQuerySortBy
 
 extension UserRolesModelQuerySortThenBy
     on QueryBuilder<UserRolesModel, UserRolesModel, QSortThenBy> {
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> thenByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy>
-      thenByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
-    });
-  }
-
   QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -828,6 +920,19 @@ extension UserRolesModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> thenByOutletId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'outletId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy>
+      thenByOutletIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'outletId', Sort.desc);
+    });
+  }
+
   QueryBuilder<UserRolesModel, UserRolesModel, QAfterSortBy> thenByRoleId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'roleId', Sort.asc);
@@ -857,12 +962,6 @@ extension UserRolesModelQuerySortThenBy
 
 extension UserRolesModelQueryWhereDistinct
     on QueryBuilder<UserRolesModel, UserRolesModel, QDistinct> {
-  QueryBuilder<UserRolesModel, UserRolesModel, QDistinct> distinctByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hashCode');
-    });
-  }
-
   QueryBuilder<UserRolesModel, UserRolesModel, QDistinct> distinctByIsActive() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isActive');
@@ -873,6 +972,13 @@ extension UserRolesModelQueryWhereDistinct
       distinctByIsDeleted() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isDeleted');
+    });
+  }
+
+  QueryBuilder<UserRolesModel, UserRolesModel, QDistinct> distinctByOutletId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
@@ -899,12 +1005,6 @@ extension UserRolesModelQueryProperty
     });
   }
 
-  QueryBuilder<UserRolesModel, int, QQueryOperations> hashCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hashCode');
-    });
-  }
-
   QueryBuilder<UserRolesModel, bool?, QQueryOperations> isActiveProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isActive');
@@ -914,6 +1014,12 @@ extension UserRolesModelQueryProperty
   QueryBuilder<UserRolesModel, bool?, QQueryOperations> isDeletedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isDeleted');
+    });
+  }
+
+  QueryBuilder<UserRolesModel, String?, QQueryOperations> outletIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'outletId');
     });
   }
 

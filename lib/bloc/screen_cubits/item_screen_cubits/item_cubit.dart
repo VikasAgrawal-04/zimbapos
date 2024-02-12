@@ -48,6 +48,7 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
     try {
       final data = await _repo.createItem(item);
       data.fold((failure) {
+        init();
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
       }, (success) {
@@ -55,6 +56,7 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
         EasyLoading.showSuccess(success["data"]);
       });
     } catch (e, s) {
+      init();
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 
 class PrimaryTextField extends StatelessWidget {
@@ -59,9 +58,9 @@ class PrimaryTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(14.0),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(
+          borderSide: BorderSide(
             width: 2,
-            color: KColors.buttonColor,
+            color: Theme.of(context).primaryColor,
           ),
           borderRadius: BorderRadius.circular(14.0),
         ),

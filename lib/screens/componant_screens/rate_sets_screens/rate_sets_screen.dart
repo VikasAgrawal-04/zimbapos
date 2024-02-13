@@ -10,6 +10,7 @@ import 'package:zimbapos/bloc/screen_cubits/rateset_cubits/rateset_state.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 
+import '../../../constants/kcolors.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
@@ -64,6 +65,7 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -93,69 +95,98 @@ class _RateSetOverviewScreenState extends State<RateSetOverviewScreen> {
                 child: Text('No ratesets'),
               );
             } else {
-              return SizedBox(
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 14,
+                ),
                 width: 100.w,
-                child: DataTable(
-                  headingTextStyle: KTextStyles.kTitle,
-                  columns: [
-                    const DataColumn(
-                      label: Text('Name'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: DataTable(
+                    border: TableBorder.all(
+                      color: KColors.blackColor,
+                      width: 1,
                     ),
-                    const DataColumn(
-                      label: Text('Active'),
-                    ),
-                    DataColumn(
-                      label: Padding(
-                        padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                        child: const Text('Actions'),
+                    headingRowColor: MaterialStateColor.resolveWith(
+                        (Set<MaterialState> states) {
+                      return KColors.blackColor;
+                    }),
+                    headingTextStyle: KTextStyles.kTitle,
+                    columns: [
+                      DataColumn(
+                        label: Text(
+                          'Name',
+                          style: theme.textTheme.headlineMedium,
+                        ),
                       ),
-                    ),
-                  ],
-                  rows: list
-                      .map(
-                        (e) => DataRow(
-                          cells: [
-                            DataCell(Text(
-                              e.ratesetName.toString(),
-                              style: KTextStyles.kSubtitle,
-                            )),
-                            DataCell(
-                              Switch.adaptive(
-                                  value: e.isActive as bool,
-                                  onChanged: (va) {
-                                    context
-                                        .read<RateSetScreenCubit>()
-                                        .updateRateSet(e, val: va);
-                                  }),
-                            ),
-                            DataCell(
-                              Container(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => editRateSetFn(model: e),
-                                      icon: const Icon(Icons.edit),
-                                    ),
-                                    SizedBox(width: 2.w),
-                                    IconButton(
-                                      onPressed: () => context
+                      DataColumn(
+                        label: Text(
+                          'Active',
+                          style: theme.textTheme.headlineMedium,
+                        ),
+                      ),
+                      DataColumn(
+                        label: Padding(
+                          padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                          child: Text(
+                            'Actions',
+                            style: theme.textTheme.headlineMedium,
+                          ),
+                        ),
+                      ),
+                    ],
+                    rows: list
+                        .map(
+                          (e) => DataRow(
+                            cells: [
+                              DataCell(Text(
+                                e.ratesetName.toString(),
+                                style: KTextStyles.kSubtitle,
+                              )),
+                              DataCell(
+                                Switch.adaptive(
+                                    activeColor: theme.primaryColor,
+                                    value: e.isActive as bool,
+                                    onChanged: (va) {
+                                      context
                                           .read<RateSetScreenCubit>()
-                                          .deleteRateSet(
-                                              e.ratesetId.toString()),
-                                      icon: const Icon(CupertinoIcons.delete),
-                                    )
-                                  ],
+                                          .updateRateSet(e, val: va);
+                                    }),
+                              ),
+                              DataCell(
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () =>
+                                            editRateSetFn(model: e),
+                                        icon: Image.asset(
+                                            'assets/icons/delete.png'),
+                                      ),
+                                      SizedBox(width: 2.w),
+                                      IconButton(
+                                        onPressed: () => context
+                                            .read<RateSetScreenCubit>()
+                                            .deleteRateSet(
+                                                e.ratesetId.toString()),
+                                        icon: Image.asset(
+                                            'assets/icons/delete.png'),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
               );
             }

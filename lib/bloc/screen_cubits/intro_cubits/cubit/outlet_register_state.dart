@@ -2,7 +2,6 @@ part of 'outlet_register_cubit.dart';
 
 sealed class OutletRegisterState extends Equatable {
   const OutletRegisterState();
-
   @override
   List<Object> get props => [];
 }

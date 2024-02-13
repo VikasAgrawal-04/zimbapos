@@ -29,7 +29,10 @@ class ApplicationTheme {
         titleMedium: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w700),
         titleSmall: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w700),
         headlineLarge: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
-        headlineMedium: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w500),
+        headlineMedium: TextStyle(
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w500,
+            color: KColors.whiteColor),
         headlineSmall: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),
         bodyLarge: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
         bodyMedium: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),

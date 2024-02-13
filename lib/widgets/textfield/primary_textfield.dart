@@ -4,7 +4,7 @@ import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/constants/ktextstyles.dart';
 
 class PrimaryTextField extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
   final bool? readOnly;
   final TextInputType? keyboard;
   final TextEditingController controller;
@@ -17,7 +17,7 @@ class PrimaryTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool? enable;
   const PrimaryTextField({
-    required this.hintText,
+    this.hintText,
     required this.controller,
     required this.onChanged,
     this.validator,

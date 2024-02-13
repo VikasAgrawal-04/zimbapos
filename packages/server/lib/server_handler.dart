@@ -68,6 +68,7 @@ class Server {
       });
 
       await shelf_io.serve(
+        shared: true,
         handler,
         InternetAddress.anyIPv4,
         8080,

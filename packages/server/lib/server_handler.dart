@@ -15,6 +15,7 @@ import 'package:server/apis/routes/tax_routes.dart';
 import 'package:server/apis/routes/terminal_routes.dart';
 import 'package:server/apis/routes/user_role_routes.dart';
 import 'package:server/apis/routes/user_routes.dart';
+import 'package:server/apis/routes/user_screen_function_routes.dart';
 import 'package:server/apis/routes/workers_routes.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -43,6 +44,7 @@ class Server {
     TerminalRoutes(context, router);
     CustomerRoutes(context, router);
     UserRoleRoutes(context, router);
+    UserScreenFnRoutes(context, router);
   }
 
   Future<void> runServer() async {

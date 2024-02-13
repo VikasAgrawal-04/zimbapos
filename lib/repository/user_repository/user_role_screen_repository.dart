@@ -62,6 +62,7 @@ class UserRoleScreenRepository {
             throw IsarError('Screen Function Already Exists');
           }
         }
+        dbItem.roleId = data.roleId;
         dbItem.canChange = data.canChange;
         dbItem.canView = data.canView;
         dbItem.screenFunctionName = data.screenFunctionName;

@@ -66,7 +66,7 @@ class UserRoleScreenFunctionModel {
       screenFunctionName: map['screenFunctionName'] != null
           ? map['screenFunctionName'] as String
           : null,
-      canView: map['canView'] != null ? map['canView'] as bool : false,
+      canView: map['canView'] != null ? map['canView'] as bool : true,
       canChange: map['canChange'] != null ? map['canChange'] as bool : false,
     );
   }
@@ -76,4 +76,4 @@ class UserRoleScreenFunctionModel {
   factory UserRoleScreenFunctionModel.fromJson(String source) =>
       UserRoleScreenFunctionModel.fromMap(
           json.decode(source) as Map<String, dynamic>);
-}
+} 

@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/models/user_models/user_model.dart';
@@ -9,6 +10,21 @@ class UserRepository {
 
   Future<List<UserModel>> getAllUsers() async {
     return db.userModels.filter().isDeletedEqualTo(false).findAllSync();
+  }
+
+  Future<UserModel?> getUser(String token) async {
+    try {
+      final user = db.userModels.filter().tokenEqualTo(token).findFirstSync();
+      if (user != null) {
+        return user;
+      } else {
+        throw IsarError("No User Found");
+      }
+    } on IsarError catch (error, stack) {
+      debugPrint("Error ${error.message}");
+      debugPrintStack(stackTrace: stack);
+      return null;
+    }
   }
 
   Future<Tuple2<bool, String>> loginUser(UserModel user) async {

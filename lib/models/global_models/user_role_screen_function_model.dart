@@ -76,4 +76,4 @@ class UserRoleScreenFunctionModel {
   factory UserRoleScreenFunctionModel.fromJson(String source) =>
       UserRoleScreenFunctionModel.fromMap(
           json.decode(source) as Map<String, dynamic>);
-} 
+}

@@ -10,6 +10,7 @@ import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
+import 'package:zimbapos/models/global_models/shift_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_lines_model.dart';
@@ -35,6 +36,7 @@ import 'package:zimbapos/repository/items_repository.dart';
 import 'package:zimbapos/repository/main_group_repository.dart';
 import 'package:zimbapos/repository/payments_repository.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
+import 'package:zimbapos/repository/shift_repository.dart';
 import 'package:zimbapos/repository/system_repository/home_shortcut_repository.dart';
 import 'package:zimbapos/repository/system_repository/system_configuration_repository.dart';
 import 'package:zimbapos/repository/table_repository.dart';
@@ -97,7 +99,8 @@ class IsarService {
           PermanentBillHeaderModelSchema,
           PermanentBillLinesModelSchema,
           UserRolesModelSchema,
-          UserRoleScreenFunctionModelSchema
+          UserRoleScreenFunctionModelSchema,
+          ShiftModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -170,4 +173,6 @@ class IsarService {
 
   UserRoleScreenRepository get userRoleScreenRepository =>
       UserRoleScreenRepository(db);
+
+  ShiftRepository get shiftRepository => ShiftRepository(db);
 }

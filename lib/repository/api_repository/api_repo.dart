@@ -6,6 +6,7 @@ import 'package:zimbapos/repository/api_repository/customer_category/customer_ca
 import 'package:zimbapos/repository/api_repository/item_group/item_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/shift/shift_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/tax/tax_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
@@ -25,4 +26,5 @@ abstract class ApiRepo
         BillApiRepo,
         TaxApiRepo,
         RateSetApiRepo,
-        CustomerApiRepo {}
+        CustomerApiRepo,
+        ShiftApiRepo {}

@@ -29,7 +29,7 @@ class ShiftRepository {
           .filter()
           .userIdEqualTo(userId)
           .findFirstSync();
-      if (lastShift != null) {
+      if (lastShift != null && lastShift.shiftEnded == false) {
         lastShift.shiftEnded = true;
         lastShift.shiftEndedAt = DateTime.now();
         db.writeTxnSync(() => db.shiftModels.putSync(lastShift));

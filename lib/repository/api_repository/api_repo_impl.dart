@@ -30,6 +30,8 @@ import 'package:zimbapos/repository/api_repository/items/item_api_repo_impl.dart
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/rateset/rateset_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/shift/shift_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/shift/shift_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/tax/tax_api_repo_impl.dart';
@@ -53,6 +55,7 @@ class ApiRepoImpl implements ApiRepo {
   final CustomerApiRepo _customerApiRepo;
   final TaxApiRepo _taxApiRepo;
   final RateSetApiRepo _rateSetApiRepo;
+  final ShiftApiRepo _shiftApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -66,7 +69,8 @@ class ApiRepoImpl implements ApiRepo {
         _customerCategoryApiRepo = CustomerCategoryApiRepoImpl(),
         _taxApiRepo = TaxApiRepoImpl(),
         _rateSetApiRepo = RateSetApiRepoImpl(),
-        _customerApiRepo = CustomerApiRepoImpl();
+        _customerApiRepo = CustomerApiRepoImpl(),
+        _shiftApiRepo = ShiftApiRepoImpl();
 
   @override
   Future<Either<Failure, List<AreasModel>>> getAreas() {
@@ -331,5 +335,20 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updateRateSet(
       RateSetsModel item) {
     return _rateSetApiRepo.updateRateSet(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> endShift() {
+    return _shiftApiRepo.endShift();
+  }
+
+  @override
+  Future<Either<Failure, int>> getShiftId() {
+    return _shiftApiRepo.getShiftId();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> startShift() {
+    return _shiftApiRepo.startShift();
   }
 }

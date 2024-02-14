@@ -7,6 +7,8 @@ import 'package:zimbapos/models/global_models/customer_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/pay_in_model.dart';
+import 'package:zimbapos/models/global_models/pay_out_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
@@ -29,6 +31,7 @@ import 'package:zimbapos/repository/api_repository/items/item_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/items/item_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/main_group/main_group_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/payin/pay_in_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/rateset/rateset_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/shift/shift_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/shift/shift_api_repo_impl.dart';
@@ -39,6 +42,9 @@ import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
 import 'customer/customer_api_repo.dart';
+import 'payin/pay_in_api_repo.dart';
+import 'payout/pay_out_api_repo.dart';
+import 'payout/pay_out_api_repo_impl.dart';
 import 'rateset/rateset_api_repo_impl.dart';
 import 'tax/tax_api_repo.dart';
 
@@ -56,6 +62,8 @@ class ApiRepoImpl implements ApiRepo {
   final TaxApiRepo _taxApiRepo;
   final RateSetApiRepo _rateSetApiRepo;
   final ShiftApiRepo _shiftApiRepo;
+  final PayInApiRepo _payInApiRepo;
+  final PayOutApiRepo _payOutApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -70,7 +78,9 @@ class ApiRepoImpl implements ApiRepo {
         _taxApiRepo = TaxApiRepoImpl(),
         _rateSetApiRepo = RateSetApiRepoImpl(),
         _customerApiRepo = CustomerApiRepoImpl(),
-        _shiftApiRepo = ShiftApiRepoImpl();
+        _shiftApiRepo = ShiftApiRepoImpl(),
+        _payInApiRepo = PayInApiRepoImpl(),
+        _payOutApiRepo = PayOutApiRepoImpl();
 
   @override
   Future<Either<Failure, List<AreasModel>>> getAreas() {
@@ -350,6 +360,26 @@ class ApiRepoImpl implements ApiRepo {
   @override
   Future<Either<Failure, Map<String, dynamic>>> startShift() {
     return _shiftApiRepo.startShift();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createPayIn(PayInModel item) {
+    return _payInApiRepo.createPayIn(item);
+  }
+
+  @override
+  Future<Either<Failure, List<PayInModel>>> fetchPayInList() {
+    return _payInApiRepo.fetchPayInList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createPayOut(PayOutModel item) {
+    return _payOutApiRepo.createPayOut(item);
+  }
+
+  @override
+  Future<Either<Failure, List<PayOutModel>>> fetchPayOutList() {
+    return _payOutApiRepo.fetchPayOutList();
   }
 
   @override

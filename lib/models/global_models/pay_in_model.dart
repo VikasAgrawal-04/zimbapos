@@ -16,7 +16,7 @@ class PayInModel {
   String? reason;
   String? customerId;
   PayInModel({
-    required this.id,
+    this.id = Isar.autoIncrement,
     this.outletId,
     this.payInId,
     this.dateTime,

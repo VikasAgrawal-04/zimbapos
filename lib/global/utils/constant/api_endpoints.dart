@@ -91,4 +91,11 @@ class EndPoints {
   static const String getShiftId = '/get-shift-id';
   static const String startShift = '/start-shift';
   static const String endShift = '/end-shift';
+
+  //Pay In & Out
+  static const String getPayin = '/get-pay-in';
+  static const String getPayout = '/get-pay-out';
+
+  static const String createPayIn = '/create-payin';
+  static const String createPayOut = '/create-payout';
 }

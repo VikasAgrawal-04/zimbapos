@@ -6,10 +6,10 @@ class ShiftRepository {
   final Isar db;
   ShiftRepository(this.db);
 
-  Future<int> getShiftId({required String userId}) async {
+  Future<int> getShiftId() async {
     try {
       final currentShift =
-          db.shiftModels.filter().userIdEqualTo(userId).findFirstSync();
+          db.shiftModels.where(sort: Sort.desc).findFirstSync();
       if (currentShift != null) {
         return currentShift.shiftId!;
       } else {
@@ -63,6 +63,15 @@ class ShiftRepository {
       debugPrint(error.message);
       debugPrintStack(stackTrace: stack);
       return false;
+    }
+  }
+
+  Future<void> shiftReport() async {
+    try {
+      final shiftId = await getShiftId();
+    } on IsarError catch (error, stack) {
+      debugPrint(error.message);
+      debugPrintStack(stackTrace: stack);
     }
   }
 }

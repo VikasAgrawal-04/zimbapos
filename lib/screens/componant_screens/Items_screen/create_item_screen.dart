@@ -345,7 +345,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                               ),
                               Expanded(
                                 child: PrimaryTextField(
-                                  validator: nullCheckValidator,
+                                  // validator: nullCheckValidator,
                                   // hintText: 'Area name',
                                   controller: state.barcodeController,
                                   onChanged: (value) {},
@@ -367,7 +367,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                               ),
                               Expanded(
                                 child: PrimaryTextField(
-                                  validator: nullCheckValidator,
+                                  // validator: nullCheckValidator,
                                   // hintText: 'Area name',
                                   controller: state.shortcodeController,
                                   onChanged: (value) {},
@@ -389,7 +389,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                               ),
                               Expanded(
                                 child: PrimaryTextField(
-                                  validator: nullCheckValidator,
+                                  // validator: nullCheckValidator,
                                   // hintText: 'Area name',
                                   controller: state.hsnController,
                                   onChanged: (value) {},
@@ -411,7 +411,7 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                               ),
                               Expanded(
                                 child: PrimaryTextField(
-                                  validator: nullCheckValidator,
+                                  // validator: nullCheckValidator,
                                   // hintText: 'Area name',
                                   controller: state.imgLinkController,
                                   onChanged: (value) {},

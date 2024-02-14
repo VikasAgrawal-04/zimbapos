@@ -45,7 +45,7 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
                 children: [
                   //header
                   Container(
-                    width: double.infinity,
+                    width: 100.w,
                     height: screenSize.height * 0.15,
                     decoration: BoxDecoration(
                       color: KColors.blackColor,
@@ -86,11 +86,23 @@ class _EditRateSetScreenState extends State<EditRateSetScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //rate set name
-                          PrimaryTextField(
-                            validator: nullCheckValidator,
-                            hintText: 'Rate set name',
-                            controller: state.rateSetNameController,
-                            onChanged: (value) {},
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Rate Set Name",
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ),
+                              Expanded(
+                                child: PrimaryTextField(
+                                  validator: nullCheckValidator,
+                                  // hintText: 'Rate set name',
+                                  controller: state.rateSetNameController,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: screenSize.height * 0.3),
 

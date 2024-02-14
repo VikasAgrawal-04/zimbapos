@@ -267,7 +267,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                 ),
                                 Expanded(
                                   child: PrimaryTextField(
-                                    validator: doubleValidator,
+                                    // validator: doubleValidator,
                                     // hintText: 'Area name',
                                     controller: state.itemRateController,
                                     onChanged: (value) {},
@@ -352,7 +352,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                 ),
                                 Expanded(
                                   child: PrimaryTextField(
-                                    validator: nullCheckValidator,
+                                    // validator: nullCheckValidator,
                                     // hintText: 'Area name',
                                     controller: state.barcodeController,
                                     onChanged: (value) {},
@@ -374,7 +374,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                 ),
                                 Expanded(
                                   child: PrimaryTextField(
-                                    validator: nullCheckValidator,
+                                    // validator: nullCheckValidator,
                                     // hintText: 'Area name',
                                     controller: state.shortcodeController,
                                     onChanged: (value) {},
@@ -396,7 +396,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                 ),
                                 Expanded(
                                   child: PrimaryTextField(
-                                    validator: nullCheckValidator,
+                                    // validator: nullCheckValidator,
                                     // hintText: 'Area name',
                                     controller: state.hsnController,
                                     onChanged: (value) {},
@@ -418,7 +418,7 @@ class _EditItemsScreenState extends State<EditItemsScreen> {
                                 ),
                                 Expanded(
                                   child: PrimaryTextField(
-                                    validator: nullCheckValidator,
+                                    // validator: nullCheckValidator,
                                     // hintText: 'Area name',
                                     controller: state.imgLinkController,
                                     onChanged: (value) {},

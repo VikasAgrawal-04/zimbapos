@@ -229,7 +229,7 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                                     CustomerCategoryScreenState>(
                                   builder: (context, state) {
                                     return CustomDropDown<String>(
-                                      title: "Customer Category",
+                                      // title: "Customer Category",
                                       items: state.customerCategories
                                           .map((cusCat) =>
                                               cusCat.custCategoryName ??
@@ -268,7 +268,7 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                               ),
                               Expanded(
                                 child: CustomDropDown<String>(
-                                  title: "Gender",
+                                  // title: "Gender",
                                   hint: "Select Gender",
                                   items: const ['M', 'F', 'O'],
                                   value: state.gender,
@@ -282,8 +282,12 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                           SizedBox(height: screenSize.height * 0.02),
 
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
+                              Expanded(
+                                  child: Text(
+                                "Customer Birth Date",
+                                style: theme.textTheme.titleLarge,
+                              )),
                               Expanded(
                                 child: DateTextField(
                                   isRequired: false,
@@ -293,7 +297,17 @@ class _CreateCustomerScreenState extends State<CreateCustomerScreen> {
                                       .onBirthChange,
                                 ),
                               ),
-                              SizedBox(width: 4.w),
+                            ],
+                          ),
+                          SizedBox(height: screenSize.height * 0.02),
+
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Text(
+                                "Customer Anniversary Date",
+                                style: theme.textTheme.titleLarge,
+                              )),
                               Expanded(
                                 child: DateTextField(
                                   isRequired: false,

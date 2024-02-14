@@ -74,11 +74,23 @@ class _CreateRateSetsScreenState extends State<CreateRateSetsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //rate set name
-                          PrimaryTextField(
-                            validator: nullCheckValidator,
-                            hintText: 'Rate set name',
-                            controller: state.rateSetNameController,
-                            onChanged: (value) {},
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Rate Set Name",
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ),
+                              Expanded(
+                                child: PrimaryTextField(
+                                  validator: nullCheckValidator,
+                                  // hintText: 'Rate set name',
+                                  controller: state.rateSetNameController,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(height: screenSize.height * 0.3),
 

@@ -34,211 +34,215 @@ class _CreateItemGroupScreenState extends State<CreateItemGroupScreen> {
       child: Scaffold(
         body: BlocBuilder<ItemGroupScreenCubit, ItemGroupScreenState>(
           builder: (context, state) {
-            return Column(
-              children: [
-                //header
-                Container(
-                  width: double.infinity,
-                  height: screenSize.height * 0.15,
-                  decoration: BoxDecoration(
-                    color: KColors.blackColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      bottomRight: Radius.circular(14),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Create Item Group',
-                      style: theme.textTheme.headlineMedium,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      icon: Image.asset(
-                        "assets/icons/back.png",
-                        height: 5.h,
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  //header
+                  Container(
+                    width: double.infinity,
+                    height: screenSize.height * 0.15,
+                    decoration: BoxDecoration(
+                      color: KColors.blackColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        bottomRight: Radius.circular(14),
                       ),
                     ),
-                  ],
-                ),
-
-                //form
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(height: screenSize.height * 0.04),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Item Group Name',
-                                style: theme.textTheme.titleLarge,
-                              ),
-                            ),
-                            Expanded(
-                              child: PrimaryTextField(
-                                validator: nullCheckValidator,
-                                // hintText: 'Area name',
-                                controller: state.itemGroupNameController,
-                                onChanged: (value) {},
-                              ),
-                            ),
-                          ],
+                    child: Center(
+                      child: Text(
+                        'Create Item Group',
+                        style: theme.textTheme.headlineMedium,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: Image.asset(
+                          "assets/icons/back.png",
+                          height: 5.h,
                         ),
-                        SizedBox(height: screenSize.height * 0.02),
+                      ),
+                    ],
+                  ),
 
-                        //dropdown for main group id
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Main group:",
-                                style: theme.textTheme.titleLarge,
+                  //form
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: screenSize.height * 0.04),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'Item Group Name',
+                                  style: theme.textTheme.titleLarge,
+                                ),
                               ),
-                            ),
-                            //drop down
-                            Expanded(
-                              child: BlocBuilder<MainGroupScreenCubit,
-                                  MainGroupScreenState>(
-                                builder: (context, state) {
-                                  return CustomDropDown<String>(
-                                    // title: "Main group",
-                                    items: state.mainGroupList
-                                        .map((e) => e.mainGroupName ?? 'error')
-                                        .toList(),
-                                    itemValues: state.mainGroupList
-                                        .map((e) => e.mainGroupId ?? "null")
-                                        .toList(),
-                                    value: context
-                                        .read<ItemGroupScreenCubit>()
-                                        .state
-                                        .mainGroupId,
-                                    hint: "Choose a main group",
-                                    onChanged: (value) {
-                                      context
+                              Expanded(
+                                child: PrimaryTextField(
+                                  validator: nullCheckValidator,
+                                  // hintText: 'Area name',
+                                  controller: state.itemGroupNameController,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenSize.height * 0.02),
+
+                          //dropdown for main group id
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Main group:",
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ),
+                              //drop down
+                              Expanded(
+                                child: BlocBuilder<MainGroupScreenCubit,
+                                    MainGroupScreenState>(
+                                  builder: (context, state) {
+                                    return CustomDropDown<String>(
+                                      // title: "Main group",
+                                      items: state.mainGroupList
+                                          .map(
+                                              (e) => e.mainGroupName ?? 'error')
+                                          .toList(),
+                                      itemValues: state.mainGroupList
+                                          .map((e) => e.mainGroupId ?? "null")
+                                          .toList(),
+                                      value: context
                                           .read<ItemGroupScreenCubit>()
-                                          .onMainGroupChange(value);
-                                    },
-                                  );
+                                          .state
+                                          .mainGroupId,
+                                      hint: "Choose a main group",
+                                      onChanged: (value) {
+                                        context
+                                            .read<ItemGroupScreenCubit>()
+                                            .onMainGroupChange(value);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenSize.height * 0.02),
+
+                          //dropdown for printer
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Printer:",
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ),
+                              Expanded(
+                                child: CustomDropDown<String>(
+                                  // title: "Printer",
+                                  hint: "Select a printer",
+                                  items: const [
+                                    '0',
+                                    'P1',
+                                    'P2',
+                                    'P3',
+                                    'P4',
+                                  ],
+                                  value: state.printerId,
+                                  onChanged: context
+                                      .read<ItemGroupScreenCubit>()
+                                      .onPrinterChange,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenSize.height * 0.3),
+
+                          //buttons
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              //cancel
+                              CustomButtonNew(
+                                width: 68.sp,
+                                height: 28.sp,
+                                text: "Cancel",
+                                color: KColors.blackColor,
+                                onTap: () async {
+                                  //clear controllers and pop
+                                  context.pop();
                                 },
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: screenSize.height * 0.02),
 
-                        //dropdown for printer
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "Printer:",
-                                style: theme.textTheme.titleLarge,
-                              ),
-                            ),
-                            Expanded(
-                              child: CustomDropDown<String>(
-                                // title: "Printer",
-                                hint: "Select a printer",
-                                items: const [
-                                  '0',
-                                  'P1',
-                                  'P2',
-                                  'P3',
-                                  'P4',
-                                ],
-                                value: state.printerId,
-                                onChanged: context
-                                    .read<ItemGroupScreenCubit>()
-                                    .onPrinterChange,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: screenSize.height * 0.3),
-
-                        //buttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            //cancel
-                            CustomButtonNew(
-                              width: 68.sp,
-                              height: 28.sp,
-                              text: "Cancel",
-                              color: KColors.blackColor,
-                              onTap: () async {
-                                //clear controllers and pop
-                                context.pop();
-                              },
-                            ),
-
-                            //save
-                            CustomButtonNew(
-                              text: "Submit",
-                              width: 68.sp,
-                              height: 28.sp,
-                              color: theme.primaryColor,
-                              onTap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  if (state.mainGroupId != null) {
-                                    if (state.printerId != null) {
-                                      await context
-                                          .read<ItemGroupScreenCubit>()
-                                          .createItemGroup(
-                                            ItemGroupModel(
-                                              itemGroupName: state
-                                                  .itemGroupNameController.text,
-                                              mainGroupId: state.mainGroupId,
-                                              printerId: state.printerId,
-                                            ),
-                                          );
-                                      context.pop();
+                              //save
+                              CustomButtonNew(
+                                text: "Submit",
+                                width: 68.sp,
+                                height: 28.sp,
+                                color: theme.primaryColor,
+                                onTap: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    if (state.mainGroupId != null) {
+                                      if (state.printerId != null) {
+                                        await context
+                                            .read<ItemGroupScreenCubit>()
+                                            .createItemGroup(
+                                              ItemGroupModel(
+                                                itemGroupName: state
+                                                    .itemGroupNameController
+                                                    .text,
+                                                mainGroupId: state.mainGroupId,
+                                                printerId: state.printerId,
+                                              ),
+                                            );
+                                        context.pop();
+                                      } else {
+                                        UtillSnackbar.showSnackBar(
+                                          context,
+                                          title: "Alert",
+                                          body: "Please choose a printer",
+                                          isSuccess: false,
+                                        );
+                                      }
                                     } else {
                                       UtillSnackbar.showSnackBar(
                                         context,
                                         title: "Alert",
-                                        body: "Please choose a printer",
+                                        body: "Please choose a main group",
                                         isSuccess: false,
                                       );
                                     }
-                                  } else {
-                                    UtillSnackbar.showSnackBar(
-                                      context,
-                                      title: "Alert",
-                                      body: "Please choose a main group",
-                                      isSuccess: false,
-                                    );
                                   }
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),

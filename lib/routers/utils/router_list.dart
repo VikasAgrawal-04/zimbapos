@@ -45,6 +45,8 @@ import 'package:zimbapos/screens/componant_screens/expenses_screens/expense_list
 import 'package:zimbapos/screens/componant_screens/item_group_screens/create_item_group.dart';
 import 'package:zimbapos/screens/componant_screens/item_group_screens/item_group_list.dart';
 import 'package:zimbapos/screens/componant_screens/main_group_screens/main_group_list.dart';
+import 'package:zimbapos/screens/componant_screens/pay_in_screens/create_pay_in_screen.dart';
+import 'package:zimbapos/screens/componant_screens/pay_in_screens/pay_in_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/create_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/edit_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/payment_list_screen.dart';
@@ -79,6 +81,8 @@ import '../../screens/componant_screens/customer_screens/customer_list_screen.da
 import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
+import '../../screens/componant_screens/pay_out_screens/create_pay_out_screen.dart';
+import '../../screens/componant_screens/pay_out_screens/pay_out_List_screen.dart';
 
 final List<GoRoute> routerList = [
   //home
@@ -610,5 +614,31 @@ final List<GoRoute> routerList = [
         );
       }
     },
+  ),
+
+  //pay in
+  GoRoute(
+    name: AppScreen.payInListScreen.name,
+    path: AppScreen.payInListScreen.path,
+    builder: (context, state) => const PayInListScreen(),
+  ),
+  // create pay in
+  GoRoute(
+    name: AppScreen.createPayInScreen.name,
+    path: AppScreen.createPayInScreen.path,
+    builder: (context, state) => const CreatePayInScreen(),
+  ),
+
+  //pay out
+  GoRoute(
+    name: AppScreen.payOutListScreen.name,
+    path: AppScreen.payOutListScreen.path,
+    builder: (context, state) => const PayOutListScreen(),
+  ),
+  // create pay in
+  GoRoute(
+    name: AppScreen.createPayOutScreen.name,
+    path: AppScreen.createPayOutScreen.path,
+    builder: (context, state) => const CreatePayOutScreen(),
   ),
 ];

@@ -2,61 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_cubit.dart';
-import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_state.dart';
-import 'package:zimbapos/models/global_models/area_model.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/widgets/my_alert_widget.dart';
+import 'package:zimbapos/models/global_models/pay_in_model.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../bloc/screen_cubits/payin_cubits/payin_screen_cubit.dart';
+import '../../../bloc/screen_cubits/payin_cubits/payin_screen_state.dart';
 import '../../../constants/kcolors.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/custom_button/custom_button.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
 
-class AreasOverviewScreen extends StatefulWidget {
-  const AreasOverviewScreen({super.key});
+class PayInListScreen extends StatefulWidget {
+  const PayInListScreen({super.key});
 
   @override
-  State<AreasOverviewScreen> createState() => _AreasOverviewScreenState();
+  State<PayInListScreen> createState() => _PayInListScreenState();
 }
 
-class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
+class _PayInListScreenState extends State<PayInListScreen> {
   //
-
-  deleteArea(AreasModel e) {
-    UtilDialog.showMyDialog(
-      context,
-      "Alert",
-      "Do you want to delete '${e.areaName}'?",
-      //this is for ok button
-      () {
-        context.read<AreasScreenCubit>().deleteArea(
-              e.areaId.toString(),
-            );
-        // final dbCubit = DatabaseCubit.dbFrom(context);
-        // dbCubit.areasRepository.deleteAreabyID(area.id);
-        // EasyLoading.showToast('Area deleted');
-        context.pop();
-      },
-      // this is for cancel button sending null will perform default pop() action
-      null,
-    );
+  viewDetailsFn(PayInModel e) {
+    //redirect to details screen
   }
-
-  activeDeactivateAreas(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.areasRepository.changeActiveArea(id, value);
-  }
-
-  editAreaFn({required AreasModel model}) {
-    context.push(
-      AppScreen.editAreaScreen.path,
-      extra: model,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -115,7 +83,7 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Areas',
+                      'Pay In List',
                       style: theme.textTheme.titleLarge,
                     ),
 
@@ -125,11 +93,11 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                       shadows: const [],
                       height: 8.h,
                       width: 18.w,
-                      text: 'Add New Area',
+                      text: 'Add New Pay In',
                       style: theme.textTheme.titleMedium,
                       onTap: () {
-                        context.read<AreasScreenCubit>().clearControllers();
-                        context.push(AppScreen.createAreasScreen.path);
+                        context.read<PayInScreenCubit>().clearControllers();
+                        context.push(AppScreen.createPayInScreen.path);
                       },
                     ),
                   ],
@@ -148,48 +116,48 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
               ),
 
               //title and filter
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 18,
-                  left: 24,
-                  right: 24,
-                  bottom: 18,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'All Areas',
-                      style: theme.textTheme.titleMedium,
-                    ),
+              // Padding(
+              //   padding: const EdgeInsets.only(
+              //     top: 18,
+              //     left: 24,
+              //     right: 24,
+              //     bottom: 18,
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       Text(
+              //         "Pay In List",
+              //         style: theme.textTheme.titleMedium,
+              //       ),
 
-                    //add area button
-                    CustomButtonNew(
-                      shadows: const [],
-                      height: 3.5.h,
-                      width: 6.w,
-                      text: 'Filter',
-                      color: Colors.grey.shade200,
-                      style: theme.textTheme.bodyMedium,
-                      onTap: () {
-                        //filter
-                      },
-                    ),
-                  ],
-                ),
-              ),
+              //       //add  button
+              //       CustomButtonNew(
+              //         shadows: const [],
+              //         height: 3.5.h,
+              //         width: 6.w,
+              //         text: 'Filter',
+              //         color: Colors.grey.shade200,
+              //         style: theme.textTheme.bodyMedium,
+              //         onTap: () {
+              //           //filter
+              //         },
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // displaying areas
-              BlocBuilder<AreasScreenCubit, AreasScreenState>(
+              BlocBuilder<PayInScreenCubit, PayInScreenState>(
                 builder: (context, state) {
-                  final data = state.areaList;
+                  final data = state.payInList;
                   if (state.status == Status.loading) {
                     return const MyLoadingIndicator();
                   }
                   if (data.isEmpty) {
                     return const Center(
-                      child: Text('No Areas'),
+                      child: Text('No Pay In Done'),
                     );
                   } else {
                     return Container(
@@ -224,12 +192,6 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                               ),
                             ),
                             DataColumn(
-                              label: Text(
-                                'Active',
-                                style: theme.textTheme.headlineMedium,
-                              ),
-                            ),
-                            DataColumn(
                               label: Padding(
                                 padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
                                 child: Text(
@@ -244,47 +206,19 @@ class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
                                 (e) => DataRow(
                                   cells: [
                                     DataCell(Text(
-                                      e.areaName.toString(),
+                                      e.dateTime.toString(),
                                       style: KTextStyles.kSubtitle,
                                     )),
                                     DataCell(Text(
-                                      "${e.extraChargePercent.toString()}%",
+                                      "${e.amount.toString()}/-",
                                       style: KTextStyles.kSubtitle,
                                     )),
                                     DataCell(
-                                      Switch.adaptive(
-                                        activeColor: theme.primaryColor,
-                                        value: e.isActive as bool,
-                                        onChanged: (va) {
-                                          context
-                                              .read<AreasScreenCubit>()
-                                              .updateArea(e, val: va);
-                                        },
-                                      ),
-                                    ),
-                                    DataCell(
-                                      Container(
-                                        alignment: Alignment.center,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () =>
-                                                  editAreaFn(model: e),
-                                              icon: Image.asset(
-                                                  'assets/icons/edit.png'),
-                                            ),
-                                            SizedBox(width: 2.w),
-                                            IconButton(
-                                              onPressed: () => deleteArea(e),
-                                              icon: Image.asset(
-                                                  'assets/icons/delete.png'),
-                                            ),
-                                          ],
+                                      IconButton(
+                                        onPressed: () => viewDetailsFn(e),
+                                        icon: Icon(
+                                          Icons.remove_red_eye_rounded,
+                                          color: theme.primaryColor,
                                         ),
                                       ),
                                     ),

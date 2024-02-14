@@ -59,4 +59,21 @@ class BillApiRepoImpl implements BillApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createFinalBill(
+      String tableId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.createFinalBill,
+          queryParams: {"table_id": tableId});
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

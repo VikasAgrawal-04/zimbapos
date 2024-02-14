@@ -971,7 +971,11 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                     SizedBox(height: 1.h),
                     CustomButtonNew(
                       text: "Proceed To Pay",
-                      onTap: () {},
+                      onTap: () async {
+                        await context
+                            .read<ItemSelectionCubit>()
+                            .finalBill(widget.tableId);
+                      },
                     ),
                     SizedBox(height: .5.h),
                   ],

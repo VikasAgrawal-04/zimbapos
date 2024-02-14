@@ -259,6 +259,19 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
     });
   }
 
+  Future<void> finalBill(String tableId) async {
+    EasyLoading.show(maskType: EasyLoadingMaskType.black);
+    final data = await _repo.createFinalBill(tableId);
+    EasyLoading.dismiss();
+    data.fold((failure) {
+      debugPrint("Failure in finalBill ${failure.toString()}");
+    }, (success) {
+      getTempBill(tableId);
+      debugPrint("Success In finalBill $success");
+      EasyLoading.showSuccess(success['data'].toString());
+    });
+  }
+
   //Functions For Item Screen
 
   void changeTile(int index) {

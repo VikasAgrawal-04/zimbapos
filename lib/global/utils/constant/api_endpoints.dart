@@ -80,6 +80,7 @@ class EndPoints {
   static const String createKot = '/action-temp-bill';
   static const String getTempBill = '/get-temp-bill';
   static const String deleteKotItem = '/delete-kot-item';
+  static const String createFinalBill = '/final-bill';
 
   //User Roles
   static const String getUserRoles = '/fetch-user-roles';

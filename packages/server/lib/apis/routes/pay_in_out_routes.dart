@@ -14,5 +14,10 @@ class PayInOutRoutes {
     controller = PayInOutController(dbCubit);
     initialiseApi();
   }
-  void initialiseApi() {}
+  void initialiseApi() {
+    locRoute.get('/get-pay-in', controller.getPayIn);
+    locRoute.get('/get-pay-out', controller.getPayOut);
+    locRoute.post('/create-payin', controller.createPayIn);
+    locRoute.post('/create-payout', controller.createPayOut);
+  }
 }

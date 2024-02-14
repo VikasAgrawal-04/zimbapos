@@ -9,6 +9,7 @@ import 'package:server/apis/routes/customer_routes.dart';
 import 'package:server/apis/routes/item_group_routes.dart';
 import 'package:server/apis/routes/item_routes.dart';
 import 'package:server/apis/routes/main_group_routes.dart';
+import 'package:server/apis/routes/pay_in_out_routes.dart';
 import 'package:server/apis/routes/rateset_routes.dart';
 import 'package:server/apis/routes/shift_routes.dart';
 import 'package:server/apis/routes/table_routes.dart';
@@ -47,6 +48,7 @@ class Server {
     UserRoleRoutes(context, router);
     UserScreenFnRoutes(context, router);
     ShiftRoutes(context, router);
+    PayInOutRoutes(context, router);
   }
 
   Future<void> runServer() async {

@@ -7,13 +7,18 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/pay_in_model.dart';
+import 'package:zimbapos/models/global_models/pay_out_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
+import 'package:zimbapos/models/global_models/shift_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/terminal_model.dart';
+import 'package:zimbapos/models/global_models/user_role_screen_function_model.dart';
+import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
 import 'package:zimbapos/models/user_models/subscriber_model.dart';
@@ -31,8 +36,10 @@ import 'package:zimbapos/repository/expenses_repository.dart';
 import 'package:zimbapos/repository/item_group_repository.dart';
 import 'package:zimbapos/repository/items_repository.dart';
 import 'package:zimbapos/repository/main_group_repository.dart';
+import 'package:zimbapos/repository/pay_in_out_repository.dart';
 import 'package:zimbapos/repository/payments_repository.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
+import 'package:zimbapos/repository/shift_repository.dart';
 import 'package:zimbapos/repository/system_repository/home_shortcut_repository.dart';
 import 'package:zimbapos/repository/system_repository/system_configuration_repository.dart';
 import 'package:zimbapos/repository/table_repository.dart';
@@ -40,6 +47,8 @@ import 'package:zimbapos/repository/taxes_repository.dart';
 import 'package:zimbapos/repository/terminal_repository.dart';
 import 'package:zimbapos/repository/user_repository/subscription_repository.dart';
 import 'package:zimbapos/repository/user_repository/user_repository.dart';
+import 'package:zimbapos/repository/user_repository/user_role_screen_repository.dart';
+import 'package:zimbapos/repository/user_repository/user_roles_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
 import 'package:zimbapos/repository/workers_repository.dart';
 
@@ -91,7 +100,12 @@ class IsarService {
           CardLogModelSchema,
           CustomerModelSchema,
           PermanentBillHeaderModelSchema,
-          PermanentBillLinesModelSchema
+          PermanentBillLinesModelSchema,
+          UserRolesModelSchema,
+          UserRoleScreenFunctionModelSchema,
+          ShiftModelSchema,
+          PayInModelSchema,
+          PayOutModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -159,4 +173,13 @@ class IsarService {
   CardLogRepository get cardLogRepository => CardLogRepository(db);
 
   CustomerRepository get customerRepository => CustomerRepository(db);
+
+  UserRolesRepository get userRoleRepository => UserRolesRepository(db);
+
+  UserRoleScreenRepository get userRoleScreenRepository =>
+      UserRoleScreenRepository(db);
+
+  ShiftRepository get shiftRepository => ShiftRepository(db);
+
+  PayInOutRepository get payInOutRepository => PayInOutRepository(db);
 }

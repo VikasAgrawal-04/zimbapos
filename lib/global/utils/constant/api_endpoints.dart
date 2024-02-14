@@ -80,4 +80,15 @@ class EndPoints {
   static const String createKot = '/action-temp-bill';
   static const String getTempBill = '/get-temp-bill';
   static const String deleteKotItem = '/delete-kot-item';
+
+  //User Roles
+  static const String getUserRoles = '/fetch-user-roles';
+  static const String createUserRole = '/create-user-role';
+  static const String updateUserRole = '/update-user-role';
+  static const String deleteUserRole = '/delete-user-role';
+
+  //Shift
+  static const String getShiftId = '/get-shift-id';
+  static const String startShift = '/start-shift';
+  static const String endShift = '/end-shift';
 }

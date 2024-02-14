@@ -3,12 +3,13 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class DottedLine extends StatelessWidget {
   final Color? color;
-  const DottedLine({this.color, super.key});
+  final bool moreWidth;
+  const DottedLine({this.color, this.moreWidth = false, super.key});
 
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: DottedPainter(color: color),
+      painter: DottedPainter(color: color, moreWidth: moreWidth),
       size: Size(double.infinity, 1.h),
     );
   }
@@ -16,7 +17,8 @@ class DottedLine extends StatelessWidget {
 
 class DottedPainter extends CustomPainter {
   final Color? color;
-  const DottedPainter({this.color});
+  final bool moreWidth;
+  const DottedPainter({required this.moreWidth, this.color});
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
@@ -25,8 +27,8 @@ class DottedPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.butt;
 
-    const double dashWidth = 2;
-    const double dashSpace = 2;
+    double dashWidth = moreWidth ? 4 : 2;
+    double dashSpace = moreWidth ? 6 : 2;
 
     double startX = 0;
     while (startX < size.width) {

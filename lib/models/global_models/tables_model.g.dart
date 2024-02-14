@@ -62,23 +62,28 @@ const TableModelSchema = CollectionSchema(
       name: r'persons',
       type: IsarType.long,
     ),
-    r'tableId': PropertySchema(
+    r'tableAmount': PropertySchema(
       id: 9,
+      name: r'tableAmount',
+      type: IsarType.double,
+    ),
+    r'tableId': PropertySchema(
+      id: 10,
       name: r'tableId',
       type: IsarType.string,
     ),
     r'tableName': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'tableName',
       type: IsarType.string,
     ),
     r'tableStartedAt': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'tableStartedAt',
       type: IsarType.dateTime,
     ),
     r'tableStatus': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'tableStatus',
       type: IsarType.string,
     )
@@ -163,10 +168,11 @@ void _tableModelSerialize(
   writer.writeBool(offsets[6], object.isSplit);
   writer.writeString(offsets[7], object.outletId);
   writer.writeLong(offsets[8], object.persons);
-  writer.writeString(offsets[9], object.tableId);
-  writer.writeString(offsets[10], object.tableName);
-  writer.writeDateTime(offsets[11], object.tableStartedAt);
-  writer.writeString(offsets[12], object.tableStatus);
+  writer.writeDouble(offsets[9], object.tableAmount);
+  writer.writeString(offsets[10], object.tableId);
+  writer.writeString(offsets[11], object.tableName);
+  writer.writeDateTime(offsets[12], object.tableStartedAt);
+  writer.writeString(offsets[13], object.tableStatus);
 }
 
 TableModel _tableModelDeserialize(
@@ -185,10 +191,11 @@ TableModel _tableModelDeserialize(
     isSplit: reader.readBoolOrNull(offsets[6]),
     outletId: reader.readStringOrNull(offsets[7]),
     persons: reader.readLongOrNull(offsets[8]),
-    tableId: reader.readStringOrNull(offsets[9]),
-    tableName: reader.readStringOrNull(offsets[10]),
-    tableStartedAt: reader.readDateTimeOrNull(offsets[11]),
-    tableStatus: reader.readStringOrNull(offsets[12]),
+    tableAmount: reader.readDoubleOrNull(offsets[9]),
+    tableId: reader.readStringOrNull(offsets[10]),
+    tableName: reader.readStringOrNull(offsets[11]),
+    tableStartedAt: reader.readDateTimeOrNull(offsets[12]),
+    tableStatus: reader.readStringOrNull(offsets[13]),
   );
   return object;
 }
@@ -219,12 +226,14 @@ P _tableModelDeserializeProp<P>(
     case 8:
       return (reader.readLongOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDoubleOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 12:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 13:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1188,6 +1197,90 @@ extension TableModelQueryFilter
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableAmountIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'tableAmount',
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableAmountIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'tableAmount',
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableAmountEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'tableAmount',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableAmountGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'tableAmount',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableAmountLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'tableAmount',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterFilterCondition>
+      tableAmountBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'tableAmount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QAfterFilterCondition> tableIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1834,6 +1927,18 @@ extension TableModelQuerySortBy
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> sortByTableAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tableAmount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> sortByTableAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tableAmount', Sort.desc);
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QAfterSortBy> sortByTableId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tableId', Sort.asc);
@@ -2006,6 +2111,18 @@ extension TableModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> thenByTableAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tableAmount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TableModel, TableModel, QAfterSortBy> thenByTableAmountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'tableAmount', Sort.desc);
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QAfterSortBy> thenByTableId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tableId', Sort.asc);
@@ -2116,6 +2233,12 @@ extension TableModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TableModel, TableModel, QDistinct> distinctByTableAmount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'tableAmount');
+    });
+  }
+
   QueryBuilder<TableModel, TableModel, QDistinct> distinctByTableId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -2203,6 +2326,12 @@ extension TableModelQueryProperty
   QueryBuilder<TableModel, int?, QQueryOperations> personsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'persons');
+    });
+  }
+
+  QueryBuilder<TableModel, double?, QQueryOperations> tableAmountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'tableAmount');
     });
   }
 

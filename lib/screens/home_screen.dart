@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
           content: SizedBox(
             width: 50.w,
             child: SingleChildScrollView(
+              primary: false,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: screenList
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     const BoxShadow(
                                       // blurStyle: BlurStyle.outer,
                                       color: Colors.white,
-                                      offset: Offset(-4.0, -4.0),
+                                      offset: Offset(-3.0, -3.0),
                                       blurRadius: 12,
                                       spreadRadius: 1.0,
                                     ),
@@ -178,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ? 3
                               : 1,
                           child: GridView.builder(
+                            primary: false,
                             padding: EdgeInsets.only(bottom: 2.h),
                             controller: scrollController,
                             itemCount: 9,
@@ -216,16 +218,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(12),
                                       boxShadow: [
                                         BoxShadow(
-                                          // blurStyle: BlurStyle.solid,
+                                          // blurStyle: BlurStyle.inner,
                                           color: Colors.grey.shade500,
                                           offset: const Offset(4.0, 4.0),
                                           blurRadius: 12,
                                           spreadRadius: 2.0,
                                         ),
                                         const BoxShadow(
-                                          // blurStyle: BlurStyle.outer,
+                                          // blurStyle: BlurStyle.inner,
                                           color: Colors.white,
-                                          offset: Offset(-4.0, -4.0),
+                                          offset: Offset(-3.0, -3.0),
                                           blurRadius: 12,
                                           spreadRadius: 2.0,
                                         ),

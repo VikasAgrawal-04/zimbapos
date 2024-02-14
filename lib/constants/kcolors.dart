@@ -16,6 +16,8 @@ class KColors {
   static Color yellowColor = hexToColor('#F7B918');
   static Color whiteColor = hexToColor('#FFFFFF');
   static Color iconColor = hexToColor('#000000');
+  static Color runTabColor = hexToColor('#BCEC1A');
+  static Color billTabColor = hexToColor('#FDE708');
 
   //Grey Combinations
   static Color greenColor = hexToColor('#009444');

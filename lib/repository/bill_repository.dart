@@ -21,15 +21,18 @@ class BillRepository {
       if (billHeader == null) {
         throw IsarError("No Bill Found");
       } else {
-        final billLines = db.tempBillLines
-            .filter()
-            .billIdEqualTo(billHeader.billId)
-            .findAllSync();
+        final billLines = db.tempBillLines.buildQuery<TempBillLines>(
+            sortBy: const [
+              SortProperty(property: 'linePosition', sort: Sort.desc),
+            ],
+            filter: FilterCondition.equalTo(
+                property: 'billId', value: billHeader.billId)).findAllSync();
 
         return Tuple2(billHeader, billLines);
       }
-    } on IsarError catch (error) {
+    } on IsarError catch (error, stack) {
       debugPrint(error.message);
+      debugPrintStack(stackTrace: stack);
       return const Tuple2(null, []);
     }
   }

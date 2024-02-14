@@ -52,14 +52,15 @@ class CustomDropDown<T> extends StatelessWidget {
       opacity: readOnly ? .7 : 1.0,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.grey[200],
             border: Border.all(color: Colors.grey.shade400),
-            borderRadius: BorderRadius.circular(4.0)),
+            borderRadius: BorderRadius.circular(12.0)),
         child: IgnorePointer(
           ignoring: readOnly,
           child: DropdownButton(
               padding: EdgeInsets.only(left: 1.w),
               hint: Text(hint),
+              borderRadius: BorderRadius.circular(12.0),
               items: List.generate(items.length, (index) {
                 return _dropdownItem(
                     items[index], (itemValues?[index] ?? items[index]));

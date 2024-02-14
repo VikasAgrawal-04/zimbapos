@@ -20,10 +20,11 @@ class OrderDashboardInitial extends OrderDashboardState {
 class OrderDashboardLoaded extends OrderDashboardState {
   final List<AreasModel> areas;
   final List<TableModel> tables;
-  OrderDashboardLoaded(this.areas, this.tables);
+  final int selectedTab;
+  OrderDashboardLoaded(this.areas, this.tables, this.selectedTab);
 
   @override
-  List<Object> get props => [areas, tables];
+  List<Object> get props => [areas, tables, selectedTab];
 }
 
 class OrderDashboardError extends OrderDashboardState {

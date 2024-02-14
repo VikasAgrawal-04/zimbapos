@@ -79,7 +79,10 @@ class Helpers {
                 contentType:
                     encoded == true ? Headers.formUrlEncodedContentType : null,
                 validateStatus: (code) => true),
-            data: queryParams ?? listData ?? formData ?? FormData.fromMap(data),
+            data: queryParams ??
+                listData ??
+                formData ??
+                (data != null ? FormData.fromMap(data) : null),
           ));
           break;
         case RequestType.put:
@@ -117,7 +120,7 @@ class Helpers {
         throw ServerException(
             message: e.error is io.SocketException
                 ? "No Internet"
-                : e.response?.data['message'].toString());
+                : (jsonDecode(e.response?.data))['data'].toString());
       }
     }
     return null;

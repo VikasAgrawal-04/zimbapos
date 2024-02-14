@@ -66,7 +66,7 @@ class BillApiRepoImpl implements BillApiRepo {
     try {
       final response = await Helpers.sendRequest(
           RequestType.post, EndPoints.createFinalBill,
-          queryParams: {"table_id": tableId});
+          queryParams: {"table_id": tableId, "shift_id": 1});
       return Right(response ?? {});
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

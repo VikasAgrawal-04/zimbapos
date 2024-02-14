@@ -69,13 +69,22 @@ class BillRepository {
       required List<TempBillLines> lines}) async {
     try {
       //Bill ID
+
+      //TempBillHeaderModel
       final previousBills = db.tempBillHeaderModels.buildQuery(sortBy: [
         const SortProperty(property: 'billId', sort: Sort.desc)
       ]).findFirstSync();
 
-      //Handling the headers
-      int billGenId = ((previousBills?.billId ?? 0) + 1);
+      //PermanentBillHeaderModel
+      final previousPermanentBills = db.permanentBillHeaderModels.buildQuery(
+          sortBy: [
+            const SortProperty(property: 'billId', sort: Sort.desc)
+          ]).findFirstSync();
 
+      int billGenId =
+          ((previousBills?.billId ?? previousPermanentBills?.billId ?? 0) + 1);
+
+      //Handling the headers
       header.billId = billGenId;
       header.billStartDateTime = DateTime.now().toIso8601String();
 
@@ -216,7 +225,7 @@ class BillRepository {
   /// This will work only if the payment is done.
   /// @endtemplate
   Future<Tuple2<bool, String>> createPermanentBill(
-      {required String tableId}) async {
+      {required String tableId, required int shiftId}) async {
     try {
       final tempBillHeader = db.tempBillHeaderModels
           .filter()
@@ -225,6 +234,8 @@ class BillRepository {
       if (tempBillHeader == null) {
         throw IsarError("Bill Not Found!");
       } else {
+        final headerToAdd = tempBillHeader.toMap();
+        headerToAdd['shiftId'] = shiftId;
         final existingBill = db.permanentBillHeaderModels
             .filter()
             .billIdEqualTo(tempBillHeader.billId)
@@ -237,8 +248,8 @@ class BillRepository {
 
           // Creating Permanent Bill Headers and Permament Bill Lines
           db.writeTxnSync(() {
-            db.permanentBillHeaderModels.putSync(
-                PermanentBillHeaderModel.fromJson(tempBillHeader.toMap()));
+            db.permanentBillHeaderModels
+                .putSync(PermanentBillHeaderModel.fromJson(headerToAdd));
             db.permanentBillLinesModels.putAllSync(tempItemLines
                 .map((e) => PermanentBillLinesModel.fromJson(e.toMap()))
                 .toList());

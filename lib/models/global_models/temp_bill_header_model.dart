@@ -7,7 +7,7 @@ part 'temp_bill_header_model.g.dart';
 @collection
 class TempBillHeaderModel {
   Id id = Isar.autoIncrement;
-  String? billId;
+  int? billId;
   String? outletId;
   String? terminalId;
   String? tableId;
@@ -47,7 +47,7 @@ class TempBillHeaderModel {
 
   TempBillHeaderModel copyWith(
       {Id? id,
-      String? billId,
+      int? billId,
       String? outletId,
       String? terminalId,
       String? tableId,
@@ -111,7 +111,7 @@ class TempBillHeaderModel {
   factory TempBillHeaderModel.fromMap(Map<String, dynamic> map) {
     return TempBillHeaderModel(
       id: map['id'] ?? Isar.autoIncrement,
-      billId: map['billId'] != null ? map['billId'] as String : null,
+      billId: map['billId'] != null ? map['billId'] as int : null,
       outletId: map['outletId'] != null ? map['outletId'] as String : null,
       terminalId:
           map['terminalId'] != null ? map['terminalId'] as String : null,

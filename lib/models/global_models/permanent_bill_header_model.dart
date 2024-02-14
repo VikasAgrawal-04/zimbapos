@@ -1,10 +1,11 @@
 import 'package:isar/isar.dart';
+
 part 'permanent_bill_header_model.g.dart';
 
 @collection
 class PermanentBillHeaderModel {
   Id id = Isar.autoIncrement;
-  String? billId;
+  int? billId;
   String? outletId;
   String? terminalId;
   String? tableId;
@@ -21,6 +22,7 @@ class PermanentBillHeaderModel {
   String? waiterId;
   bool? isBillPrinted;
   int? recNo;
+  int? shiftId;
 
   PermanentBillHeaderModel(
       {this.id = Isar.autoIncrement,
@@ -40,11 +42,12 @@ class PermanentBillHeaderModel {
       this.pax,
       this.waiterId,
       this.isBillPrinted,
-      this.recNo});
+      this.recNo,
+      this.shiftId});
 
   PermanentBillHeaderModel copyWith(
       {Id? id,
-      String? billId,
+      int? billId,
       String? outletId,
       String? terminalId,
       String? tableId,
@@ -60,7 +63,8 @@ class PermanentBillHeaderModel {
       int? pax,
       String? waiterId,
       bool? isBillPrinted,
-      int? recNo}) {
+      int? recNo,
+      int? shiftId}) {
     return PermanentBillHeaderModel(
         id: id ?? this.id,
         billId: billId ?? this.billId,
@@ -79,7 +83,8 @@ class PermanentBillHeaderModel {
         pax: pax ?? this.pax,
         waiterId: waiterId ?? this.waiterId,
         isBillPrinted: isBillPrinted ?? this.isBillPrinted,
-        recNo: recNo ?? this.recNo);
+        recNo: recNo ?? this.recNo,
+        shiftId: shiftId ?? this.shiftId);
   }
 
   Map<String, dynamic> toJson() {
@@ -101,47 +106,48 @@ class PermanentBillHeaderModel {
       'pax': pax,
       'waiterId': waiterId,
       'isBillPrinted': isBillPrinted,
-      'recNo': recNo
+      'recNo': recNo,
+      'shiftId': shiftId
     };
   }
 
   factory PermanentBillHeaderModel.fromJson(Map<String, dynamic> map) {
     return PermanentBillHeaderModel(
-      id: map['id'] ?? Isar.autoIncrement,
-      billId: map['billId'] != null ? map['billId'] as String : null,
-      outletId: map['outletId'] != null ? map['outletId'] as String : null,
-      terminalId:
-          map['terminalId'] != null ? map['terminalId'] as String : null,
-      tableId: map['tableId'] != null ? map['tableId'] as String : null,
-      billStartDateTime: map['billStartDateTime'] != null
-          ? map['billStartDateTime'] as String
-          : null,
-      totalExTax:
-          map['totalExTax'] != null ? map['totalExTax'] as double : null,
-      totalTaxAmount: map['totalTaxAmount'] != null
-          ? map['totalTaxAmount'] as double
-          : null,
-      serviceChargeAmount: map['serviceChargeAmount'] != null
-          ? map['serviceChargeAmount'] as double
-          : null,
-      totalGstAmount: map['totalGstAmount'] != null
-          ? map['totalGstAmount'] as double
-          : null,
-      totalVatAmount: map['totalVatAmount'] != null
-          ? map['totalVatAmount'] as double
-          : null,
-      roundOffAmount: map['roundOffAmount'] != null
-          ? map['roundOffAmount'] as double
-          : null,
-      totalAmount:
-          map['totalAmount'] != null ? map['totalAmount'] as double : null,
-      customerId:
-          map['customerId'] != null ? map['customerId'] as String : null,
-      pax: map['pax'] != null ? map['pax'] as int : null,
-      waiterId: map['waiterId'] != null ? map['waiterId'] as String : null,
-      isBillPrinted:
-          map['isBillPrinted'] != null ? map['isBillPrinted'] as bool : null,
-      recNo: map['recNo'] != null ? map['recNo'] as int? : null,
-    );
+        id: map['id'] ?? Isar.autoIncrement,
+        billId: map['billId'] != null ? map['billId'] as int : null,
+        outletId: map['outletId'] != null ? map['outletId'] as String : null,
+        terminalId:
+            map['terminalId'] != null ? map['terminalId'] as String : null,
+        tableId: map['tableId'] != null ? map['tableId'] as String : null,
+        billStartDateTime: map['billStartDateTime'] != null
+            ? map['billStartDateTime'] as String
+            : null,
+        totalExTax:
+            map['totalExTax'] != null ? map['totalExTax'] as double : null,
+        totalTaxAmount: map['totalTaxAmount'] != null
+            ? map['totalTaxAmount'] as double
+            : null,
+        serviceChargeAmount: map['serviceChargeAmount'] != null
+            ? map['serviceChargeAmount'] as double
+            : null,
+        totalGstAmount: map['totalGstAmount'] != null
+            ? map['totalGstAmount'] as double
+            : null,
+        totalVatAmount: map['totalVatAmount'] != null
+            ? map['totalVatAmount'] as double
+            : null,
+        roundOffAmount: map['roundOffAmount'] != null
+            ? map['roundOffAmount'] as double
+            : null,
+        totalAmount:
+            map['totalAmount'] != null ? map['totalAmount'] as double : null,
+        customerId:
+            map['customerId'] != null ? map['customerId'] as String : null,
+        pax: map['pax'] != null ? map['pax'] as int : null,
+        waiterId: map['waiterId'] != null ? map['waiterId'] as String : null,
+        isBillPrinted:
+            map['isBillPrinted'] != null ? map['isBillPrinted'] as bool : null,
+        recNo: map['recNo'] != null ? map['recNo'] as int : null,
+        shiftId: map['shiftId'] != null ? map['shiftId'] as int : null);
   }
 }

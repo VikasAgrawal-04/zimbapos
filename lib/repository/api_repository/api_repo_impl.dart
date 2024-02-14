@@ -351,4 +351,10 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> startShift() {
     return _shiftApiRepo.startShift();
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createFinalBill(
+      String tableId) {
+    return _billApiRepo.createFinalBill(tableId);
+  }
 }

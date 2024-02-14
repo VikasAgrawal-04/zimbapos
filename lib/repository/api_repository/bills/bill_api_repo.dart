@@ -10,4 +10,6 @@ abstract class BillApiRepo {
 
   Future<Either<Failure, Map<String, dynamic>>> deleteKotItem(
       String tableId, String itemId);
+
+  Future<Either<Failure, Map<String, dynamic>>> createFinalBill(String tableId);
 }

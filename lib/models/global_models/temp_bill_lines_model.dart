@@ -5,7 +5,7 @@ part 'temp_bill_lines_model.g.dart';
 @collection
 class TempBillLines {
   Id id = Isar.autoIncrement;
-  String? billId;
+  int? billId;
   String? lineId;
   int? linePosition;
   String? itemId;
@@ -47,7 +47,7 @@ class TempBillLines {
 
   TempBillLines copyWith(
       {Id? id,
-      String? billId,
+      int? billId,
       String? lineId,
       int? linePosition,
       String? itemId,
@@ -114,7 +114,7 @@ class TempBillLines {
   factory TempBillLines.fromMap(Map<String, dynamic> map) {
     return TempBillLines(
         id: map['id'] ?? Isar.autoIncrement,
-        billId: map['billId'] != null ? map['billId'] as String : null,
+        billId: map['billId'] != null ? map['billId'] as int : null,
         lineId: map['lineId'] != null ? map['lineId'] as String : null,
         linePosition:
             map['linePosition'] != null ? map['linePosition'] as int : null,

@@ -21,7 +21,7 @@ const PermanentBillHeaderModelSchema = CollectionSchema(
     r'billId': PropertySchema(
       id: 0,
       name: r'billId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'billStartDateTime': PropertySchema(
       id: 1,
@@ -63,43 +63,48 @@ const PermanentBillHeaderModelSchema = CollectionSchema(
       name: r'serviceChargeAmount',
       type: IsarType.double,
     ),
-    r'tableId': PropertySchema(
+    r'shiftId': PropertySchema(
       id: 9,
+      name: r'shiftId',
+      type: IsarType.long,
+    ),
+    r'tableId': PropertySchema(
+      id: 10,
       name: r'tableId',
       type: IsarType.string,
     ),
     r'terminalId': PropertySchema(
-      id: 10,
+      id: 11,
       name: r'terminalId',
       type: IsarType.string,
     ),
     r'totalAmount': PropertySchema(
-      id: 11,
+      id: 12,
       name: r'totalAmount',
       type: IsarType.double,
     ),
     r'totalExTax': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'totalExTax',
       type: IsarType.double,
     ),
     r'totalGstAmount': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'totalGstAmount',
       type: IsarType.double,
     ),
     r'totalTaxAmount': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'totalTaxAmount',
       type: IsarType.double,
     ),
     r'totalVatAmount': PropertySchema(
-      id: 15,
+      id: 16,
       name: r'totalVatAmount',
       type: IsarType.double,
     ),
     r'waiterId': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'waiterId',
       type: IsarType.string,
     )
@@ -124,12 +129,6 @@ int _permanentBillHeaderModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
-  {
-    final value = object.billId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   {
     final value = object.billStartDateTime;
     if (value != null) {
@@ -175,7 +174,7 @@ void _permanentBillHeaderModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.billId);
+  writer.writeLong(offsets[0], object.billId);
   writer.writeString(offsets[1], object.billStartDateTime);
   writer.writeString(offsets[2], object.customerId);
   writer.writeBool(offsets[3], object.isBillPrinted);
@@ -184,14 +183,15 @@ void _permanentBillHeaderModelSerialize(
   writer.writeLong(offsets[6], object.recNo);
   writer.writeDouble(offsets[7], object.roundOffAmount);
   writer.writeDouble(offsets[8], object.serviceChargeAmount);
-  writer.writeString(offsets[9], object.tableId);
-  writer.writeString(offsets[10], object.terminalId);
-  writer.writeDouble(offsets[11], object.totalAmount);
-  writer.writeDouble(offsets[12], object.totalExTax);
-  writer.writeDouble(offsets[13], object.totalGstAmount);
-  writer.writeDouble(offsets[14], object.totalTaxAmount);
-  writer.writeDouble(offsets[15], object.totalVatAmount);
-  writer.writeString(offsets[16], object.waiterId);
+  writer.writeLong(offsets[9], object.shiftId);
+  writer.writeString(offsets[10], object.tableId);
+  writer.writeString(offsets[11], object.terminalId);
+  writer.writeDouble(offsets[12], object.totalAmount);
+  writer.writeDouble(offsets[13], object.totalExTax);
+  writer.writeDouble(offsets[14], object.totalGstAmount);
+  writer.writeDouble(offsets[15], object.totalTaxAmount);
+  writer.writeDouble(offsets[16], object.totalVatAmount);
+  writer.writeString(offsets[17], object.waiterId);
 }
 
 PermanentBillHeaderModel _permanentBillHeaderModelDeserialize(
@@ -201,7 +201,7 @@ PermanentBillHeaderModel _permanentBillHeaderModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PermanentBillHeaderModel(
-    billId: reader.readStringOrNull(offsets[0]),
+    billId: reader.readLongOrNull(offsets[0]),
     billStartDateTime: reader.readStringOrNull(offsets[1]),
     customerId: reader.readStringOrNull(offsets[2]),
     id: id,
@@ -211,14 +211,15 @@ PermanentBillHeaderModel _permanentBillHeaderModelDeserialize(
     recNo: reader.readLongOrNull(offsets[6]),
     roundOffAmount: reader.readDoubleOrNull(offsets[7]),
     serviceChargeAmount: reader.readDoubleOrNull(offsets[8]),
-    tableId: reader.readStringOrNull(offsets[9]),
-    terminalId: reader.readStringOrNull(offsets[10]),
-    totalAmount: reader.readDoubleOrNull(offsets[11]),
-    totalExTax: reader.readDoubleOrNull(offsets[12]),
-    totalGstAmount: reader.readDoubleOrNull(offsets[13]),
-    totalTaxAmount: reader.readDoubleOrNull(offsets[14]),
-    totalVatAmount: reader.readDoubleOrNull(offsets[15]),
-    waiterId: reader.readStringOrNull(offsets[16]),
+    shiftId: reader.readLongOrNull(offsets[9]),
+    tableId: reader.readStringOrNull(offsets[10]),
+    terminalId: reader.readStringOrNull(offsets[11]),
+    totalAmount: reader.readDoubleOrNull(offsets[12]),
+    totalExTax: reader.readDoubleOrNull(offsets[13]),
+    totalGstAmount: reader.readDoubleOrNull(offsets[14]),
+    totalTaxAmount: reader.readDoubleOrNull(offsets[15]),
+    totalVatAmount: reader.readDoubleOrNull(offsets[16]),
+    waiterId: reader.readStringOrNull(offsets[17]),
   );
   return object;
 }
@@ -231,7 +232,7 @@ P _permanentBillHeaderModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -249,11 +250,11 @@ P _permanentBillHeaderModelDeserializeProp<P>(
     case 8:
       return (reader.readDoubleOrNull(offset)) as P;
     case 9:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 10:
       return (reader.readStringOrNull(offset)) as P;
     case 11:
-      return (reader.readDoubleOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 12:
       return (reader.readDoubleOrNull(offset)) as P;
     case 13:
@@ -263,6 +264,8 @@ P _permanentBillHeaderModelDeserializeProp<P>(
     case 15:
       return (reader.readDoubleOrNull(offset)) as P;
     case 16:
+      return (reader.readDoubleOrNull(offset)) as P;
+    case 17:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -385,58 +388,49 @@ extension PermanentBillHeaderModelQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-      QAfterFilterCondition> billIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      QAfterFilterCondition> billIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'billId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
       QAfterFilterCondition> billIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'billId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
       QAfterFilterCondition> billIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'billId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
       QAfterFilterCondition> billIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -445,79 +439,6 @@ extension PermanentBillHeaderModelQueryFilter on QueryBuilder<
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-      QAfterFilterCondition> billIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'billId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-      QAfterFilterCondition> billIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'billId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-          QAfterFilterCondition>
-      billIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'billId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-          QAfterFilterCondition>
-      billIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'billId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-      QAfterFilterCondition> billIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'billId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
-      QAfterFilterCondition> billIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'billId',
-        value: '',
       ));
     });
   }
@@ -1386,6 +1307,80 @@ extension PermanentBillHeaderModelQueryFilter on QueryBuilder<
         upper: upper,
         includeUpper: includeUpper,
         epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
+      QAfterFilterCondition> shiftIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'shiftId',
+      ));
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
+      QAfterFilterCondition> shiftIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'shiftId',
+      ));
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
+      QAfterFilterCondition> shiftIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'shiftId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
+      QAfterFilterCondition> shiftIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'shiftId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
+      QAfterFilterCondition> shiftIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'shiftId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel,
+      QAfterFilterCondition> shiftIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'shiftId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -2414,6 +2409,20 @@ extension PermanentBillHeaderModelQuerySortBy on QueryBuilder<
   }
 
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QAfterSortBy>
+      sortByShiftId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'shiftId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QAfterSortBy>
+      sortByShiftIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'shiftId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QAfterSortBy>
       sortByTableId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tableId', Sort.asc);
@@ -2669,6 +2678,20 @@ extension PermanentBillHeaderModelQuerySortThenBy on QueryBuilder<
   }
 
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QAfterSortBy>
+      thenByShiftId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'shiftId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QAfterSortBy>
+      thenByShiftIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'shiftId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QAfterSortBy>
       thenByTableId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'tableId', Sort.asc);
@@ -2784,9 +2807,9 @@ extension PermanentBillHeaderModelQuerySortThenBy on QueryBuilder<
 extension PermanentBillHeaderModelQueryWhereDistinct on QueryBuilder<
     PermanentBillHeaderModel, PermanentBillHeaderModel, QDistinct> {
   QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QDistinct>
-      distinctByBillId({bool caseSensitive = true}) {
+      distinctByBillId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'billId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'billId');
     });
   }
 
@@ -2844,6 +2867,13 @@ extension PermanentBillHeaderModelQueryWhereDistinct on QueryBuilder<
       distinctByServiceChargeAmount() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'serviceChargeAmount');
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, PermanentBillHeaderModel, QDistinct>
+      distinctByShiftId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'shiftId');
     });
   }
 
@@ -2912,7 +2942,7 @@ extension PermanentBillHeaderModelQueryProperty on QueryBuilder<
     });
   }
 
-  QueryBuilder<PermanentBillHeaderModel, String?, QQueryOperations>
+  QueryBuilder<PermanentBillHeaderModel, int?, QQueryOperations>
       billIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'billId');
@@ -2971,6 +3001,13 @@ extension PermanentBillHeaderModelQueryProperty on QueryBuilder<
       serviceChargeAmountProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'serviceChargeAmount');
+    });
+  }
+
+  QueryBuilder<PermanentBillHeaderModel, int?, QQueryOperations>
+      shiftIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'shiftId');
     });
   }
 

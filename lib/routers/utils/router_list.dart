@@ -71,7 +71,6 @@ import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
-
 import '../../models/global_models/customer_model.dart';
 import '../../models/response_models/item_response_model.dart';
 import '../../screens/componant_screens/card_screens/create_card_screen.dart';
@@ -79,6 +78,10 @@ import '../../screens/componant_screens/customer_screens/customer_list_screen.da
 import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
+import '../../screens/componant_screens/user_management_screens/user/create_user_screen.dart';
+import '../../screens/componant_screens/user_management_screens/user/user_overview_screen.dart';
+import '../../screens/componant_screens/user_management_screens/user_role/create_user_role_screen.dart';
+import '../../screens/componant_screens/user_management_screens/user_role/user_role_overview_screen.dart';
 
 final List<GoRoute> routerList = [
   //home
@@ -611,4 +614,27 @@ final List<GoRoute> routerList = [
       }
     },
   ),
+
+  //User Management Screen
+  GoRoute(
+    name: AppScreen.createUserScreen.name,
+    path: AppScreen.createUserScreen.path,
+    builder: (context, state) => const CreateUserScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.userOverviewScreen.name,
+    path: AppScreen.userOverviewScreen.path,
+    builder: (context, state) => const UserOverviewScreen(),
+  ),
+  //User Role Screenss
+  GoRoute(
+    name: AppScreen.createUserRoleScreen.name,
+    path: AppScreen.createUserRoleScreen.path,
+    builder: (context, state) => const CreateUserRoleScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.userRoleOverviewScreen.name,
+    path: AppScreen.userRoleOverviewScreen.path,
+    builder: (context, state) => const UserRoleOverviewScreen(),
+  )
 ];

@@ -476,5 +476,17 @@ List<HomeShortcutModel> screenList = [
     userId: '123123',
   ),
   HomeShortcutModel(
-      title: 'Customers', path: AppScreen.customerScreen.path, userId: '123123')
+    title: 'Customers',
+    path: AppScreen.customerScreen.path,
+    userId: '123123',
+  ),
+  HomeShortcutModel(
+      title: 'User Role',
+      path: AppScreen.userRoleOverviewScreen.path,
+      userId: '123123'),
+  HomeShortcutModel(
+    title: 'User',
+    path: AppScreen.userOverviewScreen.path,
+    userId: '123123',
+  )
 ];

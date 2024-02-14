@@ -83,6 +83,12 @@ enum AppScreen {
   customerScreen,
   createCustomerScreen,
   editCustomerScreen,
+
+  //User Management Screens
+  createUserScreen,
+  createUserRoleScreen,
+  userRoleOverviewScreen,
+  userOverviewScreen,
 }
 
 extension AppScreenExtension on AppScreen {
@@ -211,6 +217,14 @@ extension AppScreenExtension on AppScreen {
         return 'Create Customer Screen';
       case AppScreen.editCustomerScreen:
         return 'Edit Customer Screen';
+      case AppScreen.createUserScreen:
+        return 'Create User Screen';
+      case AppScreen.userOverviewScreen:
+        return 'User Overview Screen';
+      case AppScreen.createUserRoleScreen:
+        return 'Create User Role Screen';
+      case AppScreen.userRoleOverviewScreen:
+        return 'User Role Overview Screen';
     }
   }
 
@@ -339,6 +353,14 @@ extension AppScreenExtension on AppScreen {
         return '/create-customer-screen';
       case AppScreen.editCustomerScreen:
         return '/edit-customer-screen';
+      case AppScreen.createUserScreen:
+        return '/create-user-screen';
+      case AppScreen.userOverviewScreen:
+        return '/user-overview-screen';
+      case AppScreen.createUserRoleScreen:
+        return '/create-user-role-screen';
+      case AppScreen.userRoleOverviewScreen:
+        return '/user-role-screen';
     }
   }
 }

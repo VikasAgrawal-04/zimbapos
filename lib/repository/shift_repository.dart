@@ -24,14 +24,12 @@ class ShiftRepository {
 
   Future<bool> endShift({required String userId}) async {
     try {
-      ShiftModel? lastShift = db.shiftModels
-          .where(sort: Sort.desc)
-          .filter()
-          .userIdEqualTo(userId)
-          .findFirstSync();
+      ShiftModel? lastShift =
+          db.shiftModels.where(sort: Sort.desc).findFirstSync();
       if (lastShift != null && lastShift.shiftEnded == false) {
         lastShift.shiftEnded = true;
         lastShift.shiftEndedAt = DateTime.now();
+        lastShift.userId = userId;
         db.writeTxnSync(() => db.shiftModels.putSync(lastShift));
         return true;
       } else {
@@ -46,11 +44,7 @@ class ShiftRepository {
 
   Future<bool> startShift({required String userId}) async {
     try {
-      ShiftModel? shift = db.shiftModels
-          .where(sort: Sort.desc)
-          .filter()
-          .userIdEqualTo(userId)
-          .findFirstSync();
+      ShiftModel? shift = db.shiftModels.where(sort: Sort.desc).findFirstSync();
 
       if (shift == null) {
         db.writeTxnSync(() => db.shiftModels.putSync(
@@ -60,6 +54,7 @@ class ShiftRepository {
           shift.shiftId = (shift.shiftId ?? 0) + 1;
           shift.shiftEnded = false;
           shift.shiftStartedAt = DateTime.now();
+          shift.userId = userId;
           db.writeTxnSync(() => db.shiftModels.putSync(shift));
         }
       }

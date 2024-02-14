@@ -68,8 +68,14 @@ class BillRepository {
       {required TempBillHeaderModel header,
       required List<TempBillLines> lines}) async {
     try {
+      //Bill ID
+      final previousBills = db.tempBillHeaderModels.buildQuery(sortBy: [
+        const SortProperty(property: 'billId', sort: Sort.desc)
+      ]).findFirstSync();
+
       //Handling the headers
-      final billGenId = Helpers.generateUuId();
+      int billGenId = ((previousBills?.billId ?? 0) + 1);
+
       header.billId = billGenId;
       header.billStartDateTime = DateTime.now().toIso8601String();
 
@@ -169,8 +175,6 @@ class BillRepository {
           TempBillLines item = billLines[itemIndexInBill];
           final servicePercent = Helpers.calculateServicePercent(
               billHeader.totalExTax!, billHeader.serviceChargeAmount!);
-          print(
-              "servicePercentservicePercentservicePercentservicePercent$servicePercent");
           //Header Modification
           billHeader.totalExTax = billHeader.totalExTax! - item.lineTotal!;
           billHeader.totalTaxAmount = billHeader.totalTaxAmount! -

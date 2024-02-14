@@ -140,7 +140,6 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
       data.fold((failure) {
         debugPrint("Failure in Get Temp Bill ${failure.toString()}");
       }, (success) {
-        debugPrint("Success In Getting Temp Bill ${success.toJson()}");
         emit(state.copyWith(tableBill: success));
       });
     } catch (e, s) {
@@ -239,7 +238,6 @@ class ItemSelectionCubit extends Cubit<ItemSelectionState> {
         debugPrint("Failure ${failure.toString()}");
       }, (success) {
         getTempBill(tableId);
-        debugPrint("Success $success");
         EasyLoading.showSuccess(success['data'].toString());
         addedItems = [];
         emit(state.copyWith(addedItems: []));

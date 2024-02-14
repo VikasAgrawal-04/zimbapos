@@ -7,6 +7,8 @@ import 'package:zimbapos/models/global_models/category_model.dart';
 import 'package:zimbapos/models/global_models/customer_category_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/pay_in_model.dart';
+import 'package:zimbapos/models/global_models/pay_out_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
@@ -34,6 +36,7 @@ import 'package:zimbapos/repository/expenses_repository.dart';
 import 'package:zimbapos/repository/item_group_repository.dart';
 import 'package:zimbapos/repository/items_repository.dart';
 import 'package:zimbapos/repository/main_group_repository.dart';
+import 'package:zimbapos/repository/pay_in_out_repository.dart';
 import 'package:zimbapos/repository/payments_repository.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/shift_repository.dart';
@@ -100,7 +103,9 @@ class IsarService {
           PermanentBillLinesModelSchema,
           UserRolesModelSchema,
           UserRoleScreenFunctionModelSchema,
-          ShiftModelSchema
+          ShiftModelSchema,
+          PayInModelSchema,
+          PayOutModelSchema
         ],
         name: dbName,
         directory: directory.path,
@@ -175,4 +180,6 @@ class IsarService {
       UserRoleScreenRepository(db);
 
   ShiftRepository get shiftRepository => ShiftRepository(db);
+
+  PayInOutRepository get payInOutRepository => PayInOutRepository(db);
 }

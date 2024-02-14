@@ -34,44 +34,44 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
       child: BlocBuilder<AreasScreenCubit, AreasScreenState>(
         builder: (context, state) {
           return Scaffold(
-            body: Column(
-              children: [
-                //header
-                Container(
-                  width: double.infinity,
-                  height: screenSize.height * 0.15,
-                  decoration: BoxDecoration(
-                    color: KColors.blackColor,
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(14),
-                      bottomRight: Radius.circular(14),
-                    ),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Create Area',
-                      style: theme.textTheme.headlineMedium,
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        context.pop();
-                      },
-                      icon: Image.asset(
-                        "assets/icons/back.png",
-                        height: 5.h,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  //header
+                  Container(
+                    width: double.infinity,
+                    height: screenSize.height * 0.15,
+                    decoration: BoxDecoration(
+                      color: KColors.blackColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        bottomRight: Radius.circular(14),
                       ),
                     ),
-                  ],
-                ),
+                    child: Center(
+                      child: Text(
+                        'Create Area',
+                        style: theme.textTheme.headlineMedium,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: Image.asset(
+                          "assets/icons/back.png",
+                          height: 5.h,
+                        ),
+                      ),
+                    ],
+                  ),
 
-                //form below
-                SingleChildScrollView(
-                  child: Padding(
+                  //form below
+                  Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 18, vertical: 12),
                     child: Form(
@@ -228,8 +228,8 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

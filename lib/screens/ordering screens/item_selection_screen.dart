@@ -13,6 +13,7 @@ import 'package:zimbapos/widgets/containers/dotted_vertical_line.dart';
 import 'package:zimbapos/widgets/containers/dotter_line.dart';
 import 'package:zimbapos/widgets/containers/title_container.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/dialogues/payment_dialog.dart';
 import 'package:zimbapos/widgets/dropdown/custom_dropdown.dart';
 import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
@@ -898,8 +899,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
               Expanded(
                 child: Container(
                   width: 100.w,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.5.h),
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
                   color: KColors.whiteColor,
                   child: Row(
                     children: [
@@ -1000,9 +1000,10 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                     CustomButtonNew(
                       text: "Proceed To Pay",
                       onTap: () async {
-                        await context
-                            .read<ItemSelectionCubit>()
-                            .finalBill(widget.tableId);
+                        paymentDialog(context);
+                        // await context
+                        //     .read<ItemSelectionCubit>()
+                        //     .finalBill(widget.tableId);
                       },
                     ),
                     SizedBox(height: .5.h),

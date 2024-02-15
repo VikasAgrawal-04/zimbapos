@@ -280,6 +280,10 @@ class Helpers {
       double totalValue, double serviceAmount) {
     return ((serviceAmount / totalValue) * 100);
   }
+
+  static String getPayCode() {
+    return DateFormat('yyyyMMddHHmmss').format(DateTime.now());
+  }
 }
 
 class NumberInputFormat extends TextInputFormatter {

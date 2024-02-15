@@ -99,4 +99,10 @@ class EndPoints {
 
   static const String createPayIn = '/create-payin';
   static const String createPayOut = '/create-payout';
+
+  //Pay Mode Master
+  static const String getPayMode = '/fetch-pay-mode';
+  static const String createPayMode = '/create-pay-mode';
+  static const String updatePayMode = '/update-pay-mode';
+  static const String deletePayMode = '/delete-pay-mode';
 }

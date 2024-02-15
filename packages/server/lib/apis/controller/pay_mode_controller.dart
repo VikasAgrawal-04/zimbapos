@@ -17,7 +17,7 @@ class PayModeController {
         return badArguments('Please Enter Outlet Id as a key outlet_id');
       }
       final outletId = request.url.queryParameters['outlet_id'];
-      if (outletId == null) {
+      if (outletId == null || outletId == '') {
         return badArguments('Please Enter Outlet Id as a key outlet_id');
       }
       final payModes = await db.payModeRepository.fetchAllPayModes(outletId);
@@ -96,7 +96,7 @@ class PayModeController {
         return badArguments('Please Enter PayCode Id as a key pay_code');
       }
       final payCode = request.url.queryParameters['pay_code'];
-      if (payCode == null) {
+      if (payCode == null || payCode == '') {
         return badArguments('Please Enter PayCode Id as a key pay_code');
       }
       final success = await db.payModeRepository.deletePayMode(payCode);

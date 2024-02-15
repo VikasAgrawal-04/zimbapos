@@ -21,6 +21,7 @@ const ClassExtraDetailsSchema = CollectionSchema(
       id: 0,
       name: r'cardType',
       type: IsarType.string,
+      enumMap: _ClassExtraDetailscardTypeEnumValueMap,
     ),
     r'hashCode': PropertySchema(
       id: 1,
@@ -66,7 +67,7 @@ int _classExtraDetailsEstimateSize(
   {
     final value = object.cardType;
     if (value != null) {
-      bytesCount += 3 + value.length * 3;
+      bytesCount += 3 + value.name.length * 3;
     }
   }
   {
@@ -96,7 +97,7 @@ void _classExtraDetailsSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.cardType);
+  writer.writeString(offsets[0], object.cardType?.name);
   writer.writeLong(offsets[1], object.hashCode);
   writer.writeString(offsets[2], object.issuer);
   writer.writeString(offsets[3], object.lastDigits);
@@ -110,7 +111,8 @@ ClassExtraDetails _classExtraDetailsDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = ClassExtraDetails(
-    cardType: reader.readStringOrNull(offsets[0]),
+    cardType: _ClassExtraDetailscardTypeValueEnumMap[
+        reader.readStringOrNull(offsets[0])],
     id: id,
     issuer: reader.readStringOrNull(offsets[2]),
     lastDigits: reader.readStringOrNull(offsets[3]),
@@ -127,7 +129,8 @@ P _classExtraDetailsDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (_ClassExtraDetailscardTypeValueEnumMap[
+          reader.readStringOrNull(offset)]) as P;
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
@@ -140,6 +143,15 @@ P _classExtraDetailsDeserializeProp<P>(
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _ClassExtraDetailscardTypeEnumValueMap = {
+  r'credit': r'credit',
+  r'debit': r'debit',
+};
+const _ClassExtraDetailscardTypeValueEnumMap = {
+  r'credit': CardType.credit,
+  r'debit': CardType.debit,
+};
 
 Id _classExtraDetailsGetId(ClassExtraDetails object) {
   return object.id;
@@ -257,7 +269,7 @@ extension ClassExtraDetailsQueryFilter
 
   QueryBuilder<ClassExtraDetails, ClassExtraDetails, QAfterFilterCondition>
       cardTypeEqualTo(
-    String? value, {
+    CardType? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -271,7 +283,7 @@ extension ClassExtraDetailsQueryFilter
 
   QueryBuilder<ClassExtraDetails, ClassExtraDetails, QAfterFilterCondition>
       cardTypeGreaterThan(
-    String? value, {
+    CardType? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -287,7 +299,7 @@ extension ClassExtraDetailsQueryFilter
 
   QueryBuilder<ClassExtraDetails, ClassExtraDetails, QAfterFilterCondition>
       cardTypeLessThan(
-    String? value, {
+    CardType? value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -303,8 +315,8 @@ extension ClassExtraDetailsQueryFilter
 
   QueryBuilder<ClassExtraDetails, ClassExtraDetails, QAfterFilterCondition>
       cardTypeBetween(
-    String? lower,
-    String? upper, {
+    CardType? lower,
+    CardType? upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1178,7 +1190,7 @@ extension ClassExtraDetailsQueryProperty
     });
   }
 
-  QueryBuilder<ClassExtraDetails, String?, QQueryOperations>
+  QueryBuilder<ClassExtraDetails, CardType?, QQueryOperations>
       cardTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'cardType');

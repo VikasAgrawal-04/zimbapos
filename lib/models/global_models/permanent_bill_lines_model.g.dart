@@ -21,7 +21,7 @@ const PermanentBillLinesModelSchema = CollectionSchema(
     r'billId': PropertySchema(
       id: 0,
       name: r'billId',
-      type: IsarType.string,
+      type: IsarType.long,
     ),
     r'comment': PropertySchema(
       id: 1,
@@ -130,12 +130,6 @@ int _permanentBillLinesModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
-    final value = object.billId;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.comment;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -198,7 +192,7 @@ void _permanentBillLinesModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.billId);
+  writer.writeLong(offsets[0], object.billId);
   writer.writeString(offsets[1], object.comment);
   writer.writeDouble(offsets[2], object.discountAmount);
   writer.writeDouble(offsets[3], object.discountPercent);
@@ -225,7 +219,7 @@ PermanentBillLinesModel _permanentBillLinesModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PermanentBillLinesModel(
-    billId: reader.readStringOrNull(offsets[0]),
+    billId: reader.readLongOrNull(offsets[0]),
     comment: reader.readStringOrNull(offsets[1]),
     discountAmount: reader.readDoubleOrNull(offsets[2]),
     discountPercent: reader.readDoubleOrNull(offsets[3]),
@@ -256,7 +250,7 @@ P _permanentBillLinesModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
@@ -412,58 +406,49 @@ extension PermanentBillLinesModelQueryFilter on QueryBuilder<
   }
 
   QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-      QAfterFilterCondition> billIdEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+      QAfterFilterCondition> billIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'billId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
       QAfterFilterCondition> billIdGreaterThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'billId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
       QAfterFilterCondition> billIdLessThan(
-    String? value, {
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'billId',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
       QAfterFilterCondition> billIdBetween(
-    String? lower,
-    String? upper, {
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -472,79 +457,6 @@ extension PermanentBillLinesModelQueryFilter on QueryBuilder<
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-      QAfterFilterCondition> billIdStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'billId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-      QAfterFilterCondition> billIdEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'billId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-          QAfterFilterCondition>
-      billIdContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'billId',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-          QAfterFilterCondition>
-      billIdMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'billId',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-      QAfterFilterCondition> billIdIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'billId',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel,
-      QAfterFilterCondition> billIdIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'billId',
-        value: '',
       ));
     });
   }
@@ -3195,9 +3107,9 @@ extension PermanentBillLinesModelQuerySortThenBy on QueryBuilder<
 extension PermanentBillLinesModelQueryWhereDistinct on QueryBuilder<
     PermanentBillLinesModel, PermanentBillLinesModel, QDistinct> {
   QueryBuilder<PermanentBillLinesModel, PermanentBillLinesModel, QDistinct>
-      distinctByBillId({bool caseSensitive = true}) {
+      distinctByBillId() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'billId', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'billId');
     });
   }
 
@@ -3329,7 +3241,7 @@ extension PermanentBillLinesModelQueryProperty on QueryBuilder<
     });
   }
 
-  QueryBuilder<PermanentBillLinesModel, String?, QQueryOperations>
+  QueryBuilder<PermanentBillLinesModel, int?, QQueryOperations>
       billIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'billId');

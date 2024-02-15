@@ -9,7 +9,7 @@ import 'package:zimbapos/models/global_models/expenses_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
-import 'package:zimbapos/models/global_models/payments_model.dart';
+import 'package:zimbapos/models/global_models/pay_in_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
@@ -45,6 +45,10 @@ import 'package:zimbapos/screens/componant_screens/expenses_screens/expense_list
 import 'package:zimbapos/screens/componant_screens/item_group_screens/create_item_group.dart';
 import 'package:zimbapos/screens/componant_screens/item_group_screens/item_group_list.dart';
 import 'package:zimbapos/screens/componant_screens/main_group_screens/main_group_list.dart';
+import 'package:zimbapos/screens/componant_screens/pay_in_screens/create_pay_in_screen.dart';
+import 'package:zimbapos/screens/componant_screens/pay_in_screens/pay_in_list_screen.dart';
+import 'package:zimbapos/screens/componant_screens/pay_in_screens/view_pay_in_screen.dart';
+import 'package:zimbapos/screens/componant_screens/pay_out_screens/pay_out_List_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/create_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/edit_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/payment_list_screen.dart';
@@ -72,12 +76,19 @@ import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 import '../../models/global_models/customer_model.dart';
+import '../../models/global_models/pay_mod_master_model.dart';
+import '../../models/global_models/pay_out_model.dart';
 import '../../models/response_models/item_response_model.dart';
 import '../../screens/componant_screens/card_screens/create_card_screen.dart';
 import '../../screens/componant_screens/customer_screens/customer_list_screen.dart';
 import '../../screens/componant_screens/item_group_screens/edit_item_group.dart';
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
+import '../../screens/componant_screens/pay_out_screens/create_pay_out_screen.dart';
+import '../../screens/componant_screens/pay_out_screens/view_pay_out_screen.dart';
+import '../../screens/componant_screens/payments_screen/create_payment_screen.dart';
+import '../../screens/componant_screens/payments_screen/edit_payment_screen.dart';
+import '../../screens/componant_screens/payments_screen/payment_list_screen.dart';
 import '../../screens/componant_screens/user_management_screens/user/create_user_screen.dart';
 import '../../screens/componant_screens/user_management_screens/user/user_overview_screen.dart';
 import '../../screens/componant_screens/user_management_screens/user_role/create_user_role_screen.dart';
@@ -466,6 +477,8 @@ final List<GoRoute> routerList = [
     },
   ),
 
+  //Payment Commented By Vikas
+
   //payment list
   GoRoute(
     name: AppScreen.paymentsScreen.name,
@@ -478,16 +491,16 @@ final List<GoRoute> routerList = [
     path: AppScreen.createPaymentsScreen.path,
     builder: (context, state) => const CreatePaymentScreen(),
   ),
-  //edit payment
+  // edit payment
   GoRoute(
     name: AppScreen.editPaymentsScreen.name,
     path: AppScreen.editPaymentsScreen.path,
     builder: (context, state) {
-      if (state.extra is PaymentModel) {
-        return UpdatePaymentScreen(item: state.extra as PaymentModel);
+      if (state.extra is PayModMasterModel) {
+        return UpdatePaymentScreen(item: state.extra as PayModMasterModel);
       } else {
         return UpdatePaymentScreen(
-          item: PaymentModel.fromJson(state.extra as Map<String, dynamic>),
+          item: PayModMasterModel.fromMap(state.extra as Map<String, dynamic>),
         );
       }
     },
@@ -610,6 +623,64 @@ final List<GoRoute> routerList = [
       } else {
         return EditCustomerScreen(
           item: CustomerModel.fromJson(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+
+  //pay in
+  GoRoute(
+    name: AppScreen.payInListScreen.name,
+    path: AppScreen.payInListScreen.path,
+    builder: (context, state) => const PayInListScreen(),
+  ),
+  // create pay in
+  GoRoute(
+    name: AppScreen.createPayInScreen.name,
+    path: AppScreen.createPayInScreen.path,
+    builder: (context, state) => const CreatePayInScreen(),
+  ),
+  // view pay in screen
+  GoRoute(
+    name: AppScreen.viewPayInScreen.name,
+    path: AppScreen.viewPayInScreen.path,
+    builder: (context, state) {
+      if (state.extra is PayInModel) {
+        return PayInDetailsScreen(
+          item: state.extra as PayInModel,
+        );
+      } else {
+        return PayInDetailsScreen(
+          item: PayInModel.fromMap(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
+
+  //pay out
+  GoRoute(
+    name: AppScreen.payOutListScreen.name,
+    path: AppScreen.payOutListScreen.path,
+    builder: (context, state) => const PayOutListScreen(),
+  ),
+  // create pay in
+  GoRoute(
+    name: AppScreen.createPayOutScreen.name,
+    path: AppScreen.createPayOutScreen.path,
+    builder: (context, state) => const CreatePayOutScreen(),
+  ),
+  // view pay out screen
+  GoRoute(
+    name: AppScreen.viewPayOutScreen.name,
+    path: AppScreen.viewPayOutScreen.path,
+    builder: (context, state) {
+      if (state.extra is PayOutModel) {
+        return PayOutDetailsScreen(
+          item: state.extra as PayOutModel,
+        );
+      } else {
+        return PayOutDetailsScreen(
+          item: PayOutModel.fromMap(state.extra as Map<String, dynamic>),
         );
       }
     },

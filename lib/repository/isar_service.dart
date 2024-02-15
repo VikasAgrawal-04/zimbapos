@@ -36,7 +36,7 @@ import 'package:zimbapos/repository/item_group_repository.dart';
 import 'package:zimbapos/repository/items_repository.dart';
 import 'package:zimbapos/repository/main_group_repository.dart';
 import 'package:zimbapos/repository/pay_in_out_repository.dart';
-import 'package:zimbapos/repository/payments_repository.dart';
+import 'package:zimbapos/repository/pay_mode_repository.dart';
 import 'package:zimbapos/repository/rate_sets_repository.dart';
 import 'package:zimbapos/repository/shift_repository.dart';
 import 'package:zimbapos/repository/system_repository/home_shortcut_repository.dart';
@@ -57,7 +57,7 @@ import '../models/global_models/discount_single_model.dart';
 import '../models/global_models/expense_category_model.dart';
 import '../models/global_models/expenses_model.dart';
 import '../models/global_models/items_model.dart';
-import '../models/global_models/payments_model.dart';
+import '../models/global_models/pay_mod_master_model.dart';
 import '../models/global_models/tax_model.dart';
 import '../models/global_models/vendor_model.dart';
 import 'card_repository.dart';
@@ -86,7 +86,7 @@ class IsarService {
           ExpenseModelSchema,
           TaxModelSchema,
           ItemsModelSchema,
-          PaymentModelSchema,
+          PayModMasterModelSchema,
           DiscountModelSchema,
           MainGroupModelSchema,
           ItemGroupModelSchema,
@@ -156,7 +156,7 @@ class IsarService {
   //for items
   ItemsRepository get itemsRepository => ItemsRepository(db);
   //for payments
-  PaymentsRepository get paymentsRepository => PaymentsRepository(db);
+  PayModeMasterRepository get payModeRepository => PayModeMasterRepository(db);
   //for discounts
   DiscountRepository get discountRepository => DiscountRepository(db);
   //for main group

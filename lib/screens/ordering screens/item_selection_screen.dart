@@ -9,9 +9,11 @@ import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection
 import 'package:zimbapos/bloc/screen_cubits/item_selection_cubits/item_selection_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/widgets/containers/bill_detail_row.dart';
+import 'package:zimbapos/widgets/containers/dotted_vertical_line.dart';
 import 'package:zimbapos/widgets/containers/dotter_line.dart';
 import 'package:zimbapos/widgets/containers/title_container.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
+import 'package:zimbapos/widgets/dialogues/payment_dialog.dart';
 import 'package:zimbapos/widgets/dropdown/custom_dropdown.dart';
 import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
@@ -385,7 +387,6 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                                           state.waiters.length, (index) {
                                         final waiter = state.waiters[index];
                                         return InkWell(
-                                          splashColor: Colors.transparent,
                                           onTap: () {
                                             mainContext
                                                 .read<ItemSelectionCubit>()
@@ -454,7 +455,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                 initiallyExpanded: state.selectedTile == index,
                 title: Text(
                   mainGroup.mainGroupName ?? "--",
-                  style: theme.headlineMedium,
+                  style: theme.labelLarge,
                 ),
                 onExpansionChanged: (value) async {
                   if (value) {
@@ -472,7 +473,6 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                           .read<ItemSelectionCubit>()
                           .getAllItemsById(itemGroup.itemGroupId ?? "");
                     },
-                    splashColor: Colors.transparent,
                     child: Container(
                       width: 100.w,
                       margin: EdgeInsets.only(bottom: .5.h),
@@ -521,86 +521,90 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
           ),
           SizedBox(height: 4.h),
           Expanded(
-            child: SingleChildScrollView(
-              child: Wrap(
-                spacing: 1.w,
-                alignment: WrapAlignment.spaceBetween,
-                runSpacing: 2.h,
-                children: List.generate(state.filteredItems.length, (index) {
-                  final item = state.filteredItems[index];
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
-                    child: GestureDetector(
-                      onTap: () {
-                        context
-                            .read<ItemSelectionCubit>()
-                            .onItemClick(action: OnClick.add, item: item);
-                      },
-                      child: Container(
-                        width: 15.w,
-                        height: 12.h,
-                        decoration: const BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: 15.w,
-                              height: 12.h,
-                              decoration: BoxDecoration(
-                                  boxShadow: const [
-                                    BoxShadow(
-                                        color: Color.fromRGBO(0, 0, 0, 0.25),
-                                        offset: Offset(0, 4),
-                                        blurRadius: 4.0,
-                                        spreadRadius: 0.0)
-                                  ],
-                                  color: item.foodType == "V"
-                                      ? KColors.greenColor
-                                      : item.foodType == "E"
-                                          ? KColors.yellowColor
-                                          : KColors.redColor,
-                                  borderRadius: const BorderRadius.only(
-                                      bottomLeft: Radius.elliptical(40, 25),
-                                      bottomRight: Radius.elliptical(40, 25))),
-                            ),
-                            Positioned(
-                              left: 0,
-                              right: 0,
-                              bottom: 4,
-                              top: 0,
-                              child: DecoratedBox(
+            child: SizedBox(
+              width: 100.w,
+              child: SingleChildScrollView(
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runSpacing: 2.h,
+                  children: List.generate(state.filteredItems.length, (index) {
+                    final item = state.filteredItems[index];
+                    return Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 1.w, vertical: .5.h),
+                      child: GestureDetector(
+                        onTap: () {
+                          context
+                              .read<ItemSelectionCubit>()
+                              .onItemClick(action: OnClick.add, item: item);
+                        },
+                        child: Container(
+                          width: 14.w,
+                          height: 12.h,
+                          decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
+                          child: Stack(
+                            children: [
+                              Container(
+                                width: 15.w,
+                                height: 12.h,
                                 decoration: BoxDecoration(
-                                    color: KColors.whiteColor,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                                          offset: Offset(0, 4),
+                                          blurRadius: 4.0,
+                                          spreadRadius: 0.0)
+                                    ],
+                                    color: item.foodType == "V"
+                                        ? KColors.greenColor
+                                        : item.foodType == "E"
+                                            ? KColors.yellowColor
+                                            : KColors.redColor,
                                     borderRadius: const BorderRadius.only(
                                         bottomLeft: Radius.elliptical(40, 25),
                                         bottomRight:
                                             Radius.elliptical(40, 25))),
-                                child: Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        item.itemName,
-                                        style: theme.displayMedium,
-                                      ),
-                                      SizedBox(height: .2.h),
-                                      Text(
-                                        "₹ ${item.itemRate}",
-                                        style: theme.bodyMedium,
-                                      ),
-                                    ],
+                              ),
+                              Positioned(
+                                left: 0,
+                                right: 0,
+                                bottom: 4,
+                                top: 0,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                      color: KColors.whiteColor,
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.elliptical(40, 25),
+                                          bottomRight:
+                                              Radius.elliptical(40, 25))),
+                                  child: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          item.itemName,
+                                          style: theme.displayMedium,
+                                        ),
+                                        SizedBox(height: .2.h),
+                                        Text(
+                                          "₹ ${item.itemRate}",
+                                          style: theme.bodyMedium,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
             ),
           )
@@ -612,7 +616,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
   Widget detailsTab(
       BuildContext context, ItemSelectionState state, TextTheme theme) {
     return Expanded(
-        flex: 2,
+        flex: 3,
         child: Container(
           decoration: BoxDecoration(
               color: KColors.greyContainer,
@@ -630,9 +634,10 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
           child: Column(
             children: [
               Expanded(
+                flex: 3,
                 child: Container(
                   margin: EdgeInsets.only(
-                      left: 1.2.w, right: 1.2.w, top: 1.h, bottom: 2.5.h),
+                      left: 2.5.w, right: 2.5.w, top: 1.h, bottom: 2.5.h),
                   width: 100.w,
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.only(
@@ -681,7 +686,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                       ),
                       titleContainer(title: "Current KoT", theme: theme),
                       Expanded(
-                        flex: 2,
+                        flex: 3,
                         child: ListView.builder(
                             itemCount: state.addedItems.length,
                             shrinkWrap: true,
@@ -785,7 +790,9 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                                                     .deleteProduct(addedItem);
                                               },
                                               icon: Image.asset(
-                                                  'assets/icons/delete.png'))
+                                                'assets/icons/delete.png',
+                                                height: 3.3.h,
+                                              ))
                                         ],
                                       ),
                                     ),
@@ -826,6 +833,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                       ),
                       titleContainer(title: "KoT", theme: theme),
                       Expanded(
+                        flex: 2,
                         child: ListView.builder(
                             itemCount: (state.tableBill.billLines ?? []).length,
                             shrinkWrap: true,
@@ -873,7 +881,9 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                                                       billItem!.itemId);
                                             },
                                             icon: Image.asset(
-                                                'assets/icons/delete.png'))
+                                              'assets/icons/delete.png',
+                                              height: 3.3.h,
+                                            ))
                                       ],
                                     ),
                                   ),
@@ -886,55 +896,73 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                 ),
               ),
               const DottedLine(),
-              Container(
-                width: 100.w,
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: .5.h),
-                color: KColors.whiteColor,
-                child: Column(
-                  children: [
-                    billDetailRow(
-                        title: "Sub Total",
-                        value:
-                            state.tableBill.billHeader?.totalExTax.toString(),
-                        theme: theme),
-                    billDetailRow(
-                        title: "Total Discount", value: "0.0", theme: theme),
-                    GestureDetector(
-                      onTap: context
-                          .read<ItemSelectionCubit>()
-                          .removeServiceAmount,
-                      child: billDetailRow(
-                          title: "Service Charge",
-                          value: state.tableBill.billHeader?.serviceChargeAmount
-                              .toStringAsFixed(2),
-                          serviceCharge: true,
-                          theme: theme),
-                    ),
-                    billDetailRow(
-                        title: "Tax",
-                        value: state.tableBill.billHeader?.totalTaxAmount
-                            .toStringAsFixed(2),
-                        theme: theme),
-                    const DottedLine(color: Color.fromRGBO(0, 0, 0, 0.2)),
-                    billDetailRow(
-                        title: "Grand Total",
-                        value:
-                            ((state.tableBill.billHeader?.totalAmount ?? 0.0) +
-                                    (state.tableBill.billHeader
-                                            ?.serviceChargeAmount ??
-                                        0.0))
-                                .toStringAsFixed(2),
-                        grandTotal: true,
-                        theme: theme),
-                    billDetailRow(
-                        title: "Balance", value: "600.0", theme: theme),
-                    const DottedLine(color: Color.fromRGBO(0, 0, 0, 0.2)),
-                    billDetailRow(
-                        title: "Total Count",
-                        totalQuantity: true,
-                        value: state.tableBill.billLines?.length.toString(),
-                        theme: theme)
-                  ],
+              Expanded(
+                child: Container(
+                  width: 100.w,
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+                  color: KColors.whiteColor,
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Column(
+                        children: [
+                          billDetailRow(
+                              title: "Sub Total",
+                              value: state.tableBill.billHeader?.totalExTax
+                                  .toString(),
+                              theme: theme),
+                          billDetailRow(
+                              title: "Total Discount",
+                              value: "0.0",
+                              theme: theme),
+                          GestureDetector(
+                            onTap: context
+                                .read<ItemSelectionCubit>()
+                                .removeServiceAmount,
+                            child: billDetailRow(
+                                title: "Service Charge",
+                                value: state
+                                    .tableBill.billHeader?.serviceChargeAmount
+                                    .toStringAsFixed(2),
+                                serviceCharge: true,
+                                theme: theme),
+                          ),
+                          billDetailRow(
+                              title: "Tax",
+                              value: state.tableBill.billHeader?.totalTaxAmount
+                                  .toStringAsFixed(2),
+                              theme: theme),
+                        ],
+                      )),
+                      const DottedVerticalLine(),
+                      SizedBox(width: 1.w),
+                      Expanded(
+                          child: Column(
+                        children: [
+                          billDetailRow(
+                              title: "Grand Total",
+                              value:
+                                  ((state.tableBill.billHeader?.totalAmount ??
+                                              0.0) +
+                                          (state.tableBill.billHeader
+                                                  ?.serviceChargeAmount ??
+                                              0.0))
+                                      .toStringAsFixed(2),
+                              grandTotal: true,
+                              theme: theme),
+                          billDetailRow(
+                              title: "Balance", value: "600.0", theme: theme),
+                          const DottedLine(color: Color.fromRGBO(0, 0, 0, 0.2)),
+                          billDetailRow(
+                              title: "Total Count",
+                              totalQuantity: true,
+                              value:
+                                  state.tableBill.billLines?.length.toString(),
+                              theme: theme)
+                        ],
+                      ))
+                    ],
+                  ),
                 ),
               ),
               const DottedLine(),
@@ -971,7 +999,12 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                     SizedBox(height: 1.h),
                     CustomButtonNew(
                       text: "Proceed To Pay",
-                      onTap: () {},
+                      onTap: () async {
+                        paymentDialog(context);
+                        // await context
+                        //     .read<ItemSelectionCubit>()
+                        //     .finalBill(widget.tableId);
+                      },
                     ),
                     SizedBox(height: .5.h),
                   ],

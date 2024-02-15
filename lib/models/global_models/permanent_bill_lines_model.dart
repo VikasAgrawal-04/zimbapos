@@ -1,10 +1,11 @@
 import 'package:isar/isar.dart';
+
 part 'permanent_bill_lines_model.g.dart';
 
 @collection
 class PermanentBillLinesModel {
   Id id = Isar.autoIncrement;
-  String? billId;
+  int? billId;
   String? lineId;
   int? linePosition;
   String? itemId;
@@ -46,7 +47,7 @@ class PermanentBillLinesModel {
 
   PermanentBillLinesModel copyWith(
       {Id? id,
-      String? billId,
+      int? billId,
       String? lineId,
       int? linePosition,
       String? itemId,
@@ -113,7 +114,7 @@ class PermanentBillLinesModel {
   factory PermanentBillLinesModel.fromJson(Map<String, dynamic> map) {
     return PermanentBillLinesModel(
         id: map['id'] ?? Isar.autoIncrement,
-        billId: map['billId'] != null ? map['billId'] as String : null,
+        billId: map['billId'] != null ? map['billId'] as int : null,
         lineId: map['lineId'] != null ? map['lineId'] as String : null,
         linePosition:
             map['linePosition'] != null ? map['linePosition'] as int : null,

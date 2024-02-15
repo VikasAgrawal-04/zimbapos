@@ -16,7 +16,7 @@ class PayInModel {
   String? reason;
   String? customerId;
   PayInModel({
-    required this.id,
+    this.id = Isar.autoIncrement,
     this.outletId,
     this.payInId,
     this.dateTime,
@@ -66,7 +66,7 @@ class PayInModel {
 
   factory PayInModel.fromMap(Map<String, dynamic> map) {
     return PayInModel(
-        id: map['id'],
+        id: map['id'] ?? Isar.autoIncrement,
         outletId: map['outletId'] != null ? map['outletId'] as String : null,
         payInId: map['payInId'] != null ? map['payInId'] as String : null,
         dateTime: map['dateTime'] != null

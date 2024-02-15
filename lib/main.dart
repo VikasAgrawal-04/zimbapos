@@ -22,9 +22,13 @@ import 'package:zimbapos/global/utils/helpers/helpers.dart';
 import 'package:zimbapos/repository/isar_service.dart';
 import 'package:zimbapos/routers/app_router.dart';
 import 'package:zimbapos/screens/system_settings_screens/system_check_screen.dart';
+
 import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
 import 'bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
+import 'bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_cubit.dart';
+import 'bloc/screen_cubits/payin_cubits/payin_screen_cubit.dart';
+import 'bloc/screen_cubits/payout_cubits/payout_screen_cubit.dart';
 import 'bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
 
 Future<void> main() async {
@@ -96,6 +100,16 @@ class MyApp extends StatelessWidget {
                       ),
                       BlocProvider(
                         create: (context) => CustomerScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => PayInScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => PayOutScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => PayModMasterScreenCubit()..init(),
+                        lazy: false,
                       ),
                     ],
                     child: BlocBuilder<DatabaseCubit, IsarService?>(

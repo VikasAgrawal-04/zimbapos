@@ -96,15 +96,28 @@ class BillController {
 
   Future<Response> createPermanentBill(Request request) async {
     try {
-      final decodedData = await utf8
-          .decodeStream(request.read())
-          .then((value) => jsonDecode(value));
+      final requiredFields = ['table_id', "shift_id"];
+      final reqData = await utf8.decodeStream(request.read());
+      if (reqData.isEmpty) {
+        return badArguments('Fields Required ${requiredFields.join(',')}');
+      }
+      final Map<String, dynamic> decodedData = jsonDecode(reqData);
+      final missingFields =
+          requiredFields.where((e) => decodedData[e] == null).toList();
+
+      if (missingFields.isNotEmpty) {
+        final missingFieldsMessage =
+            'Missing fields: ${missingFields.join(', ')}';
+        return badArguments(missingFieldsMessage);
+      }
+
       final tableId = decodedData['table_id'];
-      if (tableId == null) {
+      final shiftId = decodedData['shift_id'];
+      if (tableId == null || shiftId == null) {
         return badArguments("Please Enter TableId as table_id");
       }
       final success = await db.billRepository
-          .createPermanentBill(tableId: decodedData['table_id']);
+          .createPermanentBill(tableId: tableId, shiftId: shiftId);
       if (success.value1) {
         return okResponse(success.value2);
       } else {

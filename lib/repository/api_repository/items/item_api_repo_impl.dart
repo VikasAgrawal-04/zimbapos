@@ -65,7 +65,7 @@ class ItemApiRepoImpl implements ItemApiRepo {
       String itemId) async {
     try {
       final response = await Helpers.sendRequest(
-        RequestType.post,
+        RequestType.delete,
         EndPoints.deleteItem,
         queryParams: {
           "item_id": itemId,

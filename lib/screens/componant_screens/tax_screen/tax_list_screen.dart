@@ -49,11 +49,6 @@ class _TaxListScreenState extends State<TaxListScreen> {
     );
   }
 
-  activeDeactivateTax(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.taxesRepository.changeActive(id, value);
-  }
-
   editTaxFn({required TaxModel model}) {
     context.push(
       AppScreen.editTaxScreen.path,

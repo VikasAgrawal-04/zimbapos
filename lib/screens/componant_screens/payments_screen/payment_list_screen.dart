@@ -1,13 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:zimbapos/models/global_models/payments_model.dart';
+import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_state.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
+import '../../../constants/kcolors.dart';
 import '../../../constants/ktextstyles.dart';
+import '../../../global/utils/status_handler/status_handler.dart';
+import '../../../models/global_models/pay_mod_master_model.dart';
 import '../../../routers/utils/extensions/screen_name.dart';
+import '../../../widgets/custom_button/custom_button.dart';
+import '../../../widgets/indicators/loading_indicator.dart';
 import '../../../widgets/my_alert_widget.dart';
 
 class PaymentListScreen extends StatefulWidget {
@@ -19,21 +24,24 @@ class PaymentListScreen extends StatefulWidget {
 
 class _PaymentListScreenState extends State<PaymentListScreen> {
   //
-  Stream<List<PaymentModel>> getPaymentList() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    return dbCubit.paymentsRepository.streamPayments();
-  }
+  // Stream<List<PayModMasterModel>> getPaymentList() {
+  //   final dbCubit = DatabaseCubit.dbFrom(context);
+  //   return dbCubit.payModeRepository.streamPayments();
+  // }
 
-  deletePayment(PaymentModel e) {
+  deletePayment(PayModMasterModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
-      "Do you want to delete payment?",
+      "Do you want to delete '${e.payTypeName}' payment mode?",
       //this is for ok button
       () {
-        final dbCubit = DatabaseCubit.dbFrom(context);
-        dbCubit.paymentsRepository.deletePayment(e.id);
-        EasyLoading.showToast('Payment deleted');
+        context
+            .read<PayModMasterScreenCubit>()
+            .deletePayModMaster(e.payCode.toString());
+        // final dbCubit = DatabaseCubit.dbFrom(context);
+        // dbCubit.paymentsRepository.deletePayment(e.id);
+        // EasyLoading.showToast('Payment deleted');
         context.pop();
       },
       // this is for cancel button sending null will perform default pop() action
@@ -41,119 +49,211 @@ class _PaymentListScreenState extends State<PaymentListScreen> {
     );
   }
 
-  editPaymentFn({required PaymentModel model}) {
+  editPaymentFn({required PayModMasterModel model}) {
     context.push(
       AppScreen.editPaymentsScreen.path,
       extra: model,
     );
   }
 
-  activeDeactivatePayment(int id, bool value) {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.paymentsRepository.changeActive(id, value);
-  }
-
   @override
   Widget build(BuildContext context) {
+    // final screenSize = MediaQuery.sizeOf(context);
+    final theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Manage payments',
-            style: KTextStyles.kBlackAppBarHeader,
+          leading: IconButton(
+            onPressed: () {},
+            icon: Image.asset('assets/icons/menu.png', height: 3.h),
           ),
           actions: [
-            TextButton.icon(
-              onPressed: () =>
-                  context.push(AppScreen.createPaymentsScreen.path),
-              label: const Text('Add Payment'),
-              icon: const Icon(Icons.add),
-            ),
+            IconButton(
+                onPressed: () {},
+                icon: Image.asset('assets/icons/power_off.png', height: 3.h)),
           ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(1.h),
+            child: Divider(
+              color: KColors.blackColor,
+              thickness: 1.0,
+              endIndent: 1.w,
+              indent: 1.w,
+            ),
+          ),
         ),
-        body: StreamBuilder<List<PaymentModel>>(
-          stream: getPaymentList(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            }
-            final data = snapshot.data;
-            if (data == null || data.isEmpty) {
-              return const Center(
-                child: Text('No Payments'),
-              );
-            }
-            return SizedBox(
-              width: 100.w,
-              child: DataTable(
-                headingTextStyle: KTextStyles.kTitle,
-                columns: [
-                  const DataColumn(
-                    label: Text('Payment Name'),
+        body: Column(
+          children: [
+            //row for back button
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    context.pop();
+                  },
+                  icon: Image.asset(
+                    "assets/icons/back.png",
+                    height: 5.h,
                   ),
-                  const DataColumn(
-                    label: Text('Pay code'),
+                ),
+              ],
+            ),
+
+            //page title
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 18,
+                left: 24,
+                right: 24,
+                bottom: 8,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Pay Mode List',
+                    style: theme.textTheme.titleLarge,
                   ),
-                  const DataColumn(
-                    label: Text('Active'),
-                  ),
-                  DataColumn(
-                    label: Padding(
-                      padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                      child: const Text('Actions'),
-                    ),
+
+                  //add  button
+                  CustomButtonNew(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    shadows: const [],
+                    height: 8.h,
+                    width: 18.w,
+                    text: 'Add New Pay Mode',
+                    style: theme.textTheme.titleMedium,
+                    onTap: () {
+                      context
+                          .read<PayModMasterScreenCubit>()
+                          .clearControllers();
+                      context.push(AppScreen.createPaymentsScreen.path);
+                    },
                   ),
                 ],
-                rows: data
-                    .map(
-                      (e) => DataRow(
-                        cells: [
-                          DataCell(Text(
-                            e.payTypeName.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(Text(
-                            e.payCode.toString(),
-                            style: KTextStyles.kSubtitle,
-                          )),
-                          DataCell(
-                            Switch.adaptive(
-                              value: e.isActive as bool,
-                              onChanged: (va) =>
-                                  activeDeactivatePayment(e.id, va),
+              ),
+            ),
+
+            //divider
+            PreferredSize(
+              preferredSize: Size.fromHeight(1.h),
+              child: Divider(
+                color: KColors.greyFill,
+                thickness: 1.0,
+                endIndent: 1.w,
+                indent: 1.w,
+              ),
+            ),
+
+            //table
+            BlocBuilder<PayModMasterScreenCubit, PayModMasterScreenState>(
+              builder: (context, state) {
+                final list = state.payModMasterList;
+                if (state.status == Status.loading) {
+                  return const MyLoadingIndicator();
+                }
+                if (list.isEmpty) {
+                  return const Center(
+                    child: Text('No Pay Modes Available'),
+                  );
+                } else {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 14,
+                    ),
+                    width: 100.w,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: DataTable(
+                        border: TableBorder.all(
+                          color: KColors.blackColor,
+                          width: 1,
+                        ),
+                        headingRowColor: MaterialStateColor.resolveWith(
+                            (Set<MaterialState> states) {
+                          return KColors.blackColor;
+                        }),
+                        headingTextStyle: KTextStyles.kTitle,
+                        columns: [
+                          DataColumn(
+                            label: Text(
+                              'Payment Name',
+                              style: theme.textTheme.headlineMedium,
                             ),
                           ),
-                          DataCell(
-                            Container(
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    onPressed: () => editPaymentFn(model: e),
-                                    icon: const Icon(Icons.edit),
-                                  ),
-                                  SizedBox(width: 2.w),
-                                  if (e.isUserCreated == true)
-                                    IconButton(
-                                      onPressed: () => deletePayment(e),
-                                      icon: const Icon(CupertinoIcons.delete),
-                                    )
-                                ],
+                          DataColumn(
+                            label: Text(
+                              'Active',
+                              style: theme.textTheme.headlineMedium,
+                            ),
+                          ),
+                          DataColumn(
+                            label: Padding(
+                              padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                              child: Text(
+                                'Actions',
+                                style: theme.textTheme.headlineMedium,
                               ),
                             ),
                           ),
                         ],
+                        rows: list
+                            .map(
+                              (e) => DataRow(
+                                cells: [
+                                  DataCell(Text(
+                                    e.payTypeName.toString(),
+                                    style: KTextStyles.kSubtitle,
+                                  )),
+                                  DataCell(
+                                    Switch.adaptive(
+                                        activeColor: theme.primaryColor,
+                                        value: e.isActive as bool,
+                                        onChanged: (va) {
+                                          context
+                                              .read<PayModMasterScreenCubit>()
+                                              .updatePayModMaster(e, val: va);
+                                        }),
+                                  ),
+                                  DataCell(
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            onPressed: () =>
+                                                editPaymentFn(model: e),
+                                            icon: Image.asset(
+                                                'assets/icons/edit.png'),
+                                          ),
+                                          SizedBox(width: 2.w),
+                                          IconButton(
+                                            onPressed: () => deletePayment(e),
+                                            icon: Image.asset(
+                                                'assets/icons/delete.png'),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
                       ),
-                    )
-                    .toList(),
-              ),
-            );
-          },
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -83,6 +83,14 @@ enum AppScreen {
   customerScreen,
   createCustomerScreen,
   editCustomerScreen,
+  //CR screens @ Payin
+  payInListScreen,
+  createPayInScreen,
+  viewPayInScreen,
+  //CR sreens @ Payout
+  payOutListScreen,
+  createPayOutScreen,
+  viewPayOutScreen,
 
   //User Management Screens
   createUserScreen,
@@ -217,6 +225,18 @@ extension AppScreenExtension on AppScreen {
         return 'Create Customer Screen';
       case AppScreen.editCustomerScreen:
         return 'Edit Customer Screen';
+      case AppScreen.payInListScreen:
+        return 'Pay In Screen';
+      case AppScreen.createPayInScreen:
+        return 'Create Pay In Screen';
+      case AppScreen.viewPayInScreen:
+        return 'View Pay In Screen';
+      case AppScreen.payOutListScreen:
+        return 'Pay Out Screen';
+      case AppScreen.createPayOutScreen:
+        return 'Create Pay Out Screen';
+      case AppScreen.viewPayOutScreen:
+        return 'View nPay Out Screen';
       case AppScreen.createUserScreen:
         return 'Create User Screen';
       case AppScreen.userOverviewScreen:
@@ -353,6 +373,18 @@ extension AppScreenExtension on AppScreen {
         return '/create-customer-screen';
       case AppScreen.editCustomerScreen:
         return '/edit-customer-screen';
+      case AppScreen.payInListScreen:
+        return '/pay-in-list-screen';
+      case AppScreen.createPayInScreen:
+        return '/create-pay-in-screen';
+      case AppScreen.viewPayInScreen:
+        return '/view-pay-in-screen';
+      case AppScreen.payOutListScreen:
+        return '/pay-out-list-screen';
+      case AppScreen.createPayOutScreen:
+        return '/create-pay-out-screen';
+      case AppScreen.viewPayOutScreen:
+        return '/view-pay-out-screen';
       case AppScreen.createUserScreen:
         return '/create-user-screen';
       case AppScreen.userOverviewScreen:

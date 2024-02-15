@@ -10,8 +10,7 @@ class ShiftController {
 
   Future<Response> getShiftId(Request request, UserModel user) async {
     try {
-      final shiftId =
-          await db.shiftRepository.getShiftId(userId: user.userID.toString());
+      final shiftId = await db.shiftRepository.getShiftId();
       return okResponse(shiftId);
     } catch (e, s) {
       debugPrint(e.toString());

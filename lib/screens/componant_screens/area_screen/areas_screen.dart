@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +5,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/areas_screen_cubits/area_screen_state.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
-import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/widgets/my_alert_widget.dart';
 
@@ -27,32 +24,6 @@ class AreasOverviewScreen extends StatefulWidget {
 
 class _AreasOverviewScreenState extends State<AreasOverviewScreen> {
   //
-  Stream<List<AreasModel>> streamForAreas() {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
-    return datatbaseCubit.areasRepository.streamAreas();
-  }
-
-  //fetch ratesets and compare their ids and show ratesetname in area list
-  Future<List<RateSetsModel?>> getAllRateSets() async {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    final rateSets = await datatbaseCubit.rateSetsRepository.getRateSets();
-    // log(rateSets.toString());
-    for (var rateSet in rateSets) {
-      log(rateSet!.ratesetName.toString());
-    }
-    return rateSets;
-  }
-
-  // toggleAreaFn(int id, bool value) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.areasRepository.changeActiveArea(id, value);
-  // }
-
-  // deleteAreaFn(int id) {
-  //   final datatbaseCubit = DatabaseCubit.dbFrom(context);
-  //   datatbaseCubit.areasRepository.deleteAreabyID(id);
-  // }
 
   deleteArea(AreasModel e) {
     UtilDialog.showMyDialog(

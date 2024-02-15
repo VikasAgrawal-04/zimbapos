@@ -80,6 +80,7 @@ class EndPoints {
   static const String createKot = '/action-temp-bill';
   static const String getTempBill = '/get-temp-bill';
   static const String deleteKotItem = '/delete-kot-item';
+  static const String createFinalBill = '/final-bill';
 
   //User Roles
   static const String getUserRoles = '/fetch-user-roles';
@@ -97,4 +98,17 @@ class EndPoints {
   static const String getShiftId = '/get-shift-id';
   static const String startShift = '/start-shift';
   static const String endShift = '/end-shift';
+
+  //Pay In & Out
+  static const String getPayin = '/get-pay-in';
+  static const String getPayout = '/get-pay-out';
+
+  static const String createPayIn = '/create-payin';
+  static const String createPayOut = '/create-payout';
+
+  //Pay Mode Master
+  static const String getPayMode = '/fetch-pay-mode';
+  static const String createPayMode = '/create-pay-mode';
+  static const String updatePayMode = '/update-pay-mode';
+  static const String deletePayMode = '/delete-pay-mode';
 }

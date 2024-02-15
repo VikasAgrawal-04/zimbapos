@@ -18,7 +18,7 @@ class BillPaymentModel {
   String? payId;
   final payModeDetails = IsarLink<PayModMasterModel>();
   BillPaymentModel({
-    required this.id,
+    this.id = Isar.autoIncrement,
     this.outletId,
     this.paymentEntryId,
     this.billId,

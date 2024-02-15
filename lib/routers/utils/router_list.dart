@@ -9,7 +9,6 @@ import 'package:zimbapos/models/global_models/expenses_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
-import 'package:zimbapos/models/global_models/payments_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
@@ -467,32 +466,34 @@ final List<GoRoute> routerList = [
     },
   ),
 
+  //Payment Commented By Vikas
+
   //payment list
-  GoRoute(
-    name: AppScreen.paymentsScreen.name,
-    path: AppScreen.paymentsScreen.path,
-    builder: (context, state) => const PaymentListScreen(),
-  ),
+  // GoRoute(
+  //   name: AppScreen.paymentsScreen.name,
+  //   path: AppScreen.paymentsScreen.path,
+  //   builder: (context, state) => const PaymentListScreen(),
+  // ),
   // create payment
-  GoRoute(
-    name: AppScreen.createPaymentsScreen.name,
-    path: AppScreen.createPaymentsScreen.path,
-    builder: (context, state) => const CreatePaymentScreen(),
-  ),
+  // GoRoute(
+  //   name: AppScreen.createPaymentsScreen.name,
+  //   path: AppScreen.createPaymentsScreen.path,
+  //   builder: (context, state) => const CreatePaymentScreen(),
+  // ),
   //edit payment
-  GoRoute(
-    name: AppScreen.editPaymentsScreen.name,
-    path: AppScreen.editPaymentsScreen.path,
-    builder: (context, state) {
-      if (state.extra is PaymentModel) {
-        return UpdatePaymentScreen(item: state.extra as PaymentModel);
-      } else {
-        return UpdatePaymentScreen(
-          item: PaymentModel.fromJson(state.extra as Map<String, dynamic>),
-        );
-      }
-    },
-  ),
+  // GoRoute(
+  //   name: AppScreen.editPaymentsScreen.name,
+  //   path: AppScreen.editPaymentsScreen.path,
+  //   builder: (context, state) {
+  //     if (state.extra is PaymentModel) {
+  //       return UpdatePaymentScreen(item: state.extra as PaymentModel);
+  //     } else {
+  //       return UpdatePaymentScreen(
+  //         item: PaymentModel.fromJson(state.extra as Map<String, dynamic>),
+  //       );
+  //     }
+  //   },
+  // ),
 
   //discount list
   GoRoute(

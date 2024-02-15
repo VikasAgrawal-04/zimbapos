@@ -4,11 +4,16 @@ import 'package:isar/isar.dart';
 
 part 'card_details_model.g.dart';
 
+enum CardType { credit, debit }
+
 @collection
 class ClassExtraDetails {
   Id id = Isar.autoIncrement;
   String? paymentEntryId;
-  String? cardType;
+
+  @Enumerated(EnumType.name)
+  CardType? cardType;
+
   String? issuer;
   String? lastDigits;
   ClassExtraDetails({
@@ -22,7 +27,7 @@ class ClassExtraDetails {
   ClassExtraDetails copyWith({
     Id? id,
     String? paymentEntryId,
-    String? cardType,
+    CardType? cardType,
     String? issuer,
     String? lastDigits,
   }) {
@@ -51,7 +56,7 @@ class ClassExtraDetails {
       paymentEntryId: map['paymentEntryId'] != null
           ? map['paymentEntryId'] as String
           : null,
-      cardType: map['cardType'] != null ? map['cardType'] as String : null,
+      cardType: map['cardType'] != null ? map['cardType'] as CardType : null,
       issuer: map['issuer'] != null ? map['issuer'] as String : null,
       lastDigits:
           map['lastDigits'] != null ? map['lastDigits'] as String : null,

@@ -84,6 +84,9 @@ import '../../screens/componant_screens/main_group_screens/create_main_group.dar
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
 import '../../screens/componant_screens/pay_out_screens/create_pay_out_screen.dart';
 import '../../screens/componant_screens/pay_out_screens/view_pay_out_screen.dart';
+import '../../screens/componant_screens/payments_screen/create_payment_screen.dart';
+import '../../screens/componant_screens/payments_screen/edit_payment_screen.dart';
+import '../../screens/componant_screens/payments_screen/payment_list_screen.dart';
 
 final List<GoRoute> routerList = [
   //home

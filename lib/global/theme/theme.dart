@@ -51,7 +51,7 @@ class ApplicationTheme {
             fontSize: 17.sp,
             fontWeight: FontWeight.w500),
         headlineMedium: TextStyle(
-          color: KColors.blackColor,
+          color: KColors.whiteColor,
           fontSize: 13.sp,
           fontWeight: FontWeight.w500,
         ),

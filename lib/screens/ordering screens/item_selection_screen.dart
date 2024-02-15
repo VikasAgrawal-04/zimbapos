@@ -454,7 +454,7 @@ class _ItemSelectionScreenState extends State<ItemSelectionScreen>
                 initiallyExpanded: state.selectedTile == index,
                 title: Text(
                   mainGroup.mainGroupName ?? "--",
-                  style: theme.headlineMedium,
+                  style: theme.labelLarge,
                 ),
                 onExpansionChanged: (value) async {
                   if (value) {

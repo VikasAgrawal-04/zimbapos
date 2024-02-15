@@ -77,6 +77,7 @@ class PayModMasterApiRepoImpl implements PayModMasterApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updatePayModMaster(
       PayModMasterModel item) async {
     try {
+      item.outletId = await Helpers.getOutletId() ?? "123123";
       final response = await Helpers.sendRequest(
         RequestType.post,
         EndPoints.updatePayMode,

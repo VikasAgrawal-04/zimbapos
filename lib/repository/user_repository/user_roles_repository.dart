@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/user_roles_model.dart';
+import 'package:zimbapos/models/user_models/user_model.dart';
 
 class UserRolesRepository {
   final Isar db;
@@ -18,7 +19,15 @@ class UserRolesRepository {
     }
   }
 
-  Future<Tuple2<bool, String>> createUserRole(UserRolesModel data) async {
+  // Future<Tuple2<bool, UserRolesModel>> getUserRolewithID() async {
+  //   try {} on IsarError catch (error) {
+  //     debugPrint("Error ${error.message}");
+  //     return Tuple2(false, error.message.toString());
+  //   }
+  // }
+
+  Future<Tuple2<bool, Tuple2<String, UserRolesModel?>>> createUserRole(
+      UserRolesModel data) async {
     try {
       final dbItem = db.userRolesModels
           .filter()
@@ -30,13 +39,14 @@ class UserRolesRepository {
           .findFirstSync();
       if (dbItem == null) {
         db.writeTxnSync(() => db.userRolesModels.putSync(data));
-        return const Tuple2(true, 'User Role Created Successfully!');
+
+        return Tuple2(true, Tuple2('User Created Successfully', data));
       } else {
         throw IsarError('User Role Already Exists');
       }
     } on IsarError catch (error) {
       debugPrint("Error ${error.message}");
-      return Tuple2(false, error.message.toString());
+      return Tuple2(false, Tuple2(error.message, null));
     }
   }
 

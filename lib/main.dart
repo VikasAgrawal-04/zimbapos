@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
               builder: (context, state) {
                 if (state is FinalDeviceState) {
                   print(
-                      'State Main Terminal ${state.mainTerminal}   IP Address ${state.ipAddress}');
+                      'State Main Terminal ${state.mainTerminal}\nIP Address ${state.ipAddress}');
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider(

@@ -87,6 +87,12 @@ class EndPoints {
   static const String updateUserRole = '/update-user-role';
   static const String deleteUserRole = '/delete-user-role';
 
+  //User Screen Functionalities
+  static const String getAllScreenFn = '/get-screen-fn';
+  static const String createScreenFn = '/create-screen-fn';
+  static const String updateScreenFn = '/update-screen-fn';
+  static const String deleteScreenFn = '/delete-screen-fn';
+
   //Shift
   static const String getShiftId = '/get-shift-id';
   static const String startShift = '/start-shift';

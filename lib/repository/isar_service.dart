@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:isar/isar.dart';
 import 'package:zimbapos/constants/contants.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
@@ -51,7 +50,6 @@ import 'package:zimbapos/repository/user_repository/user_role_screen_repository.
 import 'package:zimbapos/repository/user_repository/user_roles_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
 import 'package:zimbapos/repository/workers_repository.dart';
-
 import '../models/global_models/card_log_model.dart';
 import '../models/global_models/card_model.dart';
 import '../models/global_models/customer_model.dart';
@@ -86,7 +84,6 @@ class IsarService {
           VendorModelSchema,
           ExpenseCategoryModelSchema,
           ExpenseModelSchema,
-          UserModelSchema,
           TaxModelSchema,
           ItemsModelSchema,
           PaymentModelSchema,
@@ -101,8 +98,11 @@ class IsarService {
           CustomerModelSchema,
           PermanentBillHeaderModelSchema,
           PermanentBillLinesModelSchema,
+          // User Management
           UserRolesModelSchema,
           UserRoleScreenFunctionModelSchema,
+          UserModelSchema,
+          //
           ShiftModelSchema,
           PayInModelSchema,
           PayOutModelSchema

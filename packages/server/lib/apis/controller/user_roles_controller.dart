@@ -44,9 +44,9 @@ class UserRoleController {
           .createUserRole(UserRolesModel.fromMap(decodedData));
 
       if (success.value1) {
-        return okResponse(success.value2);
+        return okResponse(success.value2.value2!.toMap());
       } else {
-        return badArguments(success.value2);
+        return badArguments(success.value2.value1);
       }
     } catch (e, s) {
       debugPrint(e.toString());

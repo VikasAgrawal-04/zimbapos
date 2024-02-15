@@ -130,6 +130,7 @@ class _CustomTextFieldState extends State<CustomTextFieldNew> {
         readOnly: widget.isReadOnly ?? false,
         maxLength: widget.maxLength,
         decoration: InputDecoration(
+            hoverColor: Colors.transparent,
             labelText: widget.labelText,
             hintStyle: widget.hintStyle,
             alignLabelWithHint: true,

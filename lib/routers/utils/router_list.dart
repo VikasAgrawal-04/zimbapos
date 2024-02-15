@@ -49,6 +49,9 @@ import 'package:zimbapos/screens/componant_screens/pay_in_screens/create_pay_in_
 import 'package:zimbapos/screens/componant_screens/pay_in_screens/pay_in_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/pay_in_screens/view_pay_in_screen.dart';
 import 'package:zimbapos/screens/componant_screens/pay_out_screens/pay_out_List_screen.dart';
+import 'package:zimbapos/screens/componant_screens/payments_screen/create_payment_screen.dart';
+import 'package:zimbapos/screens/componant_screens/payments_screen/edit_payment_screen.dart';
+import 'package:zimbapos/screens/componant_screens/payments_screen/payment_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/create_rate_sets_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/edit_rate_set_screen.dart';
 import 'package:zimbapos/screens/componant_screens/rate_sets_screens/rate_sets_screen.dart';

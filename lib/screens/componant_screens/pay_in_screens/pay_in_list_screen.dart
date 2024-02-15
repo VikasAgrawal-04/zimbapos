@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/models/global_models/pay_in_model.dart';
 
@@ -24,7 +25,17 @@ class _PayInListScreenState extends State<PayInListScreen> {
   //
   viewDetailsFn(PayInModel e) {
     //redirect to details screen
+    context.push(
+      AppScreen.viewPayInScreen.path,
+      extra: e,
+    );
   }
+
+  //date time format
+  String formatDateTime(DateTime dateTime) {
+    return DateFormat('dd MMM yyyy, hh:mm a').format(dateTime);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -181,13 +192,13 @@ class _PayInListScreenState extends State<PayInListScreen> {
                           columns: [
                             DataColumn(
                               label: Text(
-                                'Name',
+                                'Date',
                                 style: theme.textTheme.headlineMedium,
                               ),
                             ),
                             DataColumn(
                               label: Text(
-                                'Charges',
+                                'Amount',
                                 style: theme.textTheme.headlineMedium,
                               ),
                             ),
@@ -206,7 +217,7 @@ class _PayInListScreenState extends State<PayInListScreen> {
                                 (e) => DataRow(
                                   cells: [
                                     DataCell(Text(
-                                      e.dateTime.toString(),
+                                      formatDateTime(e.dateTime as DateTime),
                                       style: KTextStyles.kSubtitle,
                                     )),
                                     DataCell(Text(

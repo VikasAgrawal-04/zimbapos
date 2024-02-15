@@ -9,6 +9,7 @@ import 'package:zimbapos/models/global_models/expenses_model.dart';
 import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
+import 'package:zimbapos/models/global_models/pay_in_model.dart';
 import 'package:zimbapos/models/global_models/payments_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
@@ -47,6 +48,7 @@ import 'package:zimbapos/screens/componant_screens/item_group_screens/item_group
 import 'package:zimbapos/screens/componant_screens/main_group_screens/main_group_list.dart';
 import 'package:zimbapos/screens/componant_screens/pay_in_screens/create_pay_in_screen.dart';
 import 'package:zimbapos/screens/componant_screens/pay_in_screens/pay_in_list_screen.dart';
+import 'package:zimbapos/screens/componant_screens/pay_in_screens/view_pay_in_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/create_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/edit_payment_screen.dart';
 import 'package:zimbapos/screens/componant_screens/payments_screen/payment_list_screen.dart';
@@ -75,6 +77,7 @@ import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart'
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
 
 import '../../models/global_models/customer_model.dart';
+import '../../models/global_models/pay_out_model.dart';
 import '../../models/response_models/item_response_model.dart';
 import '../../screens/componant_screens/card_screens/create_card_screen.dart';
 import '../../screens/componant_screens/customer_screens/customer_list_screen.dart';
@@ -82,7 +85,8 @@ import '../../screens/componant_screens/item_group_screens/edit_item_group.dart'
 import '../../screens/componant_screens/main_group_screens/create_main_group.dart';
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
 import '../../screens/componant_screens/pay_out_screens/create_pay_out_screen.dart';
-import '../../screens/componant_screens/pay_out_screens/pay_out_List_screen.dart';
+import '../../screens/componant_screens/pay_out_screens/pay_out_list_screen.dart';
+import '../../screens/componant_screens/pay_out_screens/view_pay_out_screen.dart';
 
 final List<GoRoute> routerList = [
   //home
@@ -628,6 +632,22 @@ final List<GoRoute> routerList = [
     path: AppScreen.createPayInScreen.path,
     builder: (context, state) => const CreatePayInScreen(),
   ),
+  // view pay in screen
+  GoRoute(
+    name: AppScreen.viewPayInScreen.name,
+    path: AppScreen.viewPayInScreen.path,
+    builder: (context, state) {
+      if (state.extra is PayInModel) {
+        return PayInDetailsScreen(
+          item: state.extra as PayInModel,
+        );
+      } else {
+        return PayInDetailsScreen(
+          item: PayInModel.fromMap(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
+  ),
 
   //pay out
   GoRoute(
@@ -640,5 +660,21 @@ final List<GoRoute> routerList = [
     name: AppScreen.createPayOutScreen.name,
     path: AppScreen.createPayOutScreen.path,
     builder: (context, state) => const CreatePayOutScreen(),
+  ),
+  // view pay out screen
+  GoRoute(
+    name: AppScreen.viewPayOutScreen.name,
+    path: AppScreen.viewPayOutScreen.path,
+    builder: (context, state) {
+      if (state.extra is PayOutModel) {
+        return PayOutDetailsScreen(
+          item: state.extra as PayOutModel,
+        );
+      } else {
+        return PayOutDetailsScreen(
+          item: PayOutModel.fromMap(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
   ),
 ];

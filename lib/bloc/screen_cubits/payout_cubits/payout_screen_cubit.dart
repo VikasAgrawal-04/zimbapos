@@ -6,7 +6,7 @@ import 'package:zimbapos/global/utils/status_handler/status_handler.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
-import '../../../models/global_models/pay_in_model.dart';
+import '../../../models/global_models/pay_out_model.dart';
 import 'payout_screen_state.dart';
 
 class PayOutScreenCubit extends Cubit<PayOutScreenState> {
@@ -35,10 +35,10 @@ class PayOutScreenCubit extends Cubit<PayOutScreenState> {
     }
   }
 
-  Future<void> createPayIn(PayInModel data) async {
+  Future<void> createPayOut(PayOutModel data) async {
     try {
       data.outletId = await Helpers.getOutletId();
-      final success = await _repo.createPayIn(data);
+      final success = await _repo.createPayOut(data);
       success.fold((failure) {
         debugPrint(failure.toString());
         EasyLoading.showError(failure.toString());
@@ -71,10 +71,10 @@ class PayOutScreenCubit extends Cubit<PayOutScreenState> {
   //   }
   // }
 
-  // Future<void> updateArea(PayInModel data, {bool? val}) async {
+  // Future<void> updateArea(PayOutModel data, {bool? val}) async {
   //   //For State Management & Instant Reflection
   //   if (val != null) {
-  //     List<PayInModel> updatedList = List.from(state.areaList);
+  //     List<PayOutModel> updatedList = List.from(state.areaList);
   //     final index =
   //         updatedList.indexWhere((element) => element.areaId == data.areaId);
   //     updatedList[index] = updatedList[index].copyWith(isActive: val);
@@ -104,10 +104,11 @@ class PayOutScreenCubit extends Cubit<PayOutScreenState> {
     init();
   }
 
-  void fillControllers(PayInModel item) {
+  void fillControllers(PayOutModel item) {
     emit(
       state.copyWith(
-        amountController: TextEditingController(text: item.amount.toString()),
+        payOutAmountController:
+            TextEditingController(text: item.amount.toString()),
         reasonController: TextEditingController(text: item.reason.toString()),
       ),
     );

@@ -26,6 +26,7 @@ import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_scre
 import 'bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
 import 'bloc/screen_cubits/payin_cubits/payin_screen_cubit.dart';
+import 'bloc/screen_cubits/payout_cubits/payout_screen_cubit.dart';
 import 'bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
 
 Future<void> main() async {
@@ -101,9 +102,9 @@ class MyApp extends StatelessWidget {
                       BlocProvider(
                         create: (context) => PayInScreenCubit()..init(),
                       ),
-                      // BlocProvider(
-                      //   create: (context) => PayOutScreenCubit()..init(),
-                      // ),
+                      BlocProvider(
+                        create: (context) => PayOutScreenCubit()..init(),
+                      ),
                     ],
                     child: BlocBuilder<DatabaseCubit, IsarService?>(
                       builder: (context, state) {

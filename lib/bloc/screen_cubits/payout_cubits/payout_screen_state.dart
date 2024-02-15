@@ -7,26 +7,27 @@ import '../../../models/global_models/pay_out_model.dart';
 class PayOutScreenState extends Equatable {
   final List<PayOutModel> payOutList;
   final Status status;
-  final TextEditingController amountController;
+  final TextEditingController payOutAmountController;
   final TextEditingController reasonController;
   const PayOutScreenState({
     required this.payOutList,
     this.status = Status.initial,
-    required this.amountController,
+    required this.payOutAmountController,
     required this.reasonController,
   });
 
   PayOutScreenState copyWith({
     List<PayOutModel>? payOutList,
     Status? status,
-    TextEditingController? amountController,
+    TextEditingController? payOutAmountController,
     TextEditingController? reasonController,
     String? selectedRateSetId,
   }) {
     return PayOutScreenState(
       payOutList: payOutList ?? this.payOutList,
       status: status ?? this.status,
-      amountController: amountController ?? this.amountController,
+      payOutAmountController:
+          payOutAmountController ?? this.payOutAmountController,
       reasonController: reasonController ?? this.reasonController,
     );
   }
@@ -34,7 +35,7 @@ class PayOutScreenState extends Equatable {
   factory PayOutScreenState.initial() {
     return PayOutScreenState(
       payOutList: const [],
-      amountController: TextEditingController(),
+      payOutAmountController: TextEditingController(),
       reasonController: TextEditingController(),
     );
   }
@@ -43,7 +44,7 @@ class PayOutScreenState extends Equatable {
   List<Object?> get props => [
         payOutList,
         status,
-        amountController,
+        payOutAmountController,
         reasonController,
       ];
 }

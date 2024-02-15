@@ -8,6 +8,7 @@ import 'package:zimbapos/models/global_models/item_group_model.dart';
 import 'package:zimbapos/models/global_models/items_model.dart';
 import 'package:zimbapos/models/global_models/main_group_model.dart';
 import 'package:zimbapos/models/global_models/pay_in_model.dart';
+import 'package:zimbapos/models/global_models/pay_mod_master_model.dart';
 import 'package:zimbapos/models/global_models/pay_out_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
@@ -42,6 +43,8 @@ import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
 import 'customer/customer_api_repo.dart';
+import 'pay_mod_master/pay_mod_master_api_repo_impl.dart';
+import 'pay_mod_master/pay_mod_master_repo.dart';
 import 'payin/pay_in_api_repo.dart';
 import 'payout/pay_out_api_repo.dart';
 import 'payout/pay_out_api_repo_impl.dart';
@@ -64,6 +67,7 @@ class ApiRepoImpl implements ApiRepo {
   final ShiftApiRepo _shiftApiRepo;
   final PayInApiRepo _payInApiRepo;
   final PayOutApiRepo _payOutApiRepo;
+  final PayModMasterApiRepo _payModMasterApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -80,6 +84,7 @@ class ApiRepoImpl implements ApiRepo {
         _customerApiRepo = CustomerApiRepoImpl(),
         _shiftApiRepo = ShiftApiRepoImpl(),
         _payInApiRepo = PayInApiRepoImpl(),
+        _payModMasterApiRepo = PayModMasterApiRepoImpl(),
         _payOutApiRepo = PayOutApiRepoImpl();
 
   @override
@@ -386,5 +391,28 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> createFinalBill(
       String tableId) {
     return _billApiRepo.createFinalBill(tableId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createPayModMaster(
+      PayModMasterModel item) {
+    return _payModMasterApiRepo.createPayModMaster(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deletePayModMaster(
+      String payCode) {
+    return _payModMasterApiRepo.deletePayModMaster(payCode);
+  }
+
+  @override
+  Future<Either<Failure, List<PayModMasterModel>>> fetchPayModMasterList() {
+    return _payModMasterApiRepo.fetchPayModMasterList();
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updatePayModMaster(
+      PayModMasterModel item) {
+    return _payModMasterApiRepo.updatePayModMaster(item);
   }
 }

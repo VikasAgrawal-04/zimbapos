@@ -1,144 +1,174 @@
-// import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_state.dart';
+import 'package:zimbapos/widgets/textfield/primary_textfield.dart';
 
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_easyloading/flutter_easyloading.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:intl/intl.dart';
+import '../../../constants/kcolors.dart';
+import '../../../widgets/custom_button/custom_button.dart';
+import '../../../widgets/dropdown/custom_dropdown.dart';
 
-// import '../../../bloc/cubits/database/database_cubit.dart';
-// import '../../../constants/ktextstyles.dart';
-// import '../../../helpers/validators.dart';
-// import '../../../widgets/custom_button.dart';
-// import '../../../widgets/my_snackbar_widget.dart';
-// import '../../../widgets/textfield/primary_textfield.dart';
+class CreatePaymentScreen extends StatefulWidget {
+  const CreatePaymentScreen({super.key});
 
-// class CreatePaymentScreen extends StatefulWidget {
-//   const CreatePaymentScreen({super.key});
+  @override
+  State<CreatePaymentScreen> createState() => _CreatePaymentScreenState();
+}
 
-//   @override
-//   State<CreatePaymentScreen> createState() => _CreatePaymentScreenState();
-// }
+class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-// class _CreatePaymentScreenState extends State<CreatePaymentScreen> {
-//   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-//   late final TextEditingController payCode;
-//   late final TextEditingController payTypeName;
-//   bool isUserCreated = false;
-//   String? outletId;
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.sizeOf(context);
+    final theme = Theme.of(context);
+    return SafeArea(
+      child: Scaffold(
+        body: BlocBuilder<PayModMasterScreenCubit, PayModMasterScreenState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  //header
+                  Container(
+                    width: double.infinity,
+                    height: screenSize.height * 0.15,
+                    decoration: BoxDecoration(
+                      color: KColors.blackColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        bottomRight: Radius.circular(14),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Create Pay Mode',
+                        style: theme.textTheme.headlineMedium,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: Image.asset(
+                          "assets/icons/back.png",
+                          height: 5.h,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 12),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: screenSize.height * 0.04),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Payment type",
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ),
+                              Expanded(
+                                child: CustomDropDown<String>(
+                                  // title: "Tax type",
+                                  hint: "Select Pay type",
+                                  items: const [
+                                    "UPI",
+                                    "Bank/Cards",
+                                    "Cash",
+                                    "Cheque",
+                                    "Others",
+                                  ],
+                                  value: state.paytypeName,
+                                  onChanged: context
+                                      .read<PayModMasterScreenCubit>()
+                                      .onPayModMasterChange,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenSize.height * 0.02),
+                          Visibility(
+                            visible: state.isOthers,
+                            child: Row(
+                              children: [
+                                //label
+                                Expanded(
+                                  child: Text(
+                                    "Payment Name",
+                                    style: theme.textTheme.titleLarge,
+                                  ),
+                                ),
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     payCode = TextEditingController();
-//     payTypeName = TextEditingController();
+                                //text field
+                                Expanded(
+                                  child: PrimaryTextField(
+                                    controller: state.payTypeController,
+                                    onChanged: (val) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
-//     DateTime currentDateTime = DateTime.now();
+                  //buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //cancel
+                      CustomButtonNew(
+                        width: 68.sp,
+                        height: 28.sp,
+                        text: "Cancel",
+                        color: KColors.blackColor,
+                        onTap: () async {
+                          //clear controllers and pop
+                          context.pop();
+                        },
+                      ),
 
-//     String formattedDateTime =
-//         DateFormat('yyyyMMddHHmmss').format(currentDateTime);
+                      //save
+                      CustomButtonNew(
+                        text: "Submit",
+                        width: 68.sp,
+                        height: 28.sp,
+                        color: theme.primaryColor,
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await context
+                                .read<PayModMasterScreenCubit>()
+                                .createPayModMaster();
 
-//     payCode.text = formattedDateTime;
-//     outletId = BlocProvider.of<DatabaseCubit>(context).outletId;
-//   }
-
-//   createPaymentFn() {
-//     final dbCubit = DatabaseCubit.dbFrom(context);
-//     log("${BlocProvider.of<DatabaseCubit>(context).outletId}");
-//     dbCubit.paymentsRepository.createPayment(
-//       model: PaymentModel(
-//         payTypeName: payTypeName.text,
-//         isUserCreated: isUserCreated,
-//         payCode: payCode.text,
-//         outletId: outletId,
-//       ),
-//     );
-//     EasyLoading.showToast(
-//       'Payment Created',
-//       toastPosition: EasyLoadingToastPosition.bottom,
-//     );
-//     context.pop();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final screenSize = MediaQuery.sizeOf(context);
-//     return SafeArea(
-//       child: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Create payment'),
-//         ),
-//         body: SingleChildScrollView(
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Form(
-//               key: _formKey,
-//               child: Column(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   SizedBox(height: screenSize.height * 0.04),
-//                   //Payment name
-//                   PrimaryTextField(
-//                     validator: nullCheckValidator,
-//                     hintText: 'Payment name',
-//                     controller: payTypeName,
-//                     onChanged: (value) {},
-//                   ),
-//                   SizedBox(height: screenSize.height * 0.02),
-//                   // payment code
-//                   PrimaryTextField(
-//                     enable: false,
-//                     validator: nullCheckValidator,
-//                     hintText: 'Payment code',
-//                     controller: payCode,
-//                     onChanged: (value) {},
-//                   ),
-//                   //switch for isUser created
-//                   Row(
-//                     crossAxisAlignment: CrossAxisAlignment.center,
-//                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                     children: [
-//                       Text(
-//                         "Is created by a user?",
-//                         style: KTextStyles.kTitle,
-//                       ),
-//                       Padding(
-//                         padding: const EdgeInsets.only(right: 24),
-//                         child: Switch.adaptive(
-//                           value: isUserCreated,
-//                           onChanged: (va) {
-//                             setState(() {
-//                               isUserCreated = va;
-//                             });
-//                           },
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   SizedBox(height: screenSize.height * 0.02),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//         bottomNavigationBar: CustomButton(
-//             text: "Save",
-//             onPressed: () {
-//               if (_formKey.currentState!.validate()) {
-//                 if (outletId != null) {
-//                   createPaymentFn();
-//                 } else {
-//                   UtillSnackbar.showSnackBar(
-//                     context,
-//                     title: "Alert",
-//                     body: "outletId not available",
-//                     isSuccess: false,
-//                   );
-//                 }
-//               }
-//             }),
-//       ),
-//     );
-//   }
-// }
+                            context.pop();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}

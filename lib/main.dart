@@ -25,6 +25,7 @@ import 'package:zimbapos/screens/system_settings_screens/system_check_screen.dar
 import 'bloc/screen_cubits/customer_category_screen_cubit/customer_category_screen_cubit.dart';
 import 'bloc/screen_cubits/item_screen_cubits/item_cubit.dart';
 import 'bloc/screen_cubits/main_group_screen_cubits/main_group_cubit.dart';
+import 'bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_cubit.dart';
 import 'bloc/screen_cubits/payin_cubits/payin_screen_cubit.dart';
 import 'bloc/screen_cubits/payout_cubits/payout_screen_cubit.dart';
 import 'bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
@@ -104,6 +105,9 @@ class MyApp extends StatelessWidget {
                       ),
                       BlocProvider(
                         create: (context) => PayOutScreenCubit()..init(),
+                      ),
+                      BlocProvider(
+                        create: (context) => PayModMasterScreenCubit()..init(),
                       ),
                     ],
                     child: BlocBuilder<DatabaseCubit, IsarService?>(

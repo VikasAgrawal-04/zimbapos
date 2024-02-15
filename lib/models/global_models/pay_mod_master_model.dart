@@ -13,7 +13,7 @@ class PayModMasterModel {
   bool? isActive;
   bool? isDeleted;
   PayModMasterModel({
-    required this.id,
+    this.id = Isar.autoIncrement,
     this.outletId,
     this.payCode,
     this.payTypeName,

@@ -113,12 +113,13 @@ class PayModMasterScreenCubit extends Cubit<PayModMasterScreenState> {
     init();
   }
 
-  // void fillControllers(PayModMasterModel item) {
-  //   emit(
-  //     state.copyWith(
-  //       payCodeController: TextEditingController(text: item.payCode),
-  //       payTypeNameController: TextEditingController(text: item.payTypeName),
-  //     ),
-  //   );
-  // }
+  void fillControllers(PayModMasterModel item) {
+    emit(
+      state.copyWith(
+        payTypeController: TextEditingController(text: item.payTypeName),
+        isOthers: item.payTypeName == "Others" ? true : false,
+        paytypeName: item.payTypeName,
+      ),
+    );
+  }
 }

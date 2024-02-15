@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_state.dart';
 import 'package:zimbapos/models/global_models/pay_mod_master_model.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
-import '../../../helpers/validators.dart';
-import '../../../widgets/custom_button.dart';
+import '../../../constants/kcolors.dart';
+import '../../../widgets/custom_button/custom_button.dart';
+import '../../../widgets/dropdown/custom_dropdown.dart';
 import '../../../widgets/textfield/primary_textfield.dart';
 
 class UpdatePaymentScreen extends StatefulWidget {
@@ -22,110 +25,166 @@ class UpdatePaymentScreen extends StatefulWidget {
 class _UpdatePaymentScreenState extends State<UpdatePaymentScreen> {
   //
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late final TextEditingController payCode;
-  late final TextEditingController payTypeName;
 
   @override
   void initState() {
     super.initState();
-    payCode = TextEditingController();
-    payTypeName = TextEditingController();
-
-    // DateTime currentDateTime = DateTime.now();
-
-    // String formattedDateTime =
-    //     DateFormat('yyyyMMddHHmmss').format(currentDateTime);
-
-    payCode.text = widget.item.payCode.toString();
-    payTypeName.text = widget.item.payTypeName.toString();
-    // log(outletId.toString());
-    // log(widget.item.id.toString());
-  }
-
-  updatePaymentFn() {
-    final dbCubit = DatabaseCubit.dbFrom(context);
-    dbCubit.payModeRepository.updatePayMode(
-      PayModMasterModel(
-        payTypeName: payTypeName.text,
-        payCode: payCode.text,
-      ),
-    );
-    EasyLoading.showToast(
-      'Payment updated',
-      toastPosition: EasyLoadingToastPosition.bottom,
-    );
-    context.pop();
+    context.read<PayModMasterScreenCubit>().fillControllers(widget.item);
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
+    final theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Edit payment'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey,
+        body: BlocBuilder<PayModMasterScreenCubit, PayModMasterScreenState>(
+          builder: (context, state) {
+            return SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: screenSize.height * 0.04),
-                  //Payment name
-                  PrimaryTextField(
-                    validator: nullCheckValidator,
-                    hintText: 'Payment name',
-                    controller: payTypeName,
-                    onChanged: (value) {},
+                  //header
+                  Container(
+                    width: double.infinity,
+                    height: screenSize.height * 0.15,
+                    decoration: BoxDecoration(
+                      color: KColors.blackColor,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(14),
+                        bottomRight: Radius.circular(14),
+                      ),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Edit Pay Mode',
+                        style: theme.textTheme.headlineMedium,
+                      ),
+                    ),
                   ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  // payment code
-                  PrimaryTextField(
-                    enable: false,
-                    validator: nullCheckValidator,
-                    hintText: 'Payment code',
-                    controller: payCode,
-                    onChanged: (value) {},
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context.pop();
+                        },
+                        icon: Image.asset(
+                          "assets/icons/back.png",
+                          height: 5.h,
+                        ),
+                      ),
+                    ],
                   ),
-                  //switch for isUser created
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   children: [
-                  //     Text(
-                  //       "Is created by a user?",
-                  //       style: KTextStyles.kTitle,
-                  //     ),
-                  //     Padding(
-                  //       padding: const EdgeInsets.only(right: 24),
-                  //       child: Switch.adaptive(
-                  //         value: isUserCreated as bool,
-                  //         onChanged: (va) {
-                  //           setState(() {
-                  //             isUserCreated = va;
-                  //           });
-                  //         },
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  SizedBox(height: screenSize.height * 0.02),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 18, vertical: 12),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(height: screenSize.height * 0.04),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Payment type",
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ),
+                              Expanded(
+                                child: CustomDropDown<String>(
+                                  // title: "Tax type",
+                                  hint: "Select Pay type",
+                                  items: const [
+                                    "UPI",
+                                    "Bank/Cards",
+                                    "Cash",
+                                    "Cheque",
+                                    "Others",
+                                  ],
+                                  value: state.paytypeName,
+                                  onChanged: context
+                                      .read<PayModMasterScreenCubit>()
+                                      .onPayModMasterChange,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: screenSize.height * 0.02),
+                          Visibility(
+                            visible: state.isOthers,
+                            child: Row(
+                              children: [
+                                //label
+                                Expanded(
+                                  child: Text(
+                                    "Payment Name",
+                                    style: theme.textTheme.titleLarge,
+                                  ),
+                                ),
+
+                                //text field
+                                Expanded(
+                                  child: PrimaryTextField(
+                                    controller: state.payTypeController,
+                                    onChanged: (val) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  //buttons
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      //cancel
+                      CustomButtonNew(
+                        width: 68.sp,
+                        height: 28.sp,
+                        text: "Cancel",
+                        color: KColors.blackColor,
+                        onTap: () async {
+                          //clear controllers and pop
+                          context.pop();
+                        },
+                      ),
+
+                      //save
+                      CustomButtonNew(
+                        text: "Submit",
+                        width: 68.sp,
+                        height: 28.sp,
+                        color: theme.primaryColor,
+                        onTap: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await context
+                                .read<PayModMasterScreenCubit>()
+                                .updatePayModMaster(
+                                  PayModMasterModel(
+                                    payCode: widget.item.payCode,
+                                    payTypeName: state.paytypeName,
+                                  ),
+                                );
+
+                            context.pop();
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ],
               ),
-            ),
-          ),
+            );
+          },
         ),
-        bottomNavigationBar: CustomButton(
-            text: "Save",
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                updatePaymentFn();
-              }
-            }),
       ),
     );
   }

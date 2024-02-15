@@ -22,20 +22,54 @@ class ApplicationTheme {
           color: KColors.blackColor),
     ),
     textTheme: TextTheme(
-        displayLarge: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
-        displayMedium: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.w700),
-        displaySmall: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w700),
-        titleLarge: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
-        titleMedium: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w700),
-        titleSmall: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w700),
-        headlineLarge: TextStyle(fontSize: 17.sp, fontWeight: FontWeight.w500),
-        headlineMedium: TextStyle(
+        displayLarge: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w700),
+        displayMedium: TextStyle(
+            color: KColors.blackColor,
             fontSize: 13.sp,
-            fontWeight: FontWeight.w500,
-            color: KColors.whiteColor),
-        headlineSmall: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500),
-        bodyLarge: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
-        bodyMedium: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
-        bodySmall: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w500)),
+            fontWeight: FontWeight.w700),
+        displaySmall: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 11.sp,
+            fontWeight: FontWeight.w700),
+        titleLarge: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w700),
+        titleMedium: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 10.5.sp,
+            fontWeight: FontWeight.w700),
+        titleSmall: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 8.sp,
+            fontWeight: FontWeight.w700),
+        headlineLarge: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 17.sp,
+            fontWeight: FontWeight.w500),
+        headlineMedium: TextStyle(
+          color: KColors.blackColor,
+          fontSize: 13.sp,
+          fontWeight: FontWeight.w500,
+        ),
+        headlineSmall: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 11.sp,
+            fontWeight: FontWeight.w500),
+        bodyLarge: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w500),
+        bodyMedium: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 10.sp,
+            fontWeight: FontWeight.w500),
+        bodySmall: TextStyle(
+            color: KColors.blackColor,
+            fontSize: 8.sp,
+            fontWeight: FontWeight.w500)),
   );
 }

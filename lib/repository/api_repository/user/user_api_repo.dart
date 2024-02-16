@@ -5,7 +5,22 @@ import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/models/user_models/user_model.dart';
 
 abstract class UserApiRepo {
-  Future<Either<Failure, List<UserModel>>> getAllUsers();
+  //for user roles
   Future<Either<Failure, List<UserRolesModel>>> getAllUserRoles();
   Future<Either<Failure, List<SFMappingModel>>> getAllSF();
+  Future<Either<Failure, Map<String, dynamic>>> createUserRole(
+      UserRolesModel item);
+  Future<Either<Failure, Map<String, dynamic>>> updateUserRole(
+      UserRolesModel item);
+  Future<Either<Failure, Map<String, dynamic>>> deleteUserRole(
+    String userRoleId,
+  );
+
+  //for user
+  Future<Either<Failure, List<UserModel>>> getAllUsers();
+  Future<Either<Failure, Map<String, dynamic>>> createUser(UserModel item);
+  Future<Either<Failure, Map<String, dynamic>>> updateUser(UserModel item);
+  Future<Either<Failure, Map<String, dynamic>>> deleteUser(
+    String userId,
+  );
 }

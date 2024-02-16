@@ -437,4 +437,37 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, List<SFMappingModel>>> getAllSF() {
     return _userApiRepo.getAllSF();
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createUserRole(
+      UserRolesModel item) {
+    return _userApiRepo.createUserRole(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteUserRole(
+      String userRoleId) {
+    return _userApiRepo.deleteUserRole(userRoleId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateUserRole(
+      UserRolesModel item) {
+    return _userApiRepo.updateUserRole(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createUser(UserModel item) {
+    return _userApiRepo.createUser(item);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteUser(String userId) {
+    return _userApiRepo.deleteUser(userId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateUser(UserModel item) {
+    return _userApiRepo.updateUser(item);
+  }
 }

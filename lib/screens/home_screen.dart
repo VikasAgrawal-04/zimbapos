@@ -504,5 +504,9 @@ List<HomeShortcutModel> screenList = [
   HomeShortcutModel(
       title: 'Screens/Functions',
       path: AppScreen.sfMappingScreen.path,
+      userId: '123123'),
+  HomeShortcutModel(
+      title: 'Assigning',
+      path: AppScreen.sfJunctionScreen.path,
       userId: '123123')
 ];

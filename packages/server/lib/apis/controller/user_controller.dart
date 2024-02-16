@@ -11,6 +11,17 @@ class UserController {
   IsarService dbCubit;
   UserController(this.dbCubit);
 
+  Future<Response> getAllUsers(Request request) async {
+    try {
+      final users = await dbCubit.userRepository.getAllUsers();
+      return okResponse(users.map((e) => e.toMap()).toList());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
+    }
+  }
+
   Future<Response> loginUser(Request request) async {
     try {
       final requiredFields = ['logInId', 'password'];

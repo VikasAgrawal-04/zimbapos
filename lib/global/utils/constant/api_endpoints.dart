@@ -82,6 +82,11 @@ class EndPoints {
   static const String deleteKotItem = '/delete-kot-item';
   static const String createFinalBill = '/final-bill';
 
+  //User
+  static const String getAllUser = '/get-all-users';
+  static const String loginUser = '/login-user';
+  static const String registerUser = '/register-user';
+
   //User Roles
   static const String getUserRoles = '/fetch-user-roles';
   static const String createUserRole = '/create-user-role';

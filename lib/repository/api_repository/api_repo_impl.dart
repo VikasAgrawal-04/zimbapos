@@ -13,6 +13,7 @@ import 'package:zimbapos/models/global_models/pay_out_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
+import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
@@ -424,5 +425,10 @@ class ApiRepoImpl implements ApiRepo {
   @override
   Future<Either<Failure, List<UserModel>>> getAllUsers() {
     return _userApiRepo.getAllUsers();
+  }
+
+  @override
+  Future<Either<Failure, List<UserRolesModel>>> getAllUserRoles() {
+    return _userApiRepo.getAllUserRoles();
   }
 }

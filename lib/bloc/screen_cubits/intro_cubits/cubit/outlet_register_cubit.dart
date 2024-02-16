@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zimbapos/bloc/cubits/database/database_cubit.dart';
 import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
-import 'package:zimbapos/routers/utils/go_router_functions.dart';
+
 import '../../../../models/user_models/subscriber_model.dart';
+
 part 'outlet_register_state.dart';
 
 class OutletRegisterCubit extends Cubit<OutletRegisterState> {

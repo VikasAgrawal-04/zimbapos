@@ -45,7 +45,7 @@ class SFJunctionController {
 
   Future<Response> createScrnFnJunction(Request request) async {
     try {
-      final requiredFields = ['outletId', 'roleId', 'screenFunctionId'];
+      final requiredFields = ['data'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return badArguments('Fields Required ${requiredFields.join(',')}');
@@ -61,7 +61,9 @@ class SFJunctionController {
       }
 
       final success = await db.sfJunctionRepository.createScrnFnJunction(
-          ScreenFunctionJunctionModel.fromMap(decodedData));
+          (decodedData['data'] as List)
+              .map((e) => ScreenFunctionJunctionModel.fromJson(e))
+              .toList());
 
       if (success.value1) {
         return okResponse(success.value2);

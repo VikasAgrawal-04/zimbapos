@@ -4,6 +4,7 @@ import 'package:zimbapos/global/error/exception.dart';
 import 'package:zimbapos/global/error/failures.dart';
 import 'package:zimbapos/global/utils/constant/api_endpoints.dart';
 import 'package:zimbapos/global/utils/helpers/helpers.dart';
+import 'package:zimbapos/models/global_models/screen_function_junction_model.dart';
 import 'package:zimbapos/models/global_models/screen_function_mapping_model.dart';
 import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/models/user_models/user_model.dart';
@@ -172,6 +173,23 @@ class UserApiRepoImpl implements UserApiRepo {
         EndPoints.editUser,
         queryParams: item.toMap(),
       );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createRoleSFJunction(
+      List<ScreenFunctionJunctionModel> data) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.createScrnFnJunction,
+          queryParams: {'data': data.map((e) => e.toJson()).toList()});
       return Right(response ?? {});
     } on ServerException catch (error, s) {
       debugPrintStack(stackTrace: s);

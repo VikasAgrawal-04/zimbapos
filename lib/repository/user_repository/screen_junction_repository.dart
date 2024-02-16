@@ -38,23 +38,25 @@ class ScreenJunctionRepository {
   }
 
   Future<Tuple2<bool, String>> createScrnFnJunction(
-      ScreenFunctionJunctionModel data) async {
+      List<ScreenFunctionJunctionModel> dataList) async {
     try {
-      final dbItem = db.screenFunctionJunctionModels
-          .filter()
-          .outletIdEqualTo(data.outletId)
-          .and()
-          .screenFunctionIdEqualTo(data.screenFunctionId)
-          .and()
-          .roleIdEqualTo(data.roleId)
-          .findFirstSync();
-      if (dbItem == null) {
-        db.writeTxnSync(() => db.screenFunctionJunctionModels.putSync(data));
-        return const Tuple2(
-            true, 'Screen Function Junction Created Successfully!');
-      } else {
-        throw IsarError('Screen Function Junction Already Exists');
+      for (final data in dataList) {
+        final dbItem = db.screenFunctionJunctionModels
+            .filter()
+            .outletIdEqualTo(data.outletId)
+            .and()
+            .screenFunctionIdEqualTo(data.screenFunctionId)
+            .and()
+            .roleIdEqualTo(data.roleId)
+            .findFirstSync();
+        if (dbItem == null) {
+          db.writeTxnSync(() => db.screenFunctionJunctionModels.putSync(data));
+        } else {
+          continue;
+        }
       }
+      return const Tuple2(
+          true, 'Screen Function Junction Created Successfully!');
     } on IsarError catch (error) {
       debugPrint("Error ${error.message}");
       return Tuple2(false, error.message.toString());

@@ -240,9 +240,13 @@ class _EditCustomerScreenState extends State<EditCustomerScreen> {
                                 child: BlocBuilder<CustomerCategoryScreenCubit,
                                     CustomerCategoryScreenState>(
                                   builder: (context, state) {
+                                    final activeCusCats = state
+                                        .customerCategories
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Customer Category",
-                                      items: state.customerCategories
+                                      items: activeCusCats
                                           .map((cusCat) =>
                                               cusCat.custCategoryName ??
                                               'error')

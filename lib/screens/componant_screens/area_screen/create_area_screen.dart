@@ -143,9 +143,12 @@ class _CreateAreasScreenState extends State<CreateAreasScreen> {
                                 child: BlocBuilder<RateSetScreenCubit,
                                     RateSetScreenState>(
                                   builder: (context, state) {
+                                    final activeRateSets = state.rateSetList
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Rate set",
-                                      items: state.rateSetList
+                                      items: activeRateSets
                                           .map((e) => e.ratesetName ?? 'error')
                                           .toList(),
                                       itemValues: state.rateSetList

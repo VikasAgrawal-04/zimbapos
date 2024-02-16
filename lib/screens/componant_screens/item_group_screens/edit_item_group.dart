@@ -146,9 +146,12 @@ class _EditItemGroupScreenState extends State<EditItemGroupScreen> {
                                 child: BlocBuilder<MainGroupScreenCubit,
                                     MainGroupScreenState>(
                                   builder: (context, state) {
+                                    final activeMainGroups = state.mainGroupList
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Main group",
-                                      items: state.mainGroupList
+                                      items: activeMainGroups
                                           .map(
                                               (e) => e.mainGroupName ?? 'error')
                                           .toList(),

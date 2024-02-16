@@ -11,8 +11,15 @@ import 'customer_category_screen_state.dart';
 
 class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
   final ApiRepo _repo = ApiRepoImpl();
+  late List<CustomerCategoryModel> customerCategories;
+  late List<CustomerCategoryModel> filteredCusCats;
 
-  CustomerCategoryScreenCubit() : super(CustomerCategoryScreenState.initial());
+  CustomerCategoryScreenCubit()
+      : customerCategories = [],
+        filteredCusCats = [],
+        super(CustomerCategoryScreenState.initial()) {
+    init();
+  }
 
   @override
   Future<void> close() {
@@ -118,5 +125,24 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
         ),
       ),
     );
+  }
+
+  void searchItems(String query) {
+    List<CustomerCategoryModel> allItems = List.from(customerCategories);
+    if (query.isEmpty) {
+      allItems.clear();
+      allItems.addAll(customerCategories);
+    } else {
+      allItems.clear();
+      for (final item in customerCategories) {
+        if (item.custCategoryName!
+            .toLowerCase()
+            .contains(query.toLowerCase())) {
+          allItems.add(item);
+        }
+      }
+    }
+    filteredCusCats = allItems;
+    emit(state.copyWith(filteredCusCats: filteredCusCats));
   }
 }

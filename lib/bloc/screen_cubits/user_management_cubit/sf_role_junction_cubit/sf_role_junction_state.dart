@@ -7,19 +7,20 @@ class SfRoleJunctionState extends Equatable {
   final Status status;
   final String? roleId;
   final List<String>? functionId;
-  final List<bool>? canView;
-  final List<bool>? canEdit;
+  final List<bool> canView;
+  final List<bool> canEdit;
 
   const SfRoleJunctionState(
       {required this.sfRoleList,
       required this.status,
       this.roleId,
       this.functionId,
-      this.canEdit,
-      this.canView});
+      required this.canEdit,
+      required this.canView});
 
   factory SfRoleJunctionState.initial() {
-    return const SfRoleJunctionState(sfRoleList: [], status: Status.initial);
+    return const SfRoleJunctionState(
+        sfRoleList: [], status: Status.initial, canEdit: [], canView: []);
   }
 
   @override

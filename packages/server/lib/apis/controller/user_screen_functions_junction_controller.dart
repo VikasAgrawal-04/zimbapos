@@ -43,6 +43,31 @@ class SFJunctionController {
     }
   }
 
+  Future<Response> getScrnFnRole(Request request) async {
+    try {
+      if (request.url.queryParameters.isEmpty) {
+        return badArguments(
+            'Please Enter Outlet ID as a key outlet_id and Role ID as role_id');
+      }
+      final outletId = request.url.queryParameters['outlet_id'];
+      final roleId = request.url.queryParameters['role_id'];
+      if (outletId == null ||
+          outletId == '' ||
+          roleId == null ||
+          roleId == '') {
+        return badArguments(
+            'Please Enter Outlet ID as a key outlet_id and Role ID as role_id');
+      }
+      final scrnList =
+          await db.sfJunctionRepository.getScrnFnForRoles(roleId, outletId);
+      return okResponse(scrnList.map((e) => e.toMap()).toList());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return invalidResponse();
+    }
+  }
+
   Future<Response> createScrnFnJunction(Request request) async {
     try {
       final requiredFields = ['data'];
@@ -79,13 +104,7 @@ class SFJunctionController {
 
   Future<Response> updateScrnFnJunction(Request request) async {
     try {
-      final requiredFields = [
-        'screenFunctionId',
-        'outletId',
-        'roleId',
-        'canView',
-        'canChange'
-      ];
+      final requiredFields = ['data'];
       final reqData = await utf8.decodeStream(request.read());
       if (reqData.isEmpty) {
         return badArguments('Fields Required ${requiredFields.join(',')}');
@@ -100,7 +119,9 @@ class SFJunctionController {
         return badArguments(missingFieldsMessage);
       }
       final success = await db.sfJunctionRepository.updateScrnFnJunction(
-          ScreenFunctionJunctionModel.fromMap(decodedData));
+          (decodedData['data'] as List)
+              .map((e) => ScreenFunctionJunctionModel.fromJson(e))
+              .toList());
 
       if (success.value1) {
         return okResponse(success.value2);

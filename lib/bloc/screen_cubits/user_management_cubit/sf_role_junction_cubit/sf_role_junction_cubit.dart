@@ -21,8 +21,8 @@ class SfRoleJunctionCubit extends Cubit<SfRoleJunctionState> {
           outletId: outletId,
           roleId: state.roleId,
           screenFunctionId: state.functionId?[i].toString(),
-          canChange: state.canEdit?[i],
-          canView: state.canView?[i]));
+          canChange: state.canEdit[i],
+          canView: state.canView[i]));
     }
     final res = await _repo.createRoleSFJunction(data);
 
@@ -33,9 +33,23 @@ class SfRoleJunctionCubit extends Cubit<SfRoleJunctionState> {
     });
   }
 
+  Future<void> getScrnFnAdmin(String roleId) async {
+    final outletId = await Helpers.getOutletId() ?? "123123";
+    final res = await _repo.getSfRolesAdmin(outletId, roleId);
+    res.fold((l) {
+      debugPrint("Failure In getScrnFnAdmin ${l.toString()}");
+    }, (r) {
+      emit(state.copyWith(sfRoleList: r));
+    });
+  }
+
   //Functions
   void onRoleChange(val) {
     emit(state.copyWith(roleId: val));
+  }
+
+  void onRoleTap(String roleId) {
+    getScrnFnAdmin(roleId);
   }
 
   void fillValues(List<SFMappingModel> sfList) {
@@ -46,13 +60,25 @@ class SfRoleJunctionCubit extends Cubit<SfRoleJunctionState> {
   }
 
   void onCanViewChange(bool val, int index) {
-    List<bool> canView = List.from(state.canView ?? []);
+    List<bool> canView = List.from(state.canView);
     canView[index] = val;
     emit(state.copyWith(canView: canView));
   }
 
+  void onEditViewChange(bool val, int index) {
+    List<ScreenFunctionJunctionModel> list = List.from(state.sfRoleList);
+    list[index] = list[index].copyWith(canView: val);
+    emit(state.copyWith(sfRoleList: list));
+  }
+
+  void onEditEditChange(bool val, int index) {
+    List<ScreenFunctionJunctionModel> list = List.from(state.sfRoleList);
+    list[index] = list[index].copyWith(canChange: val);
+    emit(state.copyWith(sfRoleList: list));
+  }
+
   void onCanEditChange(bool val, int index) {
-    List<bool> canEdit = List.from(state.canEdit ?? []);
+    List<bool> canEdit = List.from(state.canEdit);
     canEdit[index] = val;
     emit(state.copyWith(canEdit: canEdit));
   }
@@ -63,5 +89,14 @@ class SfRoleJunctionCubit extends Cubit<SfRoleJunctionState> {
     } else {
       createRoleSFJunction();
     }
+  }
+
+  Future<void> onEditSubit() async {
+    final res = await _repo.updateRoleSFJunction(state.sfRoleList);
+    res.fold((failure) {
+      debugPrint("Failure In createRoleSFJunction ${failure.toString()}");
+    }, (success) {
+      EasyLoading.showSuccess(success['data']);
+    });
   }
 }

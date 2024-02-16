@@ -24,6 +24,11 @@ abstract class UserApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> deleteUser(String userId);
 
   //SF Role Junction
+  Future<Either<Failure, List<ScreenFunctionJunctionModel>>> getSfRolesAdmin(
+      String outletId, String roleId);
   Future<Either<Failure, Map<String, dynamic>>> createRoleSFJunction(
+      List<ScreenFunctionJunctionModel> data);
+
+  Future<Either<Failure, Map<String, dynamic>>> updateRoleSFJunction(
       List<ScreenFunctionJunctionModel> data);
 }

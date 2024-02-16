@@ -68,6 +68,7 @@ import 'package:zimbapos/screens/componant_screens/tax_screen/edit_tax_screen.da
 import 'package:zimbapos/screens/componant_screens/tax_screen/tax_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/screen_function/sf_mapping_screen.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/create_sf_role_junction.dart';
+import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/edit_sf_role_junction.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/sf_role_junction_screen.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/user_role/edit_user_role_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/create_vendor_screen.dart';
@@ -743,4 +744,11 @@ final List<GoRoute> routerList = [
       path: AppScreen.createSfJnScreen.path,
       name: AppScreen.createSfJnScreen.name,
       builder: (context, state) => const CreateSfRoleJn()),
+  GoRoute(
+    path: AppScreen.editSfJnScreen.path,
+    name: AppScreen.editSfJnScreen.name,
+    builder: (context, state) {
+      return EditSfRoleJunction(roleName: state.extra as String);
+    },
+  )
 ];

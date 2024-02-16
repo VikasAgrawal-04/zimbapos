@@ -25,6 +25,7 @@ class ScreenJunctionRepository {
       String roleId, String outletId) async {
     try {
       final userRoleFunctions = db.screenFunctionJunctionModels
+          .where(sort: Sort.desc)
           .filter()
           .outletIdEqualTo(outletId)
           .and()
@@ -42,6 +43,7 @@ class ScreenJunctionRepository {
     try {
       for (final data in dataList) {
         final dbItem = db.screenFunctionJunctionModels
+            .where(sort: Sort.desc)
             .filter()
             .outletIdEqualTo(data.outletId)
             .and()
@@ -64,24 +66,27 @@ class ScreenJunctionRepository {
   }
 
   Future<Tuple2<bool, String>> updateScrnFnJunction(
-      ScreenFunctionJunctionModel data) async {
+      List<ScreenFunctionJunctionModel> dataList) async {
     try {
-      ScreenFunctionJunctionModel? dbItem = db.screenFunctionJunctionModels
-          .filter()
-          .screenFunctionIdEqualTo(data.screenFunctionId)
-          .and()
-          .outletIdEqualTo(data.outletId)
-          .and()
-          .roleIdEqualTo(data.roleId)
-          .findFirstSync();
-      if (dbItem != null) {
-        dbItem.canChange = data.canChange;
-        dbItem.canView = data.canView;
-        db.writeTxnSync(() => db.screenFunctionJunctionModels.putSync(dbItem));
-        return const Tuple2(true, 'Screen Function Junction Updated');
-      } else {
-        throw IsarError('Screen Function Junction Not Found!');
+      for (final data in dataList) {
+        ScreenFunctionJunctionModel? dbItem = db.screenFunctionJunctionModels
+            .filter()
+            .screenFunctionIdEqualTo(data.screenFunctionId)
+            .and()
+            .outletIdEqualTo(data.outletId)
+            .and()
+            .roleIdEqualTo(data.roleId)
+            .findFirstSync();
+        if (dbItem != null) {
+          dbItem.canChange = data.canChange;
+          dbItem.canView = data.canView;
+          db.writeTxnSync(
+              () => db.screenFunctionJunctionModels.putSync(dbItem));
+        } else {
+          continue;
+        }
       }
+      return const Tuple2(true, 'Screen Function Junction Updated');
     } on IsarError catch (error) {
       debugPrint("Error ${error.message}");
       return Tuple2(false, error.message.toString());

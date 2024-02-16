@@ -100,7 +100,8 @@ enum AppScreen {
   userOverviewScreen,
   sfMappingScreen,
   sfJunctionScreen,
-  createSfJnScreen
+  createSfJnScreen,
+  editSfJnScreen
 }
 
 extension AppScreenExtension on AppScreen {
@@ -257,6 +258,8 @@ extension AppScreenExtension on AppScreen {
         return 'SfJunction Screen';
       case AppScreen.createSfJnScreen:
         return 'Create SF Junction Screen';
+      case AppScreen.editSfJnScreen:
+        return 'Edit SF Junction Screen';
     }
   }
 
@@ -413,6 +416,8 @@ extension AppScreenExtension on AppScreen {
         return '/sf-junction-screen';
       case AppScreen.createSfJnScreen:
         return '/create-sf-jn-screen';
+      case AppScreen.editSfJnScreen:
+        return '/edit-sf-jn-screen';
     }
   }
 }

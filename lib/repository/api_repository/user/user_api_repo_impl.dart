@@ -199,4 +199,40 @@ class UserApiRepoImpl implements UserApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ScreenFunctionJunctionModel>>> getSfRolesAdmin(
+      String outletId, String roleId) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.get, EndPoints.getRoleSFAdmin,
+          queryParams: {'role_id': roleId, 'outlet_id': outletId});
+      final List<dynamic> data = response?['data'];
+      return Right(
+          data.map((e) => ScreenFunctionJunctionModel.fromMap(e)).toList());
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateRoleSFJunction(
+      List<ScreenFunctionJunctionModel> data) async {
+    try {
+      final response = await Helpers.sendRequest(
+          RequestType.post, EndPoints.updateScrnFnJunction,
+          queryParams: {'data': data.map((e) => e.toJson()).toList()});
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

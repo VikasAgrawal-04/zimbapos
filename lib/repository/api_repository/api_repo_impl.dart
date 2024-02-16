@@ -477,4 +477,16 @@ class ApiRepoImpl implements ApiRepo {
       List<ScreenFunctionJunctionModel> data) {
     return _userApiRepo.createRoleSFJunction(data);
   }
+
+  @override
+  Future<Either<Failure, List<ScreenFunctionJunctionModel>>> getSfRolesAdmin(
+      String outletId, String roleId) {
+    return _userApiRepo.getSfRolesAdmin(outletId, roleId);
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateRoleSFJunction(
+      List<ScreenFunctionJunctionModel> data) {
+    return _userApiRepo.updateRoleSFJunction(data);
+  }
 }

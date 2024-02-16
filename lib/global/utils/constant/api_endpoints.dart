@@ -102,6 +102,8 @@ class EndPoints {
 
   //User Screen Function Junction
   static const String getAllRoleScrnFn = '/get-all-sf-junction';
+  static const String getRoleSFByToken = '/get-sf-roles';
+  static const String getRoleSFAdmin = '/get-sf-admin';
   static const String createScrnFnJunction = '/create-sf-junction';
   static const String updateScrnFnJunction = '/update-sf-junction';
   static const String deleteScrnFnJunction = '/delete-sf-junction';

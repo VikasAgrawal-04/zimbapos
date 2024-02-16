@@ -22,6 +22,7 @@ class UserSFJunctionRoutes {
       await authorizationHandler(
           request, controller.getScrnFnForRoles, dbCubit);
     });
+    locRoute.get('/get-sf-admin', controller.getScrnFnRole);
     locRoute.post('/create-sf-junction', controller.createScrnFnJunction);
     locRoute.post('/update-sf-junction', controller.updateScrnFnJunction);
     locRoute.delete('/delete-sf-junction', controller.deleteScrnFnJunction);

@@ -14,6 +14,7 @@ import '../../../routers/utils/extensions/screen_name.dart';
 import '../../../widgets/custom_button/custom_button.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
 import '../../../widgets/my_alert_widget.dart';
+import '../../../widgets/textfield/custom_textfield.dart';
 
 class ItemsListScreen extends StatefulWidget {
   const ItemsListScreen({super.key});
@@ -82,84 +83,103 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
             ),
           ),
         ),
-        body: BlocBuilder<ItemScreenCubit, ItemScreenState>(
-          builder: (context, state) {
-            final list = state.itemList;
-            if (state.status == Status.loading) {
-              return const MyLoadingIndicator();
-            }
-            if (list.isEmpty) {
-              return const Center(
-                child: Text('No Items'),
-              );
-            } else {
-              return SingleChildScrollView(
-                child: Column(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              //row for back button
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: Image.asset(
+                      "assets/icons/back.png",
+                      height: 5.h,
+                    ),
+                  ),
+                ],
+              ),
+
+              //page title
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 18,
+                  left: 24,
+                  right: 24,
+                  bottom: 8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    //row for back button
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            context.pop();
-                          },
-                          icon: Image.asset(
-                            "assets/icons/back.png",
-                            height: 5.h,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      'Items',
+                      style: theme.textTheme.titleLarge,
                     ),
 
-                    //page title
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 18,
-                        left: 24,
-                        right: 24,
-                        bottom: 8,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Items',
-                            style: theme.textTheme.titleLarge,
-                          ),
-
-                          //add area button
-                          CustomButtonNew(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
-                            shadows: const [],
-                            height: 8.h,
-                            width: 18.w,
-                            text: 'Add New Item',
-                            style: theme.textTheme.titleMedium,
-                            onTap: () {
-                              context
-                                  .read<ItemScreenCubit>()
-                                  .clearControllers();
-                              context.push(AppScreen.createItemScreen.path);
-                            },
-                          ),
-                        ],
-                      ),
+                    //add button
+                    CustomButtonNew(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      shadows: const [],
+                      height: 8.h,
+                      width: 18.w,
+                      text: 'Add New Item',
+                      style: theme.textTheme.titleMedium,
+                      onTap: () {
+                        context.read<ItemScreenCubit>().clearControllers();
+                        context.push(AppScreen.createItemScreen.path);
+                      },
                     ),
+                  ],
+                ),
+              ),
 
-                    //divider
-                    PreferredSize(
-                      preferredSize: Size.fromHeight(1.h),
-                      child: Divider(
-                        color: KColors.greyFill,
-                        thickness: 1.0,
-                        endIndent: 1.w,
-                        indent: 1.w,
-                      ),
-                    ),
+              //divider
+              PreferredSize(
+                preferredSize: Size.fromHeight(1.h),
+                child: Divider(
+                  color: KColors.greyFill,
+                  thickness: 1.0,
+                  endIndent: 1.w,
+                  indent: 1.w,
+                ),
+              ),
+              SizedBox(height: 4.h),
+              //search
+              BlocBuilder<ItemScreenCubit, ItemScreenState>(
+                builder: (context, state) {
+                  return CustomTextFieldNew(
+                    hint: 'Search Customer Categories',
+                    hintStyle: theme.textTheme.bodyLarge,
+                    style: theme.textTheme.bodyLarge,
+                    isRequired: false,
+                    prefIcon: Icons.search,
+                    keyboardType: TextInputType.text,
+                    isNumber: false,
+                    textInputAction: TextInputAction.search,
+                    control: state.searchController,
+                    onChanged: context.read<ItemScreenCubit>().searchItems,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                  );
+                },
+              ),
+              SizedBox(height: 4.h),
 
-                    //items list
-                    Container(
+              //items list
+              BlocBuilder<ItemScreenCubit, ItemScreenState>(
+                builder: (context, state) {
+                  final list = state.filteredItems;
+                  if (state.status == Status.loading) {
+                    return const MyLoadingIndicator();
+                  }
+                  if (list.isEmpty) {
+                    return const Center(
+                      child: Text('No Items'),
+                    );
+                  } else {
+                    return Container(
                       width: 100.w,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 24,
@@ -307,12 +327,12 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
                               .toList(),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              );
-            }
-          },
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

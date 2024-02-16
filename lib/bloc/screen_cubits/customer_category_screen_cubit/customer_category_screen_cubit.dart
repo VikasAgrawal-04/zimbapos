@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -40,7 +42,12 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
         debugPrint(failure.toString());
         emit(state.copyWith(customerCategories: []));
       }, (success) {
-        emit(state.copyWith(customerCategories: success));
+        customerCategories = success;
+        filteredCusCats = success;
+        emit(state.copyWith(
+          customerCategories: customerCategories,
+          filteredCusCats: filteredCusCats,
+        ));
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -128,6 +135,7 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
   }
 
   void searchItems(String query) {
+    log(query);
     List<CustomerCategoryModel> allItems = List.from(customerCategories);
     if (query.isEmpty) {
       allItems.clear();
@@ -137,12 +145,14 @@ class CustomerCategoryScreenCubit extends Cubit<CustomerCategoryScreenState> {
       for (final item in customerCategories) {
         if (item.custCategoryName!
             .toLowerCase()
-            .contains(query.toLowerCase())) {
+            .trim()
+            .contains(query.toLowerCase().trim())) {
           allItems.add(item);
         }
       }
     }
     filteredCusCats = allItems;
+    log(filteredCusCats.length.toString());
     emit(state.copyWith(filteredCusCats: filteredCusCats));
   }
 }

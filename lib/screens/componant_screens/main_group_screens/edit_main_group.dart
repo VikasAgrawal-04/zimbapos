@@ -131,9 +131,12 @@ class _EditMainGroupScreenState extends State<EditMainGroupScreen> {
                                 child: BlocBuilder<CategoryScreenCubit,
                                     CategoryScreenState>(
                                   builder: (context, state) {
+                                    final activeCategories = state.categories
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Choose a category",
-                                      items: state.categories
+                                      items: activeCategories
                                           .map((category) =>
                                               category.categoryName ?? 'error')
                                           .toList(),

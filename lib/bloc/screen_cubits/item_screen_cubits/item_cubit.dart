@@ -13,8 +13,15 @@ import 'item_state.dart';
 
 class ItemScreenCubit extends Cubit<ItemScreenState> {
   final ApiRepo _repo = ApiRepoImpl();
+  late List<ItemList> itemList;
+  late List<ItemList> filteredItems;
 
-  ItemScreenCubit() : super(ItemScreenState.initial());
+  ItemScreenCubit()
+      : itemList = [],
+        filteredItems = [],
+        super(ItemScreenState.initial()) {
+    init();
+  }
 
   @override
   Future<void> close() {
@@ -35,7 +42,14 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
         debugPrint(failure.toString());
         emit(state.copyWith(itemList: []));
       }, (success) {
-        emit(state.copyWith(itemList: success.data));
+        itemList = success.data;
+        filteredItems = success.data;
+        emit(
+          state.copyWith(
+            itemList: itemList,
+            filteredItems: filteredItems,
+          ),
+        );
       });
     } catch (e, s) {
       debugPrint(e.toString());
@@ -154,5 +168,27 @@ class ItemScreenCubit extends Cubit<ItemScreenState> {
       itemGroupId: item.itemGroupId,
       taxId: item.taxId,
     ));
+  }
+
+  void searchItems(String query) {
+    log(query);
+    List<ItemList> allItems = List.from(itemList);
+    if (query.isEmpty) {
+      allItems.clear();
+      allItems.addAll(itemList);
+    } else {
+      allItems.clear();
+      for (final item in itemList) {
+        if (item.itemName
+            .toLowerCase()
+            .trim()
+            .contains(query.toLowerCase().trim())) {
+          allItems.add(item);
+        }
+      }
+    }
+    filteredItems = allItems;
+    log(filteredItems.length.toString());
+    emit(state.copyWith(filteredItems: filteredItems));
   }
 }

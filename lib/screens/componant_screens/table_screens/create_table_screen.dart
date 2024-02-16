@@ -114,9 +114,12 @@ class _CreateTableScreenState extends State<CreateTableScreen> {
                                 child: BlocBuilder<AreasScreenCubit,
                                     AreasScreenState>(
                                   builder: (context, state) {
+                                    final activeAreas = state.areaList
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Choose area",
-                                      items: state.areaList
+                                      items: activeAreas
                                           .map((e) => e.areaName ?? 'error')
                                           .toList(),
                                       itemValues: state.areaList

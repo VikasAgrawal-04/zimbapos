@@ -14,6 +14,7 @@ import '../../../global/utils/status_handler/status_handler.dart';
 import '../../../widgets/custom_button/custom_button.dart';
 import '../../../widgets/indicators/loading_indicator.dart';
 import '../../../widgets/my_alert_widget.dart';
+import '../../../widgets/textfield/custom_textfield.dart';
 
 class CustomerCategoryScreen extends StatefulWidget {
   const CustomerCategoryScreen({super.key});
@@ -156,12 +157,37 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                   indent: 1.w,
                 ),
               ),
+              SizedBox(
+                height: 4.h,
+              ),
+              //search
+              BlocBuilder<CustomerCategoryScreenCubit,
+                  CustomerCategoryScreenState>(
+                builder: (context, state) {
+                  return CustomTextFieldNew(
+                    hint: 'Search Customer Categories',
+                    hintStyle: theme.textTheme.bodyLarge,
+                    style: theme.textTheme.bodyLarge,
+                    isRequired: false,
+                    prefIcon: Icons.search,
+                    keyboardType: TextInputType.text,
+                    isNumber: false,
+                    textInputAction: TextInputAction.search,
+                    control: state.searchController,
+                    onChanged:
+                        context.read<CustomerCategoryScreenCubit>().searchItems,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                  );
+                },
+              ),
+              SizedBox(height: 4.h),
 
               //table
               BlocBuilder<CustomerCategoryScreenCubit,
                   CustomerCategoryScreenState>(
                 builder: ((context, state) {
-                  final data = state.customerCategories;
+                  final data = state.filteredCusCats;
                   if (state.status == Status.loading) {
                     return const MyLoadingIndicator();
                   }
@@ -170,99 +196,105 @@ class _CustomerCategoryScreenState extends State<CustomerCategoryScreen> {
                       child: Text('No Customer Categories'),
                     );
                   } else {
-                    return Container(
-                      width: 100.w,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 14,
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(12),
-                        child: DataTable(
-                          border: TableBorder.all(
-                            color: KColors.blackColor,
-                            width: 1,
+                    return Column(
+                      children: [
+                        //table
+                        Container(
+                          width: 100.w,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 14,
                           ),
-                          headingRowColor: MaterialStateColor.resolveWith(
-                              (Set<MaterialState> states) {
-                            return KColors.blackColor;
-                          }),
-                          headingTextStyle: KTextStyles.kTitle,
-                          columns: [
-                            DataColumn(
-                              label: Text(
-                                'Name',
-                                style: theme.textTheme.headlineMedium,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: DataTable(
+                              border: TableBorder.all(
+                                color: KColors.blackColor,
+                                width: 1,
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Active',
-                                style: theme.textTheme.headlineMedium,
-                              ),
-                            ),
-                            DataColumn(
-                              label: Padding(
-                                padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
-                                child: Text(
-                                  'Actions',
-                                  style: theme.textTheme.headlineMedium,
+                              headingRowColor: MaterialStateColor.resolveWith(
+                                  (Set<MaterialState> states) {
+                                return KColors.blackColor;
+                              }),
+                              headingTextStyle: KTextStyles.kTitle,
+                              columns: [
+                                DataColumn(
+                                  label: Text(
+                                    'Name',
+                                    style: theme.textTheme.headlineMedium,
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                          rows: data
-                              .map(
-                                (e) => DataRow(
-                                  cells: [
-                                    DataCell(Text(
-                                      e.custCategoryName.toString(),
-                                      style: KTextStyles.kSubtitle,
-                                    )),
-                                    DataCell(
-                                      Switch.adaptive(
-                                          activeColor: theme.primaryColor,
-                                          value: e.isActive as bool,
-                                          onChanged: (va) {
-                                            context
-                                                .read<
-                                                    CustomerCategoryScreenCubit>()
-                                                .updateCustomerCategory(e,
-                                                    val: va);
-                                          }),
+                                DataColumn(
+                                  label: Text(
+                                    'Active',
+                                    style: theme.textTheme.headlineMedium,
+                                  ),
+                                ),
+                                DataColumn(
+                                  label: Padding(
+                                    padding: EdgeInsets.fromLTRB(10.w, 0, 0, 0),
+                                    child: Text(
+                                      'Actions',
+                                      style: theme.textTheme.headlineMedium,
                                     ),
-                                    DataCell(
-                                      Container(
-                                        alignment: Alignment.center,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            IconButton(
-                                              onPressed: () =>
-                                                  editCusCatFn(model: e),
-                                              icon: Image.asset(
-                                                  'assets/icons/edit.png'),
-                                            ),
-                                            SizedBox(width: 2.w),
-                                            IconButton(
-                                              onPressed: () => deleteCusCat(e),
-                                              icon: Image.asset(
-                                                  'assets/icons/delete.png'),
-                                            )
-                                          ],
+                                  ),
+                                ),
+                              ],
+                              rows: data
+                                  .map(
+                                    (e) => DataRow(
+                                      cells: [
+                                        DataCell(Text(
+                                          e.custCategoryName.toString(),
+                                          style: KTextStyles.kSubtitle,
+                                        )),
+                                        DataCell(
+                                          Switch.adaptive(
+                                              activeColor: theme.primaryColor,
+                                              value: e.isActive as bool,
+                                              onChanged: (va) {
+                                                context
+                                                    .read<
+                                                        CustomerCategoryScreenCubit>()
+                                                    .updateCustomerCategory(e,
+                                                        val: va);
+                                              }),
                                         ),
-                                      ),
+                                        DataCell(
+                                          Container(
+                                            alignment: Alignment.center,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                IconButton(
+                                                  onPressed: () =>
+                                                      editCusCatFn(model: e),
+                                                  icon: Image.asset(
+                                                      'assets/icons/edit.png'),
+                                                ),
+                                                SizedBox(width: 2.w),
+                                                IconButton(
+                                                  onPressed: () =>
+                                                      deleteCusCat(e),
+                                                  icon: Image.asset(
+                                                      'assets/icons/delete.png'),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     );
                   }
                 }),

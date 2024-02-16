@@ -196,9 +196,12 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                                 child: BlocBuilder<ItemGroupScreenCubit,
                                     ItemGroupScreenState>(
                                   builder: (context, state) {
+                                    final activeItemGroups = state.itemGroupList
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Item group",
-                                      items: state.itemGroupList
+                                      items: activeItemGroups
                                           .map(
                                               (e) => e.itemGroupName ?? 'error')
                                           .toList(),
@@ -307,9 +310,12 @@ class _CreateItemScreenState extends State<CreateItemScreen> {
                                 child:
                                     BlocBuilder<TaxScreenCubit, TaxScreenState>(
                                   builder: (context, state) {
+                                    final activeTaxes = state.taxList
+                                        .where((e) => e.isActive ?? false)
+                                        .toList();
                                     return CustomDropDown<String>(
                                       // title: "Tax type",
-                                      items: state.taxList
+                                      items: activeTaxes
                                           .map((e) => e.taxName ?? 'error')
                                           .toList(),
                                       itemValues: state.taxList

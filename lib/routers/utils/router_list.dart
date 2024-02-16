@@ -66,6 +66,8 @@ import 'package:zimbapos/screens/componant_screens/tax_screen/create_tax_screen.
 import 'package:zimbapos/screens/componant_screens/tax_screen/edit_tax_screen.dart';
 import 'package:zimbapos/screens/componant_screens/tax_screen/tax_list_screen.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/screen_function/sf_mapping_screen.dart';
+import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/create_sf_role_junction.dart';
+import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/sf_role_junction_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/create_vendor_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/edit_vendors_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/vendors_list_screen.dart';
@@ -712,5 +714,16 @@ final List<GoRoute> routerList = [
   GoRoute(
       path: AppScreen.sfMappingScreen.path,
       name: AppScreen.sfMappingScreen.name,
-      builder: (context, state) => const SfMappingScreen())
+      builder: (context, state) => const SfMappingScreen()),
+
+  //SF Junction Screen
+  GoRoute(
+      path: AppScreen.sfJunctionScreen.path,
+      name: AppScreen.sfJunctionScreen.name,
+      builder: (context, state) => const SfRoleJnListing()),
+
+  GoRoute(
+      path: AppScreen.createSfJnScreen.path,
+      name: AppScreen.createSfJnScreen.name,
+      builder: (context, state) => const CreateSfRoleJn()),
 ];

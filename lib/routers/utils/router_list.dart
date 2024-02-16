@@ -13,6 +13,7 @@ import 'package:zimbapos/models/global_models/pay_in_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
+import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/models/global_models/vendor_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
@@ -68,6 +69,7 @@ import 'package:zimbapos/screens/componant_screens/tax_screen/tax_list_screen.da
 import 'package:zimbapos/screens/componant_screens/user_management_screens/screen_function/sf_mapping_screen.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/create_sf_role_junction.dart';
 import 'package:zimbapos/screens/componant_screens/user_management_screens/sf_role_junction/sf_role_junction_screen.dart';
+import 'package:zimbapos/screens/componant_screens/user_management_screens/user_role/edit_user_role_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/create_vendor_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/edit_vendors_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/vendors_list_screen.dart';
@@ -708,6 +710,21 @@ final List<GoRoute> routerList = [
     name: AppScreen.userRoleOverviewScreen.name,
     path: AppScreen.userRoleOverviewScreen.path,
     builder: (context, state) => const UserRoleOverviewScreen(),
+  ),
+  GoRoute(
+    name: AppScreen.editUserRoleScreen.name,
+    path: AppScreen.editUserRoleScreen.path,
+    builder: (context, state) {
+      if (state.extra is UserRolesModel) {
+        return EditUserRoleScreen(
+          item: state.extra as UserRolesModel,
+        );
+      } else {
+        return EditUserRoleScreen(
+          item: UserRolesModel.fromMap(state.extra as Map<String, dynamic>),
+        );
+      }
+    },
   ),
 
   //SF Mapping Screen

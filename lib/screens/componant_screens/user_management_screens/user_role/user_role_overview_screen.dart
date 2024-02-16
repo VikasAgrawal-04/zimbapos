@@ -6,11 +6,14 @@ import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/user_role_cubi
 import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/user_role_cubits/overview/user_role_state.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/global/utils/status_handler/status_handler.dart';
+import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/widgets/custom_button/back_button.dart';
 import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/indicators/loading_indicator.dart';
 import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
+
+import '../../../../widgets/my_alert_widget.dart';
 
 class UserRoleOverviewScreen extends StatefulWidget {
   const UserRoleOverviewScreen({super.key});
@@ -20,6 +23,26 @@ class UserRoleOverviewScreen extends StatefulWidget {
 }
 
 class _UserRoleOverviewScreenState extends State<UserRoleOverviewScreen> {
+  deleteFn(UserRolesModel e) {
+    UtilDialog.showMyDialog(
+      context,
+      "Alert",
+      "Do you want to delete '${e.roleName}'?",
+      () {
+        context.read<UserRoleCubit>().deleteUserRole(e.roleId.toString());
+        context.pop();
+      },
+      null,
+    );
+  }
+
+  editFn({required UserRolesModel model}) {
+    context.push(
+      AppScreen.editUserRoleScreen.path,
+      extra: model,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -104,9 +127,14 @@ class _UserRoleOverviewScreenState extends State<UserRoleOverviewScreen> {
                             )),
                             DataCell(
                               Switch.adaptive(
-                                  activeColor: theme.primaryColor,
-                                  value: userRole.isActive as bool,
-                                  onChanged: (va) {}),
+                                activeColor: theme.primaryColor,
+                                value: userRole.isActive as bool,
+                                onChanged: (va) {
+                                  context
+                                      .read<UserRoleCubit>()
+                                      .updateUserRole(userRole, val: va);
+                                },
+                              ),
                             ),
                             DataCell(
                               Container(
@@ -115,13 +143,17 @@ class _UserRoleOverviewScreenState extends State<UserRoleOverviewScreen> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        editFn(model: userRole);
+                                      },
                                       icon:
                                           Image.asset('assets/icons/edit.png'),
                                     ),
                                     SizedBox(width: 2.w),
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        deleteFn(userRole);
+                                      },
                                       icon: Image.asset(
                                           'assets/icons/delete.png'),
                                     )

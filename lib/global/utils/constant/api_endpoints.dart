@@ -86,6 +86,9 @@ class EndPoints {
   static const String getAllUser = '/get-all-users';
   static const String loginUser = '/login-user';
   static const String registerUser = '/register-user';
+  static const String createUser = '/register-user';
+  static const String editUser = '/edit-user';
+  static const String deleteUser = '/delete-user';
 
   //User Roles
   static const String getUserRoles = '/fetch-user-roles';

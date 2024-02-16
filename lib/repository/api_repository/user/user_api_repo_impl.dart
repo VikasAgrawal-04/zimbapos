@@ -60,4 +60,125 @@ class UserApiRepoImpl implements UserApiRepo {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createUserRole(
+      UserRolesModel item) async {
+    try {
+      item.outletId = await Helpers.getOutletId() ?? "123123";
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.createUserRole,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteUserRole(
+      String userRoleId) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.delete,
+        EndPoints.deleteUserRole,
+        queryParams: {
+          "role_id": userRoleId,
+        },
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateUserRole(
+      UserRolesModel item) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.updateUserRole,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  //
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> createUser(
+      UserModel item) async {
+    try {
+      item.outletID = await Helpers.getOutletId() ?? "123123";
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.createUser,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> deleteUser(
+      String userId) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.delete,
+        EndPoints.deleteUserRole,
+        queryParams: {
+          "user_id": userId,
+        },
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Map<String, dynamic>>> updateUser(
+      UserModel item) async {
+    try {
+      final response = await Helpers.sendRequest(
+        RequestType.post,
+        EndPoints.editUser,
+        queryParams: item.toMap(),
+      );
+      return Right(response ?? {});
+    } on ServerException catch (error, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: error.message.toString()));
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

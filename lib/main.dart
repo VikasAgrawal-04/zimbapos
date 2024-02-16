@@ -115,7 +115,8 @@ class MyApp extends StatelessWidget {
                       ),
                       BlocProvider(
                           create: (context) => UserScreenCubit()..init()),
-                      BlocProvider(create: (context) => UserRoleCubit()..init())
+                      BlocProvider(
+                          create: (context) => UserRoleCubit()..init()),
                     ],
                     child: BlocBuilder<DatabaseCubit, IsarService?>(
                       builder: (context, state) {

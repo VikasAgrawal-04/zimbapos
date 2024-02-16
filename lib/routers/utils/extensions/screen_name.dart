@@ -95,6 +95,7 @@ enum AppScreen {
   //User Management Screens
   createUserScreen,
   createUserRoleScreen,
+  editUserRoleScreen,
   userRoleOverviewScreen,
   userOverviewScreen,
   sfMappingScreen,
@@ -246,6 +247,8 @@ extension AppScreenExtension on AppScreen {
         return 'User Overview Screen';
       case AppScreen.createUserRoleScreen:
         return 'Create User Role Screen';
+      case AppScreen.editUserRoleScreen:
+        return 'Edit User Role Screen';
       case AppScreen.userRoleOverviewScreen:
         return 'User Role Overview Screen';
       case AppScreen.sfMappingScreen:
@@ -400,6 +403,8 @@ extension AppScreenExtension on AppScreen {
         return '/user-overview-screen';
       case AppScreen.createUserRoleScreen:
         return '/create-user-role-screen';
+      case AppScreen.editUserRoleScreen:
+        return '/edit-user-role-screen';
       case AppScreen.userRoleOverviewScreen:
         return '/user-role-screen';
       case AppScreen.sfMappingScreen:

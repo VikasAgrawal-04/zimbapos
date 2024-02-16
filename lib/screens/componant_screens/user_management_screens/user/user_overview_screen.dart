@@ -45,6 +45,7 @@ class _UserOverviewScreenState extends State<UserOverviewScreen> {
                     height: 8.h,
                     width: 18.w,
                     text: 'Create User',
+                    style: theme.textTheme.displaySmall,
                     onTap: () {
                       context.push(AppScreen.createUserScreen.path);
                     },

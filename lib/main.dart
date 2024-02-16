@@ -16,6 +16,8 @@ import 'package:zimbapos/bloc/screen_cubits/customer_screen_cubit/customer_scree
 import 'package:zimbapos/bloc/screen_cubits/item_group_cubits/item_group_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/rateset_cubits/rateset_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/table_screen_cubits/table_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/screen_function_cubit/screen_function_cubit.dart';
+import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/sf_role_junction_cubit/sf_role_junction_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/user_role_cubits/overview/user_role_cubit_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/user_screen_cubit/user_screen_cubit.dart';
 import 'package:zimbapos/global/theme/theme.dart';
@@ -115,7 +117,17 @@ class MyApp extends StatelessWidget {
                       ),
                       BlocProvider(
                           create: (context) => UserScreenCubit()..init()),
-                      BlocProvider(create: (context) => UserRoleCubit()..init())
+                      BlocProvider(
+                        create: (context) => UserRoleCubit()..init(),
+                        lazy: false,
+                      ),
+                      BlocProvider(
+                        create: (context) => SfRoleJunctionCubit(),
+                      ),
+                      BlocProvider(
+                        create: (context) => ScreenFunctionCubit()..init(),
+                        lazy: false,
+                      )
                     ],
                     child: BlocBuilder<DatabaseCubit, IsarService?>(
                       builder: (context, state) {

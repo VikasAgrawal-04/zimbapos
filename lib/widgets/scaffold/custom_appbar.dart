@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 
-AppBar appBar(
-  ThemeData theme,
-) {
+AppBar appBar(ThemeData theme, {String? title}) {
   return AppBar(
     leading: IconButton(
       onPressed: () {},
@@ -15,26 +13,37 @@ AppBar appBar(
           onPressed: () {},
           icon: Image.asset('assets/icons/power_off.png', height: 3.h)),
     ],
-    title: RichText(
-        text: TextSpan(
-            text: "Zimba",
+    title: title == null
+        ? RichText(
+            text: TextSpan(
+                text: "Zimba",
+                style: theme.appBarTheme.titleTextStyle?.copyWith(shadows: [
+                  const Shadow(
+                      color: Color.fromRGBO(0, 0, 0, 0.25),
+                      offset: Offset(0, 4),
+                      blurRadius: 4.0)
+                ]),
+                children: [
+                TextSpan(
+                    text: " POS",
+                    style: theme.appBarTheme.titleTextStyle
+                        ?.copyWith(color: KColors.yellowColor, shadows: [
+                      const Shadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                          offset: Offset(0, 4),
+                          blurRadius: 4.0)
+                    ])),
+              ]))
+        : RichText(
+            text: TextSpan(
+            text: title,
             style: theme.appBarTheme.titleTextStyle?.copyWith(shadows: [
               const Shadow(
                   color: Color.fromRGBO(0, 0, 0, 0.25),
                   offset: Offset(0, 4),
                   blurRadius: 4.0)
             ]),
-            children: [
-          TextSpan(
-              text: " POS",
-              style: theme.appBarTheme.titleTextStyle
-                  ?.copyWith(color: KColors.yellowColor, shadows: [
-                const Shadow(
-                    color: Color.fromRGBO(0, 0, 0, 0.25),
-                    offset: Offset(0, 4),
-                    blurRadius: 4.0)
-              ])),
-        ])),
+          )),
     bottom: PreferredSize(
         preferredSize: Size.fromHeight(1.h),
         child: Divider(

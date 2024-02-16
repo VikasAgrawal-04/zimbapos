@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:zimbapos/global/utils/status_handler/status_handler.dart';
 import 'package:zimbapos/models/global_models/screen_function_mapping_model.dart';

@@ -8,21 +8,21 @@ import 'package:zimbapos/services/user_management_service/user_role_service/user
 class UserRoleCubit extends Cubit<UserRoleScreenState> {
   UserRoleCubit()
       : super(UserRoleScreenState(screenState: ScreenState.initial)) {
-    init();
+    // init();
   }
-  final UserRoleService _userRoleService = UserRoleServiceImpl();
+  // final UserRoleService _userRoleService = UserRoleServiceImpl();
   late String errorMessage;
   late List<UserRolesModel> modelList;
 
-  init() async {
-    emit(state.copyWith(screenState: ScreenState.loading));
-    final response = await _userRoleService.getUserRoles();
-    response.fold((l) {
-      errorMessage = l.toString();
-      emit(state.copyWith(screenState: ScreenState.error));
-    }, (r) {
-      modelList = r;
-      emit(state.copyWith(screenState: ScreenState.completed));
-    });
-  }
+  // init() async {
+  //   emit(state.copyWith(screenState: ScreenState.loading));
+  //   final response = await _userRoleService.getUserRoles();
+  //   response.fold((l) {
+  //     errorMessage = l.toString();
+  //     emit(state.copyWith(screenState: ScreenState.error));
+  //   }, (r) {
+  //     modelList = r;
+  //     emit(state.copyWith(screenState: ScreenState.completed));
+  //   });
+  // }
 }

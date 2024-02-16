@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:isar/isar.dart';
 import 'package:zimbapos/constants/contants.dart';
 import 'package:zimbapos/models/global_models/area_model.dart';
@@ -11,12 +12,13 @@ import 'package:zimbapos/models/global_models/pay_out_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/permanent_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/rate_sets_model.dart';
+import 'package:zimbapos/models/global_models/screen_function_junction_model.dart';
+import 'package:zimbapos/models/global_models/screen_function_mapping_model.dart';
 import 'package:zimbapos/models/global_models/shift_model.dart';
 import 'package:zimbapos/models/global_models/tables_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_header_model.dart';
 import 'package:zimbapos/models/global_models/temp_bill_lines_model.dart';
 import 'package:zimbapos/models/global_models/terminal_model.dart';
-import 'package:zimbapos/models/global_models/user_role_screen_function_model.dart';
 import 'package:zimbapos/models/global_models/user_roles_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/system_models/home_shortcut_model.dart';
@@ -44,12 +46,14 @@ import 'package:zimbapos/repository/system_repository/system_configuration_repos
 import 'package:zimbapos/repository/table_repository.dart';
 import 'package:zimbapos/repository/taxes_repository.dart';
 import 'package:zimbapos/repository/terminal_repository.dart';
+import 'package:zimbapos/repository/user_repository/screen_function_mapping_repository.dart';
+import 'package:zimbapos/repository/user_repository/screen_junction_repository.dart';
 import 'package:zimbapos/repository/user_repository/subscription_repository.dart';
 import 'package:zimbapos/repository/user_repository/user_repository.dart';
-import 'package:zimbapos/repository/user_repository/user_role_screen_repository.dart';
 import 'package:zimbapos/repository/user_repository/user_roles_repository.dart';
 import 'package:zimbapos/repository/vendor_repository.dart';
 import 'package:zimbapos/repository/workers_repository.dart';
+
 import '../models/global_models/card_log_model.dart';
 import '../models/global_models/card_model.dart';
 import '../models/global_models/customer_model.dart';
@@ -100,9 +104,9 @@ class IsarService {
           PermanentBillLinesModelSchema,
           // User Management
           UserRolesModelSchema,
-          UserRoleScreenFunctionModelSchema,
+          SFMappingModelSchema,
+          ScreenFunctionJunctionModelSchema,
           UserModelSchema,
-          //
           ShiftModelSchema,
           PayInModelSchema,
           PayOutModelSchema
@@ -176,8 +180,10 @@ class IsarService {
 
   UserRolesRepository get userRoleRepository => UserRolesRepository(db);
 
-  UserRoleScreenRepository get userRoleScreenRepository =>
-      UserRoleScreenRepository(db);
+  ScreenJunctionRepository get sfJunctionRepository =>
+      ScreenJunctionRepository(db);
+
+  SFMappingRepository get sfMappingRepository => SFMappingRepository(db);
 
   ShiftRepository get shiftRepository => ShiftRepository(db);
 

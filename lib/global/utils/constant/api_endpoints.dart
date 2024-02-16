@@ -88,11 +88,15 @@ class EndPoints {
   static const String updateUserRole = '/update-user-role';
   static const String deleteUserRole = '/delete-user-role';
 
-  //User Screen Functionalities
-  static const String getAllScreenFn = '/get-screen-fn';
-  static const String createScreenFn = '/create-screen-fn';
-  static const String updateScreenFn = '/update-screen-fn';
-  static const String deleteScreenFn = '/delete-screen-fn';
+  //Screen Function Mapping
+  static const String getSfMapping = '/get-sf-mapping';
+  static const String createSfMapping = '/create-sf-mapping';
+
+  //User Screen Function Junction
+  static const String getAllRoleScrnFn = '/get-all-sf-junction';
+  static const String createScrnFnJunction = '/create-sf-junction';
+  static const String updateScrnFnJunction = '/update-sf-junction';
+  static const String deleteScrnFnJunction = '/delete-sf-junction';
 
   //Shift
   static const String getShiftId = '/get-shift-id';

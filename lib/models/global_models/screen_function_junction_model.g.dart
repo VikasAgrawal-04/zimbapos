@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_role_screen_function_model.dart';
+part of 'screen_function_junction_model.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,14 +9,14 @@ part of 'user_role_screen_function_model.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetUserRoleScreenFunctionModelCollection on Isar {
-  IsarCollection<UserRoleScreenFunctionModel>
-      get userRoleScreenFunctionModels => this.collection();
+extension GetScreenFunctionJunctionModelCollection on Isar {
+  IsarCollection<ScreenFunctionJunctionModel>
+      get screenFunctionJunctionModels => this.collection();
 }
 
-const UserRoleScreenFunctionModelSchema = CollectionSchema(
-  name: r'UserRoleScreenFunctionModel',
-  id: -6946555077325583465,
+const ScreenFunctionJunctionModelSchema = CollectionSchema(
+  name: r'ScreenFunctionJunctionModel',
+  id: -5124812762363972113,
   properties: {
     r'canChange': PropertySchema(
       id: 0,
@@ -28,43 +28,43 @@ const UserRoleScreenFunctionModelSchema = CollectionSchema(
       name: r'canView',
       type: IsarType.bool,
     ),
-    r'outletId': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 2,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'outletId': PropertySchema(
+      id: 3,
       name: r'outletId',
       type: IsarType.string,
     ),
     r'roleId': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'roleId',
       type: IsarType.string,
     ),
     r'screenFunctionId': PropertySchema(
-      id: 4,
-      name: r'screenFunctionId',
-      type: IsarType.string,
-    ),
-    r'screenFunctionName': PropertySchema(
       id: 5,
-      name: r'screenFunctionName',
+      name: r'screenFunctionId',
       type: IsarType.string,
     )
   },
-  estimateSize: _userRoleScreenFunctionModelEstimateSize,
-  serialize: _userRoleScreenFunctionModelSerialize,
-  deserialize: _userRoleScreenFunctionModelDeserialize,
-  deserializeProp: _userRoleScreenFunctionModelDeserializeProp,
+  estimateSize: _screenFunctionJunctionModelEstimateSize,
+  serialize: _screenFunctionJunctionModelSerialize,
+  deserialize: _screenFunctionJunctionModelDeserialize,
+  deserializeProp: _screenFunctionJunctionModelDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _userRoleScreenFunctionModelGetId,
-  getLinks: _userRoleScreenFunctionModelGetLinks,
-  attach: _userRoleScreenFunctionModelAttach,
+  getId: _screenFunctionJunctionModelGetId,
+  getLinks: _screenFunctionJunctionModelGetLinks,
+  attach: _screenFunctionJunctionModelAttach,
   version: '3.1.0+1',
 );
 
-int _userRoleScreenFunctionModelEstimateSize(
-  UserRoleScreenFunctionModel object,
+int _screenFunctionJunctionModelEstimateSize(
+  ScreenFunctionJunctionModel object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -87,48 +87,41 @@ int _userRoleScreenFunctionModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.screenFunctionName;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
   return bytesCount;
 }
 
-void _userRoleScreenFunctionModelSerialize(
-  UserRoleScreenFunctionModel object,
+void _screenFunctionJunctionModelSerialize(
+  ScreenFunctionJunctionModel object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeBool(offsets[0], object.canChange);
   writer.writeBool(offsets[1], object.canView);
-  writer.writeString(offsets[2], object.outletId);
-  writer.writeString(offsets[3], object.roleId);
-  writer.writeString(offsets[4], object.screenFunctionId);
-  writer.writeString(offsets[5], object.screenFunctionName);
+  writer.writeLong(offsets[2], object.hashCode);
+  writer.writeString(offsets[3], object.outletId);
+  writer.writeString(offsets[4], object.roleId);
+  writer.writeString(offsets[5], object.screenFunctionId);
 }
 
-UserRoleScreenFunctionModel _userRoleScreenFunctionModelDeserialize(
+ScreenFunctionJunctionModel _screenFunctionJunctionModelDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = UserRoleScreenFunctionModel(
+  final object = ScreenFunctionJunctionModel(
     canChange: reader.readBoolOrNull(offsets[0]),
     canView: reader.readBoolOrNull(offsets[1]),
     id: id,
-    outletId: reader.readStringOrNull(offsets[2]),
-    roleId: reader.readStringOrNull(offsets[3]),
-    screenFunctionId: reader.readStringOrNull(offsets[4]),
-    screenFunctionName: reader.readStringOrNull(offsets[5]),
+    outletId: reader.readStringOrNull(offsets[3]),
+    roleId: reader.readStringOrNull(offsets[4]),
+    screenFunctionId: reader.readStringOrNull(offsets[5]),
   );
   return object;
 }
 
-P _userRoleScreenFunctionModelDeserializeProp<P>(
+P _screenFunctionJunctionModelDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -140,7 +133,7 @@ P _userRoleScreenFunctionModelDeserializeProp<P>(
     case 1:
       return (reader.readBoolOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
@@ -152,23 +145,23 @@ P _userRoleScreenFunctionModelDeserializeProp<P>(
   }
 }
 
-Id _userRoleScreenFunctionModelGetId(UserRoleScreenFunctionModel object) {
+Id _screenFunctionJunctionModelGetId(ScreenFunctionJunctionModel object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _userRoleScreenFunctionModelGetLinks(
-    UserRoleScreenFunctionModel object) {
+List<IsarLinkBase<dynamic>> _screenFunctionJunctionModelGetLinks(
+    ScreenFunctionJunctionModel object) {
   return [];
 }
 
-void _userRoleScreenFunctionModelAttach(
-    IsarCollection<dynamic> col, Id id, UserRoleScreenFunctionModel object) {
+void _screenFunctionJunctionModelAttach(
+    IsarCollection<dynamic> col, Id id, ScreenFunctionJunctionModel object) {
   object.id = id;
 }
 
-extension UserRoleScreenFunctionModelQueryWhereSort on QueryBuilder<
-    UserRoleScreenFunctionModel, UserRoleScreenFunctionModel, QWhere> {
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQueryWhereSort on QueryBuilder<
+    ScreenFunctionJunctionModel, ScreenFunctionJunctionModel, QWhere> {
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
@@ -176,9 +169,9 @@ extension UserRoleScreenFunctionModelQueryWhereSort on QueryBuilder<
   }
 }
 
-extension UserRoleScreenFunctionModelQueryWhere on QueryBuilder<
-    UserRoleScreenFunctionModel, UserRoleScreenFunctionModel, QWhereClause> {
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQueryWhere on QueryBuilder<
+    ScreenFunctionJunctionModel, ScreenFunctionJunctionModel, QWhereClause> {
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
@@ -188,7 +181,7 @@ extension UserRoleScreenFunctionModelQueryWhere on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
@@ -211,7 +204,7 @@ extension UserRoleScreenFunctionModelQueryWhere on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterWhereClause> idGreaterThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -220,7 +213,7 @@ extension UserRoleScreenFunctionModelQueryWhere on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterWhereClause> idLessThan(Id id, {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -229,7 +222,7 @@ extension UserRoleScreenFunctionModelQueryWhere on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
@@ -247,11 +240,11 @@ extension UserRoleScreenFunctionModelQueryWhere on QueryBuilder<
   }
 }
 
-extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
-    UserRoleScreenFunctionModel,
-    UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQueryFilter on QueryBuilder<
+    ScreenFunctionJunctionModel,
+    ScreenFunctionJunctionModel,
     QFilterCondition> {
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> canChangeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -260,7 +253,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> canChangeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -269,7 +262,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> canChangeEqualTo(bool? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -279,7 +272,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> canViewIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -288,7 +281,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> canViewIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -297,7 +290,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> canViewEqualTo(bool? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -307,7 +300,63 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterFilterCondition> hashCodeEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -317,7 +366,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
@@ -331,7 +380,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
@@ -345,7 +394,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
@@ -363,7 +412,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -372,7 +421,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -381,7 +430,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdEqualTo(
     String? value, {
     bool caseSensitive = true,
@@ -395,7 +444,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdGreaterThan(
     String? value, {
     bool include = false,
@@ -411,7 +460,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdLessThan(
     String? value, {
     bool include = false,
@@ -427,7 +476,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdBetween(
     String? lower,
     String? upper, {
@@ -447,7 +496,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -461,7 +510,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -475,7 +524,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
           QAfterFilterCondition>
       outletIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -487,7 +536,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
           QAfterFilterCondition>
       outletIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -499,7 +548,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -509,7 +558,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> outletIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -519,7 +568,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -528,7 +577,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -537,7 +586,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdEqualTo(
     String? value, {
     bool caseSensitive = true,
@@ -551,7 +600,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdGreaterThan(
     String? value, {
     bool include = false,
@@ -567,7 +616,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdLessThan(
     String? value, {
     bool include = false,
@@ -583,7 +632,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdBetween(
     String? lower,
     String? upper, {
@@ -603,7 +652,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -617,7 +666,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -631,7 +680,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
           QAfterFilterCondition>
       roleIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -643,7 +692,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
           QAfterFilterCondition>
       roleIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -655,7 +704,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -665,7 +714,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> roleIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -675,7 +724,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -684,7 +733,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -693,7 +742,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdEqualTo(
     String? value, {
     bool caseSensitive = true,
@@ -707,7 +756,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdGreaterThan(
     String? value, {
     bool include = false,
@@ -723,7 +772,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdLessThan(
     String? value, {
     bool include = false,
@@ -739,7 +788,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdBetween(
     String? lower,
     String? upper, {
@@ -759,7 +808,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -773,7 +822,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdEndsWith(
     String value, {
     bool caseSensitive = true,
@@ -787,7 +836,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
           QAfterFilterCondition>
       screenFunctionIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -799,7 +848,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
           QAfterFilterCondition>
       screenFunctionIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -811,7 +860,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -821,7 +870,7 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterFilterCondition> screenFunctionIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -830,457 +879,300 @@ extension UserRoleScreenFunctionModelQueryFilter on QueryBuilder<
       ));
     });
   }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'screenFunctionName',
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'screenFunctionName',
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'screenFunctionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'screenFunctionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'screenFunctionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'screenFunctionName',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'screenFunctionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'screenFunctionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-          QAfterFilterCondition>
-      screenFunctionNameContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'screenFunctionName',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-          QAfterFilterCondition>
-      screenFunctionNameMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'screenFunctionName',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'screenFunctionName',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterFilterCondition> screenFunctionNameIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'screenFunctionName',
-        value: '',
-      ));
-    });
-  }
 }
 
-extension UserRoleScreenFunctionModelQueryObject on QueryBuilder<
-    UserRoleScreenFunctionModel,
-    UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQueryObject on QueryBuilder<
+    ScreenFunctionJunctionModel,
+    ScreenFunctionJunctionModel,
     QFilterCondition> {}
 
-extension UserRoleScreenFunctionModelQueryLinks on QueryBuilder<
-    UserRoleScreenFunctionModel,
-    UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQueryLinks on QueryBuilder<
+    ScreenFunctionJunctionModel,
+    ScreenFunctionJunctionModel,
     QFilterCondition> {}
 
-extension UserRoleScreenFunctionModelQuerySortBy on QueryBuilder<
-    UserRoleScreenFunctionModel, UserRoleScreenFunctionModel, QSortBy> {
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQuerySortBy on QueryBuilder<
+    ScreenFunctionJunctionModel, ScreenFunctionJunctionModel, QSortBy> {
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByCanChange() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canChange', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByCanChangeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canChange', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByCanView() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canView', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByCanViewDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canView', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByOutletId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'outletId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByOutletIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'outletId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByRoleId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'roleId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByRoleIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'roleId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByScreenFunctionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'screenFunctionId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> sortByScreenFunctionIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'screenFunctionId', Sort.desc);
     });
   }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterSortBy> sortByScreenFunctionName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'screenFunctionName', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterSortBy> sortByScreenFunctionNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'screenFunctionName', Sort.desc);
-    });
-  }
 }
 
-extension UserRoleScreenFunctionModelQuerySortThenBy on QueryBuilder<
-    UserRoleScreenFunctionModel, UserRoleScreenFunctionModel, QSortThenBy> {
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQuerySortThenBy on QueryBuilder<
+    ScreenFunctionJunctionModel, ScreenFunctionJunctionModel, QSortThenBy> {
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByCanChange() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canChange', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByCanChangeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canChange', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByCanView() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canView', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByCanViewDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'canView', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByOutletId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'outletId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByOutletIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'outletId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByRoleId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'roleId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByRoleIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'roleId', Sort.desc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByScreenFunctionId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'screenFunctionId', Sort.asc);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QAfterSortBy> thenByScreenFunctionIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'screenFunctionId', Sort.desc);
     });
   }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterSortBy> thenByScreenFunctionName() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'screenFunctionName', Sort.asc);
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QAfterSortBy> thenByScreenFunctionNameDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'screenFunctionName', Sort.desc);
-    });
-  }
 }
 
-extension UserRoleScreenFunctionModelQueryWhereDistinct on QueryBuilder<
-    UserRoleScreenFunctionModel, UserRoleScreenFunctionModel, QDistinct> {
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+extension ScreenFunctionJunctionModelQueryWhereDistinct on QueryBuilder<
+    ScreenFunctionJunctionModel, ScreenFunctionJunctionModel, QDistinct> {
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QDistinct> distinctByCanChange() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'canChange');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QDistinct> distinctByCanView() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'canView');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
+      QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QDistinct> distinctByOutletId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'outletId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QDistinct> distinctByRoleId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'roleId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
+  QueryBuilder<ScreenFunctionJunctionModel, ScreenFunctionJunctionModel,
       QDistinct> distinctByScreenFunctionId({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'screenFunctionId',
           caseSensitive: caseSensitive);
     });
   }
-
-  QueryBuilder<UserRoleScreenFunctionModel, UserRoleScreenFunctionModel,
-      QDistinct> distinctByScreenFunctionName({bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'screenFunctionName',
-          caseSensitive: caseSensitive);
-    });
-  }
 }
 
-extension UserRoleScreenFunctionModelQueryProperty on QueryBuilder<
-    UserRoleScreenFunctionModel, UserRoleScreenFunctionModel, QQueryProperty> {
-  QueryBuilder<UserRoleScreenFunctionModel, int, QQueryOperations>
+extension ScreenFunctionJunctionModelQueryProperty on QueryBuilder<
+    ScreenFunctionJunctionModel, ScreenFunctionJunctionModel, QQueryProperty> {
+  QueryBuilder<ScreenFunctionJunctionModel, int, QQueryOperations>
       idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, bool?, QQueryOperations>
+  QueryBuilder<ScreenFunctionJunctionModel, bool?, QQueryOperations>
       canChangeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'canChange');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, bool?, QQueryOperations>
+  QueryBuilder<ScreenFunctionJunctionModel, bool?, QQueryOperations>
       canViewProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'canView');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, String?, QQueryOperations>
+  QueryBuilder<ScreenFunctionJunctionModel, int, QQueryOperations>
+      hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
+    });
+  }
+
+  QueryBuilder<ScreenFunctionJunctionModel, String?, QQueryOperations>
       outletIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'outletId');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, String?, QQueryOperations>
+  QueryBuilder<ScreenFunctionJunctionModel, String?, QQueryOperations>
       roleIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'roleId');
     });
   }
 
-  QueryBuilder<UserRoleScreenFunctionModel, String?, QQueryOperations>
+  QueryBuilder<ScreenFunctionJunctionModel, String?, QQueryOperations>
       screenFunctionIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'screenFunctionId');
-    });
-  }
-
-  QueryBuilder<UserRoleScreenFunctionModel, String?, QQueryOperations>
-      screenFunctionNameProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'screenFunctionName');
     });
   }
 }

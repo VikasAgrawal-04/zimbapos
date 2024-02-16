@@ -16,6 +16,7 @@ import 'package:zimbapos/models/global_models/tax_model.dart';
 import 'package:zimbapos/models/global_models/workers_model.dart';
 import 'package:zimbapos/models/request_models/temp_bill_request_model.dart';
 import 'package:zimbapos/models/response_models/item_response_model.dart';
+import 'package:zimbapos/models/user_models/user_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/area/area_api_repo_impl.dart';
@@ -39,6 +40,8 @@ import 'package:zimbapos/repository/api_repository/shift/shift_api_repo_impl.dar
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/tax/tax_api_repo_impl.dart';
+import 'package:zimbapos/repository/api_repository/user/user_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/user/user_api_repo_impl.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo_impl.dart';
 
@@ -68,6 +71,7 @@ class ApiRepoImpl implements ApiRepo {
   final PayInApiRepo _payInApiRepo;
   final PayOutApiRepo _payOutApiRepo;
   final PayModMasterApiRepo _payModMasterApiRepo;
+  final UserApiRepo _userApiRepo;
 
   ApiRepoImpl()
       : _areaApiRepo = AreaApiRepoImpl(),
@@ -85,7 +89,8 @@ class ApiRepoImpl implements ApiRepo {
         _shiftApiRepo = ShiftApiRepoImpl(),
         _payInApiRepo = PayInApiRepoImpl(),
         _payModMasterApiRepo = PayModMasterApiRepoImpl(),
-        _payOutApiRepo = PayOutApiRepoImpl();
+        _payOutApiRepo = PayOutApiRepoImpl(),
+        _userApiRepo = UserApiRepoImpl();
 
   @override
   Future<Either<Failure, List<AreasModel>>> getAreas() {
@@ -414,5 +419,10 @@ class ApiRepoImpl implements ApiRepo {
   Future<Either<Failure, Map<String, dynamic>>> updatePayModMaster(
       PayModMasterModel item) {
     return _payModMasterApiRepo.updatePayModMaster(item);
+  }
+
+  @override
+  Future<Either<Failure, List<UserModel>>> getAllUsers() {
+    return _userApiRepo.getAllUsers();
   }
 }

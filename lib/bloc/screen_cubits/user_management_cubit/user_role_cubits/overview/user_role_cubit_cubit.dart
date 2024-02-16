@@ -2,8 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/user_role_cubits/overview/user_role_cubit_state.dart';
 
 import 'package:zimbapos/models/global_models/user_roles_model.dart';
-import 'package:zimbapos/services/user_management_service/user_role_service/user_role_service.dart';
-import 'package:zimbapos/services/user_management_service/user_role_service/user_role_service_impl.dart';
 
 class UserRoleCubit extends Cubit<UserRoleScreenState> {
   UserRoleCubit()

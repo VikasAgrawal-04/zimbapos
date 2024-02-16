@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 import 'package:zimbapos/models/global_models/user_roles_model.dart';
-import 'package:zimbapos/models/user_models/user_model.dart';
 
 class UserRolesRepository {
   final Isar db;
@@ -18,13 +17,6 @@ class UserRolesRepository {
       return [];
     }
   }
-
-  // Future<Tuple2<bool, UserRolesModel>> getUserRolewithID() async {
-  //   try {} on IsarError catch (error) {
-  //     debugPrint("Error ${error.message}");
-  //     return Tuple2(false, error.message.toString());
-  //   }
-  // }
 
   Future<Tuple2<bool, Tuple2<String, UserRolesModel?>>> createUserRole(
       UserRolesModel data) async {

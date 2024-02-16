@@ -65,6 +65,7 @@ import 'package:zimbapos/screens/componant_screens/table_screens/table_screen.da
 import 'package:zimbapos/screens/componant_screens/tax_screen/create_tax_screen.dart';
 import 'package:zimbapos/screens/componant_screens/tax_screen/edit_tax_screen.dart';
 import 'package:zimbapos/screens/componant_screens/tax_screen/tax_list_screen.dart';
+import 'package:zimbapos/screens/componant_screens/user_management_screens/screen_function/sf_mapping_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/create_vendor_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/edit_vendors_screen.dart';
 import 'package:zimbapos/screens/componant_screens/vendors_screen/vendors_list_screen.dart';
@@ -75,6 +76,7 @@ import 'package:zimbapos/screens/home_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/item_selection_screen.dart';
 import 'package:zimbapos/screens/ordering%20screens/order_dashboard_screen.dart';
 import 'package:zimbapos/screens/system_settings_screens/settings_overview_screen.dart';
+
 import '../../models/global_models/customer_model.dart';
 import '../../models/global_models/pay_mod_master_model.dart';
 import '../../models/global_models/pay_out_model.dart';
@@ -86,9 +88,6 @@ import '../../screens/componant_screens/main_group_screens/create_main_group.dar
 import '../../screens/componant_screens/main_group_screens/edit_main_group.dart';
 import '../../screens/componant_screens/pay_out_screens/create_pay_out_screen.dart';
 import '../../screens/componant_screens/pay_out_screens/view_pay_out_screen.dart';
-import '../../screens/componant_screens/payments_screen/create_payment_screen.dart';
-import '../../screens/componant_screens/payments_screen/edit_payment_screen.dart';
-import '../../screens/componant_screens/payments_screen/payment_list_screen.dart';
 import '../../screens/componant_screens/user_management_screens/user/create_user_screen.dart';
 import '../../screens/componant_screens/user_management_screens/user/user_overview_screen.dart';
 import '../../screens/componant_screens/user_management_screens/user_role/create_user_role_screen.dart';
@@ -707,5 +706,11 @@ final List<GoRoute> routerList = [
     name: AppScreen.userRoleOverviewScreen.name,
     path: AppScreen.userRoleOverviewScreen.path,
     builder: (context, state) => const UserRoleOverviewScreen(),
-  )
+  ),
+
+  //SF Mapping Screen
+  GoRoute(
+      path: AppScreen.sfMappingScreen.path,
+      name: AppScreen.sfMappingScreen.name,
+      builder: (context, state) => const SfMappingScreen())
 ];

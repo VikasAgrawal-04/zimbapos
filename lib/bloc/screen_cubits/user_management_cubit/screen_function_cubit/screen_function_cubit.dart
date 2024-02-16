@@ -1,29 +1,26 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:zimbapos/bloc/screen_cubits/user_management_cubit/screen_function_cubit/screen_function_state.dart';
 import 'package:zimbapos/global/utils/status_handler/status_handler.dart';
-import 'package:zimbapos/models/user_models/user_model.dart';
 import 'package:zimbapos/repository/api_repository/api_repo.dart';
 import 'package:zimbapos/repository/api_repository/api_repo_impl.dart';
 
-part 'user_screen_state.dart';
-
-class UserScreenCubit extends Cubit<UserScreenState> {
+class ScreenFunctionCubit extends Cubit<ScreenFunctionState> {
   final ApiRepo _repo = ApiRepoImpl();
-  UserScreenCubit() : super(UserScreenState.initial());
+  ScreenFunctionCubit() : super(ScreenFunctionState.initial());
 
   Future<void> init() async {
     emit(state.copyWith(status: Status.loading));
-    await getAllUsers();
+    await getSFList();
     emit(state.copyWith(status: Status.success));
   }
 
-  Future<void> getAllUsers() async {
-    final res = await _repo.getAllUsers();
+  Future<void> getSFList() async {
+    final res = await _repo.getAllSF();
     res.fold((failure) {
       debugPrint("Failure In GetAllUsers ${failure.toString()}");
     }, (success) {
-      emit(state.copyWith(users: success));
+      emit(state.copyWith(sfList: success));
     });
   }
 }

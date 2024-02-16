@@ -1,124 +1,127 @@
-import 'dart:developer';
+// import 'dart:developer';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
-import 'package:zimbapos/global/utils/screen_function_mapping.dart';
-import 'package:zimbapos/models/global_models/user_role_screen_function_model.dart';
-import 'package:zimbapos/models/global_models/user_roles_model.dart';
-import 'package:zimbapos/services/user_management_service/user_role_service/user_role_service.dart';
-import 'package:zimbapos/services/user_management_service/user_role_service/user_role_service_impl.dart';
-part 'create_user_role_state.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/widgets.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_easyloading/flutter_easyloading.dart';
+// import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
+// import 'package:zimbapos/global/utils/screen_function_mapping.dart';
+// import 'package:zimbapos/models/global_models/screen_function_junction_model.dart';
+// import 'package:zimbapos/models/global_models/screen_function_mapping_model.dart';
+// import 'package:zimbapos/models/global_models/user_roles_model.dart';
+// import 'package:zimbapos/repository/user_repository/screen_junction_repository.dart';
+// import 'package:zimbapos/services/user_management_service/user_role_service/user_role_service.dart';
+// import 'package:zimbapos/services/user_management_service/user_role_service/user_role_service_impl.dart';
 
-class CreateUserRoleCubit extends Cubit<CreateUserRoleState> {
-  CreateUserRoleCubit()
-      : super(CreateUserRoleState(
-          nameScreen: ScreenState.initial,
-          permissionScreen: ScreenState.initial,
-        )) {
-    formKey = GlobalKey<FormState>();
-    roleName = TextEditingController();
-    pageController = PageController();
-    sfmapp = sfMapping;
-    // generateList();
-  }
-  final UserRoleService _userRoleService = UserRoleServiceImpl();
-  late final GlobalKey<FormState> formKey;
-  late final PageController pageController;
-  late String? outletId;
-  late String message;
+// part 'create_user_role_state.dart';
 
-  late final TextEditingController roleName;
-  late final UserRolesModel userRoleModel;
-  late List<SFMapping> sfmapp;
-  late List<UserRoleScreenFunctionModel> userRoleScreenFunctionList;
+// class CreateUserRoleCubit extends Cubit<CreateUserRoleState> {
+//   CreateUserRoleCubit()
+//       : super(CreateUserRoleState(
+//           nameScreen: ScreenState.initial,
+//           permissionScreen: ScreenState.initial,
+//         )) {
+//     formKey = GlobalKey<FormState>();
+//     roleName = TextEditingController();
+//     pageController = PageController();
+//     sfmapp = sfMapping;
+//     // generateList();
+//   }
+//   final UserRoleService _userRoleService = UserRoleServiceImpl();
+//   late final GlobalKey<FormState> formKey;
+//   late final PageController pageController;
+//   late String? outletId;
+//   late String message;
 
-  generateList() async {
-    outletId = '';
-    log('Running');
-    userRoleScreenFunctionList = [];
-    print(sfmapp.length);
-    for (var element in sfmapp) {
-      print('Running');
-      userRoleScreenFunctionList.add(UserRoleScreenFunctionModel(
-        outletId: outletId ?? '',
-        roleId: userRoleModel.roleId ?? '',
-        canView: element.canView,
-        canChange: element.canEdit,
-        screenFunctionId: element.id,
-        screenFunctionName: element.functionName,
-      ));
-    }
-    print(userRoleScreenFunctionList.length);
+//   late final TextEditingController roleName;
+//   late final UserRolesModel userRoleModel;
+//   late List<SFMappingModel> sfmapp;
+//   late List<ScreenJunctionRepository> userRoleScreenFunctionList;
 
-    log(userRoleScreenFunctionList.map((e) => e.toString()).toString());
-  }
+//   generateList() async {
+//     outletId = '';
+//     log('Running');
+//     userRoleScreenFunctionList = [];
+//     print(sfmapp.length);
+//     for (var element in sfmapp) {
+//       print('Running');
+//       userRoleScreenFunctionList.add(UserRoleScreenFunctionModel(
+//         outletId: outletId ?? '',
+//         roleId: userRoleModel.roleId ?? '',
+//         canView: element.canView,
+//         canChange: element.canEdit,
+//         screenFunctionId: element.id,
+//         screenFunctionName: element.functionName,
+//       ));
+//     }
+//     print(userRoleScreenFunctionList.length);
 
-  changeCanView(bool value, UserRoleScreenFunctionModel model) {
-    // emit(state.copyWith());
-    final index = userRoleScreenFunctionList.indexWhere(
-        (element) => element.screenFunctionId == model.screenFunctionId);
-    userRoleScreenFunctionList[index].canView = value;
-    emit(state.copyWith());
-    print('function Runnng');
-  }
+//     log(userRoleScreenFunctionList.map((e) => e.toString()).toString());
+//   }
 
-  refresh() {
-    emit(state.copyWith());
-  }
+//   changeCanView(bool value, UserRoleScreenFunctionModel model) {
+//     // emit(state.copyWith());
+//     final index = userRoleScreenFunctionList.indexWhere(
+//         (element) => element.screenFunctionId == model.screenFunctionId);
+//     userRoleScreenFunctionList[index].canView = value;
+//     emit(state.copyWith());
+//     print('function Runnng');
+//   }
 
-  saveRoleFn() async {
-    if (formKey.currentState!.validate()) {
-      try {
-        final MySecureStorage storage = MySecureStorage();
-        outletId = await storage.getOutletID();
+//   refresh() {
+//     emit(state.copyWith());
+//   }
 
-        final response = await _userRoleService.createUserRole(
-          roleName: roleName.text,
-          outletId: outletId ?? '',
-        );
-        response.fold(
-          (l) {
-            message = l.toString();
-            EasyLoading.showToast(message);
-          },
-          (r) {
-            userRoleModel = r;
-            pageController.nextPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Easing.linear,
-            );
-            emit(state.copyWith(nameScreen: ScreenState.completed));
-            generateList();
-          },
-        );
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
+//   saveRoleFn() async {
+//     if (formKey.currentState!.validate()) {
+//       try {
+//         final MySecureStorage storage = MySecureStorage();
+//         outletId = await storage.getOutletID();
 
-  saveAllPermission() async {
-    try {
-      print('rinn');
-      emit(state.copyWith(permissionScreen: ScreenState.savebuttonLoading));
-      for (var elemnt in userRoleScreenFunctionList) {
-        final response =
-            await _userRoleService.createScreenFunction(model: elemnt);
-        response.fold((l) {
-          print(l);
-        }, (r) {
-          // print(r.toString());
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+//         final response = await _userRoleService.createUserRole(
+//           roleName: roleName.text,
+//           outletId: outletId ?? '',
+//         );
+//         response.fold(
+//           (l) {
+//             message = l.toString();
+//             EasyLoading.showToast(message);
+//           },
+//           (r) {
+//             userRoleModel = r;
+//             pageController.nextPage(
+//               duration: const Duration(milliseconds: 300),
+//               curve: Easing.linear,
+//             );
+//             emit(state.copyWith(nameScreen: ScreenState.completed));
+//             generateList();
+//           },
+//         );
+//       } catch (e) {
+//         print(e);
+//       }
+//     }
+//   }
 
-  saveUserPermission() async {
-    emit(state.copyWith(permissionScreen: ScreenState.savebuttonLoading));
-  }
-}
+//   saveAllPermission() async {
+//     try {
+//       print('rinn');
+//       emit(state.copyWith(permissionScreen: ScreenState.savebuttonLoading));
+//       for (var elemnt in userRoleScreenFunctionList) {
+//         final response =
+//             await _userRoleService.createScreenFunction(model: elemnt);
+//         response.fold((l) {
+//           print(l);
+//         }, (r) {
+//           // print(r.toString());
+//         });
+//       }
+//     } catch (e) {
+//       print(e);
+//     }
+//   }
+
+//   saveUserPermission() async {
+//     emit(state.copyWith(permissionScreen: ScreenState.savebuttonLoading));
+//   }
+// }

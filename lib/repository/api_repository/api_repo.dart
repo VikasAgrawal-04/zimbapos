@@ -11,6 +11,7 @@ import 'package:zimbapos/repository/api_repository/payout/pay_out_api_repo.dart'
 import 'package:zimbapos/repository/api_repository/shift/shift_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/table/table_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/tax/tax_api_repo.dart';
+import 'package:zimbapos/repository/api_repository/user/user_api_repo.dart';
 import 'package:zimbapos/repository/api_repository/worker/worker_api_repo.dart';
 
 import 'pay_mod_master/pay_mod_master_repo.dart';
@@ -33,4 +34,5 @@ abstract class ApiRepo
         PayInApiRepo,
         PayOutApiRepo,
         PayModMasterApiRepo,
-        ShiftApiRepo {}
+        ShiftApiRepo,
+        UserApiRepo {}

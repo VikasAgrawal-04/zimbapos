@@ -97,6 +97,7 @@ enum AppScreen {
   createUserRoleScreen,
   userRoleOverviewScreen,
   userOverviewScreen,
+  sfMappingScreen
 }
 
 extension AppScreenExtension on AppScreen {
@@ -245,6 +246,8 @@ extension AppScreenExtension on AppScreen {
         return 'Create User Role Screen';
       case AppScreen.userRoleOverviewScreen:
         return 'User Role Overview Screen';
+      case AppScreen.sfMappingScreen:
+        return 'SfMapping Screen';
     }
   }
 
@@ -393,6 +396,8 @@ extension AppScreenExtension on AppScreen {
         return '/create-user-role-screen';
       case AppScreen.userRoleOverviewScreen:
         return '/user-role-screen';
+      case AppScreen.sfMappingScreen:
+        return '/sf-mapping-screen';
     }
   }
 }

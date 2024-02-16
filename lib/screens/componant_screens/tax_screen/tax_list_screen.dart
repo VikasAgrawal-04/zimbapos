@@ -5,8 +5,9 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/tax_screen_cubits/tax_cubit.dart';
 import 'package:zimbapos/bloc/screen_cubits/tax_screen_cubits/tax_state.dart';
 import 'package:zimbapos/models/global_models/tax_model.dart';
+import 'package:zimbapos/widgets/custom_button/back_button.dart';
+import 'package:zimbapos/widgets/scaffold/custom_appbar.dart';
 
-import '../../../bloc/cubits/database/database_cubit.dart';
 import '../../../constants/kcolors.dart';
 import '../../../constants/ktextstyles.dart';
 import '../../../global/utils/status_handler/status_handler.dart';
@@ -23,28 +24,15 @@ class TaxListScreen extends StatefulWidget {
 }
 
 class _TaxListScreenState extends State<TaxListScreen> {
-  //
-  //
-  Stream<List<TaxModel>> streamForTaxes() {
-    final datatbaseCubit = DatabaseCubit.dbFrom(context);
-    // log(datatbaseCubit.rateSetsRepository.getRateSets().toString());
-    return datatbaseCubit.taxesRepository.streamTaxList();
-  }
-
   deleteTax(TaxModel e) {
     UtilDialog.showMyDialog(
       context,
       "Alert",
       "Do you want to delete '${e.taxName}'?",
-      //this is for ok button
       () {
         context.read<TaxScreenCubit>().deleteTax(e.taxId.toString());
-        // final dbCubit = DatabaseCubit.dbFrom(context);
-        // dbCubit.taxesRepository.deleteTax(e.id);
-        // EasyLoading.showToast('Tax deleted');
         context.pop();
       },
-      // this is for cancel button sending null will perform default pop() action
       null,
     );
   }
@@ -61,46 +49,13 @@ class _TaxListScreenState extends State<TaxListScreen> {
     final theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {},
-            icon: Image.asset('assets/icons/menu.png', height: 3.h),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {},
-                icon: Image.asset('assets/icons/power_off.png', height: 3.h)),
-          ],
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(1.h),
-            child: Divider(
-              color: KColors.blackColor,
-              thickness: 1.0,
-              endIndent: 1.w,
-              indent: 1.w,
-            ),
-          ),
-        ),
+        appBar: appBar(theme),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //row for back button
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      context.pop();
-                    },
-                    icon: Image.asset(
-                      "assets/icons/back.png",
-                      height: 5.h,
-                    ),
-                  ),
-                ],
-              ),
-
+              backBtn(context),
               //page title
               Padding(
                 padding: const EdgeInsets.only(

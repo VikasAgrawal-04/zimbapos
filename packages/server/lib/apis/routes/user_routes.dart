@@ -17,6 +17,7 @@ class UserRoutes {
   }
 
   void initialiseApi() {
+    locRoute.get('/get-all-users', controller.getAllUsers);
     locRoute.post('/register-user', controller.registerUser);
     locRoute.post('/login-user', controller.loginUser);
   }

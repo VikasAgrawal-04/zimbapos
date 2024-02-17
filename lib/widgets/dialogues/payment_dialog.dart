@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/pay_mod_master_cubits/pay_mod_master_cubit.dart';
 import 'package:zimbapos/constants/kcolors.dart';
 import 'package:zimbapos/widgets/containers/dotter_line.dart';
+import 'package:zimbapos/widgets/custom_button/custom_button.dart';
 import 'package:zimbapos/widgets/textfield/custom_textfield.dart';
 
 Future paymentDialog(BuildContext context) {
@@ -63,7 +65,7 @@ Future paymentDialog(BuildContext context) {
                           )
                         ],
                       ),
-                      SizedBox(height: 1.5.h),
+                      SizedBox(height: 2.5.h),
                       SizedBox(
                         width: 100.w,
                         child: Wrap(
@@ -78,7 +80,13 @@ Future paymentDialog(BuildContext context) {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 1.5.w, vertical: 1.h),
                                 decoration: BoxDecoration(
-                                    color: KColors.yellowColor,
+                                    color: KColors.whiteColor,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Color.fromRGBO(0, 0, 0, .25),
+                                          offset: Offset(0, 2),
+                                          blurRadius: 5)
+                                    ],
                                     borderRadius: BorderRadius.circular(12)),
                                 child: Center(
                                   child: Text(
@@ -92,18 +100,29 @@ Future paymentDialog(BuildContext context) {
                             );
                           }),
                         ),
+                      ),
+                      SizedBox(height: 2.5.h),
+                      CustomButtonNew(
+                        borderRadius: 12,
+                        width: 15.w,
+                        text: 'Cancel',
+                        onTap: () {
+                          context.pop();
+                        },
+                        color: KColors.greyBtn,
                       )
                     ],
                   ),
                 ),
                 const DottedLine(),
                 Container(
+                  height: 30.h,
                   width: 100.w,
                   margin:
                       EdgeInsets.symmetric(horizontal: 3.5.w, vertical: 2.h),
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color.fromRGBO(0, 0, 0, .5)),
+                      border:
+                          Border.all(color: const Color.fromRGBO(0, 0, 0, .5)),
                       borderRadius: BorderRadius.circular(15)),
                   child: Column(
                     children: [
@@ -129,8 +148,7 @@ Future paymentDialog(BuildContext context) {
                             Expanded(
                                 child: Text("Mode", style: theme.titleLarge)),
                             Expanded(
-                                child:
-                                    Text("Amount", style: theme.titleLarge)),
+                                child: Text("Amount", style: theme.titleLarge)),
                             const Expanded(
                                 child: Text(
                               "",
@@ -138,7 +156,26 @@ Future paymentDialog(BuildContext context) {
                           ],
                         ),
                       ),
-                      const Divider(color: Color.fromRGBO(0, 0, 0, .5),thickness: 1,),
+                      const Divider(
+                          color: Color.fromRGBO(0, 0, 0, .5), thickness: 1),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 1.5.w, vertical: .8.h),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Text("Cash", style: theme.bodyLarge)),
+                            Expanded(
+                                child: Text("400", style: theme.bodyLarge)),
+                            const Expanded(
+                                child: Text(
+                              "",
+                            )),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                          color: Color.fromRGBO(0, 0, 0, .5), thickness: 1),
                     ],
                   ),
                 )

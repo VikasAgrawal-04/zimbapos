@@ -27,6 +27,7 @@ class KColors {
   static Color greyHeadline = hexToColor('#EBEAEA');
   static Color greyFill = hexToColor('#F1F1F1');
   static Color greenBlinkColor = hexToColor('#6ba850');
+  static Color greyBtn = hexToColor('#E0E0E0');
 
   static Color hexToColor(String code) {
     return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);

@@ -76,11 +76,11 @@ class CreateSfRoleJn extends StatelessWidget {
                         Expanded(
                           child: ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: (state.canEdit ?? []).length,
+                              itemCount: (state.canEdit).length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
-                                final canView = state.canView?[index];
-                                final canEdit = state.canEdit?[index];
+                                final canView = state.canView[index];
+                                final canEdit = state.canEdit[index];
 
                                 final sf = sfCubit.state.sfList[index];
 
@@ -107,7 +107,7 @@ class CreateSfRoleJn extends StatelessWidget {
                                                   theme.textTheme.bodyMedium),
                                           Switch.adaptive(
                                             activeColor: theme.primaryColor,
-                                            value: canView as bool,
+                                            value: canView,
                                             onChanged: (val) {
                                               context
                                                   .read<SfRoleJunctionCubit>()
@@ -124,7 +124,7 @@ class CreateSfRoleJn extends StatelessWidget {
                                                   theme.textTheme.bodyMedium),
                                           Switch.adaptive(
                                             activeColor: theme.primaryColor,
-                                            value: canEdit as bool,
+                                            value: canEdit,
                                             onChanged: (val) {
                                               context
                                                   .read<SfRoleJunctionCubit>()

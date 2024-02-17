@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:zimbapos/bloc/screen_cubits/intro_cubits/terminal_setup_cubit/terminal_setup_cubit.dart';
-import 'package:zimbapos/routers/utils/extensions/screen_name.dart';
 import 'package:zimbapos/widgets/textfield/primary_textfield.dart';
 
 import '../../../../bloc/global_cubits/device_control_cubit.dart';

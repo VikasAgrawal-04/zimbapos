@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:zimbapos/bloc/global_cubits/device_control_cubit.dart';
 import 'package:zimbapos/global/utils/helpers/my_secure_storage.dart';
 
 import '../../../../global/utils/helpers/helpers.dart';
+
 part 'terminal_setup_state.dart';
 
 class TerminalSetupCubit extends Cubit<DeviceTerminalConfigurationState> {
